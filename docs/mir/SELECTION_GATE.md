@@ -19,6 +19,15 @@ A small RA8P1/U55 student becomes the primary implementation target only after
 
 Do not freeze Student-v0 yet.
 
+Evidence so far (HOST-ONLY, not a freeze):
+
+- Real-audio incremental vs DSP: DEAM 2015 human arousal vs energy mean r=0.37, R²=0.30. Not Semantic-v0's r=0.99.
+- Visual utility (disagreement plot, not firmware): 2034 human arousal ≠ RMS; 2030 mostly agrees. `docs/mir/figures/visual_oracle_replay.png`.
+- Live/venue: PaRIRset test-split convolution — onset does not survive PA/ROOM; RMS degrades. CrowdioSet not ingested.
+- Source activity: HPSS percussive vs mix RMS is 0.50–0.79, not 0.99. Demucs not installed.
+- U55 compressibility: Renesas `ad01_int8.tflite` compiled (toolchain). `smoke.onnx` quantized then C99 failed on ReduceMean split (D11). Re-export with AdaptiveAvgPool2d is the next compile.
+- Teacher/oracle quality: Essentia DEAM head ≠ human 2 Hz on two songs. Jamendo mood means differ; often clip-flat.
+
 ## Working shortlist (NOT a freeze)
 
 Worth keeping on the visual-utility list after landscape + conventional traces:
@@ -40,3 +49,4 @@ Worth keeping on the visual-utility list after landscape + conventional traces:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Gate opened; no freeze. |
+| 2026-08-30 | agent:edgeai | Evidence pointers; still OPEN. |

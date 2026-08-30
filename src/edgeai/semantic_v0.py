@@ -1,8 +1,15 @@
 """Deliberately boring depthwise-separable CNN for vocal/drum/bass activity.
 
 Graph intended to stay near MobileNet-like ops that RUHMI has already
-compiled for RA8P1 (Conv, DepthwiseConv, ReLU, GlobalAverage/ReduceMean,
+compiled for RA8P1 (Conv, DepthwiseConv, ReLU, GlobalAveragePool,
 Gemm, Sigmoid, BatchNorm). No transformers, no custom ops.
+
+Do **not** use `tensor.mean(dim=(2,3))`. That exports ONNX ReduceMean on
+NCHW [1,256,8,13] axes [2,3]. Vela then sees NHWC MEAN it cannot keep on
+the NPU, parks it on CPU, and `vela_optimized_to_source` dies with
+"More than one Ethos-U custom operator found in subgraph".
+GHA run 33318864219: ad01_int8.tflite compiled; smoke.onnx quantized
+(PSNR 27.8, 94.7% NPU ops) then failed that C99 conversion.
 """
 
 from __future__ import annotations
@@ -57,13 +64,15 @@ class SemanticV0(nn.Module):
             layers.append(DepthwiseSeparable(cin, cout, stride=stride))
             cin = cout
         self.features = nn.Sequential(*layers)
+        self.pool = nn.AdaptiveAvgPool2d((1, 1))
         self.dropout = nn.Dropout(cfg.dropout) if cfg.dropout > 0 else nn.Identity()
         self.head = nn.Linear(cin, cfg.n_classes)
 
     def forward(self, logmel: torch.Tensor) -> torch.Tensor:
         # logmel: (B, 1, n_mels, n_frames)
         x = self.features(logmel)
-        x = x.mean(dim=(2, 3))  # ReduceMean — A8 on Ethos-U in RUHMI quantizer table
+        x = self.pool(x)
+        x = torch.flatten(x, 1)
         x = self.dropout(x)
         return self.head(x)
 

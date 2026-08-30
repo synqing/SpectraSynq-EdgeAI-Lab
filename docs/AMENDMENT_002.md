@@ -24,8 +24,26 @@ That is product-relevant. Improving studio SDR is not.
 
 Plumbing: `edgeai.mir.live_domain.convolve_rir`. A synthetic exponential IR exists only to test the function — it is **not** PaRIRset.
 
+### Update — 2026-08-30: first held-out venue convolution
+
+Three **test-split** RIRs (venues never in PaRIRset train): olivenzaOutdoors, valenciaMoon, palmaEsGremi. Convolved onto DEAM 2030 / 2034 / 2041. CrowdioSet not ingested.
+
+| song | venue | r(clean RMS, wet RMS) | r(clean onset, wet onset) |
+| --- | --- | --- | --- |
+| 2030 | olivenzaOutdoors | 0.74 | 0.23 |
+| 2030 | valenciaMoon | 0.64 | 0.28 |
+| 2030 | palmaEsGremi | 0.57 | 0.29 |
+| 2034 | olivenzaOutdoors | 0.55 | −0.27 |
+| 2034 | valenciaMoon | 0.40 | −0.29 |
+| 2034 | palmaEsGremi | 0.37 | −0.27 |
+
+Onset as currently computed **does not survive** PA/ROOM. RMS degrades but keeps the same sign. That is why Amendment 002 exists: studio-only scores would lie about the microphone's world.
+
+HOST-ONLY. Receipt: `artifacts/parirset_probe/receipt.json` (gitignored audio).
+
 ---
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Amendment 002. |
+| 2026-08-30 | agent:edgeai | First PaRIRset test-split convolution; onset dies. |

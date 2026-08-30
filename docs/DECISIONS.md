@@ -78,6 +78,13 @@ Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90â€
 **Rejected:** studio-only student scores as product evidence.
 **Revisit:** after first PaRIRset convolution traces exist.
 
+## D11 â€” AdaptiveAvgPool2d, not ReduceMean, for the U55 witness graph
+
+**Chosen:** `nn.AdaptiveAvgPool2d((1,1))` + flatten before the linear head.
+**Why:** GHA 33318864219 compiled Renesas `ad01_int8.tflite` (toolchain OK) then quantized `smoke.onnx` (PSNR 27.8, 94.7% NPU ops) and failed C99 with Vela `More than one Ethos-U custom operator found in subgraph`. Cause: `x.mean(dim=(2,3))` â†’ ONNX ReduceMean on `[1,256,8,13]` axes `[2,3]`; Vela parks MEAN on CPU and splits Ethos-U ops. Compiler-reported PRE-SILICON (not on-silicon): SRAM 250 KiB, flash 186.92 KiB, 35.6M MACs/batch, MEAN unsupported.
+**Rejected:** keeping ReduceMean because the RUHMI quantizer table lists it as A8.
+**Revisit:** if a later MERA/Vela accepts that MEAN layout as a single NPU region.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -86,3 +93,4 @@ Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90â€
 | 2026-08-30 | agent:edgeai | D8 â€” Amendment 001 MIR-first. |
 | 2026-08-30 | agent:edgeai | D9 RUHMI pin + gcc-13; D10 Amendment 002. |
 | 2026-08-30 | agent:edgeai | D9: pin full SHA after grep-short-SHA CI fail. |
+| 2026-08-30 | agent:edgeai | D11 AdaptiveAvgPool2d after smoke C99 split. |
