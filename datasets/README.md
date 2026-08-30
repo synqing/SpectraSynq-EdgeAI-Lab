@@ -19,7 +19,19 @@ and mixes them with known gains. This is enough to:
 It is **not** enough to claim the model understands music. A synthetic “drum”
 is a noise burst. Treat all `SYNTHETIC` receipts as pipeline evidence only.
 
-## Research corpus: MUSDB18
+## MUSDB 7 s sample (P3-A plumbing)
+
+Official `musdb` excerpts, not the full corpus:
+
+```bash
+uv sync --extra musdb --extra mir
+uv run python scripts/musdb_sample_oracle.py
+```
+
+Audio lands in `datasets/musdb_sample/` and is gitignored. Same educational/NC
+licence as MUSDB18. **Not** a commercial training lineage.
+
+## Research corpus: MUSDB18 (P3-B, not downloaded)
 
 150 songs, stems `vocals`, `drums`, `bass`, `other`, plus mixture.
 Official split: 100 train / 50 test **by song** (SiSEC 2018). This lab additionally
@@ -74,3 +86,13 @@ activity[k] = clip( (log10(rms_k) - log10(1e-4)) / (log10(0.15) - log10(1e-4)), 
 
 for `k ∈ {vocals, drums, bass}`. Mute a stem → activity 0. Soft labels, not
 one-hot. `other` is mixed but not a v0 output.
+
+The P3 source oracle additionally emits `*_share` and `*_delta`. Those are
+not Semantic-v0 training labels.
+
+---
+**Document Changelog**
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-08-30 | agent:edgeai | Synthetic default; MUSDB research/NC. |
+| 2026-08-31 | agent:edgeai | MUSDB 7 s sample path for P3-A. |

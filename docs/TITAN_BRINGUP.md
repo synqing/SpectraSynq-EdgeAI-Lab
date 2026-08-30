@@ -45,7 +45,21 @@ Suggested first tolerances (to be replaced by measured noise):
 
 ## Benchmark harness (design)
 
-When the board exists, record **on-silicon** (not host):
+When the board exists, record **on-silicon** (not host), and keep these
+latency buckets **separate**:
+
+| bucket | meaning |
+| --- | --- |
+| algorithm latency | how long analysis/inference takes |
+| context latency | how much past/future audio the semantic model needs |
+| acoustic path delay | how long sound physically took to reach the mic (`acoustic_path_delay_s`) |
+| output latency | how long before LEDs visibly change |
+
+PaRIRset on three short test IRs: acoustic path delay ≈ **100 ms**. That can
+wreck a 50 ms visual sync budget even if the NPU runs in 1 ms. Do not fold
+it into “the model is slow.”
+
+Also record:
 
 - inference p50 / p95 / p99 / max (µs)
 - update rate actually achieved
@@ -69,8 +83,10 @@ recorded song + semantic_trace.jsonl
 
 Format: `spectrasynq.semantic_trace.v1` (`src/edgeai/mir/semantic_trace.py`).
 Required control: A baseline, B extra DoF from energy, C the same extra DoF
-from the oracle. If a *perfect* arousal or source-activity trace does not
-beat energy on that extra DoF, **do not train a student**.
+from the oracle. Source activity adds **D** = relative dominance (`*_share`).
+If C does not beat B but D does, the student target is dominance from a mix,
+not “are there drums.” If a *perfect* oracle does not beat energy on that
+extra DoF, **do not train a student**.
 
 Do not modify production firmware from this lab.
 
@@ -89,3 +105,4 @@ On-device A/B still happens later. Offline oracle replay is the early kill test.
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Arrival sequence; golden first, PDM last. |
 | 2026-08-31 | agent:edgeai | Ship path: C99 already PRE-SILICON; A/B/C offline control. |
+| 2026-08-31 | agent:edgeai | Acoustic path delay is its own latency bucket; source A/B/C/D. |

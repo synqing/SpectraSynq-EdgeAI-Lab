@@ -7,6 +7,9 @@ def test_registry_loads_and_unique_ids():
     assert "librosa" in ids
     assert "htdemucs" in ids
     assert "parirset" in ids
+    assert "musdb-sample" in ids
+    assert "slakh2100" in ids
+    assert "medleydb" in ids
     assert "semantic-v0-experiment" in ids
     assert len(ids) == len(set(ids))
     htd = next(e for e in data["entries"] if e["id"] == "htdemucs")

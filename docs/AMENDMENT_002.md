@@ -24,6 +24,8 @@ That is product-relevant. Improving studio SDR is not.
 
 Plumbing: `edgeai.mir.live_domain.convolve_rir`. A synthetic exponential IR exists only to test the function — it is **not** PaRIRset.
 
+Acoustic path delay is measured with `acoustic_path_delay_s` (RIR `argmax |h|`). It is **not** algorithm latency. On the three short test IRs used so far it is ~100 ms. Preserve it as its own variable.
+
 ### Update — 2026-08-30: first held-out venue convolution
 
 Three **test-split** RIRs (venues never in PaRIRset train): olivenzaOutdoors, valenciaMoon, palmaEsGremi. Convolved onto DEAM 2030 / 2034 / 2041. CrowdioSet not ingested.
@@ -64,3 +66,4 @@ HOST-ONLY. Receipts: `artifacts/parirset_probe/receipt.json` (old, unaligned) an
 | 2026-08-30 | agent:edgeai | First PaRIRset test-split convolution; onset dies. |
 | 2026-08-31 | agent:edgeai | Qualify onset result as provisional pending delay compensation. |
 | 2026-08-31 | agent:edgeai | Delay-aware re-score: onset delayed, not killed. |
+| 2026-08-31 | agent:edgeai | Name acoustic path delay as its own measured variable. |

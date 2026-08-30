@@ -46,6 +46,14 @@ def test_direct_path_lag_finds_delayed_impulse():
     assert abs(lag_s - 0.08) < 1e-6
 
 
+def test_acoustic_path_delay_is_its_own_variable():
+    from edgeai.mir.live_domain import acoustic_path_delay_s
+
+    rir = np.zeros(SR, dtype=np.float32)
+    rir[int(0.1 * SR)] = 1.0
+    assert acoustic_path_delay_s(rir, SR) == pytest.approx(0.1, abs=1e-6)
+
+
 def test_advance_pcm_undoes_known_delay():
     y, _ = _click_track()
     lag = int(0.08 * SR)

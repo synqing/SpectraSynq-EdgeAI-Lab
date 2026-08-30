@@ -47,6 +47,10 @@ deploy_output/
 # Dataset corpora — never commit
 datasets/musdb18/
 datasets/musdb18hq/
+datasets/musdb_sample/*
+!datasets/musdb_sample/README.md
+datasets/slakh*/
+datasets/medleydb/
 datasets/raw/
 datasets/cache/
 datasets/deam/**

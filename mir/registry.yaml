@@ -2,6 +2,9 @@
 # Licensing fields are independent. UNKNOWN is allowed. Not legal advice.
 schema_version: 1
 updated: 2026-08-31
+# commercial_training_lineage: false means never mix this audio/weights into a
+# shipping SpectraSynq student. Research oracles may still be used as HOST-ONLY
+# perfect-information tests. UNKNOWN is allowed.
 entries:
 
   - id: librosa
@@ -351,7 +354,92 @@ entries:
     attribution: required
     redistribution: no
     status: researched
-    spectrasynq: "Valid stem-activity teacher for research students. Not a shipping corpus. Not the default start anymore."
+    commercial_training_lineage: false
+    spectrasynq: "P3-B perfect V/D/B oracle on full songs. Educational/NC. Not downloaded yet. Not a shipping corpus."
+
+  - id: musdb-sample
+    kind: dataset
+    name: MUSDB 7-second sample excerpts
+    version: "musdb 0.4.3 download=True"
+    group: SigSep / musdb
+    source: https://sigsep.github.io/sigsep-mus-db/
+    publication: https://github.com/sigsep/sigsep-mus-db
+    task: P3-A plumbing — mixture + vocals/drums/bass/other, ~7 s
+    inputs: 144 preview tracks
+    outputs: official stems
+    temporal_resolution: waveform
+    context: ~2–7 s excerpts
+    architecture: n/a
+    params: n/a
+    deployment: host_oracle
+    code_licence: musdb parser MIT
+    weight_licence: n/a
+    dataset_licence: same educational/NC as MUSDB18
+    research_use: yes
+    commercial_use: no
+    teacher_use: plumbing only
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: no
+    status: executed
+    commercial_training_lineage: false
+    spectrasynq: "P3-A pipeline proof. 140 MB sample, not 4.7 GB. Traces in artifacts/source_activity/."
+
+  - id: medleydb
+    kind: dataset
+    name: MedleyDB
+    version: "1.x"
+    group: Bittner / NYU / MARL
+    source: https://medleydb.weebly.com/
+    publication: https://medleydb.readthedocs.io/
+    task: processed + raw stems with instrument labels beyond V/D/B
+    inputs: multitrack
+    outputs: fine-grained stems (singer, guitars, drum set, …)
+    temporal_resolution: waveform
+    context: full tracks
+    architecture: n/a
+    params: n/a
+    deployment: host_oracle
+    code_licence: medleydb loader (check repo)
+    weight_licence: n/a
+    dataset_licence: CC BY-NC-SA / non-commercial research
+    research_use: yes
+    commercial_use: no
+    teacher_use: research yes; finer than MUSDB
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: NC-SA
+    status: researched
+    commercial_training_lineage: false
+    spectrasynq: "Fine-grained real-instrument oracle. Not ingested. Not a production-training source."
+
+  - id: slakh2100
+    kind: dataset
+    name: Slakh2100
+    version: "2100 mixes / 145 h"
+    group: Manilow / Pardo / et al. (Northwestern / MIT)
+    source: https://github.com/ethman/slakh-generation
+    publication: https://zenodo.org/records/4599666
+    task: synthesized multitrack + aligned MIDI, 34 instrument classes
+    inputs: MIDI rendered through sampled instruments
+    outputs: stems + MIDI
+    temporal_resolution: waveform + MIDI
+    context: full pieces
+    architecture: n/a
+    params: n/a
+    deployment: potential_teacher
+    code_licence: generation repo (check)
+    weight_licence: n/a
+    dataset_licence: CC BY 4.0
+    research_use: yes
+    commercial_use: "CC BY 4.0 — friendlier than MUSDB; still synthetic, not a mic/venue substitute"
+    teacher_use: research yes; drums/bass/instrument activity at scale
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: CC BY
+    status: researched
+    commercial_training_lineage: "candidate-synth-only — NOT a replacement for real vocals or PA/room"
+    spectrasynq: "Permissive synthetic supervision. Weak on real vocals, production, venue. Do not download until P3-B needs scale. 16 kHz derivative exists (Zenodo 7708270) — still not Titan-direct."
 
   - id: moisesdb
     kind: dataset

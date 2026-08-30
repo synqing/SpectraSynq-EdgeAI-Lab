@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices D1–D11. D8 MIR-first; D10 live-domain; D11 AdaptiveAvgPool2d for U55. Read before changing the graph, split, or RUHMI path."
+abstract: "Architectural choices D1–D12. D8 MIR-first; D10 live-domain; D11 AdaptiveAvgPool2d; D12 source abs/share/delta. Read before changing the graph, split, or RUHMI path."
 ---
 
 # Decisions
@@ -89,6 +89,13 @@ Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90�
 
 GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Flash 188,896 B, 35.56 M MACs, 88.9% node coverage). PRE-SILICON.
 
+## D12 — Source oracle is abs / share / delta, not RMS(stem)
+
+**Chosen:** perfect stem traces emit `*_abs` (fixed log-RMS), `*_share` (power / sum of stem powers), `*_delta` (Δ share). Visual control for source is A/B/C/D (baseline / mix energy / abs / share).
+**Why:** a moderate vocal in a quiet breakdown can dominate a louder buried vocal. P3-A on 144 MUSDB samples: r(vocals_share, mix)=0.12 vs r(vocals_abs, mix)=0.46.
+**Rejected:** a single RMS(stem) channel; Demucs before the perfect oracle wins a full-song visual test.
+**Revisit:** after P3-B full-song A/B/C/D. If D never beats B, do not train a dominance student.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -100,3 +107,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-30 | agent:edgeai | D11 AdaptiveAvgPool2d after smoke C99 split. |
 | 2026-08-31 | agent:edgeai | D8 nine gate questions; D10 onset result provisional. |
 | 2026-08-31 | agent:edgeai | D4 pooling note vs D11; D10 onset delayed-not-killed. |
+| 2026-08-31 | agent:edgeai | D12 source oracle abs/share/delta. |

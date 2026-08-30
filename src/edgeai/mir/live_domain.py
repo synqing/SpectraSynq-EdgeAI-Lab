@@ -38,6 +38,19 @@ def synthetic_room_ir(sr: int = 16_000, rt60: float = 1.4) -> NDArray[np.float32
     return (ir / (np.max(np.abs(ir)) + 1e-8)).astype(np.float32)
 
 
+def acoustic_path_delay_s(rir: NDArray[np.float32], sr: int) -> float:
+    """Direct-path / propagation delay of an RIR, in seconds.
+
+    This is ACOUSTIC latency — how long sound took to reach the microphone —
+    not algorithm latency, not model context, not LED output latency.
+    Keep it as its own measured variable. Do not fold it into "the model is slow".
+    """
+    from edgeai.mir.onset_align import direct_path_lag_samples
+
+    _, lag_s = direct_path_lag_samples(rir, sr)
+    return float(lag_s)
+
+
 DOMAINS = ("CLEAN_STUDIO", "PA_ROOM", "PA_ROOM_CROWD")
 
 # Hugging Face dataset tree. Test split = 8 held-out venues. Do not train on these.

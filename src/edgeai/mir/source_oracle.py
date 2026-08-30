@@ -1,0 +1,127 @@
+"""Perfect-information source oracle from stems. HOST-ONLY. Not a student.
+
+Three channels per source — presence, dominance, change:
+
+    abs   — how much acoustic energy this stem has (fixed log-RMS map)
+    share — fraction of summed stem power at this hop (dominance)
+    delta — first difference of share (enter / exit / surge)
+
+Share is NOT mix RMS. A moderate vocal in a quiet breakdown can dominate
+even when its absolute energy is below a buried vocal in a loud chorus.
+
+Stems can interfere; mixture power is not exactly the sum. Share is
+defined on stem powers so it stays in [0, 1] and sums to 1.
+"""
+
+from __future__ import annotations
+
+import math
+from typing import Mapping
+
+import numpy as np
+from numpy.typing import NDArray
+
+from edgeai.dataset import LOUD_RMS, SILENCE_RMS
+
+SOURCES = ("vocals", "drums", "bass", "other")
+
+
+def _mono(pcm: NDArray) -> NDArray[np.float32]:
+    y = np.asarray(pcm, dtype=np.float32)
+    if y.ndim == 2:
+        y = y.mean(axis=-1)
+    return y.reshape(-1)
+
+
+def frame_mean_square(pcm: NDArray, hop: int = 512) -> NDArray[np.float64]:
+    """Hop power. No numerical floor — silence must stay silence for share."""
+    y = _mono(pcm).astype(np.float64)
+    if y.size < hop:
+        if y.size == 0:
+            return np.zeros(1, dtype=np.float64)
+        return np.array([float(np.mean(y * y))], dtype=np.float64)
+    n = int(y.size // hop)
+    frames = y[: n * hop].reshape(n, hop)
+    return np.mean(frames * frames, axis=1)
+
+
+def frame_rms(pcm: NDArray, sr: int, hop: int = 512) -> tuple[NDArray[np.float32], NDArray[np.float32]]:
+    y = _mono(pcm)
+    n = max(1, int(y.size // hop)) if y.size >= hop else 1
+    times = ((np.arange(n, dtype=np.float32) * hop) + hop * 0.5) / float(sr)
+    if y.size < hop:
+        times = np.array([0.5 * y.size / sr if y.size else 0.0], dtype=np.float32)
+    ms = frame_mean_square(y, hop)
+    rms = np.sqrt(ms + 1e-12).astype(np.float32)
+    return times[: ms.size], rms
+
+
+def log_rms_activity(rms: NDArray) -> NDArray[np.float32]:
+    """Fixed physical map, not per-clip peak-norm. Same constants as D7 labels."""
+    lo = math.log10(SILENCE_RMS)
+    hi = math.log10(LOUD_RMS)
+    v = (np.log10(np.asarray(rms, dtype=np.float64) + 1e-12) - lo) / (hi - lo)
+    return np.clip(v, 0.0, 1.0).astype(np.float32)
+
+
+def source_oracle(
+    stems: Mapping[str, NDArray],
+    *,
+    sr: int,
+    hop: int = 512,
+    mix: NDArray | None = None,
+) -> dict[str, NDArray[np.float32]]:
+    """Return aligned abs / share / delta traces plus mix RMS.
+
+    `stems` must contain vocals, drums, bass, other (missing → zeros).
+    `mix` is optional; if given, `mix_rms` is the official mixture envelope.
+    """
+    first = next(iter(stems.values()))
+    n_samples = int(_mono(first).size)
+    aligned: dict[str, NDArray[np.float32]] = {}
+    for name in SOURCES:
+        if name in stems:
+            y = _mono(stems[name])
+        else:
+            y = np.zeros(n_samples, dtype=np.float32)
+        if y.size != n_samples:
+            out = np.zeros(n_samples, dtype=np.float32)
+            m = min(n_samples, y.size)
+            out[:m] = y[:m]
+            y = out
+        aligned[name] = y
+
+    times, _ = frame_rms(aligned["vocals"], sr, hop)
+    power = {name: frame_mean_square(aligned[name], hop) for name in SOURCES}
+    n = int(times.size)
+    for name in SOURCES:
+        power[name] = power[name][:n]
+    rms = {name: np.sqrt(power[name] + 1e-12).astype(np.float32) for name in SOURCES}
+
+    total = np.sum(np.stack([power[name] for name in SOURCES], axis=0), axis=0)
+    silent = total < 1e-10
+
+    out: dict[str, NDArray[np.float32]] = {"times": times.astype(np.float32)}
+    for name in SOURCES:
+        share = np.zeros(n, dtype=np.float64)
+        share[~silent] = power[name][~silent] / total[~silent]
+        abs_act = log_rms_activity(rms[name])
+        delta = np.diff(share, prepend=share[:1])
+        out[f"{name}_abs"] = abs_act
+        out[f"{name}_share"] = share.astype(np.float32)
+        out[f"{name}_delta"] = delta.astype(np.float32)
+        out[f"{name}_rms"] = rms[name].astype(np.float32)
+
+    if mix is None:
+        mix_y = np.sum(np.stack([aligned[name] for name in SOURCES], axis=0), axis=0)
+    else:
+        mix_y = _mono(mix)
+        if mix_y.size != n_samples:
+            tmp = np.zeros(n_samples, dtype=np.float32)
+            m = min(n_samples, mix_y.size)
+            tmp[:m] = mix_y[:m]
+            mix_y = tmp
+    _, mix_r = frame_rms(mix_y, sr, hop)
+    out["mix_rms"] = log_rms_activity(mix_r[:n])
+    out["mix_rms_raw"] = mix_r[:n].astype(np.float32)
+    return out
