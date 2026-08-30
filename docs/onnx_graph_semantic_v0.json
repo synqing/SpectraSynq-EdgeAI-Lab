@@ -1,0 +1,20 @@
+{
+  "label": "HOST-ONLY",
+  "file": "artifacts/export/semantic_v0_fp32.onnx",
+  "bytes": 613727,
+  "int8_bytes": 213240,
+  "opset": [
+    14
+  ],
+  "input": "logmel (1,1,64,100)",
+  "output": "activity (1,3)",
+  "ops": {
+    "Conv": 15,
+    "Relu": 15,
+    "ReduceMean": 1,
+    "Gemm": 1,
+    "Sigmoid": 1
+  },
+  "n_nodes": 33,
+  "note": "BatchNorm folded into Conv. Graph is Conv/Relu/ReduceMean/Gemm/Sigmoid \u2014 the boring set RUHMI already compiles for RA8P1. NPU coverage is NOT_MEASURED until mcu_compile.py runs on x86."
+}

@@ -1,0 +1,64 @@
+# Native x86 RUHMI compile. Does not measure silicon.
+name: ruhmi-compile
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/edgeai/**"
+      - "deployment/ra8p1/**"
+      - "models/configs/**"
+      - ".github/workflows/ruhmi-compile.yml"
+      - "pyproject.toml"
+
+jobs:
+  host-smoke-cpu:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.12"
+      - name: Smoke TRAIN→SAVE→LOAD→EXPORT
+        run: |
+          uv sync --python 3.12
+          uv run edgeai-smoke --out artifacts/smoke --device cpu
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-onnx
+          path: artifacts/smoke/
+
+  ruhmi:
+    runs-on: ubuntu-22.04
+    needs: host-smoke-cpu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: smoke-onnx
+          path: artifacts/smoke
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install MERA 2.6.0
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install decorator typing_extensions psutil attrs pybind11 cmake junitparser numpy onnx==1.17.0
+          wget -q https://github.com/renesas/ruhmi-framework-mcu/raw/main/install/mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl
+          python -m pip install mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl
+          python -c "import mera; print(mera.__version__)"
+          git clone --depth 1 https://github.com/renesas/ruhmi-framework-mcu.git "$HOME/ruhmi-framework-mcu"
+      - name: Compile smoke ONNX for Ethos-U55
+        run: |
+          mkdir -p artifacts/ruhmi
+          python "$HOME/ruhmi-framework-mcu/scripts/mcu_compile.py" \
+            artifacts/smoke/smoke.onnx artifacts/ruhmi \
+            --npu --quantize --ref-data --calib-num 8
+          python "$HOME/ruhmi-framework-mcu/scripts/utils/check_model_metrics.py" \
+            artifacts/ruhmi/smoke_NPU_quantized || \
+          python "$HOME/ruhmi-framework-mcu/scripts/utils/check_model_metrics.py" \
+            artifacts/ruhmi/smoke_NPU || true
+          find artifacts/ruhmi -name '*.c' -o -name 'model_subgraphs.json' | head
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ruhmi-c99
+          path: artifacts/ruhmi/

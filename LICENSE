@@ -1,0 +1,9 @@
+Copyright (c) 2026 SpectraSynq. All rights reserved.
+
+This repository is an internal research laboratory. It is not a product
+licence, not a grant of rights in any SpectraSynq firmware, and not a grant
+of rights in any third-party dataset.
+
+Third-party corpora (including MUSDB18 and its constituent sources) remain
+under their own licences. See datasets/README.md. Research use of a
+non-commercial corpus does not make a shipping model.

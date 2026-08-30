@@ -1,0 +1,34 @@
+{
+  "id": "test_001",
+  "song_id": "synth_041",
+  "split": "test",
+  "sample_rate": 16000,
+  "n_samples": 16000,
+  "input_shape": [
+    1,
+    1,
+    64,
+    100
+  ],
+  "classes": [
+    "vocals",
+    "drums",
+    "bass"
+  ],
+  "target_from_stems": [
+    0.9524993896484375,
+    0.6429467797279358,
+    1.0
+  ],
+  "fp32": {
+    "vocals": 0.8068273067474365,
+    "drums": 0.5038066506385803,
+    "bass": 0.9794588685035706
+  },
+  "int8_host_ort": {
+    "vocals": 0.8250105977058411,
+    "drums": 0.4809303283691406,
+    "bass": 0.9814106822013855
+  },
+  "label": "HOST-ONLY"
+}

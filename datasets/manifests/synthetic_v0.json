@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "note": "Split is by song_id. Never re-split by window.",
+  "songs": [
+    {
+      "song_id": "synth_000",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_001",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_002",
+      "split": "val",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_003",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_004",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_005",
+      "split": "val",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_006",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_007",
+      "split": "val",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_008",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_009",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_010",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_011",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_012",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_013",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_014",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_015",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_016",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_017",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_018",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_019",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_020",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_021",
+      "split": "val",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_022",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_023",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_024",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_025",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_026",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_027",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_028",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_029",
+      "split": "val",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_030",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_031",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_032",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_033",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_034",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_035",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_036",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_037",
+      "split": "val",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_038",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_039",
+      "split": "train",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_040",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_041",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_042",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_043",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_044",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_045",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_046",
+      "split": "test",
+      "source": "synthetic"
+    },
+    {
+      "song_id": "synth_047",
+      "split": "test",
+      "source": "synthetic"
+    }
+  ],
+  "counts": {
+    "train": 34,
+    "val": 6,
+    "test": 8
+  }
+}

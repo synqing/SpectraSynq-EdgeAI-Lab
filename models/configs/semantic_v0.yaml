@@ -1,0 +1,44 @@
+# Overlay for Semantic-v0. Code defaults match this file.
+onnx_opset: 14
+frontend:
+  sample_rate: 16000
+  duration_s: 1.0
+  n_fft: 400
+  win_length: 400
+  hop_length: 160
+  n_mels: 64
+  n_frames: 100
+  f_min: 20.0
+  f_max: 8000.0
+  log_offset: 1.0e-6
+  log_clip_min: -12.0
+  log_clip_max: 6.0
+model:
+  stem_channels: 32
+  blocks:
+    - [64, 2]
+    - [64, 1]
+    - [128, 2]
+    - [128, 1]
+    - [192, 2]
+    - [192, 1]
+    - [256, 1]
+  n_classes: 3
+  dropout: 0.0
+train:
+  seed: 0
+  epochs: 8
+  batch_size: 16
+  windows_per_epoch: 256
+  val_windows: 64
+  test_windows: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 0
+  mute_prob: 0.18
+  gain_db_min: -20.0
+  gain_db_max: 6.0
+  noise_prob: 0.25
+  noise_snr_db_min: 8.0
+  noise_snr_db_max: 30.0
+  eq_prob: 0.35

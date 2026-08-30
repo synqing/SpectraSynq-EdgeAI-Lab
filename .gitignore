@@ -1,0 +1,58 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Session / tool dumps (not project artefacts)
+combined.log
+error.log
+
+# Large / generated
+artifacts/
+experiments/*
+!experiments/README.md
+calibration/
+deploy_output/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.tflite
+*.pte
+*.npy
+*.npz
+*.wav
+*.flac
+*.mp4
+*.stem.mp4
+
+# Dataset corpora — never commit
+datasets/musdb18/
+datasets/musdb18hq/
+datasets/raw/
+datasets/cache/
+
+# Keep tiny committed fixtures
+!tests/fixtures/**/*.wav
+!tests/fixtures/**/*.npy
+!test_vectors/smoke/**
+
+# Secrets
+.env
+.env.*
+*.pem
