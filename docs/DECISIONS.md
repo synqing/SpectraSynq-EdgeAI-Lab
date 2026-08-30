@@ -85,6 +85,8 @@ Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90â€
 **Rejected:** keeping ReduceMean because the RUHMI quantizer table lists it as A8.
 **Revisit:** if a later MERA/Vela accepts that MEAN layout as a single NPU region.
 
+GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Flash 188,896 B, 35.56 M MACs, 88.9% node coverage). PRE-SILICON.
+
 ---
 **Document Changelog**
 | Date | Author | Change |

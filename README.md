@@ -11,9 +11,9 @@ a bespoke student model.** Semantic-v0 (vocals/drums/bass CNN) is a kept
 
 ## Current phase
 
-**Pre-Titan, MIR-first.** Host PyTorch/MPS/ONNX path exists. RUHMI CI is native
-x86 GitHub Actions (not blocked on Docker). MIR registry + landscape + DEAM
-human-arousal vs DSP are in `docs/mir/` and `mir/registry.yaml`.
+**Pre-Titan, MIR-first.** Host PyTorch/MPS/ONNX path exists. RUHMI CI produced
+C99 for Renesas `ad01_int8.tflite` and lab `smoke.onnx` (PRE-SILICON). MIR
+registry + DEAM human-arousal vs DSP are in `docs/mir/` and `mir/registry.yaml`.
 
 Numbers not measured on the RA8P1 are `HOST-ONLY` or `PRE-SILICON`.
 
