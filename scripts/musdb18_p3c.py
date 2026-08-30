@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """P3-C: blinded host replay of firmware palette path.
 
-Continuous: spectrum_river (palette-native, spectrum-as-space).
-Events: comet (same palette, bass-onset fire).
+Continuous: waveform_tempo (palette-native, tempo-locked scroll).
+Events: comet (same palette, bass-onset fire) over that tempo floor.
 Not chroma HSV. Not Demucs. HOST-ONLY.
 """
 
@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
-from edgeai.mir.host_chroma import extra_gain, host_chroma12, host_spectrogram80, preview_encode
+from edgeai.mir.host_chroma import extra_gain, host_chroma12, preview_encode
 from edgeai.mir.k1_render_host import (
     PALETTE_RENDER_PARAMS,
     compile_mode,
@@ -190,6 +190,60 @@ def event_hits(series: np.ndarray, thresh: float) -> tuple[np.ndarray, list[int]
     return fired, idx, strength
 
 
+def write_still_sheet(
+    path: Path,
+    scores: list[dict],
+    set_name: str,
+    *,
+    keys: tuple[str, ...],
+    labels: tuple[str, ...],
+    title: str,
+    t_s: float = 2.0,
+) -> None:
+    """Instrument stills from the LED dump. Not a lighting verdict."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    rows = [s for s in scores if s.get("set") == set_name][:4]
+    if not rows:
+        return
+    n = len(rows)
+    fig, axes = plt.subplots(n, len(keys), figsize=(4.2 * len(keys), 1.85 * n), squeeze=False)
+    fig.patch.set_facecolor("#f4efe6")
+    fig.suptitle(title, fontsize=11, color="#1b1814")
+    for r, rec in enumerate(rows):
+        npz = np.load(P3C / f"{_safe(rec['track'])}_{set_name}_leds.npz")
+        fps = 1.0 / (HOP_S * DISPLAY_STEP)
+        fi = int(round(t_s * fps))
+        for c, key in enumerate(keys):
+            ax = axes[r, c]
+            frame = np.asarray(npz[key], dtype=np.uint8)
+            fi_c = min(fi, frame.shape[0] - 1)
+            rgb = frame[fi_c]
+            img = np.repeat(rgb[np.newaxis, :, :], 18, axis=0)
+            ax.imshow(img, interpolation="nearest", aspect="auto")
+            ax.set_xticks([])
+            ax.set_yticks([])
+            if r == 0:
+                ax.set_title(labels[c], fontsize=9, color="#1b1814")
+            if c == 0:
+                ax.set_ylabel(rec["track"][:28], fontsize=7, color="#6a645c")
+            ax.text(
+                2,
+                2,
+                f"lum {mean_luminance(frame[fi_c : fi_c + 1]):.0f}  max {int(rgb.max())}",
+                color="white",
+                fontsize=6,
+                va="top",
+            )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.tight_layout()
+    fig.savefig(path, dpi=140)
+    plt.close(fig)
+
+
 def _clip_payload(clip_id: str, title: str, set_name: str, leds_map: dict, order: list[str], extra: dict) -> dict:
     fps = 1.0 / (HOP_S * DISPLAY_STEP)
     versions = []
@@ -237,19 +291,25 @@ def main() -> int:
     tracks = {t.name: t for t in db}
     fw = firmware_root()
     sha = firmware_sha(fw)
-    print(f"compiling spectrum_river + comet from {fw} @ {sha[:12]}", flush=True)
-    river_bin, cmeta = compile_mode(P3C / "_river_build", mode="spectrum_river")
+    print(f"compiling waveform_tempo + comet from {fw} @ {sha[:12]}", flush=True)
+    tempo_bin, cmeta = compile_mode(P3C / "_tempo_build", mode="waveform_tempo")
     comet_bin, _ = compile_mode(P3C / "_comet_build", mode="comet")
     print(f"compiler {cmeta.get('compiler')} ok palette_index={PALETTE_RENDER_PARAMS['palette_index']}", flush=True)
-    pre_t = np.arange(24, dtype=np.float64) * HOP_S
-    pre_s = np.linspace(0.35, 0.95, 24 * 80, dtype=np.float32).reshape(24, 80)
-    pre = preview_encode(
-        render_mode(river_bin, times_s=pre_t, spectro=pre_s),
-        exposure=PREVIEW_EXPOSURE,
-    )
+    pre_t = np.arange(48, dtype=np.float64) * HOP_S
+    pre_c = np.full((48, 12), 0.35, dtype=np.float64)
+    pre_c[:, 9] = 0.95
+    pre_wf = np.full(48, 0.85, dtype=np.float64)
+    pre_raw = render_mode(tempo_bin, times_s=pre_t, chroma=pre_c, waveform_peak=pre_wf)
+    pre = preview_encode(pre_raw, exposure=PREVIEW_EXPOSURE)
+    pre_occ = occupancy(pre[24:])
     if int(pre.max()) < 80:
-        raise RuntimeError(f"palette river preflight too dim max={int(pre.max())}")
-    print(f"preflight river_max={int(pre.max())} lum={float(mean_luminance(pre)):.1f}", flush=True)
+        raise RuntimeError(f"palette waveform_tempo preflight too dim max={int(pre.max())}")
+    if pre_occ < 0.05:
+        raise RuntimeError(f"palette waveform_tempo preflight too sparse occ={pre_occ:.3f}")
+    print(
+        f"preflight tempo_max={int(pre.max())} lum={float(mean_luminance(pre)):.1f} occ={pre_occ:.3f}",
+        flush=True,
+    )
 
     thresh = corpus_event_thresholds(cache_items)
     print("event thresholds", thresh, flush=True)
@@ -275,13 +335,10 @@ def main() -> int:
         i1 = int(round((start + length) * SR))
         sl = mix[i0:i1]
         _ct, chroma = host_chroma12(sl, sr=SR, hop=HOP)
-        _st, spectro = host_spectrogram80(sl, sr=SR, hop=HOP)
-        n = min(len(oracle["times"]), chroma.shape[0], spectro.shape[0])
+        n = min(len(oracle["times"]), chroma.shape[0])
         oracle = {k: (v[:n] if np.asarray(v).shape[:1] == (len(oracle["times"]),) else v) for k, v in oracle.items()}
         chroma = chroma[:n]
-        spectro = spectro[:n]
-        times = np.arange(n, dtype=np.float64) * HOP_S
-        print(f"river/comet {subset} {name} n={n} start={start:.2f}", flush=True)
+        print(f"tempo/comet {subset} {name} n={n} start={start:.2f}", flush=True)
         share_name = _share_key(row)
         gains = continuous_gains(oracle, fmap, share_name)
         warm = max(1, int(round(WARMUP_S / HOP_S)))
@@ -291,8 +348,13 @@ def main() -> int:
         cond_leds = {}
         for key in ("A", "B", "D"):
             g = np.concatenate([np.repeat(gains[key][:1], warm), gains[key]])
-            spec_w = np.clip(np.vstack([np.repeat(spectro[:1], warm, axis=0), spectro]) * g.reshape(-1, 1), 0.0, 1.0)
-            raw = render_mode(river_bin, times_s=times_w, chroma=chroma_w, spectro=spec_w)
+            chroma_g = np.clip(chroma_w * g.reshape(-1, 1), 0.0, 1.0)
+            raw = render_mode(
+                tempo_bin,
+                times_s=times_w,
+                chroma=chroma_g,
+                waveform_peak=g,
+            )
             cond_raw[key] = raw[warm:]
             cond_leds[key] = preview_encode(cond_raw[key], exposure=PREVIEW_EXPOSURE)
 
@@ -313,9 +375,9 @@ def main() -> int:
             )[warm:]
             event_leds[key] = preview_encode(np.maximum(river_floor, comet), exposure=PREVIEW_EXPOSURE)
         print(
-            f"  spec_max={float(spectro.max()):.3f} lumA={mean_luminance(cond_leds['A']):.1f} "
+            f"  peakA={float(gains['A'].mean()):.3f} lumA={mean_luminance(cond_leds['A']):.1f} "
             f"lumB={mean_luminance(cond_leds['B']):.1f} lumD={mean_luminance(cond_leds['D']):.1f} "
-            f"maxA={int(cond_leds['A'].max())}",
+            f"maxA={int(cond_leds['A'].max())} occA={occupancy(cond_leds['A']):.3f}",
             flush=True,
         )
         dur_s = n * HOP_S
@@ -371,9 +433,9 @@ def main() -> int:
 
     write_page(
         HTML1,
-        title="P3-C1 · same palette river, extra control from different drivers",
-        question="Which version makes more musical sense as extra energy in the same palette river?",
-        note="Firmware spectrum-river on the product palette path (not chroma HSV). Same extra gain, same range. Host preview is exposure-corrected so the page is readable. Labels sealed. HOST-ONLY. Not a product lighting call. MUSDB educational/NC.",
+        title="P3-C1 · same Waveform Tempo, extra control from different drivers",
+        question="Which version makes more musical sense as extra energy in the same Waveform Tempo?",
+        note="Firmware Waveform Tempo on the product palette path (not chroma HSV). Same extra gain, same range. Host preview is exposure-corrected so the page is readable. Labels sealed. HOST-ONLY. Not a product lighting call. MUSDB educational/NC.",
         clips=html_c1,
         n_versions=3,
     )
@@ -381,7 +443,7 @@ def main() -> int:
         HTML2,
         title="P3-C2 · the same comet, different triggers",
         question="Which version picks better moments for the same comet launch? Rates are shown so quantity is not the test.",
-        note="Firmware comet launches over the same palette river. Same launch, same palette. Only the trigger series changes. HOST-ONLY. Not a product lighting call.",
+        note="Firmware comet launches over the same Waveform Tempo floor. Same launch, same palette. Only the trigger series changes. HOST-ONLY. Not a product lighting call.",
         clips=html_c2,
         n_versions=2,
     )
@@ -396,17 +458,18 @@ def main() -> int:
         "label": "HOST-ONLY",
         "phase": "P3-C",
         "engine": {
-            "continuous": "firmware light_mode_spectrum_river",
+            "continuous": "firmware light_mode_waveform_tempo",
             "events": "firmware light_mode_comet",
             "colour": "PALETTE_MODE + K1_Ultraviolet_Bright (index 43); chromatic HSV off",
             "square_iter": 0.0,
             "preview": f"sRGB + exposure {PREVIEW_EXPOSURE} (host dump is pre-gamma)",
+            "host_tempo": "locked 120 BPM phase from frame ms; identical across A/B/D",
         },
         "firmware_root": str(fw),
         "firmware_sha": sha,
         "frozen_map_version": FROZEN_MAP_VERSION,
         "modulation_weight": MODULATION_WEIGHT,
-        "extra_dof": "spectrogram gain in [0.62, 1.0] from frozen mix vs share",
+        "extra_dof": "waveform peak + chroma gain in [0.62, 1.0] from frozen mix vs share",
         "timebase": timebase(sr=SR, hop=HOP, lag_s=0.5),
         "display_step": DISPLAY_STEP,
         "segment_s": SEGMENT_S,
@@ -438,10 +501,30 @@ def main() -> int:
     outp.write_text(json.dumps(receipt, indent=2) + "\n")
     # Copy a small committed receipt pointer without LED dumps.
     Path("docs/mir/P3C_RECEIPT.json").write_text(json.dumps({k: receipt[k] for k in receipt if k != "scores"}, indent=2) + "\n")
+    write_still_sheet(
+        P3C / "stills_continuous_challenge.png",
+        scores,
+        "challenge",
+        keys=("A", "B", "D"),
+        labels=("A", "B", "D"),
+        title="HOST-ONLY Waveform Tempo dump  ·  challenge t=2.0s  ·  instrument, not the blinded page",
+        t_s=2.0,
+    )
+    write_still_sheet(
+        P3C / "stills_events_challenge.png",
+        scores,
+        "challenge",
+        keys=("control", "mir"),
+        labels=("control", "mir"),
+        title="HOST-ONLY comet-over-tempo dump  ·  challenge t=2.0s  ·  instrument, not the blinded page",
+        t_s=2.0,
+    )
     print(json.dumps(receipt["summary"], indent=2))
     print(f"wrote {HTML1} ({HTML1.stat().st_size} bytes)")
     print(f"wrote {HTML2} ({HTML2.stat().st_size} bytes)")
     print(f"wrote {outp}")
+    print(f"wrote {P3C / 'stills_continuous_challenge.png'}")
+    print(f"wrote {P3C / 'stills_events_challenge.png'}")
     return 0
 
 

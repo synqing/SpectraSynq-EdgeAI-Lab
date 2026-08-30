@@ -239,6 +239,16 @@ def test_extra_gain_stays_in_a_bright_band():
     assert g[0] < g[1] < g[-1]
 
 
+def test_waveform_tempo_host_mode_is_firmware_source():
+    from edgeai.mir.k1_render_host import WAVEFORM_TEMPO_MODE
+
+    assert WAVEFORM_TEMPO_MODE["sources"] == ["effects/light_mode_waveform_tempo.cpp"]
+    assert "k1_tempo_read" in WAVEFORM_TEMPO_MODE["decls"]
+    assert "k1_audio_snapshot_read" in WAVEFORM_TEMPO_MODE["decls"]
+    assert "light_mode_waveform_tempo(effect_state_primary)" in WAVEFORM_TEMPO_MODE["entry"]
+    assert "waveform_peak_scaled" in WAVEFORM_TEMPO_MODE["frame_apply"]
+
+
 def test_bloom_chromagram_is_broadband_enough_to_light():
     from edgeai.mir.host_chroma import bloom_chromagram
 

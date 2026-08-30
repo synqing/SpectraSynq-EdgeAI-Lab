@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices D1–D14. D12 abs demoted / share info-PASS. D14 P3-C is the visual-engine gate; no Demucs until it passes. Student I/O still OPEN."
+abstract: "Architectural choices D1–D14. D12 abs demoted / share info-PASS. D14 P3-C is the visual-engine gate on firmware Waveform Tempo; no Demucs until it passes. Student I/O still OPEN."
 ---
 
 # Decisions
@@ -105,10 +105,10 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 
 ## D14 — P3-C is the visual-engine gate; stems beat Demucs if it passes
 
-**Chosen:** Isolated HOST replay of firmware `light_mode_bloom` plus `apply_brightness` (PHOTONS², mode 0). Same extra DoF for baseline / mix energy / source share. Events reuse `k1_visual_hooks` onset→photons (gain 0.16, tau 100 ms). Challenge 10 from the P3-B oracle set plus 10 MUSDB-test holdout tracks stratified by duration, not by share/RMS disagreement. Versions are blinded. No firmware edits. No Demucs.
-**Why:** P3-B HTML was an existing-behaviour stand-in. Pixel MAD on that page is not SpectraSynq. If lights never benefit, there is nothing to teach. If they do, MUSDB stems are already perfect supervision — a separator teacher would only add error.
-**Rejected:** lighting call from `p3b1_continuous.html` / `p3b2_events.html`; installing Demucs next; training a student before P3-C; freezing student heads for abs/share/delta/composition_change separately.
-**Revisit:** after the blinded Version 1/2/3 lighting judgement. Pass on share → research student on stem powers, deterministic share/delta/composition_change. Pass on composition-change → same backbone, event head is derived. Fail both → do not train.
+**Chosen:** Isolated HOST replay of firmware `light_mode_waveform_tempo` on the product palette path (`K1_Ultraviolet_Bright`, square_iter 0). Same extra DoF for baseline / mix energy / source share (peak + chroma gain in [0.62, 1.0]). Events are firmware `light_mode_comet` over that tempo floor, matched trigger budget. Challenge 10 from the P3-B oracle set plus 10 MUSDB-test holdout tracks stratified by duration, not by share/RMS disagreement. Versions are blinded. No firmware production edits. No Demucs.
+**Why:** P3-B HTML was an existing-behaviour stand-in. Chromatic bloom + PHOTONS² was unreadable. Spectrum River was visually usable; Captain preferred Waveform Tempo. Pixel MAD is not a lighting call. If lights never benefit, there is nothing to teach. If they do, MUSDB stems are already perfect supervision — a separator teacher would only add error.
+**Rejected:** lighting call from `p3b1_continuous.html` / `p3b2_events.html`; chroma HSV as the colour path; installing Demucs next; training a student before P3-C; freezing student heads for abs/share/delta/composition_change separately.
+**Revisit:** after the blinded Version 1/2/3 lighting judgement on Waveform Tempo. Pass on share → research student on stem powers, deterministic share/delta/composition_change. Pass on composition-change → same backbone, event head is derived. Fail both → do not train.
 
 ---
 **Document Changelog**
@@ -124,3 +124,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:edgeai | D12 source oracle abs/share/delta. |
 | 2026-08-31 | agent:edgeai | D13 frozen maps, hop-centre timebase, composition_change. |
 | 2026-08-31 | agent:edgeai | D12 revisit (abs demoted); D14 P3-C visual-engine gate, no Demucs. |
+| 2026-08-31 | agent:edgeai | D14: continuous engine is Waveform Tempo on the palette path, not bloom/river. |

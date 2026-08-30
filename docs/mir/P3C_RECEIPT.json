@@ -2,17 +2,18 @@
   "label": "HOST-ONLY",
   "phase": "P3-C",
   "engine": {
-    "continuous": "firmware light_mode_spectrum_river",
+    "continuous": "firmware light_mode_waveform_tempo",
     "events": "firmware light_mode_comet",
     "colour": "PALETTE_MODE + K1_Ultraviolet_Bright (index 43); chromatic HSV off",
     "square_iter": 0.0,
-    "preview": "sRGB + exposure 2.2 (host dump is pre-gamma)"
+    "preview": "sRGB + exposure 2.2 (host dump is pre-gamma)",
+    "host_tempo": "locked 120 BPM phase from frame ms; identical across A/B/D"
   },
   "firmware_root": "/Users/spectrasynq/SpectraSynq_K1_Firmware",
   "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
   "frozen_map_version": "p3b-v1",
   "modulation_weight": 0.65,
-  "extra_dof": "spectrogram gain in [0.62, 1.0] from frozen mix vs share",
+  "extra_dof": "waveform peak + chroma gain in [0.62, 1.0] from frozen mix vs share",
   "timebase": {
     "sr": 16000,
     "hop_samples": 512,
@@ -76,10 +77,10 @@
     "The Easton Ellises (Baumi) - SDRNR"
   ],
   "summary": {
-    "challenge_mean_mad_B_vs_D": 3.3181366666666667,
-    "holdout_mean_mad_B_vs_D": 5.238315,
-    "challenge_mean_mad_control_vs_mir": 1.4174383333333334,
-    "holdout_mean_mad_control_vs_mir": 1.8998233333333334,
+    "challenge_mean_mad_B_vs_D": 9.340239999999998,
+    "holdout_mean_mad_B_vs_D": 10.601643333333332,
+    "challenge_mean_mad_control_vs_mir": 13.966321666666667,
+    "holdout_mean_mad_control_vs_mir": 16.011648333333333,
     "challenge_mean_trig_control": 27.75,
     "challenge_mean_trig_mir": 9.0,
     "holdout_mean_trig_control": 14.25,

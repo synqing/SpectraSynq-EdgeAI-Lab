@@ -1,5 +1,5 @@
 ---
-abstract: "P3-B information gate: share ≠ mix (within r 0.10–0.17). abs demoted. P3-C is firmware bloom + apply_brightness, blinded, challenge+holdout. No Demucs. Student still OPEN."
+abstract: "P3-B information gate: share ≠ mix (within r 0.10–0.17). abs demoted. P3-C continuous engine is firmware Waveform Tempo on the palette path, blinded, challenge+holdout. No Demucs. Student still OPEN."
 ---
 
 # Source activity — perfect oracle
@@ -94,18 +94,20 @@ The 20-track page is the **P3-B CHALLENGE SET** (oracle-ranked for green ≠ blu
 
 ## P3-C — visual-engine oracle replay (HOST-ONLY)
 
-Isolated replay of firmware **palette path** (not chroma HSV). Continuous engine is `light_mode_spectrum_river` (spectrum as space, `palette_manual_colour`). Events are firmware `light_mode_comet` launches composited over that river. Palette is `K1_Ultraviolet_Bright`. Square-iter is 0 so the host linear dump is not crushed. A host sRGB/exposure preview makes the page readable; the dump is still pre-gamma. No production firmware edits.
+Isolated replay of firmware **palette path** (not chroma HSV). Continuous engine is `light_mode_waveform_tempo` (tempo-locked scroll velocity, `effect_palette_or_chroma_colour`). Events are firmware `light_mode_comet` launches composited over that tempo floor. Palette is `K1_Ultraviolet_Bright`. Square-iter is 0 so the host linear dump is not crushed. A host sRGB/exposure preview makes the page readable; the dump is still pre-gamma. No production firmware edits. Host tempo is a locked 120 BPM phase from frame time, identical across versions.
+
+Captain asked for Waveform Tempo after a Spectrum River pass that was visually usable. River remains a valid host mode; it is not the P3-C continuous engine.
 
 The first P3-C pass used chromatic bloom + PHOTONS² and was unreadable. That is rejected as a lighting instrument.
 
 Same extra degree of freedom, high floor so versions can be seen:
 
-- A / B / D = same palette river; extra gain in [0.62, 1.0] from constant / frozen mix / frozen share
-- P3-C2 = same comet launch over that river; control trigger `|Δ mix|`, MIR trigger `composition_change`
+- A / B / D = same Waveform Tempo; extra gain in [0.62, 1.0] on peak + chroma from constant / frozen mix / frozen share
+- P3-C2 = same comet launch over that tempo floor; control trigger `|Δ mix|`, MIR trigger `composition_change`
 
 20 clips: 10 challenge (from the P3-B oracle set) + 10 MUSDB **test** holdout tracks stratified by duration quartile, **not** by share/RMS disagreement. Versions are **Version 1/2/3** (and Version 1/2 on events). Key is sealed until after judging.
 
-HOST spectrogram is a causal 80-bin log-frequency STFT on the oracle hop grid. Identical across versions before extra gain. Not firmware GDFT. One second of warmup precedes each clip. Host frame rate is 31.25 Hz (device AP is 133 Hz).
+HOST chroma is a causal 12-bin STFT on the oracle hop grid. Identical across versions before extra gain. Not firmware GDFT. One second of warmup precedes each clip. Host frame rate is 31.25 Hz (device AP is 133 Hz).
 
 - Continuous: `docs/mir/visual_replay/p3c1_continuous.html`
 - Events: `docs/mir/visual_replay/p3c2_events.html`
@@ -130,3 +132,4 @@ Older HPSS-on-DEAM numbers remain a mixture-only baseline, not stem truth.
 | 2026-08-31 | agent:edgeai | P3-A MUSDB samples; abs/share/delta; share ≠ mix energy. |
 | 2026-08-31 | agent:edgeai | P3-B 150 full tracks; oracle-ranked 20; within-track share vs mix. |
 | 2026-08-31 | agent:edgeai | P3-B stamps: abs demoted, share info-PASS; P3-C bloom+PHOTONS blinded replay. |
+| 2026-08-31 | agent:edgeai | P3-C continuous engine swapped to firmware Waveform Tempo on the palette path. |

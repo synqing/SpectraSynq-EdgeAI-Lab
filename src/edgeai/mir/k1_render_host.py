@@ -1,6 +1,11 @@
 """Call the firmware host renderer. Do not modify production firmware.
 
 Palette mode is the product colour path. Chromatic HSV is not.
+
+Waveform Tempo is a HOST-ONLY registry entry. The firmware harness parks
+bloom/river/comet and does not list mode 18. This module injects the mode
+plus tempo/snapshot stubs into the generated harness TU. Shipping effect
+TUs and Palettes.cpp are not edited.
 """
 
 from __future__ import annotations
@@ -9,8 +14,8 @@ import os
 import sys
 from pathlib import Path
 
-# Parked modes (spectrum_river, comet, …) are compiled only when this is set
-# before render_replay is imported.
+# Parked modes (spectrum_river, comet, waveform_tempo, …) are compiled only
+# when this is set before render_replay is imported.
 os.environ.setdefault("K1_RENDER_REPLAY_ALL_MODES", "1")
 
 import numpy as np
@@ -30,6 +35,65 @@ PALETTE_RENDER_PARAMS = {
     "palette_index": PALETTE_INDEX_K1_ULTRAVIOLET_BRIGHT,
     "chromatic_mode": False,
     "auto_color_shift": True,
+}
+
+# HOST-ONLY. Matches firmware dispatch for LIGHT_MODE_WAVEFORM_TEMPO:
+# memcpy history → light_mode_waveform_tempo(effect_state_primary) → memcpy back.
+# Tempo/snapshot are not in the harness stdin schema; the frame_apply stub
+# synthesises a locked 120 BPM phase from frame ms so A/B/D share one clock.
+WAVEFORM_TEMPO_MODE = {
+    "sources": ["effects/light_mode_waveform_tempo.cpp"],
+    "fixture_keys": ["chromagram", "waveform_peak_scaled"],
+    "decls": r"""
+#include "k1_tempo.h"
+#include "k1_audio_snapshot.h"
+static K1TempoEvent g_host_tempo_event = {};
+static K1AudioSnapshot g_host_audio_snapshot = {};
+K1TempoEvent k1_tempo_read() { return g_host_tempo_event; }
+K1AudioSnapshot k1_audio_snapshot_read() { return g_host_audio_snapshot; }
+static CRGB16 g_leds_prev[NATIVE_RESOLUTION];
+static void mode_reset() {
+  std::memset(g_leds_prev, 0, sizeof(g_leds_prev));
+  std::memset(&effect_state_primary, 0, sizeof(effect_state_primary));
+  effect_state_primary.vu_dot_max_level = SQ15x16(0.01);
+  std::memset(&g_host_tempo_event, 0, sizeof(g_host_tempo_event));
+  std::memset(&g_host_audio_snapshot, 0, sizeof(g_host_audio_snapshot));
+}
+""",
+    "frame_apply": r"""
+    for (int i = 0; i < 12; i++) chromagram_smooth[i] = SQ15x16(fr.chroma[i]);
+    waveform_peak_scaled = fr.waveform_peak_scaled;
+    max_waveform_val_raw = fr.max_waveform_val_raw;
+    g_host_audio_snapshot = K1AudioSnapshot{};
+    g_host_audio_snapshot.frame_ms = fr.ms;
+    g_host_audio_snapshot.peak_scaled = fr.waveform_peak_scaled;
+    g_host_audio_snapshot.vu_level = fr.waveform_peak_scaled;
+    g_host_audio_snapshot.novelty = 0.45f;
+    g_host_audio_snapshot.spectral_energy = 0.50f;
+    g_host_audio_snapshot.low_energy = 0.45f;
+    g_host_audio_snapshot.mid_energy = 0.45f;
+    g_host_audio_snapshot.high_energy = 0.45f;
+    g_host_audio_snapshot.chroma_strength = 0.50f;
+    g_host_audio_snapshot.silence = (fr.silence != 0) && (fr.waveform_peak_scaled < 0.02f);
+    g_host_tempo_event = K1TempoEvent{};
+    g_host_tempo_event.bpm = 120.0f;
+    {
+      float beats = (float)fr.ms * 0.002f;
+      int whole = (int)beats;
+      float ph = beats - (float)whole;
+      if (ph < 0.0f) ph += 1.0f;
+      g_host_tempo_event.phase01 = ph;
+    }
+    g_host_tempo_event.confidence = 1.0f;
+    g_host_tempo_event.locked = true;
+    g_host_tempo_event.beat_tick = g_host_tempo_event.phase01 < 0.06f;
+    g_host_tempo_event.beat_strength = 1.0f;
+""",
+    "entry": r"""
+    std::memcpy(leds_16, g_leds_prev, sizeof(CRGB16) * NATIVE_RESOLUTION);
+    light_mode_waveform_tempo(effect_state_primary);
+    std::memcpy(g_leds_prev, leds_16, sizeof(CRGB16) * NATIVE_RESOLUTION);
+""",
 }
 
 
@@ -62,6 +126,13 @@ def firmware_sha(root: Path | None = None) -> str:
     return (p.stdout or "").strip() or "UNKNOWN"
 
 
+def _register_waveform_tempo(rr) -> None:
+    """Inject Waveform Tempo into the host harness without editing firmware git."""
+    spec = WAVEFORM_TEMPO_MODE
+    rr.ALL_MODES["waveform_tempo"] = spec
+    rr.MODES["waveform_tempo"] = spec
+
+
 def _rr():
     harness = firmware_root() / "scripts" / "regression-harness"
     path = str(harness)
@@ -69,6 +140,7 @@ def _rr():
         sys.path.insert(0, path)
     import render_replay as render_replay
 
+    _register_waveform_tempo(render_replay)
     return render_replay
 
 
