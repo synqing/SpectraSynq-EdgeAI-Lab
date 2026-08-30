@@ -24,4 +24,11 @@ Do not:
 
 Re-enter this graph only if the MIR selection gate (docs/mir/SELECTION_GATE.md) independently picks source-activity as the first student, and then only with a real teacher/oracle (stems or separator), not the synthetic sine/noise generator.
 
-The graph (Conv / ReLU / ReduceMean / Gemm / Sigmoid) remains a **valid U55-shaped toy** for the deployment smoke lane.
+The graph (Conv / ReLU / AdaptiveAvgPool2d / Gemm / Sigmoid) remains a **valid U55-shaped toy** for the deployment smoke lane. ReduceMean is banned on this graph (D11).
+
+---
+**Document Changelog**
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-08-30 | agent:edgeai | Semantic-v0 demoted; not architecture authority. |
+| 2026-08-31 | agent:edgeai | Witness graph pooling is AdaptiveAvgPool2d (D11). |

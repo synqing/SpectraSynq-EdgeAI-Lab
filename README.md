@@ -13,7 +13,8 @@ a bespoke student model.** Semantic-v0 (vocals/drums/bass CNN) is a kept
 
 **Pre-Titan, MIR-first.** Host PyTorch/MPS/ONNX path exists. RUHMI CI produced
 C99 for Renesas `ad01_int8.tflite` and lab `smoke.onnx` (PRE-SILICON). MIR
-registry + DEAM human-arousal vs DSP are in `docs/mir/` and `mir/registry.yaml`.
+registry + DEAM human-arousal vs DSP + delay-aware PaRIRset onset are in
+`docs/mir/` and `mir/registry.yaml`. Student gate still OPEN.
 
 Numbers not measured on the RA8P1 are `HOST-ONLY` or `PRE-SILICON`.
 

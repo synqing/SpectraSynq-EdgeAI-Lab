@@ -4,7 +4,7 @@ abstract: "Measured HOST-ONLY numbers from the 2026-08-30 bootstrap. Not silicon
 
 # Host receipts — 2026-08-30 bootstrap
 
-All rows **HOST-ONLY**. Corpus **SYNTHETIC**. Titan was not present. Docker daemon was not running, so RUHMI/MERA did not compile.
+All rows **HOST-ONLY**. Corpus **SYNTHETIC**. Titan was not present. Docker daemon was not running on this Mac, so local RUHMI/MERA did not compile that day. GHA later did — see the 2026-08-31 update.
 
 ## Probe
 
@@ -51,9 +51,19 @@ Quantization did **not** destroy the synthetic scores (macro MAE 0.137 → 0.134
 
 32 cases in `artifacts/golden/` (gitignored). Two copies under `test_vectors/smoke/` for the repo.
 
-## Not measured
+## Not measured (as of this bootstrap day)
 
-- RUHMI/MERA compile
-- NPU vs CPU partition
-- compiler RAM/Flash/MAC
+- RUHMI/MERA compile on this Mac
+- NPU vs CPU partition on silicon
 - anything on RA8P1 silicon
+
+### Update — 2026-08-31
+
+GHA run 33319114336 compiled Renesas `ad01_int8.tflite` and lab `smoke.onnx` (AdaptiveAvgPool2d, not ReduceMean) to C99. PRE-SILICON compiler metrics: `docs/ruhmi/COMPILE_RECEIPT.md`. Still not ON-SILICON. The 2026-08-30 snapshot above remains the Mac bootstrap receipt.
+
+---
+**Document Changelog**
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-08-30 | agent:edgeai | Mac bootstrap HOST-ONLY numbers. |
+| 2026-08-31 | agent:edgeai | Note GHA C99; local Docker still not the compile host. |

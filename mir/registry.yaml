@@ -1,7 +1,7 @@
 # SpectraSynq MIR asset registry — Amendment 001
 # Licensing fields are independent. UNKNOWN is allowed. Not legal advice.
 schema_version: 1
-updated: 2026-08-30
+updated: 2026-08-31
 entries:
 
   - id: librosa
@@ -486,7 +486,7 @@ entries:
     attribution: requested (cite ISMIR 2026)
     redistribution: CC0
     status: executed
-    spectrasynq: "Amendment 002 venue domain. Keep 8 held-out test venues. First unaligned probe: wet-vs-clean onset r is low; treat as provisional until delay-compensated. RMS degrades. Product question: do descriptors survive PA+room."
+    spectrasynq: "Amendment 002 venue domain. Keep 8 held-out test venues. Delay-aware re-score on 3 test IRs: ~100 ms direct-path; native F1@50 ms 0.05 → 0.86 after align. Onset delayed, not killed. Short IRs; crowd still gated."
 
   - id: crowdioset
     kind: dataset

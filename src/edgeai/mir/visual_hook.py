@@ -29,6 +29,30 @@ class SemanticFrame:
         return asdict(self)
 
 
+MODULATION_WEIGHT = 0.65
+
+
+def per_song_norm(xs: list[float]) -> list[float]:
+    """Min-max to [0, 1] inside one song. Do not mix songs."""
+    lo, hi = min(xs), max(xs)
+    span = (hi - lo) or 1.0
+    return [(x - lo) / span for x in xs]
+
+
+def modulate(base: list[float], extra: list[float], weight: float = MODULATION_WEIGHT) -> list[float]:
+    """Identical extra degree of freedom for energy control and semantic oracle.
+
+    A = base
+    B = (1-w)*base + w*energy
+    C = (1-w)*base + w*oracle
+    Same w, same mix. If B and C look the same, the oracle is not doing extra work.
+    """
+    if len(base) != len(extra):
+        raise ValueError("base and extra must be the same length")
+    w = float(weight)
+    return [(1.0 - w) * b + w * e for b, e in zip(base, extra)]
+
+
 SCHEMA_NOTE = """
 Visual utility questions (fill later, on-device or in sim):
 - Do transitions look more musically intentional?

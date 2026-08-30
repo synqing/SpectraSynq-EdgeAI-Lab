@@ -13,7 +13,7 @@ Date: 2026-08-30. Previous brief still in force except where this file says othe
 | Python 3.12 + uv + MPS host env | Toolchain, not a model choice |
 | TRAIN→SAVE→LOAD→EXPORT smoke | Independent of MIR target |
 | ONNX opset 14 + host ORT INT8 | Deployment lane |
-| `deployment/ra8p1/` Docker/GHA RUHMI path | Still required; still **not executed** (Docker down) |
+| `deployment/ra8p1/` Docker/GHA RUHMI path | Still required. **PRE-SILICON C99 executed** on GHA 33319114336 (`ad01_int8.tflite` + `smoke.onnx`). Mac Docker daemon is still not the compile host. |
 | Golden-vector *format* | Reuse when a real student is frozen |
 | Song-level split rule | Still required for any training set |
 | Licence ≠ technical suitability | Strengthened, not weakened |
@@ -57,17 +57,22 @@ Semantic-v0 **code, checkpoint, ONNX, synthetic receipts** stay on disk as `expe
 | Phase (amendment) | Status |
 | --- | --- |
 | 0A host toolchain | done (prior session) |
-| 0B RUHMI/U55 compile | path wired, **PRE-SILICON / not run** |
-| 1 landscape | this session |
-| 2 registry | this session (seeded, not the entire field) |
-| 3 host oracle bring-up | conventional MIR **executed**; MTG/MERT/Demucs **researched, not executed** |
-| 4 eval corpus | synthetic contrast set + slots for FMA/DEAM/MUSDB |
-| 5 aligned traces | conventional + DSP band-energy vs Semantic-v0 experiment |
+| 0B RUHMI/U55 compile | **PRE-SILICON C99 PASS** on GHA 33319114336 (ad01 + AdaptiveAvgPool2d smoke). Not ON-SILICON. |
+| 1 landscape | done |
+| 2 registry | seeded, not the entire field |
+| 3 host oracle bring-up | conventional MIR + DEAM human vs DSP + Essentia heads **executed**; MERT/MuQ/Demucs researched, not executed |
+| 4 eval corpus | synthetic contrast set + local DEAM + PaRIRset test RIRs |
+| 5 aligned traces | conventional + DEAM human arousal + delay-aware PaRIRset |
 | 6 shortlist | **not frozen** — candidates named, gate open |
 | 7–8 student | deferred |
+
+### Update — 2026-08-31
+
+RUHMI compile is no longer “path wired / not run”. Amendment 001’s 0B row above is the current status. Semantic-v0 remains an experiment. Student gate still OPEN.
 
 ---
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Created after Amendment 001. |
+| 2026-08-31 | agent:edgeai | 0B compile is PRE-SILICON PASS, not “not run”. |

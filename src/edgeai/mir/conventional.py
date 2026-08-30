@@ -12,6 +12,33 @@ except ImportError as exc:  # pragma: no cover
     raise ImportError("uv sync --extra mir") from exc
 
 
+def extract_onset_bundle(pcm: np.ndarray, sr: int = 16_000, hop: int = 512) -> dict[str, Any]:
+    """STFT RMS / flux / onset at native hop. No chroma, no beat — onset scoring only."""
+    y = np.asarray(pcm, dtype=np.float32).reshape(-1)
+    n_fft = 2048
+    S = np.abs(librosa.stft(y, n_fft=n_fft, hop_length=hop))
+    times = librosa.frames_to_time(np.arange(S.shape[1]), sr=sr, hop_length=hop)
+    rms = librosa.feature.rms(S=S)[0]
+    flux = np.sqrt(np.sum(np.diff(S, axis=1, prepend=S[:, :1]) ** 2, axis=0))
+    onset_raw = librosa.onset.onset_strength(
+        S=librosa.amplitude_to_db(S, ref=np.max), sr=sr, hop_length=hop
+    )
+    return {
+        "sr": sr,
+        "hop": hop,
+        "times": times.astype(np.float32),
+        "rms": _unit(rms),
+        "spectral_flux": _unit(flux),
+        "onset_env": _unit(onset_raw),
+        "onset_env_raw": onset_raw.astype(np.float32),
+        "provenance": {
+            "extractor": "librosa",
+            "task": "onset bundle",
+            "label": "HOST-ONLY",
+        },
+    }
+
+
 def extract(pcm: np.ndarray, sr: int = 16_000, hop: int = 512) -> dict[str, Any]:
     """Return time-aligned traces. times is hop-centred, seconds."""
     y = np.asarray(pcm, dtype=np.float32).reshape(-1)

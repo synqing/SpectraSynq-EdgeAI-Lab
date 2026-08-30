@@ -53,8 +53,8 @@ Blank / `NOT_MEASURED` is honest. Invented numbers are not.
 | param_count | 153 283 |
 | FP32 size | 613 132 B weights; 613 727 B ONNX |
 | host INT8 ONNX | 213 240 B |
-| graph | Conv×15 Relu×15 ReduceMean×1 Gemm×1 Sigmoid×1 (BN folded) |
-| NPU coverage | PRE-SILICON / NOT_MEASURED — Docker daemon was down; `deployment/ra8p1/compile.sh` is the path |
+| graph | Conv×15 Relu×15 AdaptiveAvgPool2d×1 Gemm×1 Sigmoid×1 (BN folded). Do not export ReduceMean — D11. |
+| NPU coverage | Related **smoke** graph: PRE-SILICON C99 on GHA 33319114336 (88.9% node coverage, 100% MAC accel per compiler). This contract’s U55 accuracy/latency: **NOT_MEASURED**. Not ON-SILICON. |
 | CPU fallback | NOT_MEASURED |
 | RAM / scratch | NOT_MEASURED on silicon |
 | host infer | 1.33 ms / 1 s window on M4 Pro MPS — not U55 |
@@ -70,3 +70,4 @@ v0 is an additive lane.
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Created; filled first HOST-ONLY synthetic measurements. |
+| 2026-08-31 | agent:edgeai | Pooling is AdaptiveAvgPool2d; smoke C99 is not U55 product metrics. |

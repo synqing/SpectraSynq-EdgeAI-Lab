@@ -22,8 +22,8 @@ Do not freeze Student-v0 yet.
 Evidence so far (HOST-ONLY, not a freeze):
 
 - Real-audio incremental vs DSP: DEAM 2015 human arousal vs energy mean r=0.37, R²=0.30. Not Semantic-v0's r=0.99.
-- Visual utility (disagreement plot, not firmware): 2034 human arousal ≠ RMS; 2030 mostly agrees. `docs/mir/figures/visual_oracle_replay.png`.
-- Live/venue: PaRIRset test-split convolution on three held-out venues. Unaligned wet-vs-clean onset r is low or negative; RMS degrades less. **Provisional** — not “onset dies” until delay-compensated evaluation (align to RIR direct-path peak before scoring). CrowdioSet not ingested.
+- Visual utility (A/B/C replay, not firmware): A = onset baseline; B = same extra DoF from RMS; C = same extra DoF from human arousal; w=0.65. Five 2015 songs (2030/2028 controls; 2034/2041/2056 residuals). `docs/mir/visual_replay/index.html`. Not a Captain LED judgement and not a student freeze.
+- Live/venue: PaRIRset test-split convolution on three held-out venues. Unaligned onset r is low because the IRs inject ~100 ms delay, not because events vanish. Delay-aligned native-hop F1@50 ms recovers 0.05 → 0.86 (HOST-ONLY). Old “onset dies” reading **invalidated**. Residual smear remains (aligned F1 0.79–0.92). CrowdioSet not ingested. Receipt: `docs/mir/PARIRSET_ONSET_ALIGNED.md`.
 - Source activity: HPSS percussive vs mix RMS is 0.50–0.79, not 0.99. Demucs not installed.
 - U55 compressibility: PRE-SILICON C99 for Renesas `ad01_int8.tflite` and lab `smoke.onnx` (GHA 33319114336, AdaptiveAvgPool2d after D11 ReduceMean split). Not ON-SILICON.
 - Teacher/oracle quality: Essentia DEAM head ≠ human 2 Hz on two songs. Jamendo mood means differ; often clip-flat.
@@ -51,3 +51,4 @@ Worth keeping on the visual-utility list after landscape + conventional traces:
 | 2026-08-30 | agent:edgeai | Gate opened; no freeze. |
 | 2026-08-30 | agent:edgeai | Evidence pointers; still OPEN. |
 | 2026-08-31 | agent:edgeai | Nine criteria; smoke C99 PASS; PaRIRset onset provisional. |
+| 2026-08-31 | agent:edgeai | Onset delay-aware: delayed not killed; A/B/C visual control. |

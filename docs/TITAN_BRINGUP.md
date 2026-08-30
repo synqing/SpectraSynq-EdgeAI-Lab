@@ -68,8 +68,9 @@ recorded song + semantic_trace.jsonl
 ```
 
 Format: `spectrasynq.semantic_trace.v1` (`src/edgeai/mir/semantic_trace.py`).
-One descriptor, one visual degree of freedom. If a *perfect* arousal or
-source-activity trace does not improve lights, **do not train a student**.
+Required control: A baseline, B extra DoF from energy, C the same extra DoF
+from the oracle. If a *perfect* arousal or source-activity trace does not
+beat energy on that extra DoF, **do not train a student**.
 
 Do not modify production firmware from this lab.
 
@@ -77,7 +78,14 @@ On-device A/B still happens later. Offline oracle replay is the early kill test.
 
 ## Remaining ship path (Titan not here)
 
-1. Already in this repo: host train/export/quantize/golden **pipeline** (once Phase 1–6 scripts have been run on this Mac).
-2. Remaining: x86 RUHMI compile producing C99; Titan on desk; BSP NPU example; golden tensor on U55; WAV path; PDM; one visual A/B.
-3. Who acts: this lab for compile/golden; whoever flashes the Titan for on-silicon; Captain for the visual A/B judgement.
-4. Shipped on silicon means: a flashed Titan image whose U55 outputs match golden `expected_int8_output.json` within the measured band, with a receipt labelled `ON-SILICON`.
+1. Already in this repo / already PRE-SILICON: host train/export/quantize/golden pipeline; GHA 33319114336 C99 for `ad01_int8.tflite` and lab `smoke.onnx` (`docs/ruhmi/COMPILE_RECEIPT.md`). Host A/B/C oracle replay exists (`docs/mir/visual_replay/index.html`) — not a product lighting judgement.
+2. Remaining: Titan on the desk; BSP NPU example boots; golden tensor → U55 vs `expected_int8_output.json`; WAV → M85 frontend → U55; PDM last; on-device visual A/B after an oracle has already failed-or-passed offline; M85 vs current-DSP goldens on the same PCM.
+3. Who acts: this lab for compile/golden/offline oracle; whoever has the board for flash and on-silicon receipts; Captain for the product lighting judgement (not for “what did the LEDs render” if a dump exists).
+4. Shipped on silicon means: a flashed Titan image whose U55 outputs match golden `expected_int8_output.json` within the measured band, with a receipt labelled `ON-SILICON`, **and** M85 DSP deadlines still hold while the NPU runs.
+
+---
+**Document Changelog**
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-08-30 | agent:edgeai | Arrival sequence; golden first, PDM last. |
+| 2026-08-31 | agent:edgeai | Ship path: C99 already PRE-SILICON; A/B/C offline control. |

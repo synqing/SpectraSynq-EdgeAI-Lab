@@ -28,7 +28,9 @@ Plumbing: `edgeai.mir.live_domain.convolve_rir`. A synthetic exponential IR exis
 
 Three **test-split** RIRs (venues never in PaRIRset train): olivenzaOutdoors, valenciaMoon, palmaEsGremi. Convolved onto DEAM 2030 / 2034 / 2041. CrowdioSet not ingested.
 
-| song | venue | r(clean RMS, wet RMS) | r(clean onset, wet onset) |
+The onset column below is **unaligned 2 Hz Pearson**. Keep it as a historical trap, not as product truth.
+
+| song | venue | r(clean RMS, wet RMS) | r(clean onset, wet onset) 2 Hz zero-lag |
 | --- | --- | --- | --- |
 | 2030 | olivenzaOutdoors | 0.74 | 0.23 |
 | 2030 | valenciaMoon | 0.64 | 0.28 |
@@ -37,11 +39,22 @@ Three **test-split** RIRs (venues never in PaRIRset train): olivenzaOutdoors, va
 | 2034 | valenciaMoon | 0.40 | −0.29 |
 | 2034 | palmaEsGremi | 0.37 | −0.27 |
 
-These are **unaligned** wet-vs-clean correlations: `convolve_rir` keeps the original length and does not time-align to the RIR direct-path peak. A delayed onset envelope can look like “onset died” when it only moved. Treat the onset column as **provisional** until a delay-compensated evaluation exists. RMS still degrades but keeps the same sign in this probe.
+### Update — 2026-08-31: delay-aware re-score **invalidates** “onset dies”
 
-That is why Amendment 002 exists: studio-only scores would lie about the microphone's world. Do not freeze “onset dies in PA/ROOM” from this first cut.
+Same nine comparisons. Native hop (~32 ms). Align wet PCM to `argmax |RIR|` (~100 ms on these three files).
 
-HOST-ONLY. Receipt: `artifacts/parirset_probe/receipt.json` (gitignored audio).
+| metric | mean |
+| --- | ---: |
+| onset r native zero-lag | 0.05 |
+| onset r native delay-aligned | 0.88 |
+| event F1 @ 50 ms unaligned | 0.05 |
+| event F1 @ 50 ms aligned | 0.86 |
+
+All nine rows: **onset delayed**, not killed. 2034’s negative r recovers to ~0.82–0.92 after alignment. Residual aligned F1 is 0.79–0.92 (some smear / extra peaks), not a collapse.
+
+> **Superseded** — do not quote the 2026-08-30 onset column as “PA/room kills onset”. See `docs/mir/PARIRSET_ONSET_ALIGNED.md`.
+
+HOST-ONLY. Receipts: `artifacts/parirset_probe/receipt.json` (old, unaligned) and `receipt_aligned.json`.
 
 ---
 **Document Changelog**
@@ -50,3 +63,4 @@ HOST-ONLY. Receipt: `artifacts/parirset_probe/receipt.json` (gitignored audio).
 | 2026-08-30 | agent:edgeai | Amendment 002. |
 | 2026-08-30 | agent:edgeai | First PaRIRset test-split convolution; onset dies. |
 | 2026-08-31 | agent:edgeai | Qualify onset result as provisional pending delay compensation. |
+| 2026-08-31 | agent:edgeai | Delay-aware re-score: onset delayed, not killed. |

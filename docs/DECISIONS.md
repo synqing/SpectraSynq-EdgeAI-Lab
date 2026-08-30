@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices for SpectraSynq-EdgeAI-Lab Semantic-v0. Read before changing the model graph, frontend, dataset split, or RUHMI path."
+abstract: "Architectural choices D1–D11. D8 MIR-first; D10 live-domain; D11 AdaptiveAvgPool2d for U55. Read before changing the graph, split, or RUHMI path."
 ---
 
 # Decisions
@@ -27,12 +27,14 @@ Each entry: chosen / why / rejected / revisit evidence.
 **Rejected:** exporting the STFT into the U55 graph; instance-max normalisation (silence becomes noise).
 **Revisit:** if a measured frontend on M85 exceeds its budget, or a different rate (12.8 / 24 / 32 kHz) wins an A/B.
 
-## D4 — Depthwise-separable CNN, ReLU, ReduceMean head, sigmoid
+## D4 — Depthwise-separable CNN, ReLU, pooling head, sigmoid
 
-**Chosen:** MobileNet-like DS-CNN, ~100k–300k params, ReLU, mean over HxW, linear → 3 logits, sigmoid at export.
-**Why:** RUHMI has compiled MobileNetV2 / MnasNet / EfficientNet / ResNet18 / INT8 KWS. Quantizer table: Conv2d, BatchNorm, ReLU, ReduceMean, Gemm, Sigmoid are A8 on MCU_ETHOS. ONNX Sigmoid is F32 on MCU_CPU — another reason to target `--npu`.
+**Chosen:** MobileNet-like DS-CNN, ~100k–300k params, ReLU, pool over HxW, linear → 3 logits, sigmoid at export.
+**Why:** RUHMI has compiled MobileNetV2 / MnasNet / EfficientNet / ResNet18 / INT8 KWS. Quantizer table lists Conv2d, BatchNorm, ReLU, ReduceMean, Gemm, Sigmoid as A8 on MCU_ETHOS. ONNX Sigmoid is F32 on MCU_CPU — another reason to target `--npu`.
 **Rejected:** transformers, foundation models, SiLU-only graphs, custom ops.
 **Revisit:** if Vela/RUHMI reports material CPU fallback on this graph; then change the graph before squeezing desktop accuracy.
+
+> **Superseded in part by D11.** The U55 witness graph must not export `tensor.mean` / ONNX ReduceMean on NCHW spatial axes. Use `AdaptiveAvgPool2d((1,1))`. ReduceMean remains in the quantizer table and still split the smoke subgraph (GHA 33318864219).
 
 ## D5 — ONNX opset 14, RUHMI quantizer flow
 
@@ -76,7 +78,7 @@ Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90�
 **Chosen:** CLEAN / PA_ROOM / PA_ROOM_CROWD evaluation; PaRIRset test venues held out; CrowdioSet gated on per-file licence.
 **Why:** studio-trained MIR degrades on PA+room+crowd — the K1 mic's actual world (Gusó & Serra, ISMIR 2026).
 **Rejected:** studio-only student scores as product evidence.
-**Revisit:** after delay-compensated PaRIRset traces exist. First unaligned probe is not a freeze that “onset dies”.
+**Revisit:** delay-compensated traces exist (2026-08-31). Onset on these three short test IRs is delayed (~100 ms), not killed. Still revisit after more venues, longer tails, and PA/ROOM+CROWD.
 
 ## D11 — AdaptiveAvgPool2d, not ReduceMean, for the U55 witness graph
 
@@ -97,3 +99,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-30 | agent:edgeai | D9: pin full SHA after grep-short-SHA CI fail. |
 | 2026-08-30 | agent:edgeai | D11 AdaptiveAvgPool2d after smoke C99 split. |
 | 2026-08-31 | agent:edgeai | D8 nine gate questions; D10 onset result provisional. |
+| 2026-08-31 | agent:edgeai | D4 pooling note vs D11; D10 onset delayed-not-killed. |
