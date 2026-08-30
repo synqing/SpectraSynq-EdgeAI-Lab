@@ -5,10 +5,14 @@ discover toolchain incompatibilities before Titan arrives.
 
 ## Facts (not hopes)
 
-- RUHMI MCU compiler is powered by EdgeCortix MERA 2.6.0 (`mera-2.6.0+pkg.4815`).
+- Pin: **ruhmi-framework-mcu `6c5aad9` / Release-2026-06-19**, MERA `2.6.0+pkg.4815`.
+  Do not clone `main` in CI.
 - Supported hosts: Ubuntu 22.04 and Windows 10/11, **Python 3.10**, **x86-64**.
-- Wheel: `mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl`
-  from [renesas/ruhmi-framework-mcu](https://github.com/renesas/ruhmi-framework-mcu).
+- Wheel from that commit's `install/` directory, not a floating `main` URL.
+- Ubuntu runners need Renesas' libstdc++ recipe (`ppa:ubuntu-toolchain-r/test`,
+  upgrade `libstdc++6`/`libgcc-s1`, gcc-13). GHA run 33317047371 failed at
+  `fe_onnx_cli` with missing `GLIBCXX_3.4.31`/`3.4.32` before this was applied.
+- Prove compile with MLPerf Tiny `ad01_int8.tflite` **before** `smoke.onnx`.
 - ONNX and PyTorch frontends are documented as **quantizer-flow only**.
 - NPU compile: `python mcu_compile.py model.onnx out/ --npu --quantize --calib-data calib.npy`
 - `--npu` requires INT8. `--ref-data` writes reference npy for on-target checks.

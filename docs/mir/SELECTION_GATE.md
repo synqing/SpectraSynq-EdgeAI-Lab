@@ -4,16 +4,20 @@ abstract: "Student-model selection gate. A U55 CNN may not be the primary target
 
 # Student-model selection gate
 
-A small RA8P1/U55 student becomes the primary implementation target only after:
+A small RA8P1/U55 student becomes the primary implementation target only after
+**material evidence** for:
 
-1. **Which descriptors are useful to SpectraSynq visuals?** — not frozen. Working hypotheses below.
-2. **Temporal rate / context?** — not frozen. Visual lane may be 5–50 Hz; DSP stays faster.
-3. **Redundant with DSP?** — band energy, flux, onset, RMS: **probably yes** for “energy”. Source identity, affect, structure: **open**.
-4. **Which require ML?** — not frozen.
-5. **Teacher/oracle?** — candidates: HT-Demucs activity envelopes (weights licence **UNKNOWN**), MUSDB/MoisesDB stems (NC research), MTG heads on EffNet/MusiCNN (CC BY-NC-SA weights), DEAM (dynamic VA, CC, often NC).
-6. **Licensing?** — see `mir/registry.yaml`. Research-only teachers must not silently become production.
-7. **Compressible to MCU/NPU?** — Semantic-v0 graph shape is a *deployment* witness, not a *task* witness.
-8. **Output representation?** — not frozen. Do not lock 3 sigmoids.
+1. **Which descriptors** — still not frozen.
+2. **Temporal rate / context** — still not frozen.
+3. **Real-audio incremental information vs DSP** — DEAM human arousal vs energy (P1); source-activity vs mixture energy (P3). Synthetic r=0.99 is not this evidence.
+4. **Oracle/teacher quality** — human GT, separator envelopes, Essentia heads; licences split.
+5. **CLEAN/STUDIO behaviour**
+6. **Live/venue-domain robustness** — Amendment 002: CLEAN vs PA/ROOM vs PA/ROOM+CROWD; PaRIRset held-out venues intact.
+7. **Licensing/provenance** — `mir/registry.yaml`. Teacher use ≠ derived-weight clearance.
+8. **Visual utility** — offline replay of `semantic_trace.jsonl` against lights **before** student training. If a perfect oracle does not improve lights, do not train.
+9. **U55 compressibility** — PRE-SILICON compile of a candidate graph (RUHMI), not Semantic-v0-synthetic authority.
+
+Do not freeze Student-v0 yet.
 
 ## Working shortlist (NOT a freeze)
 

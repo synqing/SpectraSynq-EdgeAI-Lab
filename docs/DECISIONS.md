@@ -62,6 +62,20 @@ Each entry: chosen / why / rejected / revisit evidence.
 **Rejected:** treating Semantic-v0 as architecture authority; inventing BUILDING/DROPPING labels first.
 **Revisit:** when the eight gate questions in `docs/mir/SELECTION_GATE.md` have evidence.
 
+## D9 — RUHMI CI pins Release-2026-06-19 / 6c5aad9 and gcc-13 libstdc++
+
+**Chosen:** GHA installs `ppa:ubuntu-toolchain-r/test`, upgrades `libstdc++6`/`libgcc-s1`, gcc-13; clones RUHMI at `6c5aad9`; compiles `ad01_int8.tflite` then `smoke.onnx`.
+**Why:** run 33317047371 failed at `fe_onnx_cli` missing GLIBCXX_3.4.31/32. Renesas Ubuntu README already required this. Cloning `main` is not reproducible.
+**Rejected:** Docker-as-blocker; floating `main`.
+**Revisit:** if a newer RUHMI release ships a cp310 wheel with a documented host recipe.
+
+## D10 — Amendment 002 live-domain (PaRIRset)
+
+**Chosen:** CLEAN / PA_ROOM / PA_ROOM_CROWD evaluation; PaRIRset test venues held out; CrowdioSet gated on per-file licence.
+**Why:** studio-trained MIR degrades on PA+room+crowd — the K1 mic's actual world (Gusó & Serra, ISMIR 2026).
+**Rejected:** studio-only student scores as product evidence.
+**Revisit:** after first PaRIRset convolution traces exist.
+
 ---
 **Document Changelog**
 | Date | Author | Change |

@@ -49,6 +49,10 @@ datasets/musdb18/
 datasets/musdb18hq/
 datasets/raw/
 datasets/cache/
+datasets/deam/**
+!datasets/deam/README.md
+*.mp3
+*.zip
 
 # Keep tiny committed fixtures
 !tests/fixtures/**/*.wav

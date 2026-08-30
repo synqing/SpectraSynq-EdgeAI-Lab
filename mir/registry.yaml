@@ -81,7 +81,7 @@ entries:
     attribution: required
     redistribution: library yes; audio no unless dataset allows
     status: researched
-    spectrasynq: "Preferred way to attach DEAM/Orchset/etc. later without ad-hoc parsers."
+    spectrasynq: "Keep for datasets it actually loads. There is NO mirdata DEAM loader — use datasets/deam canonical zips."
 
   - id: essentia
     kind: library
@@ -269,8 +269,8 @@ entries:
     derived_weight_status: n/a
     attribution: required (cite PLOS ONE)
     redistribution: per DEAM terms
-    status: researched
-    spectrasynq: "First affect corpus that is actually temporal. Pair with MTG deam-* heads as a teacher."
+    status: executed
+    spectrasynq: "First affect corpus that is actually temporal. Loaded via canonical zips, not mirdata. P1 compares human arousal to DSP before any ML head."
 
   - id: mert-v1-95m
     kind: model
@@ -460,3 +460,84 @@ entries:
     redistribution: no
     status: executed
     spectrasynq: "Toolchain witness only. Not architecture authority. Re-enter iff selection gate picks source-activity with a real teacher."
+
+  - id: parirset
+    kind: dataset
+    name: PaRIRset
+    version: "ISMIR 2026"
+    group: Enric Gusó / Xavier Serra
+    source: https://huggingface.co/datasets/enricguso/parirset
+    publication: arXiv 2607.27828
+    task: PA-through-FOH concert-venue stereo RIRs
+    inputs: n/a
+    outputs: 44.1 kHz 16-bit stereo WAV; train 2216 / test 160
+    temporal_resolution: impulse response
+    context: venue
+    architecture: n/a
+    params: n/a
+    deployment: deterministic_host
+    code_licence: n/a
+    weight_licence: n/a
+    dataset_licence: CC0 1.0
+    research_use: yes
+    commercial_use: yes (CC0)
+    teacher_use: n/a
+    derived_weight_status: n/a
+    attribution: requested (cite ISMIR 2026)
+    redistribution: CC0
+    status: researched
+    spectrasynq: "Amendment 002 venue domain. Keep 8 held-out test venues. Product question: do descriptors survive PA+room."
+
+  - id: crowdioset
+    kind: dataset
+    name: CrowdioSet
+    version: "ISMIR 2026"
+    group: Enric Gusó / Xavier Serra
+    source: https://huggingface.co/datasets/enricguso/CrowdioSet
+    publication: arXiv 2607.27828
+    task: audience ambience, events, synthetic sing-along
+    inputs: n/a
+    outputs: crowd/ambience audio
+    temporal_resolution: waveform
+    context: live audience
+    architecture: n/a
+    params: n/a
+    deployment: host_oracle
+    code_licence: n/a
+    weight_licence: n/a
+    dataset_licence: UNKNOWN until per-file provenance recorded
+    research_use: UNKNOWN
+    commercial_use: UNKNOWN
+    teacher_use: n/a
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: UNKNOWN
+    status: researched
+    spectrasynq: "PA/ROOM+CROWD lane. Do not ingest until each file licence is written down. Do not mix NC into a commercial-safe corpus."
+
+  - id: msst
+    kind: library
+    name: MSST (Music Source Separation Training framework)
+    version: "arXiv 2607.23395"
+    group: community MSS harness (config-driven)
+    source: https://arxiv.org/abs/2607.23395
+    publication: arXiv 2607.23395
+    task: host harness across Demucs / RoFormer / SCNet-class separators
+    inputs: mixture
+    outputs: stems
+    temporal_resolution: waveform
+    context: track
+    architecture: wrapper
+    params: n/a
+    deployment: host_oracle
+    code_licence: UNKNOWN until repo pin
+    weight_licence: per backend
+    dataset_licence: per backend training set
+    research_use: yes if licence allows
+    commercial_use: UNKNOWN
+    teacher_use: research envelopes only
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: UNKNOWN
+    status: researched
+    spectrasynq: "Optional glue so we do not depend on Demucs itself. Teacher signal is activity envelopes, not SDR."

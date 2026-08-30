@@ -34,7 +34,10 @@ It is **not** “put an NPU in SpectraSynq”.
 | --- | --- |
 | Host toolchain | keep |
 | RUHMI/U55 compile | keep (Docker/GHA); still not run |
-| MIR registry + oracle | **primary now** |
+| MIR registry + oracle | primary |
+| DEAM arousal vs DSP | primary (real audio) |
+| RUHMI CI | pin 6c5aad9 + libstdc++/gcc-13; ad01 then smoke |
+| Live domain (PaRIRset) | Amendment 002 — not frozen |
 | Semantic-v0 training | **deferred** |
 | Silicon / PDM | wait for Titan |
 

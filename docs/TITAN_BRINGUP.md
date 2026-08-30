@@ -56,16 +56,24 @@ When the board exists, record **on-silicon** (not host):
 The semantic lane is allowed to be slower than the audio callback. Target
 update rate is a measured quantity, not 1 kHz by default.
 
-## Visual experiment (after live inference)
+## Visual experiment — do **not** wait for Titan
 
-One existing visual mode, one new degree of freedom:
+Oracle traces can modulate an isolated visual replay **now**:
 
-- `drum_activity` → spatial attack
-- `vocal_activity` → palette persistence / cohesion
-- `bass_activity` → low-frequency visual mass
+```
+recorded song + semantic_trace.jsonl
+    → existing visual behaviour
+    vs
+    existing visual behaviour + one oracle signal
+```
 
-A/B: engine vs engine+semantic. If it does not look more musically intelligent,
-the F1 score is irrelevant.
+Format: `spectrasynq.semantic_trace.v1` (`src/edgeai/mir/semantic_trace.py`).
+One descriptor, one visual degree of freedom. If a *perfect* arousal or
+source-activity trace does not improve lights, **do not train a student**.
+
+Do not modify production firmware from this lab.
+
+On-device A/B still happens later. Offline oracle replay is the early kill test.
 
 ## Remaining ship path (Titan not here)
 

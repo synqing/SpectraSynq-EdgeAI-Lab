@@ -24,6 +24,8 @@ uv sync --python 3.12 --extra mir --extra dev
 uv run pytest
 uv run edgeai-smoke                 # toolchain, not the product model
 uv run python scripts/mir_oracle_run.py
+uv run python scripts/deam_arousal_vs_dsp.py   # needs local DEAM audio
+uv run python scripts/make_dsp_goldens.py
 ```
 
 RUHMI (x86 Ubuntu 22.04 / Python 3.10), when Docker is up:

@@ -1,4 +1,8 @@
-# Native x86 RUHMI compile. Does not measure silicon.
+# Native x86 RUHMI compile. PRE-SILICON. Does not measure a board.
+#
+# Pin: ruhmi-framework-mcu Release-2026-06-19 / 6c5aad9 (MERA 2.6.0+pkg.4815).
+# Ubuntu 22.04 GHA libstdc++ is too old for fe_onnx_cli (needs GLIBCXX_3.4.31/32).
+# Follow Renesas install README: ppa:ubuntu-toolchain-r/test + libstdc++6 + gcc-13.
 name: ruhmi-compile
 on:
   workflow_dispatch:
@@ -9,6 +13,12 @@ on:
       - "models/configs/**"
       - ".github/workflows/ruhmi-compile.yml"
       - "pyproject.toml"
+
+env:
+  RUHMI_GIT: https://github.com/renesas/ruhmi-framework-mcu.git
+  RUHMI_REF: 6c5aad9
+  MERA_WHEEL: mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl
+  AD01_URL: https://raw.githubusercontent.com/mlcommons/tiny/master/benchmark/training/anomaly_detection/trained_models/ad01_int8.tflite
 
 jobs:
   host-smoke-cpu:
@@ -36,28 +46,60 @@ jobs:
         with:
           name: smoke-onnx
           path: artifacts/smoke
+      - name: Upgrade libstdc++ / gcc-13 (Renesas Ubuntu recipe)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -q -y --only-upgrade libstdc++6 libgcc-s1
+          sudo apt-get install -y gcc-13 g++-13
+          echo "libstdc++ symbols:"
+          strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep '^GLIBCXX_3.4.3' | tail
+          strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep -E 'GLIBCXX_3.4.31|GLIBCXX_3.4.32'
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - name: Install MERA 2.6.0
+      - name: Install pinned MERA 2.6.0+pkg.4815 and RUHMI 6c5aad9
         run: |
+          set -eux
           python -m pip install --upgrade pip
           python -m pip install decorator typing_extensions psutil attrs pybind11 cmake junitparser numpy onnx==1.17.0
-          wget -q https://github.com/renesas/ruhmi-framework-mcu/raw/main/install/mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl
-          python -m pip install mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl
-          python -c "import mera; print(mera.__version__)"
-          git clone --depth 1 https://github.com/renesas/ruhmi-framework-mcu.git "$HOME/ruhmi-framework-mcu"
-      - name: Compile smoke ONNX for Ethos-U55
+          wget -q "https://github.com/renesas/ruhmi-framework-mcu/raw/${RUHMI_REF}/install/${MERA_WHEEL}"
+          python -m pip install "./${MERA_WHEEL}"
+          python -c "import mera; print('mera', mera.__version__)"
+          git clone "${RUHMI_GIT}" "$HOME/ruhmi-framework-mcu"
+          git -C "$HOME/ruhmi-framework-mcu" checkout --detach "${RUHMI_REF}"
+          git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD
+          git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD | grep -qx "${RUHMI_REF}"
+      - name: Compile Renesas known-good ad01_int8.tflite
         run: |
-          mkdir -p artifacts/ruhmi
+          set -eux
+          mkdir -p artifacts/ruhmi/ad01 artifacts/models
+          wget -q -O artifacts/models/ad01_int8.tflite "${AD01_URL}"
           python "$HOME/ruhmi-framework-mcu/scripts/mcu_compile.py" \
-            artifacts/smoke/smoke.onnx artifacts/ruhmi \
+            artifacts/models/ad01_int8.tflite artifacts/ruhmi/ad01 \
+            --npu --ref-data
+          test -n "$(find artifacts/ruhmi/ad01 -name '*.c' | head)"
+          python "$HOME/ruhmi-framework-mcu/scripts/utils/check_model_metrics.py" \
+            "$(find artifacts/ruhmi/ad01 -maxdepth 2 -type d -name '*NPU*' | head -1)" \
+            | tee artifacts/ruhmi/ad01_metrics.txt
+      - name: Compile lab smoke.onnx
+        run: |
+          set -eux
+          mkdir -p artifacts/ruhmi/smoke
+          python "$HOME/ruhmi-framework-mcu/scripts/mcu_compile.py" \
+            artifacts/smoke/smoke.onnx artifacts/ruhmi/smoke \
             --npu --quantize --ref-data --calib-num 8
+          test -n "$(find artifacts/ruhmi/smoke -name '*.c' | head)"
           python "$HOME/ruhmi-framework-mcu/scripts/utils/check_model_metrics.py" \
-            artifacts/ruhmi/smoke_NPU_quantized || \
-          python "$HOME/ruhmi-framework-mcu/scripts/utils/check_model_metrics.py" \
-            artifacts/ruhmi/smoke_NPU || true
-          find artifacts/ruhmi -name '*.c' -o -name 'model_subgraphs.json' | head
+            "$(find artifacts/ruhmi/smoke -maxdepth 2 -type d -name '*NPU*' | head -1)" \
+            | tee artifacts/ruhmi/smoke_metrics.txt
+          echo "=== C99 ==="
+          find artifacts/ruhmi -name '*.c' | head -40
+          echo "=== subgraphs ==="
+          find artifacts/ruhmi -name 'model_subgraphs.json'
       - uses: actions/upload-artifact@v4
         with:
           name: ruhmi-c99
