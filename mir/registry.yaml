@@ -486,7 +486,7 @@ entries:
     attribution: requested (cite ISMIR 2026)
     redistribution: CC0
     status: executed
-    spectrasynq: "Amendment 002 venue domain. Keep 8 held-out test venues. First probe: onset does not survive PA/ROOM; RMS degrades. Product question: do descriptors survive PA+room."
+    spectrasynq: "Amendment 002 venue domain. Keep 8 held-out test venues. First unaligned probe: wet-vs-clean onset r is low; treat as provisional until delay-compensated. RMS degrades. Product question: do descriptors survive PA+room."
 
   - id: crowdioset
     kind: dataset

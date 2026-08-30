@@ -60,7 +60,7 @@ Each entry: chosen / why / rejected / revisit evidence.
 **Chosen:** Host MIR oracle + registry + selection gate **before** freezing any embedded student outputs. Semantic-v0 remains as a U55-shaped toolchain experiment only.
 **Why:** vocals/drums/bass on synthetic stems skipped a mature field (MTG tagging, DEAM affect, MERT/MuQ teachers, separator-as-teacher).
 **Rejected:** treating Semantic-v0 as architecture authority; inventing BUILDING/DROPPING labels first.
-**Revisit:** when the eight gate questions in `docs/mir/SELECTION_GATE.md` have evidence.
+**Revisit:** when the nine gate questions in `docs/mir/SELECTION_GATE.md` have evidence.
 
 ## D9 — RUHMI CI pins Release-2026-06-19 / 6c5aad9 and gcc-13 libstdc++
 
@@ -76,7 +76,7 @@ Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90�
 **Chosen:** CLEAN / PA_ROOM / PA_ROOM_CROWD evaluation; PaRIRset test venues held out; CrowdioSet gated on per-file licence.
 **Why:** studio-trained MIR degrades on PA+room+crowd — the K1 mic's actual world (Gusó & Serra, ISMIR 2026).
 **Rejected:** studio-only student scores as product evidence.
-**Revisit:** after first PaRIRset convolution traces exist.
+**Revisit:** after delay-compensated PaRIRset traces exist. First unaligned probe is not a freeze that “onset dies”.
 
 ## D11 — AdaptiveAvgPool2d, not ReduceMean, for the U55 witness graph
 
@@ -96,3 +96,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-30 | agent:edgeai | D9 RUHMI pin + gcc-13; D10 Amendment 002. |
 | 2026-08-30 | agent:edgeai | D9: pin full SHA after grep-short-SHA CI fail. |
 | 2026-08-30 | agent:edgeai | D11 AdaptiveAvgPool2d after smoke C99 split. |
+| 2026-08-31 | agent:edgeai | D8 nine gate questions; D10 onset result provisional. |

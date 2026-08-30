@@ -37,7 +37,9 @@ Three **test-split** RIRs (venues never in PaRIRset train): olivenzaOutdoors, va
 | 2034 | valenciaMoon | 0.40 | −0.29 |
 | 2034 | palmaEsGremi | 0.37 | −0.27 |
 
-Onset as currently computed **does not survive** PA/ROOM. RMS degrades but keeps the same sign. That is why Amendment 002 exists: studio-only scores would lie about the microphone's world.
+These are **unaligned** wet-vs-clean correlations: `convolve_rir` keeps the original length and does not time-align to the RIR direct-path peak. A delayed onset envelope can look like “onset died” when it only moved. Treat the onset column as **provisional** until a delay-compensated evaluation exists. RMS still degrades but keeps the same sign in this probe.
+
+That is why Amendment 002 exists: studio-only scores would lie about the microphone's world. Do not freeze “onset dies in PA/ROOM” from this first cut.
 
 HOST-ONLY. Receipt: `artifacts/parirset_probe/receipt.json` (gitignored audio).
 
@@ -47,3 +49,4 @@ HOST-ONLY. Receipt: `artifacts/parirset_probe/receipt.json` (gitignored audio).
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Amendment 002. |
 | 2026-08-30 | agent:edgeai | First PaRIRset test-split convolution; onset dies. |
+| 2026-08-31 | agent:edgeai | Qualify onset result as provisional pending delay compensation. |
