@@ -3,41 +3,43 @@
 This repository is the authority for the Edge-AI research programme.
 Do **not** modify production K1 firmware from here.
 
+Governing briefs: original Agent Operating Brief **plus** Amendment 001.
+Amendment 001 wins on research sequence and model-selection authority.
+
 ## Purpose
 
-Answer, with evidence:
+Determine **what machine-extracted musical understanding improves the lights**,
+then implement the **smallest robust realtime path** that supplies it.
 
-1. What musical information can a tiny learned model provide that DSP does not?
-2. Can that model be quantized and mapped onto RA8P1 Ethos-U55?
-3. Can it run beside realtime audio/visual work without wrecking timing?
-4. Does it actually make the visual engine look more musically intelligent?
-
-ML is additive. If it is missing, DSP still works.
+That path may be DSP, conventional MIR, a distilled student, or several lanes.
+It is **not** “put an NPU in SpectraSynq”.
 
 ## Hard rules
 
 - Shortest load-bearing path. No MLOps cathedral.
 - Do not invent hardware numbers. Label `HOST-ONLY` / `PRE-SILICON` / `ON-SILICON`.
-- Split **by song**, never by window.
-- Document dataset licence vs technical suitability separately.
-- First architecture is a boring depthwise-separable CNN, ~100k–500k params.
-- Test U55 mapping as soon as an architecture exists, not after it is “good”.
-- Export the **CNN**, not the STFT. Mel stays on CPU. Golden tensors are log-mel.
-- Record seed, commit, config, metrics, sizes on every real run.
-- Do not commit corpora, checkpoints, or ONNX unless explicitly asked.
+- Split **by song**, never by window, if/when we train.
+- Code licence ≠ weight licence ≠ dataset licence. `UNKNOWN` is allowed.
+- Teacher use does not clear derived student weights.
+- Semantic-v0 is an **experiment**, not architecture authority.
+- Do not freeze student I/O until `docs/mir/SELECTION_GATE.md` is satisfied.
+- Do not invent BUILDING/DROPPING/… labels before inspecting existing ontologies.
+- Do not put MERT/MuQ/MAEST/Demucs on Titan.
+- Export CNN not STFT when we do embed a student. Golden tensors first, PDM last.
+- Do not commit corpora or checkpoints unless asked.
 
 ## Lanes
 
 | Lane | Status |
 | --- | --- |
-| A — train Semantic-v0 on Mac | now |
-| B — RUHMI/MERA compile on x86 | now (Docker / GHA) |
-| C — silicon latency | wait for Titan |
-| D — live PDM | after golden tensors pass on U55 |
+| Host toolchain | keep |
+| RUHMI/U55 compile | keep (Docker/GHA); still not run |
+| MIR registry + oracle | **primary now** |
+| Semantic-v0 training | **deferred** |
+| Silicon / PDM | wait for Titan |
 
-## First milestone
+## Pre-Titan target (amended)
 
-Not “impressive F1”. It is:
-
-Mac → PyTorch → quantized embedded model → RA8P1/U55 compilation, with one
-audio-semantic baseline and golden vectors ready for silicon.
+Host MIR oracle lab + evidence-backed descriptor shortlist + Mac→RA8P1 pipeline
++ **one justified** student compiled for U55 with golden vectors — not the first
+network we happened to train.

@@ -1,0 +1,462 @@
+# SpectraSynq MIR asset registry — Amendment 001
+# Licensing fields are independent. UNKNOWN is allowed. Not legal advice.
+schema_version: 1
+updated: 2026-08-30
+entries:
+
+  - id: librosa
+    kind: library
+    name: librosa
+    version: ">=0.10"
+    group: librosa development team
+    source: https://github.com/librosa/librosa
+    task: conventional MIR (STFT, onset, beat, chroma, RMS, centroid, flux)
+    inputs: PCM
+    outputs: frame-level descriptors
+    temporal_resolution: hop-controlled (default ~23 ms @ 22 kHz)
+    context: frame
+    architecture: deterministic DSP
+    params: n/a
+    deployment: deterministic_host
+    code_licence: ISC
+    weight_licence: n/a
+    dataset_licence: n/a
+    research_use: yes
+    commercial_use: yes
+    teacher_use: n/a
+    derived_weight_status: n/a
+    attribution: required (copyright notice)
+    redistribution: per ISC
+    status: executed
+    spectrasynq: "Baseline conventional MIR in the host oracle. Do not replace with NPU."
+
+  - id: mir_eval
+    kind: library
+    name: mir_eval
+    version: ">=0.7"
+    group: craffel et al. / MIR community
+    source: https://github.com/craffel/mir_eval
+    task: standard MIR metrics (beat, onset, melody, chord, …)
+    inputs: estimates + references
+    outputs: scores
+    temporal_resolution: n/a
+    context: n/a
+    architecture: evaluation
+    params: n/a
+    deployment: deterministic_host
+    code_licence: BSD-ish (check package)
+    weight_licence: n/a
+    dataset_licence: n/a
+    research_use: yes
+    commercial_use: yes
+    teacher_use: n/a
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: per licence
+    status: researched
+    spectrasynq: "Use for MIR correctness. Never as a proxy for visual utility."
+
+  - id: mirdata
+    kind: library
+    name: mirdata
+    version: ">=1.0"
+    group: mir-dataset-loaders
+    source: https://github.com/mir-dataset-loaders/mirdata
+    publication: https://mirdata.readthedocs.io/
+    task: dataset download/load aligned with mir_eval
+    inputs: n/a
+    outputs: tracks + annotations
+    temporal_resolution: n/a
+    context: n/a
+    architecture: loaders
+    params: n/a
+    deployment: deterministic_host
+    code_licence: BSD-3-Clause
+    weight_licence: n/a
+    dataset_licence: per-dataset (do not inherit BSD onto audio)
+    research_use: yes
+    commercial_use: library yes; datasets UNKNOWN per set
+    teacher_use: n/a
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: library yes; audio no unless dataset allows
+    status: researched
+    spectrasynq: "Preferred way to attach DEAM/Orchset/etc. later without ad-hoc parsers."
+
+  - id: essentia
+    kind: library
+    name: Essentia
+    version: "2.1-beta6-dev (docs snapshot)"
+    group: Music Technology Group, UPF
+    source: https://essentia.upf.edu/
+    publication: https://essentia.upf.edu/licensing_information.html
+    task: DSP + MIR algorithms + TF inference wrappers
+    inputs: audio
+    outputs: large descriptor set + model embeddings
+    temporal_resolution: algorithm-dependent; some realtime examples exist
+    context: algorithm-dependent
+    architecture: C++ / Python
+    params: n/a
+    deployment: host_oracle
+    code_licence: AGPLv3 (commercial licence available from MTG)
+    weight_licence: see essentia-models
+    dataset_licence: n/a
+    research_use: yes
+    commercial_use: "AGPL copyleft or paid proprietary — not free-for-product by default"
+    teacher_use: possible under AGPL constraints
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: AGPL
+    status: researched
+    spectrasynq: "Best conventional+ML host stack if we accept AGPL or buy a licence. Not silently embeddable."
+
+  - id: essentia-models
+    kind: model-family
+    name: Essentia pretrained TF/ONNX models (MusiCNN, VGGish, Discogs-EffNet, MAEST, heads)
+    version: "see essentia.upf.edu/models.html CHANGELOG"
+    group: MTG / UPF
+    source: https://essentia.upf.edu/models.html
+    publication: Alonso-Jiménez et al., ICASSP 2020 (TF models in Essentia)
+    task: embeddings + classification/regression heads (genre, instrument, mood, DEAM VA, Jamendo, …)
+    inputs: 16 kHz mono typically
+    outputs: embeddings and/or tag/VA vectors; some realtime examples
+    temporal_resolution: patch/window; MusiCNN-class ~seconds; heads can ride embedding hop
+    context: 1–30 s depending on extractor (MAEST 5–30 s)
+    architecture: CNN (MusiCNN, EffNet) / Transformer (MAEST) + small 2D heads
+    params: EffNet-B0 class; MAEST ONNX ~344 MB
+    deployment: potential_teacher
+    code_licence: AGPLv3 for library
+    weight_licence: "CC BY-NC-SA 4.0 on models.html; licensing_information.html also states CC BY-NC-ND 4.0 — CONFLICT"
+    dataset_licence: in-house Discogs20 / Jamendo / DEAM — mixed
+    research_use: yes
+    commercial_use: "proprietary licence upon request; do not assume CC-NC allows product"
+    teacher_use: research yes; derived student UNKNOWN/LEGAL REVIEW
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: NC-SA/ND conflict
+    status: researched
+    spectrasynq: "Primary host tagging/affect oracle family. Execute via Essentia TF when the env exists. Not Titan-direct (MAEST). EffNet+head is a teacher, not an NPU graph."
+
+  - id: discogs-effnet
+    kind: model
+    name: discogs-effnet-bs64
+    version: "1"
+    group: MTG
+    source: https://essentia.upf.edu/models/feature-extractors/discogs-effnet/
+    publication: Alonso-Jiménez, Serra, Bogdanov, ISMIR 2022
+    task: 400 Discogs style embedding + classification
+    inputs: 16 kHz mono
+    outputs: embeddings (penultimate dense+BN); style logits
+    temporal_resolution: batched patches (official TF port is batch 64; ONNX dynamic-batch exists)
+    context: short patches aggregated in time
+    architecture: EfficientNet-B0 + embedding dense
+    params: EfficientNet-B0 scale
+    deployment: potential_teacher
+    code_licence: Essentia AGPLv3
+    weight_licence: CC BY-NC-SA 4.0 (models page)
+    dataset_licence: Discogs20 in-house (editorial metadata)
+    research_use: yes
+    commercial_use: no (NC) unless MTG proprietary
+    teacher_use: research yes
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: NC-SA
+    status: researched
+    spectrasynq: "Smaller than MAEST. Better teacher size. Style embeddings may be too genre-global for lighting unless we keep the time axis."
+
+  - id: maest
+    kind: model
+    name: MAEST (discogs-maest-*-pw)
+    version: "2 (2025 ONNX refresh)"
+    group: Pablo Alonso / MTG
+    source: https://github.com/palonso/MAEST/
+    publication: Alonso-Jiménez, Serra, Bogdanov, ISMIR 2023 (Efficient Supervised Training of Audio Transformers)
+    task: Discogs style (400 or 519 labels) + embeddings
+    inputs: 16 kHz; mel via TensorflowInputMusiCNN (torch inference uses torchaudio)
+    outputs: logits + token embeddings (CLS/DIST + patches)
+    temporal_resolution: 5 / 10 / 20 / 30 s variants; not frame-rate DSP
+    context: 5–30 s (best downstream often 30s-pw)
+    architecture: PaSST-family spectrogram transformer
+    params: ~344 MB ONNX
+    deployment: unsuitable_mcu_npu
+    code_licence: check repo
+    weight_licence: CC BY-NC-SA 4.0 (Replicate card + models page)
+    dataset_licence: Discogs20 (~3.3M, 400 styles; 519l uses 4M)
+    research_use: yes
+    commercial_use: no unless proprietary
+    teacher_use: research yes; 30 s context is slow for a lamp
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: NC-SA
+    status: researched
+    spectrasynq: "Strong style oracle, weak realtime. Prefer 5s variant if we probe at all. Not a Titan model."
+
+  - id: musicnn
+    kind: model
+    name: musicnn (MTT / MSD)
+    version: 0.1.0
+    group: Jordi Pons / MTG
+    source: https://github.com/jordipons/musicnn
+    publication: Pons & Serra, ISMIR LBD 2019; arXiv 1909.06654
+    task: auto-tagging + taggram + intermediate features
+    inputs: audio file; 3 s windows default
+    outputs: tag probabilities over time (taggram); optional embeddings
+    temporal_resolution: ~3 s hop (configurable overlap) — usable for lights if overlapped
+    context: 3 s
+    architecture: musically motivated CNN
+    params: small (MTT) to bigger (MSD_musicnn_big)
+    deployment: potential_embedded_student
+    code_licence: ISC (LICENSE.md, UPF 2019)
+    weight_licence: UNKNOWN (weights shipped in repo; trained on MTT/MSD — MSD is not a clean commercial audio grant)
+    dataset_licence: MTT / MSD — MSD audio not freely redistributable
+    research_use: yes
+    commercial_use: UNKNOWN/LEGAL REVIEW (code ISC ≠ MSD audio)
+    teacher_use: research yes
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: ISC for code
+    status: blocked
+    spectrasynq: "Right output shape (taggram). Blocked here: TF1 + numpy<1.17. Prefer Essentia msd-musicnn.pb on a TF env. Graph family is student-plausible."
+
+  - id: mtg-jamendo
+    kind: dataset
+    name: MTG-Jamendo Dataset
+    version: "1.0"
+    group: MTG / UPF
+    source: https://mtg.github.io/mtg-jamendo-dataset/
+    publication: Bogdanov et al., ICML ML4MD 2019
+    task: auto-tagging (genre 87, instrument 40, mood/theme 56 in splits)
+    inputs: full tracks 320 kbps MP3
+    outputs: uploader tags
+    temporal_resolution: track-level labels (not 2 Hz)
+    context: full song
+    architecture: n/a
+    params: n/a
+    deployment: host_oracle
+    code_licence: metadata repo CC BY-NC-SA 4.0 (GitHub README)
+    weight_licence: n/a
+    dataset_licence: "audio from Jamendo CC mix (some NC); metadata NC-SA — treat commercial as mixed/UNKNOWN"
+    research_use: yes
+    commercial_use: UNKNOWN (per-track CC)
+    teacher_use: labels yes for research
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: per-track
+    status: researched
+    spectrasynq: "Best public ontology for energetic/dark/relaxing/dream. Labels are song-level — weak for drops. Use with sliding-window model outputs, not as frame GT."
+
+  - id: deam
+    kind: dataset
+    name: DEAM (MediaEval Database for Emotional Analysis of Music)
+    version: "2013-2015 collection"
+    group: Soleymani / Aljanaki / Yang et al.
+    source: https://cvml.unige.ch/databases/DEAM
+    publication: PLOS ONE benchmarking paper (Aljanaki, Yang, Soleymani)
+    task: dynamic + static valence/arousal
+    inputs: 1802 excerpts/songs
+    outputs: VA at 2 Hz and song-level
+    temporal_resolution: 2 Hz (500 ms) — lighting-relevant
+    context: 45 s clips + 58 full songs
+    architecture: n/a
+    params: n/a
+    deployment: potential_teacher
+    code_licence: n/a
+    weight_licence: n/a
+    dataset_licence: "CC audio sources (FMA/Jamendo/MedleyDB); pages list BY-NC and mixed — UNKNOWN commercial"
+    research_use: yes
+    commercial_use: UNKNOWN
+    teacher_use: yes (dynamic VA)
+    derived_weight_status: n/a
+    attribution: required (cite PLOS ONE)
+    redistribution: per DEAM terms
+    status: researched
+    spectrasynq: "First affect corpus that is actually temporal. Pair with MTG deam-* heads as a teacher."
+
+  - id: mert-v1-95m
+    kind: model
+    name: MERT-v1-95M
+    version: "v1 (2023-03-17)"
+    group: m-a-p / Multimodal Art Projection
+    source: https://huggingface.co/m-a-p/MERT-v1-95M
+    publication: arXiv 2306.00107; github.com/yizhilll/MERT (Apache-2.0 code)
+    task: SSL music representation (RVQ-VAE + CQT teachers, MLM)
+    inputs: 24 kHz mono
+    outputs: hidden states 12×768; feature rate 75 Hz
+    temporal_resolution: 75 Hz (~13 ms)
+    context: 5 s pretrain
+    architecture: HuBERT-like 12-layer transformer
+    params: 95M
+    deployment: unsuitable_mcu_npu
+    code_licence: Apache-2.0 (training repo)
+    weight_licence: CC BY-NC 4.0 (HF card)
+    dataset_licence: 20k hours (not public dump)
+    research_use: yes
+    commercial_use: no
+    teacher_use: research yes
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: NC
+    status: researched
+    spectrasynq: "Best documented frame-rate music SSL teacher. Keep time axis. Do not mean-pool a track if we care about drops."
+
+  - id: muq
+    kind: model
+    name: MuQ / MuQ-MuLan
+    version: "MuQ-large-msd-iter; MuQ-MuLan-large"
+    group: Tencent AI Lab / SJTU / NJU
+    source: https://github.com/tencent-ailab/MuQ
+    publication: arXiv 2501.01108
+    task: SSL music encoder; music-text joint embeddings (EN+ZH)
+    inputs: 24 kHz strictly; fp32 recommended
+    outputs: hidden states; MuLan 512-d clip embedding
+    temporal_resolution: Mel-RVQ ~25 Hz in paper formulation
+    context: ~30 s SSL crops
+    architecture: Conformer ~300M (MuQ); ~700M MuLan pair
+    params: ~300M / ~700M
+    deployment: unsuitable_mcu_npu
+    code_licence: MIT
+    weight_licence: CC BY-NC 4.0 (LICENSE_weights)
+    dataset_licence: MSD-scale (proprietary)
+    research_use: yes
+    commercial_use: no (weights)
+    teacher_use: research yes; zero-shot tagging host oracle
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: NC weights
+    status: researched
+    spectrasynq: "Zero-shot 'dreamlike/percussive' probes without a custom ontology. Host only."
+
+  - id: musdb18
+    kind: dataset
+    name: MUSDB18 / MUSDB18-HQ
+    version: "1.0.0 / HQ 2019"
+    group: SiSEC / Rafii et al.
+    source: https://zenodo.org/records/1117372
+    publication: SiSEC 2018
+    task: 4-stem separation
+    inputs: mixture
+    outputs: vocals, drums, bass, other
+    temporal_resolution: waveform
+    context: full tracks (~10 h, 100/50 split)
+    architecture: n/a
+    params: n/a
+    deployment: potential_teacher
+    code_licence: musdb parser MIT
+    weight_licence: n/a
+    dataset_licence: educational; MedleyDB subset BY-NC-SA; Mixing Secrets terms; NI stems
+    research_use: yes
+    commercial_use: no
+    teacher_use: research yes (activity from stems)
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: no
+    status: researched
+    spectrasynq: "Valid stem-activity teacher for research students. Not a shipping corpus. Not the default start anymore."
+
+  - id: moisesdb
+    kind: dataset
+    name: MoisesDB
+    version: v0.1
+    group: Moises / Music AI
+    source: https://github.com/moises-ai/moises-db
+    publication: Pereira et al., ISMIR 2023 arXiv 2307.15913
+    task: hierarchical stems beyond 4
+    inputs: 240 tracks / 47 artists / ~14 h
+    outputs: taxonomy of stems (guitar, piano, …)
+    temporal_resolution: waveform
+    context: full tracks
+    architecture: n/a
+    params: n/a
+    deployment: potential_teacher
+    code_licence: library (check repo)
+    weight_licence: n/a
+    dataset_licence: CC BY-NC-SA 4.0 (github); some mirrors NC-RCL
+    research_use: yes
+    commercial_use: no
+    teacher_use: research yes; finer activity than MUSDB
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: NC-SA
+    status: researched
+    spectrasynq: "Better teacher ontology than 4-stem if we need guitar/piano activity. Still NC."
+
+  - id: htdemucs
+    kind: model
+    name: Hybrid Transformer Demucs
+    version: "htdemucs / htdemucs_ft / htdemucs_6s"
+    group: Meta FAIR (Défossez, Rouard, Massa)
+    source: https://github.com/facebookresearch/demucs
+    publication: Rouard et al., ICASSP 2023 arXiv 2211.08553
+    task: 4-stem (6-stem variant) waveform separation
+    inputs: stereo mix
+    outputs: drums, bass, other, vocals (+ guitar/piano)
+    temporal_resolution: waveform; activity via envelope of stems
+    context: 10 s training segments; full-track inference with chunking
+    architecture: hybrid spectrogram/waveform U-Net + transformer bottleneck
+    params: large (hundreds of MB)
+    deployment: host_oracle
+    code_licence: MIT (repo LICENSE, Meta)
+    weight_licence: "UNKNOWN — not MIT. Maintainer 2022-05-23 (#327): weights not covered by MIT, scientific purposes only. Conservative: research-only."
+    dataset_licence: MUSDB-HQ + 800 extra songs (internal)
+    research_use: yes (weights if we accept scientific-use statement)
+    commercial_use: no (per maintainer statement)
+    teacher_use: research yes
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: weights unclear
+    status: researched
+    spectrasynq: "Best practical host separator-as-teacher. Do not put on Titan. Do not treat PyPI MIT as a weights grant."
+
+  - id: banquet
+    kind: model
+    name: Banquet (query-bandit)
+    version: paper 2024
+    group: Watcharasupat & Lerch (Georgia Tech)
+    source: https://github.com/kwatcharasupat/query-bandit
+    publication: arXiv 2406.18747 ISMIR 2024
+    task: query-conditioned MSS beyond 4 stems (PaSST query + bandsplit decoder)
+    inputs: mix + instrument query
+    outputs: requested stem
+    temporal_resolution: waveform
+    context: track / clip
+    architecture: Bandit/BSRNN + PaSST, 24.9M trainable
+    params: 24.9M
+    deployment: potential_teacher
+    code_licence: MIT
+    weight_licence: UNKNOWN (not verified in this session)
+    dataset_licence: trained/eval MoisesDB NC-SA
+    research_use: yes
+    commercial_use: UNKNOWN
+    teacher_use: research yes; long-tail instruments
+    derived_weight_status: UNKNOWN/LEGAL REVIEW
+    attribution: required
+    redistribution: UNKNOWN
+    status: researched
+    spectrasynq: "If we need 'snare vs kick' or 'organ' activity, this is the query-shaped teacher. Still not MCU waveform sep."
+
+  - id: semantic-v0-experiment
+    kind: model
+    name: SpectraSynq Semantic-v0 (synthetic)
+    version: "0.1.0 experiment"
+    group: SpectraSynq EdgeAI Lab
+    source: src/edgeai/semantic_v0.py
+    publication: n/a
+    task: vocals/drums/bass activity (synthetic supervision)
+    inputs: log-mel 64×100 @ 16 kHz 1 s
+    outputs: 3 sigmoid activities
+    temporal_resolution: 1 s window (stride not locked)
+    context: 1.0 s
+    architecture: depthwise-separable CNN
+    params: 153283
+    deployment: potential_embedded_student
+    code_licence: proprietary research (this repo)
+    weight_licence: proprietary experiment
+    dataset_licence: synthetic (this repo)
+    research_use: yes
+    commercial_use: n/a (not a product)
+    teacher_use: no (it is a student candidate)
+    derived_weight_status: n/a
+    attribution: n/a
+    redistribution: no
+    status: executed
+    spectrasynq: "Toolchain witness only. Not architecture authority. Re-enter iff selection gate picks source-activity with a real teacher."

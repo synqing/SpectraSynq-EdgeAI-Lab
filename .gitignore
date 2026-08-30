@@ -26,6 +26,9 @@ error.log
 artifacts/
 experiments/*
 !experiments/README.md
+!experiments/semantic_v0/
+experiments/semantic_v0/*
+!experiments/semantic_v0/AUTHORITY.md
 calibration/
 deploy_output/
 *.pt

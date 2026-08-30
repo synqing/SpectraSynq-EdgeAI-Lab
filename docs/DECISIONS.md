@@ -55,8 +55,16 @@ Each entry: chosen / why / rejected / revisit evidence.
 **Rejected:** hard 0/1 labels; softmax (sources coexist).
 **Revisit:** if MUSDB labels from this mapping do not correlate with listening; then change the mapping, not the split rule.
 
+## D8 — MIR-first; Semantic-v0 is an experiment (Amendment 001)
+
+**Chosen:** Host MIR oracle + registry + selection gate **before** freezing any embedded student outputs. Semantic-v0 remains as a U55-shaped toolchain experiment only.
+**Why:** vocals/drums/bass on synthetic stems skipped a mature field (MTG tagging, DEAM affect, MERT/MuQ teachers, separator-as-teacher).
+**Rejected:** treating Semantic-v0 as architecture authority; inventing BUILDING/DROPPING labels first.
+**Revisit:** when the eight gate questions in `docs/mir/SELECTION_GATE.md` have evidence.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Created with D1–D7 at lab bootstrap. |
+| 2026-08-30 | agent:edgeai | D8 — Amendment 001 MIR-first. |

@@ -1,83 +1,53 @@
 # SpectraSynq EdgeAI Lab
 
-Experimental Edge-AI lab for SpectraSynq. **Not production firmware.**
+Experimental lab: what musical understanding should drive SpectraSynq lights,
+and can a tiny NPU model carry any of it?
 
-The first model is intentionally narrow:
+**Not production firmware. Not “put an NPU in the product.”**
 
-> **Semantic-v0** — from a 1-second mixed-audio window, estimate continuous
-> `vocals`, `drums`, and `bass` activity.
-
-That one target exercises the whole future chain: dataset, Mac training,
-quantization, Ethos-U55 compilation, golden vectors, and later “does this
-actually make the lights more musically intelligent?”
+Amendment 001 is in force: **MIR reconnaissance and a host oracle come before
+a bespoke student model.** Semantic-v0 (vocals/drums/bass CNN) is a kept
+**experiment** and a deployment-toolchain witness — not architecture authority.
 
 ## Current phase
 
-**Pre-Titan, host pipeline up.** The RA8P1 Titan Mini is ordered and not here.
-On 2026-08-30 this Mac: venv, MPS smoke, Semantic-v0 trained on **synthetic**
-stems, ONNX + host INT8, 32 golden tensors. RUHMI compile is wired
-(`deployment/ra8p1`) but **not executed** — Docker daemon was down.
+**Pre-Titan, MIR-first.** Host PyTorch/MPS/ONNX path exists. RUHMI compile is
+wired and **not run** (Docker down). MIR registry + landscape + conventional
+oracle traces are in `docs/mir/` and `mir/registry.yaml`.
 
-Any number not measured on the board is labelled `HOST-ONLY` or `PRE-SILICON`.
-See [docs/HOST_RECEIPTS.md](docs/HOST_RECEIPTS.md).
+Numbers not measured on the RA8P1 are `HOST-ONLY` or `PRE-SILICON`.
 
-## Two machines, two environments
-
-| Lane | Where | What |
-| --- | --- | --- |
-| Train / export | this M4 Mac, Python 3.12, PyTorch MPS | dataset, CNN, ONNX, host INT8, golden tensors |
-| RUHMI / MERA compile | Ubuntu 22.04 **x86-64**, Python 3.10 | FP32 ONNX → INT8 → C99 for Ethos-U55 |
-
-There is no native Apple-silicon RUHMI wheel. Do not turn the whole lab into
-an x86 VM just because the compiler is x86.
-
-## Reproduce (host)
+## Reproduce
 
 ```bash
-cd /Users/spectrasynq/SpectraSynq-EdgeAI-Lab
-uv sync --python 3.12
-uv run edgeai-host-probe
-uv run edgeai-smoke
+uv sync --python 3.12 --extra mir --extra dev
 uv run pytest
-uv run edgeai-train --out experiments/semantic_v0_synth
-uv run edgeai-export --ckpt experiments/semantic_v0_synth/semantic_v0_best.pt --out artifacts/export
-uv run edgeai-golden --ckpt experiments/semantic_v0_synth/semantic_v0_best.pt \
-    --int8-onnx artifacts/export/semantic_v0_int8.onnx --out artifacts/golden
+uv run edgeai-smoke                 # toolchain, not the product model
+uv run python scripts/mir_oracle_run.py
 ```
 
-## Reproduce (RA8P1 compile, x86)
-
-See [deployment/ra8p1/README.md](deployment/ra8p1/README.md). Short version:
+RUHMI (x86 Ubuntu 22.04 / Python 3.10), when Docker is up:
 
 ```bash
-docker build --platform linux/amd64 -t spectrasynq-ruhmi:2.6.0 deployment/ra8p1
-./deployment/ra8p1/compile.sh artifacts/export/semantic_v0_fp32.onnx artifacts/ruhmi
+./deployment/ra8p1/compile.sh artifacts/smoke/smoke.onnx artifacts/ruhmi
 ```
-
-Until that job has actually produced C sources, U55 coverage is **not measured**.
-
-## What this is not
-
-- Not a production singing/drum/bass detector for sale.
-- Not a replacement for K1 deterministic DSP (onset, tempo, spectral energy).
-- Not a licence to train a shipping model on MUSDB18 (research / non-commercial
-  corpus — see [datasets/README.md](datasets/README.md)).
 
 ## Layout
 
 ```
-src/edgeai/           library (frontend, CNN, train, export, golden)
-models/configs/       YAML overlays
-datasets/             manifests + licence notes (no audio in git)
-deployment/ra8p1/     RUHMI Docker + compile wrapper
-docs/                 decisions, host, Titan bring-up
-experiments/          run receipts (gitignored)
-artifacts/            onnx / golden / ruhmi output (gitignored)
+mir/registry.yaml         asset + licence matrix
+docs/mir/                 landscape, gate, delta
+src/edgeai/mir/           host oracle (librosa traces, plots)
+src/edgeai/semantic_v0.py experiment / U55-shaped toy
+deployment/ra8p1/         RUHMI Docker + GHA
+experiments/semantic_v0/  NOT architecture authority
 ```
 
-## Pre-Titan finish line
+## Pre-Titan finish line (amended)
 
-A reproducible Mac → PyTorch → quantized ONNX → RA8P1/U55 compile path, one
-useful audio-semantic baseline, and golden tensors ready for silicon.
+A host MIR oracle lab, an evidence-backed idea of which descriptors are useful
+and legal, a working Mac→U55 compile path, and **then** one justified student
+with golden vectors — so Titan tests a domain-informed candidate.
 
-Ship path after that is in [docs/TITAN_BRINGUP.md](docs/TITAN_BRINGUP.md).
+Delta: [docs/AMENDMENT_001_DELTA.md](docs/AMENDMENT_001_DELTA.md).
+Gate: [docs/mir/SELECTION_GATE.md](docs/mir/SELECTION_GATE.md).

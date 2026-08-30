@@ -1,0 +1,73 @@
+---
+abstract: "Amendment 001 delta: what stays, what is deferred, what is superseded. Read before treating Semantic-v0 as the product model."
+---
+
+# Amendment 001 — delta report
+
+Date: 2026-08-30. Previous brief still in force except where this file says otherwise.
+
+## Remains valid (keep, do not rebuild)
+
+| Asset | Why it stays |
+| --- | --- |
+| Python 3.12 + uv + MPS host env | Toolchain, not a model choice |
+| TRAIN→SAVE→LOAD→EXPORT smoke | Independent of MIR target |
+| ONNX opset 14 + host ORT INT8 | Deployment lane |
+| `deployment/ra8p1/` Docker/GHA RUHMI path | Still required; still **not executed** (Docker down) |
+| Golden-vector *format* | Reuse when a real student is frozen |
+| Song-level split rule | Still required for any training set |
+| Licence ≠ technical suitability | Strengthened, not weakened |
+| Additive ML: DSP must work if ML is absent | Unchanged |
+| No K1 firmware contamination | Unchanged |
+
+Semantic-v0 **code, checkpoint, ONNX, synthetic receipts** stay on disk as `experiments/semantic_v0_*`. They are **not** architecture authority. See [experiments/semantic_v0/AUTHORITY.md](../experiments/semantic_v0/AUTHORITY.md).
+
+## Superseded assumptions
+
+| Old | Now |
+| --- | --- |
+| First model = vocals/drums/bass activity CNN | Candidate **after** MIR oracle + selection gate |
+| MUSDB18 as default starting dataset | One research/teacher asset among many; not the start |
+| Pre-Titan success = any compiled semantic CNN | That pipeline is **necessary but not sufficient**. Need a host MIR oracle lab + evidence-backed descriptor shortlist + then a justified student |
+| Freeze 16 kHz / 1 s / 64-mel now | Hypothetical frontend for the *experiment*, not a product lock |
+| Custom ontology (BUILDING, DROPPING, …) | Hypotheses until existing MIR ontologies are inspected |
+
+## Deferred (do not do yet)
+
+- Further Semantic-v0 training / hyperparameter search
+- MUSDB download as a blocker
+- Inventing SpectraSynq custom labels and manufacturing GT
+- Deploying MERT / MuQ / MAEST / Demucs onto Titan
+- Elaborate user-research / visual A/B platform
+- Large foundation-model downloads as a default path
+
+## New work required (this amendment)
+
+1. MIR landscape map (SpectraSynq visual utility, not a generic survey)
+2. Structured registry with **split** code / weights / dataset licences
+3. Host oracle lab: same audio → DSP + conventional MIR + (later) teachers
+4. Time-aligned traces; redundancy vs existing DSP
+5. Eval corpus manifests (no unlicensed audio in git)
+6. Student-model **selection gate** before freezing v0 outputs
+7. Distillation / teacher-student as a first-class path
+8. Visual-utility hook schema (interface only)
+
+## Status after this session
+
+| Phase (amendment) | Status |
+| --- | --- |
+| 0A host toolchain | done (prior session) |
+| 0B RUHMI/U55 compile | path wired, **PRE-SILICON / not run** |
+| 1 landscape | this session |
+| 2 registry | this session (seeded, not the entire field) |
+| 3 host oracle bring-up | conventional MIR **executed**; MTG/MERT/Demucs **researched, not executed** |
+| 4 eval corpus | synthetic contrast set + slots for FMA/DEAM/MUSDB |
+| 5 aligned traces | conventional + DSP band-energy vs Semantic-v0 experiment |
+| 6 shortlist | **not frozen** — candidates named, gate open |
+| 7–8 student | deferred |
+
+---
+**Document Changelog**
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-08-30 | agent:edgeai | Created after Amendment 001. |
