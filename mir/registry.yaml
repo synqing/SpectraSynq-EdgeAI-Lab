@@ -353,9 +353,9 @@ entries:
     derived_weight_status: n/a
     attribution: required
     redistribution: no
-    status: researched
+    status: executed
     commercial_training_lineage: false
-    spectrasynq: "P3-B perfect V/D/B oracle on full songs. Educational/NC. Not downloaded yet. Not a shipping corpus."
+    spectrasynq: "P3-B perfect V/D/B oracle on full STEMS (not HQ). Educational/NC. Not a shipping corpus."
 
   - id: musdb-sample
     kind: dataset

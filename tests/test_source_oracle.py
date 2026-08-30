@@ -120,6 +120,75 @@ def test_log_rms_activity_is_physical_not_per_clip_peak():
     assert quiet[0] != pytest.approx(1.0, abs=0.2)
 
 
+def test_composition_change_zero_when_shares_are_constant():
+    from edgeai.mir.source_oracle import composition_change, source_oracle
+
+    n = SR * 3
+    out = source_oracle(
+        {
+            "vocals": _sine(220.0, n, 0.3),
+            "drums": _sine(150.0, n, 0.3),
+            "bass": _sine(55.0, n, 0.3),
+            "other": _sine(800.0, n, 0.3),
+        },
+        sr=SR,
+        hop=HOP,
+    )
+    cc = composition_change(out, lag_s=0.5)
+    assert float(np.median(cc[int(0.6 * SR / HOP) :])) < 0.05
+
+
+def test_composition_change_detects_vocal_handoff_not_loudness():
+    from edgeai.mir.source_oracle import composition_change, source_oracle
+
+    n = SR * 4
+    vocals = np.zeros(n, dtype=np.float32)
+    other = np.zeros(n, dtype=np.float32)
+    cut = int(2.0 * SR)
+    vocals[:cut] = _sine(220.0, cut, 0.4)
+    other[cut:] = _sine(800.0, n - cut, 0.4)
+    drums = _sine(180.0, n, 0.15)
+    bass = _sine(55.0, n, 0.15)
+    out = source_oracle(
+        {"vocals": vocals, "drums": drums, "bass": bass, "other": other},
+        sr=SR,
+        hop=HOP,
+    )
+    cc = composition_change(out, lag_s=0.5)
+    t = out["times"]
+    before = cc[t < 1.4]
+    around = cc[(t >= 1.9) & (t <= 2.6)]
+    assert float(np.max(around)) > 0.3
+    assert float(np.max(around)) > float(np.median(before)) + 0.2
+    # Mix energy stays in the same ballpark — this is not an RMS event.
+    mix_jump = abs(float(out["mix_rms"][np.argmin(np.abs(t - 2.2))]) - float(np.median(out["mix_rms"][t < 1.5])))
+    assert mix_jump < 0.25
+
+
+def test_timebase_is_hop_centre_and_causal():
+    from edgeai.mir.source_oracle import timebase
+
+    tb = timebase(sr=16_000, hop=512, lag_s=0.5)
+    assert tb["alignment"] == "hop-centre"
+    assert tb["causal"] is True
+    assert tb["lookahead_s"] == 0.0
+    assert tb["composition_change_lag_s"] == 0.5
+    assert abs(tb["hop_s"] - 512 / 16_000) < 1e-9
+
+
+def test_frozen_map_is_not_per_song_minmax():
+    from edgeai.mir.visual_hook import apply_frozen_map, fit_frozen_map
+
+    a = np.array([0.10, 0.20, 0.30], dtype=np.float32)
+    b = np.array([0.40, 0.80, 0.90], dtype=np.float32)
+    spec = fit_frozen_map({"mix_rms": np.concatenate([a, b])})
+    fa = apply_frozen_map(a, spec["mix_rms"])
+    fb = apply_frozen_map(b, spec["mix_rms"])
+    # A quiet-ish series must not be stretched to fill 0–1 by itself.
+    assert float(np.ptp(fa)) < 0.5
+    assert float(np.max(fb)) > float(np.max(fa))
+
+
 def test_empty_stems_do_not_nan_the_share():
     n = SR
     out = source_oracle(

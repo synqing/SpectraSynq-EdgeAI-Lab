@@ -45,7 +45,8 @@ deploy_output/
 *.stem.mp4
 
 # Dataset corpora — never commit
-datasets/musdb18/
+datasets/musdb18/*
+!datasets/musdb18/README.md
 datasets/musdb18hq/
 datasets/musdb_sample/*
 !datasets/musdb_sample/README.md

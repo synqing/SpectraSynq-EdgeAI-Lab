@@ -1,5 +1,5 @@
 ---
-abstract: "P3-A HOST-ONLY: MUSDB 7 s samples, 144 tracks. Source oracle is abs/share/delta, not RMS(stem). Vocal share vs mix r=0.12 vs abs r=0.46. Not a product visual. Demucs not installed."
+abstract: "P3-B HOST-ONLY on 150 full MUSDB18 STEMS. Within-track r(share, mix) is 0.10–0.17 vs r(abs, mix) 0.44–0.64. P3-A bass r=−0.22 was a 7 s artefact. Oracle-ranked 20-track visual set. No Demucs."
 ---
 
 # Source activity — perfect oracle
@@ -54,15 +54,36 @@ Replay machinery: A/B/C/D with the **same** extra mix as arousal (`w=0.65`). 7 s
 - Anything ON-SILICON.
 - A commercial training right. MUSDB stays quarantined.
 
-## P3-B — not run
+## P3-B — full MUSDB18 STEMS (not HQ)
 
-Need 10–20 **full** songs chosen for contrasting source events (vocal enter/exit, quiet vocal over sparse bed, drums without loudness change, section change without RMS change). Official sample excerpts cannot answer that.
+Zenodo 1117372 `musdb18.zip` md5 `af06762477334799bfc5abf237648207`. 100 train + 50 test. HOST-ONLY. NC. `commercial_training_lineage: false`.
 
-Do not install Demucs until P3-B visual A/B/C/D on full songs says the perfect oracle wins.
+Fourth oracle channel: `composition_change` = causal L1/2 of the 4-share vector vs 0.5 s ago, hop-centre timestamps, no lookahead (D13).
 
-Older HPSS-on-DEAM numbers (2030/2034/2041) remain a mixture-only baseline, not stem truth.
+The **oracle ranked** all 150 tracks. A balanced 20-song visual set was taken from the strongest events in five classes (4 each): vocal ownership change, drum ownership change, bass dominance, composition change without loudness change, loudness change without composition change (negative control). Seed names from P3-A are present in the corpus as sanity checks; they did **not** dictate the set.
 
-Receipt: `artifacts/source_activity/receipt_musdb_sample.json`. Re-run: `uv run python scripts/musdb_sample_oracle.py`.
+### Within-track vs pooled Pearson vs mix energy (n=150)
+
+| source | within r(abs, mix) | within r(share, mix) | pooled r(abs, mix) | pooled r(share, mix) |
+| --- | ---: | ---: | ---: | ---: |
+| vocals | 0.44 | **0.17** | 0.38 | 0.13 |
+| drums | 0.62 | **0.10** | 0.60 | 0.09 |
+| bass | 0.64 | **0.16** | 0.58 | 0.21 |
+
+Drum *energy* largely tracks the mix. Drum *ownership* does not. That is the lighting-relevant within-track fact.
+
+P3-A’s bass_share r=−0.22 **does not survive** full songs. It was a short-excerpt screening number. Do not quote it as product evidence.
+
+Visual extra-DoF uses frozen corpus 5th–95th maps (`p3b-v1`), not per-song min-max.
+
+- P3-B1 continuous: A / B mix / C abs / D share — `docs/mir/visual_replay/p3b1_continuous.html`
+- P3-B2 events: |Δ mix| vs |share delta| vs composition_change — `docs/mir/visual_replay/p3b2_events.html`
+
+Those pages are the evidence for a lighting judgement. They are **not** that judgement. Do not train. Do not install Demucs until a product evaluator says D beats B (continuous) or composition_change beats |Δ mix| (events).
+
+Re-run: `uv run python scripts/download_musdb.py --fetch` then `uv run python scripts/musdb18_p3b.py`. Receipt: `artifacts/source_activity/receipt_musdb18_p3b.json`.
+
+Older HPSS-on-DEAM numbers remain a mixture-only baseline, not stem truth.
 
 ---
 **Document Changelog**
@@ -70,3 +91,4 @@ Receipt: `artifacts/source_activity/receipt_musdb_sample.json`. Re-run: `uv run 
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | HPSS probe on three DEAM songs. |
 | 2026-08-31 | agent:edgeai | P3-A MUSDB samples; abs/share/delta; share ≠ mix energy. |
+| 2026-08-31 | agent:edgeai | P3-B 150 full tracks; oracle-ranked 20; within-track share vs mix. |

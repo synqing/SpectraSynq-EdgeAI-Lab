@@ -124,4 +124,45 @@ def source_oracle(
     _, mix_r = frame_rms(mix_y, sr, hop)
     out["mix_rms"] = log_rms_activity(mix_r[:n])
     out["mix_rms_raw"] = mix_r[:n].astype(np.float32)
+    out["composition_change"] = composition_change(out, lag_s=0.5)
     return out
+
+
+def share_matrix(oracle: Mapping[str, NDArray]) -> NDArray[np.float64]:
+    return np.stack([np.asarray(oracle[f"{name}_share"], dtype=np.float64) for name in SOURCES], axis=1)
+
+
+def composition_change(oracle: Mapping[str, NDArray], *, lag_s: float = 0.5) -> NDArray[np.float32]:
+    """Causal L1/2 distance between the current share vector and the one lag_s ago.
+
+    Range [0, 1]. 1 = complete ownership swap. Timestamp is the current hop centre.
+    No lookahead. This is arrangement change, not loudness.
+    """
+    times = np.asarray(oracle["times"], dtype=np.float64)
+    if times.size < 2:
+        return np.zeros(times.size, dtype=np.float32)
+    hop_s = float(np.median(np.diff(times)))
+    lag_frames = max(1, int(round(lag_s / max(hop_s, 1e-6))))
+    shares = share_matrix(oracle)
+    prev = np.vstack([np.repeat(shares[:1], lag_frames, axis=0), shares[:-lag_frames]])
+    prev = prev[: shares.shape[0]]
+    l1 = np.sum(np.abs(shares - prev), axis=1)
+    return np.clip(0.5 * l1, 0.0, 1.0).astype(np.float32)
+
+
+def timebase(*, sr: int, hop: int, lag_s: float = 0.5) -> dict:
+    """Explicit hop alignment. Standing rule after the PaRIRset zero-lag miss."""
+    hop_s = float(hop) / float(sr)
+    return {
+        "sr": int(sr),
+        "hop_samples": int(hop),
+        "window_samples": int(hop),
+        "window_s": hop_s,
+        "hop_s": hop_s,
+        "alignment": "hop-centre",
+        "causal": True,
+        "lookahead_s": 0.0,
+        "smoothing": "none",
+        "composition_change_lag_s": float(lag_s),
+        "timestamp": "seconds at hop centre; composition_change compares to t-lag",
+    }

@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices D1–D12. D8 MIR-first; D10 live-domain; D11 AdaptiveAvgPool2d; D12 source abs/share/delta. Read before changing the graph, split, or RUHMI path."
+abstract: "Architectural choices D1–D13. D8 MIR-first; D10 live-domain; D11 AdaptiveAvgPool2d; D12 abs/share/delta; D13 frozen maps and composition_change. Read before changing the graph or RUHMI path."
 ---
 
 # Decisions
@@ -96,6 +96,13 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 **Rejected:** a single RMS(stem) channel; Demucs before the perfect oracle wins a full-song visual test.
 **Revisit:** after P3-B full-song A/B/C/D. If D never beats B, do not train a dominance student.
 
+## D13 — Frozen corpus maps; hop-centre timestamps; composition_change is causal
+
+**Chosen:** visual extra-DoF uses a 5th–95th percentile map fitted once on the pooled corpus (`p3b-v1`), not per-song min-max. Hop RMS is timestamped at hop centre. `composition_change` is causal L1/2 of the share vector vs 0.5 s ago, no lookahead.
+**Why:** per-song stretching can make a flat RMS look lively. The PaRIRset miss was a timestamp/alignment error. Arrangement change is not loudness.
+**Rejected:** eyeballed per-track normalisation; putting abs/share/delta in one undifferentiated A/B/C/D/E strip.
+**Revisit:** if P3-B2 shows composition_change is the visual winner, a student output may be dynamics rather than `vocals=0.8`.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -108,3 +115,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:edgeai | D8 nine gate questions; D10 onset result provisional. |
 | 2026-08-31 | agent:edgeai | D4 pooling note vs D11; D10 onset delayed-not-killed. |
 | 2026-08-31 | agent:edgeai | D12 source oracle abs/share/delta. |
+| 2026-08-31 | agent:edgeai | D13 frozen maps, hop-centre timebase, composition_change. |

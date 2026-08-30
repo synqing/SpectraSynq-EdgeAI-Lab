@@ -38,7 +38,7 @@ It is **not** “put an NPU in SpectraSynq”.
 | DEAM arousal vs DSP | primary (real audio) |
 | RUHMI CI | pin 6c5aad9 + libstdc++/gcc-13; ad01 then smoke |
 | Live domain (PaRIRset) | Amendment 002 — onset delayed (~100 ms), not killed, on 3 short test IRs |
-| Source oracle (MUSDB sample) | P3-A executed — abs/share/delta; Demucs deferred |
+| Source oracle (MUSDB18) | P3-B executed — 150 full tracks, oracle-ranked visual set; Demucs deferred |
 | Semantic-v0 training | **deferred** |
 | Silicon / PDM | wait for Titan |
 

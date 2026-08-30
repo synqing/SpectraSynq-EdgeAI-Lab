@@ -30,6 +30,38 @@ class SemanticFrame:
 
 
 MODULATION_WEIGHT = 0.65
+FROZEN_MAP_VERSION = "p3b-v1"
+FROZEN_PERCENTILES = (5.0, 95.0)
+
+
+def fit_frozen_map(series: dict[str, Any], *, p_lo: float = 5.0, p_hi: float = 95.0) -> dict[str, dict[str, float]]:
+    """Fit one 5th–95th map per signal on the pooled corpus. Not per-song min-max."""
+    import numpy as np
+
+    out: dict[str, dict[str, float]] = {}
+    for name, xs in series.items():
+        a = np.asarray(xs, dtype=np.float64).reshape(-1)
+        a = a[np.isfinite(a)]
+        if a.size == 0:
+            out[name] = {"p_lo": 0.0, "p_hi": 1.0, "percentile_lo": p_lo, "percentile_hi": p_hi}
+            continue
+        lo = float(np.percentile(a, p_lo))
+        hi = float(np.percentile(a, p_hi))
+        if hi - lo < 1e-8:
+            hi = lo + 1e-8
+        out[name] = {"p_lo": lo, "p_hi": hi, "percentile_lo": p_lo, "percentile_hi": p_hi}
+    return out
+
+
+def apply_frozen_map(xs: Any, spec: dict[str, float]) -> list[float]:
+    import numpy as np
+
+    a = np.asarray(xs, dtype=np.float64).reshape(-1)
+    lo = float(spec["p_lo"])
+    hi = float(spec["p_hi"])
+    y = (a - lo) / (hi - lo)
+    y = np.clip(y, 0.0, 1.0)
+    return [float(v) for v in y]
 
 
 def per_song_norm(xs: list[float]) -> list[float]:

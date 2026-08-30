@@ -24,7 +24,7 @@ Evidence so far (HOST-ONLY, not a freeze):
 - Real-audio incremental vs DSP: DEAM 2015 human arousal vs energy mean r=0.37, R²=0.30. Not Semantic-v0's r=0.99.
 - Visual utility (A/B/C replay, not firmware): A = onset baseline; B = same extra DoF from RMS; C = same extra DoF from human arousal; w=0.65. Five 2015 songs (2030/2028 controls; 2034/2041/2056 residuals). `docs/mir/visual_replay/index.html`. Not a Captain LED judgement and not a student freeze.
 - Live/venue: PaRIRset test-split convolution on three held-out venues. Unaligned onset r is low because the IRs inject ~100 ms delay, not because events vanish. Delay-aligned native-hop F1@50 ms recovers 0.05 → 0.86 (HOST-ONLY). Old “onset dies” reading **invalidated**. Residual smear remains (aligned F1 0.79–0.92). CrowdioSet not ingested. Receipt: `docs/mir/PARIRSET_ONSET_ALIGNED.md`.
-- Source activity: P3-A MUSDB 7 s samples (n=144). Oracle is abs/share/delta. Mean r(vocals_share, mix)=0.12 vs r(vocals_abs, mix)=0.46. Bass share anti-correlates with mix (−0.22). HPSS ≠ stem truth (drums_abs vs perc r=0.60). Demucs not installed. 7 s is plumbing, not the visual kill test. `docs/mir/SOURCE_ACTIVITY.md`.
+- Source activity: P3-B full MUSDB18 n=150. Within-track r(drums_share, mix)=0.10 vs r(drums_abs, mix)=0.62. Vocals 0.17 vs 0.44. Bass 0.16 vs 0.64. P3-A bass r=−0.22 was a 7 s artefact. Oracle-ranked 20-track A/B/C/D + event pages exist; not a lighting pass. Demucs not installed. `docs/mir/SOURCE_ACTIVITY.md`.
 - U55 compressibility: PRE-SILICON C99 for Renesas `ad01_int8.tflite` and lab `smoke.onnx` (GHA 33319114336, AdaptiveAvgPool2d after D11 ReduceMean split). Not ON-SILICON.
 - Teacher/oracle quality: Essentia DEAM head ≠ human 2 Hz on two songs. Jamendo mood means differ; often clip-flat.
 
@@ -53,3 +53,4 @@ Worth keeping on the visual-utility list after landscape + conventional traces:
 | 2026-08-31 | agent:edgeai | Nine criteria; smoke C99 PASS; PaRIRset onset provisional. |
 | 2026-08-31 | agent:edgeai | Onset delay-aware: delayed not killed; A/B/C visual control. |
 | 2026-08-31 | agent:edgeai | P3-A MUSDB samples; abs/share/delta; share ≠ mix energy. |
+| 2026-08-31 | agent:edgeai | P3-B 150 tracks; within-track share vs mix; visual pages not a pass. |
