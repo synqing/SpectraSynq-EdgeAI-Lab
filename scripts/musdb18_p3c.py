@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""P3-C: blinded host replay of firmware bloom + apply_brightness.
+"""P3-C: blinded host replay of firmware palette path.
 
-Not Demucs. Not a student. Not a lighting verdict. HOST-ONLY.
-Challenge = oracle-ranked segments. Holdout = MUSDB test, not oracle-ranked.
+Continuous: spectrum_river (palette-native, spectrum-as-space).
+Events: comet (same palette, bass-onset fire).
+Not chroma HSV. Not Demucs. HOST-ONLY.
 """
 
 from __future__ import annotations
@@ -13,10 +14,14 @@ from pathlib import Path
 
 import numpy as np
 
-from edgeai.mir.host_chroma import bloom_chromagram, host_chroma12
-from edgeai.mir.k1_photons import PHOTONS_CURVE_MODE, apply_photons
-from edgeai.mir.k1_render_host import compile_bloom, firmware_root, firmware_sha, render_bloom
-from edgeai.mir.k1_visual_hooks import DEFAULT_HOOK_CONFIG, VisualHooks
+from edgeai.mir.host_chroma import extra_gain, host_chroma12, host_spectrogram80, preview_encode
+from edgeai.mir.k1_render_host import (
+    PALETTE_RENDER_PARAMS,
+    compile_mode,
+    firmware_root,
+    firmware_sha,
+    render_mode,
+)
 from edgeai.mir.p3c_blind import permute_conditions, sealed_key
 from edgeai.mir.p3c_html import write_page
 from edgeai.mir.p3c_score import mean_abs_diff, mean_luminance, occupancy
@@ -46,7 +51,7 @@ PRE_S = 5.0
 EVENT_TARGET_PER_MIN = 15.0
 DISPLAY_STEP = 2
 WARMUP_S = 1.0
-BASE_PHOTONS = 0.675
+PREVIEW_EXPOSURE = 2.2
 SALT_C1 = "p3c1-v1"
 SALT_C2 = "p3c2-v1"
 HOLDOUT_SEED = 20260831
@@ -161,44 +166,28 @@ def corpus_event_thresholds(items: list[tuple[dict, dict]]) -> dict:
     }
 
 
-def photons_continuous(oracle: dict, fmap: dict, share_name: str) -> dict[str, np.ndarray]:
+def continuous_gains(oracle: dict, fmap: dict, share_name: str) -> dict[str, np.ndarray]:
     n = len(oracle["times"])
-    base = [BASE_PHOTONS] * n
     mix_f = apply_frozen_map(oracle["mix_rms"], fmap["mix_rms"])
     share_f = apply_frozen_map(oracle[share_name], fmap[share_name])
+    mid = extra_gain(np.array([0.5]))[0]
     return {
-        "A": np.full(n, BASE_PHOTONS, dtype=np.float64),
-        "B": np.asarray(modulate(base, mix_f, weight=MODULATION_WEIGHT), dtype=np.float64),
-        "D": np.asarray(modulate(base, share_f, weight=MODULATION_WEIGHT), dtype=np.float64),
+        "A": np.full(n, mid, dtype=np.float64),
+        "B": extra_gain(np.asarray(mix_f)),
+        "D": extra_gain(np.asarray(share_f)),
     }
 
 
-def photons_events(series: np.ndarray, thresh: float) -> tuple[np.ndarray, list[int]]:
+def event_hits(series: np.ndarray, thresh: float) -> tuple[np.ndarray, list[int], np.ndarray]:
     hops = np.asarray(series, dtype=np.float64)
     ref = max(1, int(round(0.25 / HOP_S)))
     idx = local_peaks(hops, thresh=thresh, refractory=ref)
-    fired = set(idx)
-    hooks = VisualHooks(DEFAULT_HOOK_CONFIG)
-    out = np.zeros(len(hops), dtype=np.float64)
-    last_id = 0
-    last_i = 0
-    for i in range(len(hops)):
-        is_on = i in fired
-        if is_on:
-            last_id = i + 1
-            last_i = i
-            age = 0
-        else:
-            age = int(round((i - last_i) * HOP_S * 1000.0)) if last_id else 10**6
-        tick = hooks.tick(
-            now_ms=int(round(i * HOP_S * 1000.0)),
-            onset=is_on,
-            onset_strength=1.0 if is_on else 0.0,
-            event_id=last_id if last_id else 0,
-            event_age_ms=age,
-        )
-        out[i] = hooks.apply_photons_knob(BASE_PHOTONS, tick.photon_scalar)
-    return out, idx
+    fired = np.zeros(len(hops), dtype=np.int32)
+    strength = np.zeros(len(hops), dtype=np.float64)
+    for i in idx:
+        fired[i] = 1
+        strength[i] = 1.0
+    return fired, idx, strength
 
 
 def _clip_payload(clip_id: str, title: str, set_name: str, leds_map: dict, order: list[str], extra: dict) -> dict:
@@ -248,18 +237,19 @@ def main() -> int:
     tracks = {t.name: t for t in db}
     fw = firmware_root()
     sha = firmware_sha(fw)
-    workdir = P3C / "_bloom_build"
-    print(f"compiling bloom from {fw} @ {sha[:12]}", flush=True)
-    binary, cmeta = compile_bloom(workdir)
-    print(f"compiler {cmeta.get('compiler')} ok", flush=True)
-    pre = render_bloom(
-        binary,
-        chroma=np.full((16, 12), 0.7, dtype=np.float32),
-        times_s=np.arange(16, dtype=np.float64) * HOP_S,
+    print(f"compiling spectrum_river + comet from {fw} @ {sha[:12]}", flush=True)
+    river_bin, cmeta = compile_mode(P3C / "_river_build", mode="spectrum_river")
+    comet_bin, _ = compile_mode(P3C / "_comet_build", mode="comet")
+    print(f"compiler {cmeta.get('compiler')} ok palette_index={PALETTE_RENDER_PARAMS['palette_index']}", flush=True)
+    pre_t = np.arange(24, dtype=np.float64) * HOP_S
+    pre_s = np.linspace(0.35, 0.95, 24 * 80, dtype=np.float32).reshape(24, 80)
+    pre = preview_encode(
+        render_mode(river_bin, times_s=pre_t, spectro=pre_s),
+        exposure=PREVIEW_EXPOSURE,
     )
-    if int(pre.max()) < 16:
-        raise RuntimeError(f"bloom preflight black max={int(pre.max())}; extra DoF would be a no-op")
-    print(f"preflight bloom_max={int(pre.max())}", flush=True)
+    if int(pre.max()) < 80:
+        raise RuntimeError(f"palette river preflight too dim max={int(pre.max())}")
+    print(f"preflight river_max={int(pre.max())} lum={float(mean_luminance(pre)):.1f}", flush=True)
 
     thresh = corpus_event_thresholds(cache_items)
     print("event thresholds", thresh, flush=True)
@@ -285,39 +275,49 @@ def main() -> int:
         i1 = int(round((start + length) * SR))
         sl = mix[i0:i1]
         _ct, chroma = host_chroma12(sl, sr=SR, hop=HOP)
-        n = min(len(oracle["times"]), chroma.shape[0])
+        _st, spectro = host_spectrogram80(sl, sr=SR, hop=HOP)
+        n = min(len(oracle["times"]), chroma.shape[0], spectro.shape[0])
         oracle = {k: (v[:n] if np.asarray(v).shape[:1] == (len(oracle["times"]),) else v) for k, v in oracle.items()}
         chroma = chroma[:n]
+        spectro = spectro[:n]
         times = np.arange(n, dtype=np.float64) * HOP_S
-        drive = bloom_chromagram(chroma, oracle["mix_rms"][:n])
-        print(f"bloom {subset} {name} n={n} start={start:.2f}", flush=True)
-        warm = max(1, int(round(WARMUP_S / HOP_S)))
-        drive_w = np.vstack([np.repeat(drive[:1], warm, axis=0), drive])
-        times_w = np.arange(drive_w.shape[0], dtype=np.float64) * HOP_S
-        leds_w = render_bloom(binary, chroma=drive_w, times_s=times_w)
-        leds = leds_w[warm:]
-        print(
-            f"  chroma_max={float(chroma.max()):.3f} drive_mean={float(drive.mean()):.3f} bloom_max={int(leds.max())} mix={float(np.mean(oracle['mix_rms'])):.3f}",
-            flush=True,
-        )
-        if leds.shape[0] != n:
-            n = min(n, leds.shape[0])
-            leds = leds[:n]
-            chroma = chroma[:n]
-            oracle = {k: (v[:n] if isinstance(v, np.ndarray) and v.shape[:1] == (len(times),) else v) for k, v in oracle.items()}
-            times = times[:n]
-
+        print(f"river/comet {subset} {name} n={n} start={start:.2f}", flush=True)
         share_name = _share_key(row)
-        ph = photons_continuous(oracle, fmap, share_name)
-        cond_leds = {k: apply_photons(leds, ph[k]) for k in ("A", "B", "D")}
+        gains = continuous_gains(oracle, fmap, share_name)
+        warm = max(1, int(round(WARMUP_S / HOP_S)))
+        times_w = np.arange(n + warm, dtype=np.float64) * HOP_S
+        chroma_w = np.vstack([np.repeat(chroma[:1], warm, axis=0), chroma])
+        cond_raw = {}
+        cond_leds = {}
+        for key in ("A", "B", "D"):
+            g = np.concatenate([np.repeat(gains[key][:1], warm), gains[key]])
+            spec_w = np.clip(np.vstack([np.repeat(spectro[:1], warm, axis=0), spectro]) * g.reshape(-1, 1), 0.0, 1.0)
+            raw = render_mode(river_bin, times_s=times_w, chroma=chroma_w, spectro=spec_w)
+            cond_raw[key] = raw[warm:]
+            cond_leds[key] = preview_encode(cond_raw[key], exposure=PREVIEW_EXPOSURE)
 
         d_rms = np.abs(np.diff(oracle["mix_rms"].astype(np.float64), prepend=oracle["mix_rms"][:1]))
-        ph_ctrl, idx_ctrl = photons_events(d_rms, thresh["d_rms"])
-        ph_mir, idx_mir = photons_events(oracle["composition_change"], thresh["composition_change"])
-        event_leds = {
-            "control": apply_photons(leds, ph_ctrl),
-            "mir": apply_photons(leds, ph_mir),
-        }
+        on_ctrl, idx_ctrl, st_ctrl = event_hits(d_rms, thresh["d_rms"])
+        on_mir, idx_mir, st_mir = event_hits(oracle["composition_change"], thresh["composition_change"])
+        river_floor = cond_raw["A"]
+        event_leds = {}
+        for key, onset, strength in (("control", on_ctrl, st_ctrl), ("mir", on_mir, st_mir)):
+            on_w = np.concatenate([np.zeros(warm, dtype=np.int32), onset])
+            st_w = np.concatenate([np.zeros(warm, dtype=np.float64), strength])
+            comet = render_mode(
+                comet_bin,
+                times_s=times_w,
+                chroma=chroma_w,
+                bass_onset=on_w,
+                bass_strength=st_w,
+            )[warm:]
+            event_leds[key] = preview_encode(np.maximum(river_floor, comet), exposure=PREVIEW_EXPOSURE)
+        print(
+            f"  spec_max={float(spectro.max()):.3f} lumA={mean_luminance(cond_leds['A']):.1f} "
+            f"lumB={mean_luminance(cond_leds['B']):.1f} lumD={mean_luminance(cond_leds['D']):.1f} "
+            f"maxA={int(cond_leds['A'].max())}",
+            flush=True,
+        )
         dur_s = n * HOP_S
         rates = {
             "control": triggers_per_minute(len(idx_ctrl), dur_s),
@@ -337,15 +337,14 @@ def main() -> int:
 
         np.savez_compressed(
             P3C / f"{cid}_leds.npz",
-            bloom=leds,
             A=cond_leds["A"],
             B=cond_leds["B"],
             D=cond_leds["D"],
             control=event_leds["control"],
             mir=event_leds["mir"],
-            photons_A=ph["A"],
-            photons_B=ph["B"],
-            photons_D=ph["D"],
+            gain_A=gains["A"],
+            gain_B=gains["B"],
+            gain_D=gains["D"],
         )
         scores.append(
             {
@@ -372,17 +371,17 @@ def main() -> int:
 
     write_page(
         HTML1,
-        title="P3-C1 · extra brightness on the same bloom",
-        question="Which version makes more musical sense as extra brightness on the same visual engine?",
-        note="Firmware bloom, then the shipping brightness curve. Same extra control, same range, same gain. Labels are sealed. HOST-ONLY. Not a product lighting call. MUSDB educational/NC.",
+        title="P3-C1 · same palette river, extra control from different drivers",
+        question="Which version makes more musical sense as extra energy in the same palette river?",
+        note="Firmware spectrum-river on the product palette path (not chroma HSV). Same extra gain, same range. Host preview is exposure-corrected so the page is readable. Labels sealed. HOST-ONLY. Not a product lighting call. MUSDB educational/NC.",
         clips=html_c1,
         n_versions=3,
     )
     write_page(
         HTML2,
-        title="P3-C2 · the same structural accent, different triggers",
-        question="Which version picks better moments for the same flash? Rates are shown so quantity is not the test.",
-        note="Existing onset→brightness accent (tau 100 ms, gain 0.16). Only the trigger series changes. HOST-ONLY. Not a product lighting call.",
+        title="P3-C2 · the same comet, different triggers",
+        question="Which version picks better moments for the same comet launch? Rates are shown so quantity is not the test.",
+        note="Firmware comet launches over the same palette river. Same launch, same palette. Only the trigger series changes. HOST-ONLY. Not a product lighting call.",
         clips=html_c2,
         n_versions=2,
     )
@@ -396,17 +395,22 @@ def main() -> int:
     receipt = {
         "label": "HOST-ONLY",
         "phase": "P3-C",
-        "engine": "firmware light_mode_bloom + apply_brightness photons_curve",
-        "photons_curve_mode": PHOTONS_CURVE_MODE,
+        "engine": {
+            "continuous": "firmware light_mode_spectrum_river",
+            "events": "firmware light_mode_comet",
+            "colour": "PALETTE_MODE + K1_Ultraviolet_Bright (index 43); chromatic HSV off",
+            "square_iter": 0.0,
+            "preview": f"sRGB + exposure {PREVIEW_EXPOSURE} (host dump is pre-gamma)",
+        },
         "firmware_root": str(fw),
         "firmware_sha": sha,
         "frozen_map_version": FROZEN_MAP_VERSION,
         "modulation_weight": MODULATION_WEIGHT,
-        "base_photons": BASE_PHOTONS,
+        "extra_dof": "spectrogram gain in [0.62, 1.0] from frozen mix vs share",
         "timebase": timebase(sr=SR, hop=HOP, lag_s=0.5),
         "display_step": DISPLAY_STEP,
         "segment_s": SEGMENT_S,
-        "chroma": "HOST-ONLY causal 12-bin STFT; identical across A/B/D",
+        "palette_params": PALETTE_RENDER_PARAMS,
         "commercial_training_lineage": False,
         "demucs_installed": False,
         "student_gate": "OPEN",

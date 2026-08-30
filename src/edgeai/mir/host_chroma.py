@@ -90,3 +90,67 @@ def bloom_chromagram(chroma: NDArray, mix_01: NDArray, *, floor: float = 0.65) -
     gain = 0.12 + 0.88 * mix.reshape(-1, 1)
     drive = gain * (floor + (1.0 - floor) * shape)
     return np.clip(drive, 0.0, 1.0).astype(np.float32)
+
+
+def host_spectrogram80(
+    pcm: NDArray,
+    *,
+    sr: int = 16_000,
+    hop: int = 512,
+    n_fft: int = 2048,
+    n_bins: int = 80,
+) -> tuple[NDArray[np.float32], NDArray[np.float32]]:
+    """HOST-ONLY 80-bin log-frequency spectrogram on the oracle hop grid.
+
+    Same causality as host_chroma12. Not firmware GDFT. Identical across P3-C
+    versions before the extra-DoF gain is applied.
+    """
+    y = np.asarray(pcm, dtype=np.float32).reshape(-1)
+    n = max(1, int(y.size // hop)) if y.size >= hop else 1
+    times = ((np.arange(n, dtype=np.float64) * hop) + hop * 0.5) / float(sr)
+    spec = np.zeros((n, n_bins), dtype=np.float64)
+    window = np.hanning(n_fft).astype(np.float64)
+    freqs = np.fft.rfftfreq(n_fft, d=1.0 / float(sr))
+    fmin, fmax = 40.0, max(80.0, float(sr) * 0.5)
+    edges = np.geomspace(fmin, fmax, n_bins + 1)
+    for i in range(n):
+        end = min(y.size, (i + 1) * hop)
+        start = end - n_fft
+        frame = np.zeros(n_fft, dtype=np.float64)
+        if start < 0:
+            take = y[:end]
+            frame[-take.size :] = take.astype(np.float64)
+        else:
+            frame[:] = y[start:end].astype(np.float64)
+        mag = np.abs(np.fft.rfft(frame * window))
+        for k in range(n_bins):
+            m = (freqs >= edges[k]) & (freqs < edges[k + 1])
+            if np.any(m):
+                spec[i, k] = float(mag[m].mean())
+    spec = np.log1p(spec)
+    # Frozen physical scale: a 0.4-amp broadband frame sits near 1.0.
+    spec = np.clip(spec / 4.0, 0.0, 1.0)
+    return times.astype(np.float32), spec.astype(np.float32)
+
+
+def extra_gain(frozen_01: NDArray, *, lo: float = 0.62, hi: float = 1.0) -> NDArray[np.float64]:
+    """Map a frozen 0–1 driver into a high visual-gain range.
+
+    Low-range PHOTONS² made the previous page unreadable. This keeps the extra
+    DoF identical between energy and share without crushing the floor.
+    """
+    x = np.clip(np.asarray(frozen_01, dtype=np.float64).reshape(-1), 0.0, 1.0)
+    return lo + (hi - lo) * x
+
+
+def preview_encode(leds: NDArray, *, exposure: float = 2.2) -> NDArray[np.uint8]:
+    """HOST preview: exposure + sRGB so a linear dump is readable on a display.
+
+    The firmware dump is pre-gamma. Displaying it raw on sRGB looks near-black.
+    This does not change the engine; it is the page's view of the bytes.
+    """
+    arr = np.asarray(leds, dtype=np.float64) / 255.0
+    x = np.clip(arr * float(exposure), 0.0, 1.0)
+    a = 0.055
+    srgb = np.where(x <= 0.0031308, 12.92 * x, (1.0 + a) * np.power(x, 1.0 / 2.2) - a)
+    return np.clip(np.rint(srgb * 255.0), 0, 255).astype(np.uint8)

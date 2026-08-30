@@ -94,19 +94,18 @@ The 20-track page is the **P3-B CHALLENGE SET** (oracle-ranked for green ≠ blu
 
 ## P3-C — visual-engine oracle replay (HOST-ONLY)
 
-Isolated replay of firmware `light_mode_bloom` compiled via `render_replay.py` (firmware SHA recorded in the receipt) plus the shipping `apply_brightness` photons curve (`PHOTONS²`, mode 0). No production firmware edits.
+Isolated replay of firmware **palette path** (not chroma HSV). Continuous engine is `light_mode_spectrum_river` (spectrum as space, `palette_manual_colour`). Events are firmware `light_mode_comet` launches composited over that river. Palette is `K1_Ultraviolet_Bright`. Square-iter is 0 so the host linear dump is not crushed. A host sRGB/exposure preview makes the page readable; the dump is still pre-gamma. No production firmware edits.
 
-Same extra degree of freedom, same gain, same range:
+The first P3-C pass used chromatic bloom + PHOTONS² and was unreadable. That is rejected as a lighting instrument.
 
-- A = bloom + constant PHOTONS 0.675
-- B = bloom + PHOTONS driven by frozen mix energy
-- D = bloom + PHOTONS driven by frozen source share (`abs` kept as engineering reference, not on the page)
+Same extra degree of freedom, high floor so versions can be seen:
 
-P3-C2: the same `k1_visual_hooks` onset→photons accent (gain 0.16, tau 100 ms). Control trigger = `|Δ mix|`. MIR trigger = `composition_change`. Frozen corpus thresholds, rates printed per version.
+- A / B / D = same palette river; extra gain in [0.62, 1.0] from constant / frozen mix / frozen share
+- P3-C2 = same comet launch over that river; control trigger `|Δ mix|`, MIR trigger `composition_change`
 
 20 clips: 10 challenge (from the P3-B oracle set) + 10 MUSDB **test** holdout tracks stratified by duration quartile, **not** by share/RMS disagreement. Versions are **Version 1/2/3** (and Version 1/2 on events). Key is sealed until after judging.
 
-HOST chromagram is a causal 12-bin STFT mapped into bloom’s expected range (mix-gain × broadband floor). Identical across A/B/D. Not firmware GDFT. One second of bloom warmup precedes each clip so the still is not a cold centre-dot. Bloom host frame rate is 31.25 Hz (device AP is 133 Hz); motion is slower; identical across versions.
+HOST spectrogram is a causal 80-bin log-frequency STFT on the oracle hop grid. Identical across versions before extra gain. Not firmware GDFT. One second of warmup precedes each clip. Host frame rate is 31.25 Hz (device AP is 133 Hz).
 
 - Continuous: `docs/mir/visual_replay/p3c1_continuous.html`
 - Events: `docs/mir/visual_replay/p3c2_events.html`

@@ -1,13 +1,18 @@
 {
   "label": "HOST-ONLY",
   "phase": "P3-C",
-  "engine": "firmware light_mode_bloom + apply_brightness photons_curve",
-  "photons_curve_mode": 0,
+  "engine": {
+    "continuous": "firmware light_mode_spectrum_river",
+    "events": "firmware light_mode_comet",
+    "colour": "PALETTE_MODE + K1_Ultraviolet_Bright (index 43); chromatic HSV off",
+    "square_iter": 0.0,
+    "preview": "sRGB + exposure 2.2 (host dump is pre-gamma)"
+  },
   "firmware_root": "/Users/spectrasynq/SpectraSynq_K1_Firmware",
   "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
   "frozen_map_version": "p3b-v1",
   "modulation_weight": 0.65,
-  "base_photons": 0.675,
+  "extra_dof": "spectrogram gain in [0.62, 1.0] from frozen mix vs share",
   "timebase": {
     "sr": 16000,
     "hop_samples": 512,
@@ -23,7 +28,16 @@
   },
   "display_step": 2,
   "segment_s": 8.0,
-  "chroma": "HOST-ONLY causal 12-bin STFT; identical across A/B/D",
+  "palette_params": {
+    "mood": 0.65,
+    "saturation": 1.0,
+    "square_iter": 0.0,
+    "chroma": 1.0,
+    "palette_mode": true,
+    "palette_index": 43,
+    "chromatic_mode": false,
+    "auto_color_shift": true
+  },
   "commercial_training_lineage": false,
   "demucs_installed": false,
   "student_gate": "OPEN",
@@ -62,10 +76,10 @@
     "The Easton Ellises (Baumi) - SDRNR"
   ],
   "summary": {
-    "challenge_mean_mad_B_vs_D": 10.825914999999998,
-    "holdout_mean_mad_B_vs_D": 10.666475,
-    "challenge_mean_mad_control_vs_mir": 0.15707333333333334,
-    "holdout_mean_mad_control_vs_mir": 0.25339,
+    "challenge_mean_mad_B_vs_D": 3.3181366666666667,
+    "holdout_mean_mad_B_vs_D": 5.238315,
+    "challenge_mean_mad_control_vs_mir": 1.4174383333333334,
+    "holdout_mean_mad_control_vs_mir": 1.8998233333333334,
     "challenge_mean_trig_control": 27.75,
     "challenge_mean_trig_mir": 9.0,
     "holdout_mean_trig_control": 14.25,

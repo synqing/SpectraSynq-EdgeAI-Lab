@@ -208,6 +208,37 @@ def test_host_chroma_is_causal_and_hop_aligned():
     assert float(np.mean(cn.sum(axis=1))) > 1.2
 
 
+def test_preview_encode_makes_mid_grey_readable():
+    from edgeai.mir.host_chroma import preview_encode
+
+    dim = np.full((2, 160, 3), 18, dtype=np.uint8)
+    out = preview_encode(dim, exposure=2.2)
+    assert int(out.mean()) > int(dim.mean()) + 20
+
+
+def test_spectrogram_is_80_bins_and_causal():
+    from edgeai.mir.host_chroma import host_spectrogram80
+
+    sr, hop = 16_000, 512
+    n = sr * 1
+    t = np.arange(n) / sr
+    y = np.sin(2 * np.pi * 110.0 * t).astype(np.float32)
+    times, spec = host_spectrogram80(y, sr=sr, hop=hop)
+    oracle_times = ((np.arange(len(times)) * hop) + hop * 0.5) / sr
+    assert np.allclose(times, oracle_times, atol=1e-6)
+    assert spec.shape[1] == 80
+    assert float(spec.max()) > 0.05
+
+
+def test_extra_gain_stays_in_a_bright_band():
+    from edgeai.mir.host_chroma import extra_gain
+
+    g = extra_gain(np.array([0.0, 0.5, 1.0]))
+    assert g[0] >= 0.60
+    assert g[-1] <= 1.0
+    assert g[0] < g[1] < g[-1]
+
+
 def test_bloom_chromagram_is_broadband_enough_to_light():
     from edgeai.mir.host_chroma import bloom_chromagram
 

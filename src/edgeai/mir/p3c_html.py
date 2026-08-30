@@ -82,8 +82,8 @@ def write_page(
   .row {{ margin:0 0 8px; }}
   .row:last-child {{ margin:0; }}
   .lbl {{ font:11px/1 ui-sans-serif, system-ui; color:#c8c2b8; margin:0 0 4px; letter-spacing:0.08em; }}
-  canvas.strip {{ width:100%; height:28px; display:block; image-rendering:pixelated; background:var(--ledgap); }}
-  canvas.plate {{ width:100%; height:72px; display:block; image-rendering:pixelated; background:#000; margin-top:4px; }}
+  canvas.strip {{ width:100%; height:52px; display:block; image-rendering:pixelated; background:var(--ledgap); }}
+  canvas.plate {{ width:100%; height:120px; display:block; image-rendering:pixelated; background:#000; margin-top:4px; }}
   .rate {{ font:11px/1 ui-monospace, Menlo, monospace; color:#a39b90; float:right; }}
   .playhead {{ height:2px; background:var(--accent); width:0%; margin-top:8px; }}
 </style>
@@ -120,7 +120,7 @@ function frameRGB(u, fi, nLed) {{
 }}
 function paintStrip(cv, rgb, nLed) {{
   const w = cv.width = nLed;
-  const h = cv.height = 8;
+  const h = cv.height = 14;
   const ctx = cv.getContext('2d');
   const img = ctx.createImageData(w, h);
   for (let x=0;x<nLed;x++) {{
@@ -134,7 +134,7 @@ function paintStrip(cv, rgb, nLed) {{
 }}
 function paintPlate(cv, rgb, nLed) {{
   const w = cv.width = nLed;
-  const h = cv.height = 36;
+  const h = cv.height = 56;
   const ctx = cv.getContext('2d');
   const img = ctx.createImageData(w, h);
   const centre = (nLed - 1) / 2;
