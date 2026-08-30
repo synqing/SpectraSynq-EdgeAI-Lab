@@ -1,5 +1,5 @@
 ---
-abstract: "Student-model selection gate. A U55 CNN may not be the primary target until these nine questions have evidence."
+abstract: "Student-model selection gate still OPEN. P3-C dump close: share extra-DoF PASS on Waveform Tempo position; composition-change events FAIL. No freeze. No Demucs."
 ---
 
 # Student-model selection gate
@@ -14,7 +14,7 @@ A small RA8P1/U55 student becomes the primary implementation target only after
 5. **CLEAN/STUDIO behaviour**
 6. **Live/venue-domain robustness** — Amendment 002: CLEAN vs PA/ROOM vs PA/ROOM+CROWD; PaRIRset held-out venues intact.
 7. **Licensing/provenance** — `mir/registry.yaml`. Teacher use ≠ derived-weight clearance.
-8. **Visual utility** — offline replay of `semantic_trace.jsonl` against **actual host visual-engine pixels** (P3-C bloom + apply_brightness), not a scalar stand-in, **before** student training. If a perfect oracle does not improve lights, do not train.
+8. **Visual utility** — offline replay against **actual host visual-engine pixels** (P3-C Waveform Tempo on the palette path), scored on dumps not eyes, **before** student training. If a perfect oracle does not improve lights, do not train.
 9. **U55 compressibility** — PRE-SILICON compile of a candidate graph (RUHMI), not Semantic-v0-synthetic authority. GHA 33319114336: `ad01_int8.tflite` and `smoke.onnx` both emitted C99. Receipt: `docs/ruhmi/COMPILE_RECEIPT.md`. Not ON-SILICON.
 
 Do not freeze Student-v0 yet.
@@ -24,7 +24,7 @@ Evidence so far (HOST-ONLY, not a freeze):
 - Real-audio incremental vs DSP: DEAM 2015 human arousal vs energy mean r=0.37, R²=0.30. Not Semantic-v0's r=0.99.
 - Visual utility (A/B/C replay, not firmware): A = onset baseline; B = same extra DoF from RMS; C = same extra DoF from human arousal; w=0.65. Five 2015 songs (2030/2028 controls; 2034/2041/2056 residuals). `docs/mir/visual_replay/index.html`. Not a Captain LED judgement and not a student freeze.
 - Live/venue: PaRIRset test-split convolution on three held-out venues. Unaligned onset r is low because the IRs inject ~100 ms delay, not because events vanish. Delay-aligned native-hop F1@50 ms recovers 0.05 → 0.86 (HOST-ONLY). Old “onset dies” reading **invalidated**. Residual smear remains (aligned F1 0.79–0.92). CrowdioSet not ingested. Receipt: `docs/mir/PARIRSET_ONSET_ALIGNED.md`.
-- Source activity: P3-B full MUSDB18 n=150. Within-track r(drums_share, mix)=0.10 vs r(drums_abs, mix)=0.62. Vocals 0.17 vs 0.44. Bass 0.16 vs 0.64. **abs DEMOTE; share PASS incremental-info; composition-change PASS to visual test.** P3-B HTML is not a lighting pass. P3-C HOST replay of firmware bloom + apply_brightness is the visual-engine gate (blinded A/B/D and event control). Demucs not installed. Student I/O still OPEN. `docs/mir/SOURCE_ACTIVITY.md`.
+- Source activity: P3-B full MUSDB18 n=150. Within-track r(drums_share, mix)=0.10 vs r(drums_abs, mix)=0.62. Vocals 0.17 vs 0.44. Bass 0.16 vs 0.64. **abs DEMOTE; share PASS incremental-info.** P3-C dump close on Waveform Tempo: **share extra-DoF PASS** (holdout Δ partial r of head position vs share \| mix = 0.63, 9/9); **composition-change events FAIL** vs `|Δ mix|` at drum attacks. Demucs not installed. Student I/O still OPEN. Share head is a candidate only. `docs/mir/P3C_QUANT.json`.
 - U55 compressibility: PRE-SILICON C99 for Renesas `ad01_int8.tflite` and lab `smoke.onnx` (GHA 33319114336, AdaptiveAvgPool2d after D11 ReduceMean split). Not ON-SILICON.
 - Teacher/oracle quality: Essentia DEAM head ≠ human 2 Hz on two songs. Jamendo mood means differ; often clip-flat.
 
@@ -55,3 +55,4 @@ Worth keeping on the visual-utility list after landscape + conventional traces:
 | 2026-08-31 | agent:edgeai | P3-A MUSDB samples; abs/share/delta; share ≠ mix energy. |
 | 2026-08-31 | agent:edgeai | P3-B 150 tracks; within-track share vs mix; visual pages not a pass. |
 | 2026-08-31 | agent:edgeai | Visual utility = P3-C engine pixels; abs demoted; Demucs still not next. |
+| 2026-08-31 | agent:edgeai | P3-C dump-scored: share position PASS; composition-change comets FAIL. |

@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices D1–D14. D12 abs demoted / share info-PASS. D14 P3-C is the visual-engine gate on firmware Waveform Tempo; no Demucs until it passes. Student I/O still OPEN."
+abstract: "Architectural choices D1–D14. D14 P3-C dump close: share-as-Waveform-Tempo-position PASS; composition-change comets FAIL. Student share head is a candidate. I/O still OPEN. No Demucs."
 ---
 
 # Decisions
@@ -107,8 +107,8 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 
 **Chosen:** Isolated HOST replay of firmware `light_mode_waveform_tempo` on the product palette path (`K1_Ultraviolet_Bright`, square_iter 0). Same extra DoF for baseline / mix energy / source share (peak + chroma gain in [0.62, 1.0]). Events are firmware `light_mode_comet` over that tempo floor, matched trigger budget. Challenge 10 from the P3-B oracle set plus 10 MUSDB-test holdout tracks stratified by duration, not by share/RMS disagreement. Versions are blinded. No firmware production edits. No Demucs.
 **Why:** P3-B HTML was an existing-behaviour stand-in. Chromatic bloom + PHOTONS² was unreadable. Spectrum River was visually usable; Captain preferred Waveform Tempo. Pixel MAD is not a lighting call. If lights never benefit, there is nothing to teach. If they do, MUSDB stems are already perfect supervision — a separator teacher would only add error.
-**Rejected:** lighting call from `p3b1_continuous.html` / `p3b2_events.html`; chroma HSV as the colour path; installing Demucs next; training a student before P3-C; freezing student heads for abs/share/delta/composition_change separately.
-**Revisit:** after the blinded Version 1/2/3 lighting judgement on Waveform Tempo. Pass on share → research student on stem powers, deterministic share/delta/composition_change. Pass on composition-change → same backbone, event head is derived. Fail both → do not train.
+**Rejected:** lighting call from `p3b1_continuous.html` / `p3b2_events.html`; chroma HSV as the colour path; installing Demucs next; training a student before P3-C; freezing student heads for abs/share/delta/composition_change separately; Captain eyes as the P3-C close when dumps exist.
+**Revisit:** Quantitative dump close `docs/mir/P3C_QUANT.json`. Share-as-Waveform-Tempo-position **PASS** on holdout (Δ partial r 0.63, 9/9). Composition-change comets **FAIL** vs `|Δ mix|` at drum attacks. Student share head is a candidate; event head is not. Student I/O still OPEN. Next: tiny research student on MUSDB stem powers for share only. Demucs still later.
 
 ---
 **Document Changelog**
@@ -125,3 +125,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:edgeai | D13 frozen maps, hop-centre timebase, composition_change. |
 | 2026-08-31 | agent:edgeai | D12 revisit (abs demoted); D14 P3-C visual-engine gate, no Demucs. |
 | 2026-08-31 | agent:edgeai | D14: continuous engine is Waveform Tempo on the palette path, not bloom/river. |
+| 2026-08-31 | agent:edgeai | D14 revisit: dump-scored share PASS / composition-change events FAIL; no Captain eyes. |

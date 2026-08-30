@@ -1,5 +1,5 @@
 ---
-abstract: "P3-B information gate: share ≠ mix (within r 0.10–0.17). abs demoted. P3-C continuous engine is firmware Waveform Tempo on the palette path, blinded, challenge+holdout. No Demucs. Student still OPEN."
+abstract: "P3-B share ≠ mix. P3-C Waveform Tempo scored on dumps: share extra-DoF PASS in wave position (holdout Δr=0.63, 9/9); composition-change comets FAIL vs loudness. No Demucs. Student OPEN; share head is a candidate."
 ---
 
 # Source activity — perfect oracle
@@ -105,18 +105,33 @@ Same extra degree of freedom, high floor so versions can be seen:
 - A / B / D = same Waveform Tempo; extra gain in [0.62, 1.0] on peak + chroma from constant / frozen mix / frozen share
 - P3-C2 = same comet launch over that tempo floor; control trigger `|Δ mix|`, MIR trigger `composition_change`
 
-20 clips: 10 challenge (from the P3-B oracle set) + 10 MUSDB **test** holdout tracks stratified by duration quartile, **not** by share/RMS disagreement. Versions are **Version 1/2/3** (and Version 1/2 on events). Key is sealed until after judging.
+20 clips: 10 challenge (from the P3-B oracle set) + 10 MUSDB **test** holdout tracks stratified by duration quartile, **not** by share/RMS disagreement.
 
 HOST chroma is a causal 12-bin STFT on the oracle hop grid. Identical across versions before extra gain. Not firmware GDFT. One second of warmup precedes each clip. Host frame rate is 31.25 Hz (device AP is 133 Hz).
 
-- Continuous: `docs/mir/visual_replay/p3c1_continuous.html`
-- Events: `docs/mir/visual_replay/p3c2_events.html`
-- Keys: `docs/mir/visual_replay/P3C1_BLIND_KEY_OPEN_AFTER_JUDGING.json` (open only after scoring)
-- Receipt: `artifacts/source_activity/p3c/receipt_musdb18_p3c.json`
+### P3-C quantitative close (dumps, not eyes)
 
-This is still not a lighting verdict. Pixel MAD proves the extra DoF moved the bytes. Taste is the remaining call.
+The close is on LED buffers vs the source oracle. Captain is not the validator. Circular trap: raw r(pixels, share) is not a pass, because D was driven by share. The extra-DoF test is whether D's **wave head position** tracks share after mix RMS is partialled out, compared with B.
 
-If share never beats mix on the lights: do not train a dominance student. If composition-change never beats `|Δ mix|` on the same accent: do not train an arrangement-change student. If one of them does: train a tiny research student **directly on MUSDB stem powers**, derive share/delta/composition_change in deterministic code. Demucs only after that, for unstemmed scale.
+| Gate | Holdout stamp | Number |
+| --- | --- | --- |
+| Q1 knob is head position | **PASS** | Spearman(position, extra gain) 0.68 |
+| Q2 share increment in pixels | **PASS** | partial r D 0.68 vs B 0.04; Δ 0.63; 9/9 clips |
+| Q3 source abs after mix | **PASS** | Δ 0.45; 9/9 (abs was not the driver) |
+| Q4 arrangement in pixels | **FAIL** | Δ partial r vs composition_change 0.06 |
+| Q5 comet vs loudness at drums | **FAIL** | F1 delta 0.02; 7/10 wins, below floor |
+
+Mean luminance is the wrong feature: extra gain **shortens** the Waveform Tempo trail, so luma vs gain is negative (~−0.44). Brighter-looking pages are not the same as “more extra energy.”
+
+Stamps: **share continuous PASS**. **composition_change events FAIL**. Student share head is a **CANDIDATE**, not frozen. Event head **NO**. Demucs **NO**. Student gate still **OPEN**.
+
+- Scorer: `uv run python scripts/p3c_quant_score.py`
+- Receipt: `docs/mir/P3C_QUANT.json`
+- Chart: `docs/mir/figures/p3c_quant_share.png`
+- Continuous page (reference, not the close): `docs/mir/visual_replay/p3c1_continuous.html`
+- Events page (reference, not the close): `docs/mir/visual_replay/p3c2_events.html`
+
+If share had failed Q2/Q3 on holdout: do not train a dominance student. It passed. Next research step is a tiny student on MUSDB stem powers with a **share** extra-DoF, not an arrangement-change event head. Demucs only after that, for unstemmed scale.
 
 Re-run: `uv run python scripts/download_musdb.py --fetch` then `uv run python scripts/musdb18_p3b.py` then `uv run --extra musdb python scripts/musdb18_p3c.py`. Requires `SPECTRASYNQ_K1_FIRMWARE` (or the workstation checkout) and g++-15.
 
@@ -133,3 +148,4 @@ Older HPSS-on-DEAM numbers remain a mixture-only baseline, not stem truth.
 | 2026-08-31 | agent:edgeai | P3-B 150 full tracks; oracle-ranked 20; within-track share vs mix. |
 | 2026-08-31 | agent:edgeai | P3-B stamps: abs demoted, share info-PASS; P3-C bloom+PHOTONS blinded replay. |
 | 2026-08-31 | agent:edgeai | P3-C continuous engine swapped to firmware Waveform Tempo on the palette path. |
+| 2026-08-31 | agent:edgeai | P3-C quantitative close: share extra-DoF PASS in wave position; composition-change comets FAIL. |

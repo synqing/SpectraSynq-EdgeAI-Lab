@@ -1,0 +1,133 @@
+{
+  "label": "HOST-ONLY",
+  "phase": "P3-C-QUANT",
+  "engine_feature": "waveform_tempo upper-half head position",
+  "circular_trap": "r(pixels, share) without partialling mix is not a pass",
+  "all": {
+    "n_clips": 20,
+    "median_spearman_pos_gain": 0.6694390630250083,
+    "median_spearman_B_pos_gain": 0.7341298900782411,
+    "median_spearman_D_pos_gain": 0.5827105073681178,
+    "median_spearman_lum_gain": -0.3391400182402918,
+    "median_partial_B_pos_share_mix": 0.020971876682655294,
+    "median_partial_D_pos_share_mix": 0.5830391041227396,
+    "median_delta_pos_share": 0.4823724614855252,
+    "wins_delta_pos_share": [
+      17,
+      17
+    ],
+    "median_delta_pos_abs": 0.40070128733158417,
+    "wins_delta_pos_abs": [
+      16,
+      17
+    ],
+    "median_delta_pos_cc": 0.05423568579148334,
+    "wins_delta_pos_cc": [
+      13,
+      20
+    ],
+    "median_f1_control_drums": 0.2,
+    "median_f1_mir_drums": 0.2,
+    "median_delta_f1_drums": 0.0,
+    "wins_delta_f1_drums": [
+      7,
+      20
+    ],
+    "median_delta_f1_cc": 0.029063146997929626,
+    "n_event_vacuous": 5,
+    "Q1_knob_is_head_position": "PASS",
+    "Q2_share_increment_in_pixels": "PASS",
+    "Q3_source_abs_after_mix": "PASS",
+    "Q4_arrangement_in_pixels": "FAIL",
+    "Q5_comet_beats_loudness_at_drums": "FAIL"
+  },
+  "challenge": {
+    "n_clips": 10,
+    "median_spearman_pos_gain": 0.6452320837133394,
+    "median_spearman_B_pos_gain": 0.6628379974079585,
+    "median_spearman_D_pos_gain": 0.4444732875726011,
+    "median_spearman_lum_gain": -0.25610483367733883,
+    "median_partial_B_pos_share_mix": 0.017317257976786047,
+    "median_partial_D_pos_share_mix": 0.4754191466619382,
+    "median_delta_pos_share": 0.360371110197625,
+    "wins_delta_pos_share": [
+      8,
+      8
+    ],
+    "median_delta_pos_abs": 0.3029389013326479,
+    "wins_delta_pos_abs": [
+      7,
+      8
+    ],
+    "median_delta_pos_cc": 0.040756387213459276,
+    "wins_delta_pos_cc": [
+      6,
+      10
+    ],
+    "median_f1_control_drums": 0.1588235294117647,
+    "median_f1_mir_drums": 0.10049019607843138,
+    "median_delta_f1_drums": 0.0,
+    "wins_delta_f1_drums": [
+      0,
+      10
+    ],
+    "median_delta_f1_cc": 0.0,
+    "n_event_vacuous": 5,
+    "Q1_knob_is_head_position": "PASS",
+    "Q2_share_increment_in_pixels": "PASS",
+    "Q3_source_abs_after_mix": "PASS",
+    "Q4_arrangement_in_pixels": "FAIL",
+    "Q5_comet_beats_loudness_at_drums": "FAIL"
+  },
+  "holdout": {
+    "n_clips": 10,
+    "median_spearman_pos_gain": 0.6772197955167282,
+    "median_spearman_B_pos_gain": 0.7691739067825085,
+    "median_spearman_D_pos_gain": 0.6694390630250083,
+    "median_spearman_lum_gain": -0.4373611097777564,
+    "median_partial_B_pos_share_mix": 0.04028898939129552,
+    "median_partial_D_pos_share_mix": 0.6760402536863795,
+    "median_delta_pos_share": 0.6250917945951562,
+    "wins_delta_pos_share": [
+      9,
+      9
+    ],
+    "median_delta_pos_abs": 0.45142359141071536,
+    "wins_delta_pos_abs": [
+      9,
+      9
+    ],
+    "median_delta_pos_cc": 0.05665563981292787,
+    "wins_delta_pos_cc": [
+      7,
+      10
+    ],
+    "median_f1_control_drums": 0.20714285714285713,
+    "median_f1_mir_drums": 0.3617886178861789,
+    "median_delta_f1_drums": 0.017578091570389393,
+    "wins_delta_f1_drums": [
+      7,
+      10
+    ],
+    "median_delta_f1_cc": 0.06599658539137215,
+    "n_event_vacuous": 0,
+    "Q1_knob_is_head_position": "PASS",
+    "Q2_share_increment_in_pixels": "PASS",
+    "Q3_source_abs_after_mix": "PASS",
+    "Q4_arrangement_in_pixels": "FAIL",
+    "Q5_comet_beats_loudness_at_drums": "FAIL"
+  },
+  "stamps": {
+    "share_continuous": "PASS",
+    "composition_change_events": "FAIL",
+    "student_share_head": "CANDIDATE",
+    "student_event_head": "NO",
+    "demucs": "NO",
+    "student_gate": "OPEN"
+  },
+  "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "html": [
+    "docs/mir/visual_replay/p3c1_continuous.html",
+    "docs/mir/visual_replay/p3c2_events.html"
+  ]
+}
