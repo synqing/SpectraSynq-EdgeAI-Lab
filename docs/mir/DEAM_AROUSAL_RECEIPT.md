@@ -23,7 +23,11 @@ Energy still explains *some* songs (e.g. 2030 r_rms=0.81, R²_energy=0.76). Othe
 
 Adding flux/onset/novelty only lifts mean R² 0.30 → 0.34 on 2015. Most of the human series is still unexplained by this DSP set.
 
-**Interpretation:** arousal remains a live semantic-lane hypothesis. Do not train a student until the visual replay kill-test (P5) on a high-residual track.
+**Interpretation:** arousal remains a live semantic-lane hypothesis.
+
+P5 visual replay (HOST-ONLY, not firmware): on 2034 the human-arousal strip is **not** an RMS strip. On 2030 they mostly agree. That is the early kill-test shape — not a Captain eyes-on of LEDs, a trace comparison. See `docs/mir/figures/visual_oracle_replay.png` and `docs/mir/visual_replay/index.html`.
+
+Do not train a student until a visual engine consumes that oracle on 2034 and still looks better. This lab's replay is the disagreement plot, not a production lighting A/B.
 
 P2 Essentia MusiCNN + `deam-msd-musicnn-2` (CC BY-NC-SA weights) ran on 2030 and 2034. Patch-wise predicted arousal vs human 2 Hz: r ≈ −0.08 and −0.15. That is **not** a freeze: hop/scale alignment may be wrong; two songs. It is enough to say the head is not an automatic substitute for the human series.
 
@@ -34,3 +38,4 @@ Licence: DEAM research; commercial UNKNOWN. Traces in `artifacts/deam_arousal/tr
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | P1 executed on 82 DEAM files. |
+| 2026-08-30 | agent:edgeai | P5 disagreement plot for 2030 vs 2034. |

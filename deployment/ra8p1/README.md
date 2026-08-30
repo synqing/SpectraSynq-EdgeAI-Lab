@@ -5,8 +5,8 @@ discover toolchain incompatibilities before Titan arrives.
 
 ## Facts (not hopes)
 
-- Pin: **ruhmi-framework-mcu `6c5aad9` / Release-2026-06-19**, MERA `2.6.0+pkg.4815`.
-  Do not clone `main` in CI.
+- Pin: **ruhmi-framework-mcu `6c5aad901a1a41e28f6e306bfc35c44659e89502` / Release-2026-06-19**, MERA `2.6.0+pkg.4815`.
+  Short `6c5aad9` is documentation only. Do not clone `main` in CI. Do not `grep -qx` the short SHA against `rev-parse HEAD`.
 - Supported hosts: Ubuntu 22.04 and Windows 10/11, **Python 3.10**, **x86-64**.
 - Wheel from that commit's `install/` directory, not a floating `main` URL.
 - Ubuntu runners need Renesas' libstdc++ recipe (`ppa:ubuntu-toolchain-r/test`,

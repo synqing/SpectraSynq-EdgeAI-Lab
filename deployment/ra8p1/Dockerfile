@@ -6,7 +6,7 @@ FROM --platform=linux/amd64 ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    RUHMI_REF=6c5aad9
+    RUHMI_REF=6c5aad901a1a41e28f6e306bfc35c44659e89502
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         software-properties-common ca-certificates \
@@ -32,7 +32,8 @@ RUN wget -q "https://github.com/renesas/ruhmi-framework-mcu/raw/${RUHMI_REF}/ins
  && python -c "import mera; print('mera', mera.__version__)"
 
 RUN git clone https://github.com/renesas/ruhmi-framework-mcu.git /opt/ruhmi-framework-mcu \
- && git -C /opt/ruhmi-framework-mcu checkout --detach ${RUHMI_REF}
+ && git -C /opt/ruhmi-framework-mcu checkout --detach ${RUHMI_REF} \
+ && test "$(git -C /opt/ruhmi-framework-mcu rev-parse HEAD)" = "${RUHMI_REF}"
 
 WORKDIR /work
 COPY compile_entrypoint.py /opt/compile_entrypoint.py

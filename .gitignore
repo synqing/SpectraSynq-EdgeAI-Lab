@@ -51,6 +51,9 @@ datasets/raw/
 datasets/cache/
 datasets/deam/**
 !datasets/deam/README.md
+datasets/parirset/**
+!datasets/parirset/README.md
+datasets/crowdioset/
 *.mp3
 *.zip
 

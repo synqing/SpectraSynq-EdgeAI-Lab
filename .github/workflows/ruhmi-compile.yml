@@ -16,7 +16,10 @@ on:
 
 env:
   RUHMI_GIT: https://github.com/renesas/ruhmi-framework-mcu.git
-  RUHMI_REF: 6c5aad9
+  # Full SHA of Release-2026-06-19. Short "6c5aad9" is documentation only —
+  # `rev-parse HEAD | grep -qx 6c5aad9` failed on run 33318276254 because HEAD
+  # prints 6c5aad901a1a41e28f6e306bfc35c44659e89502.
+  RUHMI_REF: 6c5aad901a1a41e28f6e306bfc35c44659e89502
   MERA_WHEEL: mera-2.6.0+pkg.4815-cp310-cp310-manylinux_2_27_x86_64.whl
   AD01_URL: https://raw.githubusercontent.com/mlcommons/tiny/master/benchmark/training/anomaly_detection/trained_models/ad01_int8.tflite
 
@@ -72,7 +75,7 @@ jobs:
           git clone "${RUHMI_GIT}" "$HOME/ruhmi-framework-mcu"
           git -C "$HOME/ruhmi-framework-mcu" checkout --detach "${RUHMI_REF}"
           git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD
-          git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD | grep -qx "${RUHMI_REF}"
+          test "$(git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD)" = "${RUHMI_REF}"
       - name: Compile Renesas known-good ad01_int8.tflite
         run: |
           set -eux

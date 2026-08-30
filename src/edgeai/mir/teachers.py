@@ -34,6 +34,43 @@ def activity_envelope(stem: NDArray[np.float32], sr: int, hop: int = 512) -> tup
     return np.array(times, dtype=np.float32), (v / peak)
 
 
+def hpss_stems(pcm: NDArray[np.float32], sr: int) -> dict[str, NDArray[np.float32]]:
+    """Deterministic harmonic/percussive split. Not a neural separator.
+
+    Used as a cheap source-activity baseline: if HPSS envelopes are already
+    redundant with mix RMS, a Demucs teacher has a higher bar.
+    """
+    import librosa
+
+    y = np.asarray(pcm, dtype=np.float32).reshape(-1)
+    harmonic, percussive = librosa.effects.hpss(y)
+    return {
+        "harmonic": harmonic.astype(np.float32),
+        "percussive": percussive.astype(np.float32),
+        "mixture": y,
+    }
+
+
+def envelope_vs_mixture(
+    stems: dict[str, NDArray[np.float32]], sr: int, hop: int = 512
+) -> dict[str, float]:
+    mix_t, mix_e = activity_envelope(stems["mixture"], sr, hop)
+    out: dict[str, float] = {}
+    for name, stem in stems.items():
+        if name == "mixture":
+            continue
+        t, e = activity_envelope(stem, sr, hop)
+        n = min(len(mix_e), len(e))
+        a, b = mix_e[:n], e[:n]
+        if n < 8 or float(a.std()) < 1e-8 or float(b.std()) < 1e-8:
+            out[f"r_{name}_vs_mix_rms"] = float("nan")
+        else:
+            out[f"r_{name}_vs_mix_rms"] = float(np.corrcoef(a, b)[0, 1])
+        out[f"{name}_peak"] = float(e.max())
+    out["n_frames"] = int(len(mix_t))
+    return out
+
+
 def try_demucs() -> Separator | None:
     try:
         import demucs.api  # type: ignore

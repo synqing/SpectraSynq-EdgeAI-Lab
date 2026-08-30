@@ -7,6 +7,8 @@ CrowdioSet may add audience noise; record per-file licence before ingest.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -37,3 +39,30 @@ def synthetic_room_ir(sr: int = 16_000, rt60: float = 1.4) -> NDArray[np.float32
 
 
 DOMAINS = ("CLEAN_STUDIO", "PA_ROOM", "PA_ROOM_CROWD")
+
+# Hugging Face dataset tree. Test split = 8 held-out venues. Do not train on these.
+PARIRSET_HF = "https://huggingface.co/datasets/enricguso/parirset/resolve/main"
+
+
+def load_rir_wav(path: Path, sr: int = 16_000) -> NDArray[np.float32]:
+    """Load a PaRIRset (or any) stereo/mono WAV, mix to mono, resample."""
+    import soundfile as sf
+    from math import gcd
+    from scipy.signal import resample_poly
+
+    y, file_sr = sf.read(str(path), always_2d=True)
+    y = y.mean(axis=1).astype(np.float32)
+    if int(file_sr) != int(sr) and y.size:
+        g = gcd(int(sr), int(file_sr))
+        y = resample_poly(y, int(sr) // g, int(file_sr) // g).astype(np.float32)
+    peak = float(np.max(np.abs(y)) + 1e-8)
+    return (y / peak).astype(np.float32)
+
+
+def venue_from_parirset_name(name: str) -> str:
+    """test/0000_01_olivenzaOutdoors_test.wav -> olivenzaOutdoors"""
+    stem = Path(name).stem
+    parts = stem.split("_")
+    if len(parts) >= 3:
+        return parts[2]
+    return stem

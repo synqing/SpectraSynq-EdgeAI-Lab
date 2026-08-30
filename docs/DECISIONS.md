@@ -69,6 +69,8 @@ Each entry: chosen / why / rejected / revisit evidence.
 **Rejected:** Docker-as-blocker; floating `main`.
 **Revisit:** if a newer RUHMI release ships a cp310 wheel with a documented host recipe.
 
+Run 33318276254 then installed MERA `2.6.0+pkg.4815` and checked out `6c5aad90…` successfully; the job died on `rev-parse HEAD | grep -qx 6c5aad9` because HEAD prints the full SHA. Pin is now the full hash with an equality test.
+
 ## D10 — Amendment 002 live-domain (PaRIRset)
 
 **Chosen:** CLEAN / PA_ROOM / PA_ROOM_CROWD evaluation; PaRIRset test venues held out; CrowdioSet gated on per-file licence.
@@ -82,3 +84,5 @@ Each entry: chosen / why / rejected / revisit evidence.
 |------|--------|--------|
 | 2026-08-30 | agent:edgeai | Created with D1–D7 at lab bootstrap. |
 | 2026-08-30 | agent:edgeai | D8 — Amendment 001 MIR-first. |
+| 2026-08-30 | agent:edgeai | D9 RUHMI pin + gcc-13; D10 Amendment 002. |
+| 2026-08-30 | agent:edgeai | D9: pin full SHA after grep-short-SHA CI fail. |

@@ -33,7 +33,7 @@ It is **not** “put an NPU in SpectraSynq”.
 | Lane | Status |
 | --- | --- |
 | Host toolchain | keep |
-| RUHMI/U55 compile | keep (Docker/GHA); still not run |
+| RUHMI/U55 compile | GHA native x86: host-smoke PASS; MERA 2.6.0 installed; pin-check was the remaining fail |
 | MIR registry + oracle | primary |
 | DEAM arousal vs DSP | primary (real audio) |
 | RUHMI CI | pin 6c5aad9 + libstdc++/gcc-13; ad01 then smoke |
