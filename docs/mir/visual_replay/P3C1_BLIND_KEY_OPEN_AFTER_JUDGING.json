@@ -1,0 +1,426 @@
+{
+  "open_after_judging": true,
+  "instruction": "Do not open until Version 1/2/3 have been scored.",
+  "clips": {
+    "Actions_-_Devil_s_Words_challenge": {
+      "clip_id": "Actions_-_Devil_s_Words_challenge",
+      "order": [
+        "B",
+        "A",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "A",
+        "Version 3": "D"
+      },
+      "track": "Actions - Devil's Words",
+      "set": "challenge",
+      "share_driver": "vocals_share"
+    },
+    "Actions_-_South_Of_The_Water_challenge": {
+      "clip_id": "Actions_-_South_Of_The_Water_challenge",
+      "order": [
+        "B",
+        "D",
+        "A"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "D",
+        "Version 3": "A"
+      },
+      "track": "Actions - South Of The Water",
+      "set": "challenge",
+      "share_driver": "vocals_share"
+    },
+    "Actions_-_One_Minute_Smile_challenge": {
+      "clip_id": "Actions_-_One_Minute_Smile_challenge",
+      "order": [
+        "A",
+        "D",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "D",
+        "Version 3": "B"
+      },
+      "track": "Actions - One Minute Smile",
+      "set": "challenge",
+      "share_driver": "drums_share"
+    },
+    "Angela_Thomas_Wade_-_Milk_Cow_Blues_challenge": {
+      "clip_id": "Angela_Thomas_Wade_-_Milk_Cow_Blues_challenge",
+      "order": [
+        "B",
+        "A",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "A",
+        "Version 3": "D"
+      },
+      "track": "Angela Thomas Wade - Milk Cow Blues",
+      "set": "challenge",
+      "share_driver": "drums_share"
+    },
+    "Chris_Durban_-_Celebrate_challenge": {
+      "clip_id": "Chris_Durban_-_Celebrate_challenge",
+      "order": [
+        "D",
+        "A",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "D",
+        "Version 2": "A",
+        "Version 3": "B"
+      },
+      "track": "Chris Durban - Celebrate",
+      "set": "challenge",
+      "share_driver": "bass_share"
+    },
+    "James_May_-_All_Souls_Moon_challenge": {
+      "clip_id": "James_May_-_All_Souls_Moon_challenge",
+      "order": [
+        "A",
+        "B",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "B",
+        "Version 3": "D"
+      },
+      "track": "James May - All Souls Moon",
+      "set": "challenge",
+      "share_driver": "bass_share"
+    },
+    "Black_Bloc_-_If_You_Want_Success_challenge": {
+      "clip_id": "Black_Bloc_-_If_You_Want_Success_challenge",
+      "order": [
+        "A",
+        "D",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "D",
+        "Version 3": "B"
+      },
+      "track": "Black Bloc - If You Want Success",
+      "set": "challenge",
+      "share_driver": "vocals_share"
+    },
+    "Johnny_Lokke_-_Promises___Lies_challenge": {
+      "clip_id": "Johnny_Lokke_-_Promises___Lies_challenge",
+      "order": [
+        "B",
+        "A",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "A",
+        "Version 3": "D"
+      },
+      "track": "Johnny Lokke - Promises & Lies",
+      "set": "challenge",
+      "share_driver": "vocals_share"
+    },
+    "M.E.R.C._Music_-_Knockout_challenge": {
+      "clip_id": "M.E.R.C._Music_-_Knockout_challenge",
+      "order": [
+        "D",
+        "B",
+        "A"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "D",
+        "Version 2": "B",
+        "Version 3": "A"
+      },
+      "track": "M.E.R.C. Music - Knockout",
+      "set": "challenge",
+      "share_driver": "vocals_share"
+    },
+    "Detsky_Sad_-_Walkie_Talkie_challenge": {
+      "clip_id": "Detsky_Sad_-_Walkie_Talkie_challenge",
+      "order": [
+        "A",
+        "D",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "D",
+        "Version 3": "B"
+      },
+      "track": "Detsky Sad - Walkie Talkie",
+      "set": "challenge",
+      "share_driver": "vocals_share"
+    },
+    "Enda_Reilly_-_Cur_An_Long_Ag_Seol_holdout": {
+      "clip_id": "Enda_Reilly_-_Cur_An_Long_Ag_Seol_holdout",
+      "order": [
+        "B",
+        "D",
+        "A"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "D",
+        "Version 3": "A"
+      },
+      "track": "Enda Reilly - Cur An Long Ag Seol",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "BKS_-_Too_Much_holdout": {
+      "clip_id": "BKS_-_Too_Much_holdout",
+      "order": [
+        "A",
+        "D",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "D",
+        "Version 3": "B"
+      },
+      "track": "BKS - Too Much",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "Speak_Softly_-_Broken_Man_holdout": {
+      "clip_id": "Speak_Softly_-_Broken_Man_holdout",
+      "order": [
+        "B",
+        "A",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "A",
+        "Version 3": "D"
+      },
+      "track": "Speak Softly - Broken Man",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "Skelpolu_-_Resurrection_holdout": {
+      "clip_id": "Skelpolu_-_Resurrection_holdout",
+      "order": [
+        "B",
+        "D",
+        "A"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "D",
+        "Version 3": "A"
+      },
+      "track": "Skelpolu - Resurrection",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "Angels_In_Amplifiers_-_I_m_Alright_holdout": {
+      "clip_id": "Angels_In_Amplifiers_-_I_m_Alright_holdout",
+      "order": [
+        "A",
+        "D",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "D",
+        "Version 3": "B"
+      },
+      "track": "Angels In Amplifiers - I'm Alright",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "The_Mountaineering_Club_-_Mallory_holdout": {
+      "clip_id": "The_Mountaineering_Club_-_Mallory_holdout",
+      "order": [
+        "A",
+        "B",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "B",
+        "Version 3": "D"
+      },
+      "track": "The Mountaineering Club - Mallory",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "Little_Chicago_s_Finest_-_My_Own_holdout": {
+      "clip_id": "Little_Chicago_s_Finest_-_My_Own_holdout",
+      "order": [
+        "D",
+        "A",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "D",
+        "Version 2": "A",
+        "Version 3": "B"
+      },
+      "track": "Little Chicago's Finest - My Own",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "Georgia_Wonder_-_Siren_holdout": {
+      "clip_id": "Georgia_Wonder_-_Siren_holdout",
+      "order": [
+        "A",
+        "B",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "B",
+        "Version 3": "D"
+      },
+      "track": "Georgia Wonder - Siren",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "Tom_McKenzie_-_Directions_holdout": {
+      "clip_id": "Tom_McKenzie_-_Directions_holdout",
+      "order": [
+        "A",
+        "D",
+        "B"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "A",
+        "Version 2": "D",
+        "Version 3": "B"
+      },
+      "track": "Tom McKenzie - Directions",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    },
+    "The_Easton_Ellises__Baumi__-_SDRNR_holdout": {
+      "clip_id": "The_Easton_Ellises__Baumi__-_SDRNR_holdout",
+      "order": [
+        "B",
+        "A",
+        "D"
+      ],
+      "labels": [
+        "Version 1",
+        "Version 2",
+        "Version 3"
+      ],
+      "map": {
+        "Version 1": "B",
+        "Version 2": "A",
+        "Version 3": "D"
+      },
+      "track": "The Easton Ellises (Baumi) - SDRNR",
+      "set": "holdout",
+      "share_driver": "vocals_share"
+    }
+  }
+}

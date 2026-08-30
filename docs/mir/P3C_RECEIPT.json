@@ -1,0 +1,83 @@
+{
+  "label": "HOST-ONLY",
+  "phase": "P3-C",
+  "engine": "firmware light_mode_bloom + apply_brightness photons_curve",
+  "photons_curve_mode": 0,
+  "firmware_root": "/Users/spectrasynq/SpectraSynq_K1_Firmware",
+  "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "frozen_map_version": "p3b-v1",
+  "modulation_weight": 0.65,
+  "base_photons": 0.675,
+  "timebase": {
+    "sr": 16000,
+    "hop_samples": 512,
+    "window_samples": 512,
+    "window_s": 0.032,
+    "hop_s": 0.032,
+    "alignment": "hop-centre",
+    "causal": true,
+    "lookahead_s": 0.0,
+    "smoothing": "none",
+    "composition_change_lag_s": 0.5,
+    "timestamp": "seconds at hop centre; composition_change compares to t-lag"
+  },
+  "display_step": 2,
+  "segment_s": 8.0,
+  "chroma": "HOST-ONLY causal 12-bin STFT; identical across A/B/D",
+  "commercial_training_lineage": false,
+  "demucs_installed": false,
+  "student_gate": "OPEN",
+  "event_thresholds": {
+    "d_rms": 0.14512282190844417,
+    "composition_change": 0.921875,
+    "n_d_rms": 8646,
+    "n_cc": 8762,
+    "refractory_s": 0.25,
+    "hop_s": 0.032
+  },
+  "n_challenge": 10,
+  "n_holdout": 10,
+  "challenge_tracks": [
+    "Actions - Devil's Words",
+    "Actions - South Of The Water",
+    "Actions - One Minute Smile",
+    "Angela Thomas Wade - Milk Cow Blues",
+    "Chris Durban - Celebrate",
+    "James May - All Souls Moon",
+    "Black Bloc - If You Want Success",
+    "Johnny Lokke - Promises & Lies",
+    "M.E.R.C. Music - Knockout",
+    "Detsky Sad - Walkie Talkie"
+  ],
+  "holdout_tracks": [
+    "Enda Reilly - Cur An Long Ag Seol",
+    "BKS - Too Much",
+    "Speak Softly - Broken Man",
+    "Skelpolu - Resurrection",
+    "Angels In Amplifiers - I'm Alright",
+    "The Mountaineering Club - Mallory",
+    "Little Chicago's Finest - My Own",
+    "Georgia Wonder - Siren",
+    "Tom McKenzie - Directions",
+    "The Easton Ellises (Baumi) - SDRNR"
+  ],
+  "summary": {
+    "challenge_mean_mad_B_vs_D": 10.825914999999998,
+    "holdout_mean_mad_B_vs_D": 10.666475,
+    "challenge_mean_mad_control_vs_mir": 0.15707333333333334,
+    "holdout_mean_mad_control_vs_mir": 0.25339,
+    "challenge_mean_trig_control": 27.75,
+    "challenge_mean_trig_mir": 9.0,
+    "holdout_mean_trig_control": 14.25,
+    "holdout_mean_trig_mir": 33.75
+  },
+  "html": [
+    "docs/mir/visual_replay/p3c1_continuous.html",
+    "docs/mir/visual_replay/p3c2_events.html"
+  ],
+  "blind_keys": [
+    "docs/mir/visual_replay/P3C1_BLIND_KEY_OPEN_AFTER_JUDGING.json",
+    "docs/mir/visual_replay/P3C2_BLIND_KEY_OPEN_AFTER_JUDGING.json"
+  ],
+  "not_a_lighting_verdict": true
+}

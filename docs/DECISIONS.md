@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices D1–D13. D8 MIR-first; D10 live-domain; D11 AdaptiveAvgPool2d; D12 abs/share/delta; D13 frozen maps and composition_change. Read before changing the graph or RUHMI path."
+abstract: "Architectural choices D1–D14. D12 abs demoted / share info-PASS. D14 P3-C is the visual-engine gate; no Demucs until it passes. Student I/O still OPEN."
 ---
 
 # Decisions
@@ -94,14 +94,21 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 **Chosen:** perfect stem traces emit `*_abs` (fixed log-RMS), `*_share` (power / sum of stem powers), `*_delta` (Δ share). Visual control for source is A/B/C/D (baseline / mix energy / abs / share).
 **Why:** a moderate vocal in a quiet breakdown can dominate a louder buried vocal. P3-A on 144 MUSDB samples: r(vocals_share, mix)=0.12 vs r(vocals_abs, mix)=0.46.
 **Rejected:** a single RMS(stem) channel; Demucs before the perfect oracle wins a full-song visual test.
-**Revisit:** after P3-B full-song A/B/C/D. If D never beats B, do not train a dominance student.
+**Revisit:** P3-B full-song evidence landed. `abs` is demoted (within-track r vs mix 0.44–0.64). `share` passed the incremental-information gate (0.10–0.17). Lighting utility is **not** decided from the P3-B HTML stand-in; that is P3-C.
 
 ## D13 — Frozen corpus maps; hop-centre timestamps; composition_change is causal
 
 **Chosen:** visual extra-DoF uses a 5th–95th percentile map fitted once on the pooled corpus (`p3b-v1`), not per-song min-max. Hop RMS is timestamped at hop centre. `composition_change` is causal L1/2 of the share vector vs 0.5 s ago, no lookahead.
 **Why:** per-song stretching can make a flat RMS look lively. The PaRIRset miss was a timestamp/alignment error. Arrangement change is not loudness.
 **Rejected:** eyeballed per-track normalisation; putting abs/share/delta in one undifferentiated A/B/C/D/E strip.
-**Revisit:** if P3-B2 shows composition_change is the visual winner, a student output may be dynamics rather than `vocals=0.8`.
+**Revisit:** composition_change passed to P3-C visual-engine evaluation. Do not invent BUILDING/DROPPING. Student I/O still not frozen.
+
+## D14 — P3-C is the visual-engine gate; stems beat Demucs if it passes
+
+**Chosen:** Isolated HOST replay of firmware `light_mode_bloom` plus `apply_brightness` (PHOTONS², mode 0). Same extra DoF for baseline / mix energy / source share. Events reuse `k1_visual_hooks` onset→photons (gain 0.16, tau 100 ms). Challenge 10 from the P3-B oracle set plus 10 MUSDB-test holdout tracks stratified by duration, not by share/RMS disagreement. Versions are blinded. No firmware edits. No Demucs.
+**Why:** P3-B HTML was an existing-behaviour stand-in. Pixel MAD on that page is not SpectraSynq. If lights never benefit, there is nothing to teach. If they do, MUSDB stems are already perfect supervision — a separator teacher would only add error.
+**Rejected:** lighting call from `p3b1_continuous.html` / `p3b2_events.html`; installing Demucs next; training a student before P3-C; freezing student heads for abs/share/delta/composition_change separately.
+**Revisit:** after the blinded Version 1/2/3 lighting judgement. Pass on share → research student on stem powers, deterministic share/delta/composition_change. Pass on composition-change → same backbone, event head is derived. Fail both → do not train.
 
 ---
 **Document Changelog**
@@ -116,3 +123,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:edgeai | D4 pooling note vs D11; D10 onset delayed-not-killed. |
 | 2026-08-31 | agent:edgeai | D12 source oracle abs/share/delta. |
 | 2026-08-31 | agent:edgeai | D13 frozen maps, hop-centre timebase, composition_change. |
+| 2026-08-31 | agent:edgeai | D12 revisit (abs demoted); D14 P3-C visual-engine gate, no Demucs. |

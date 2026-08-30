@@ -44,6 +44,10 @@ deploy_output/
 *.mp4
 *.stem.mp4
 
+# P3-C LED dumps / local videos (MUSDB-derived; do not commit)
+artifacts/source_activity/p3c/
+docs/mir/visual_replay/p3c_media/
+
 # Dataset corpora — never commit
 datasets/musdb18/*
 !datasets/musdb18/README.md
