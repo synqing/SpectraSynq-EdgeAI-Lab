@@ -4,6 +4,8 @@ abstract: "Index for the SensoryBridge K1 effect-decomposition guidebook — the
 
 # Effect Decomposition Guidebook
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 *SensoryBridge K1 · the deliberate-development reference for music-reactive effects*
 
 > **The thesis.** We build music-to-light effects in the unknown, with no external

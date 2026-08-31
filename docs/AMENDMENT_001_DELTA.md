@@ -4,6 +4,8 @@ abstract: "Amendment 001 delta: what stays, what is deferred, what is superseded
 
 # Amendment 001 — delta report
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Date: 2026-08-30. Previous brief still in force except where this file says otherwise.
 
 ## Remains valid (keep, do not rebuild)

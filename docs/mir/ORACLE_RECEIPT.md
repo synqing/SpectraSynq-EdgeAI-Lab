@@ -4,6 +4,8 @@ abstract: "HOST-ONLY conventional MIR execution on synthetic contrast clips. Not
 
 # Oracle receipt — 2026-08-30
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 **HOST-ONLY. SYNTHETIC eval corpus.** 8 × 8 s clips, 16 kHz. Extractors: librosa conventional + Semantic-v0 experiment (1 s window, 50% hop).
 
 Not run: Essentia models, musicnn (TF1 blocked), MERT, MuQ, MAEST, HT-Demucs.

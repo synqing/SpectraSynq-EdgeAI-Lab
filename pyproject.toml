@@ -21,6 +21,7 @@ dependencies = [
 musdb = ["musdb>=0.4.0", "stempeg>=0.2.0"]
 mir = ["librosa>=0.10", "matplotlib>=3.8", "mir_eval>=0.7"]
 dev = ["pytest>=8.0"]
+silicon = ["pyserial>=3.5"]
 
 [project.scripts]
 edgeai-host-probe = "edgeai.smoke:host_probe_main"

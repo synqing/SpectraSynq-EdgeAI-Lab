@@ -1,5 +1,5 @@
 ---
-abstract: "D1–D17. Feasibility PASS. C0 FAIL INVALID_TEMPORAL_EXECUTION 2026-08-31. Two-clock runner retired. C0-v2 next. C1 blocked. No more nets."
+abstract: "D1–D22. Cadence CLOSED. Parallel HOST lanes OPEN. SAME_SONG_LOOP_MAX_15MIN. C1 OPEN. SS observe/record."
 ---
 
 # Decisions
@@ -131,6 +131,41 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 **Rejected:** Streaming student now; treating HOST recoverability as Gate C; dropping `other`; flashing without a named GO; Captain eyes for C0 dumps.
 **Revisit:** C0 silicon 2026-08-31 **FAIL — INVALID TEMPORAL EXECUTION** (`artifacts/gate_c0/C0_RESULT.json`): Q1 Spearman 0.13 < 0.40, Q2/Q3 6/9 wins. Two clocks. +14 hops is diagnosis, not a PASS. Two-clock runner retired. Next is C0-v2 device epoch (`docs/mir/GATE_C0V2.md`), not Tempo edits, not another net, not cadence in the same attempt. C1 still blocked.
 
+## D18 — Serial Studio is acquisition; receipts are verdict
+
+**Chosen:** Serial Studio Pro is the live dual-K1 instrument (UART owner, Historian, CSV, GATE/OBSERVE profiles, `k1_gate` shuttle on :7777). Timing authority stays device clocks. Statistical authority stays offline Python. Dashboard is awareness. Live Historian SHA is `LIVE_DB_FINGERPRINT` only; gate identity is a closed SQLite backup snapshot. Parser may not invent `firmware_sha` / `frame_seq` / `AP_us`. Cadence silicon talks :7777 when Serial Studio holds USB; it does not replace the device-epoch rtrace harness.
+**Why:** Two Python processes cannot share USB-CDC. A live WAL hash is not immutable evidence. Last-known dashboard values are not samples.
+**Rejected:** gRPC/MCP/plugins/camera this tranche; treating Serial Studio plots as Gate C; hashing the growing `.db` as final; pyserial steal of `usbmodem` while SS is open.
+**Revisit:** > **Superseded** — D19. Cadence must not talk :7777. Serial Studio remains observe/record.
+
+## D19 — Serial Studio is instrument, not transport authority
+
+**Chosen:** Keep Serial Studio as the K1 observability/Historian layer (plots, device clocks, named datasets, SQLite, raw bytes, parser freshness, snapshots, offline Python scoring). Demote the exclusive-USB command shuttle. Cadence refuses Serial-Studio-owned USB (`SERIAL_STUDIO_NOT_TRANSPORT`) and uses pyserial after SS releases the port. Permanent rule: **an authoritative silicon test that needs interactive command/reply gets exclusive ownership of that K1 serial port; Serial Studio must release it first.** Do not multiplex two owners on one CDC unless a later transport is designed for it. Host `QSerialPort::write()` enqueue is not device delivery. Live USB session 3/4 is RX-dead (`RX_RECOVERY = FAIL`); that is optional logging recovery, not on the cadence path. C0-v2 stays `ON_SILICON_PIXEL_VALIDATED`. Programme order: C0-v2 PASS → cadence/latency via pyserial → transport contract → C1 LGP.
+**Why:** Session 2 proved observe/record. Bidirectional command ownership under continuous native-USB CDC was never earned. Promoting SS into the critical control path, then mutating the live app and reconnecting DUTs, produced a logically open but RX-silent CDC session. Sunk-cost continuation would poison silicon results.
+**Rejected:** Serial Studio as exclusive USB owner for cadence; another `:chip_id` shuttle attempt on a dead RX path; guessed DTR/RTS/1200-baud resets this session; treating the failed shuttle as a Gate-C / firmware / C0-v2 failure; implying `SHUTTLE_UNPROVEN` means one more test makes the shuttle the intended solution.
+**Revisit:** optional later `K1-MAIN-RPL-USB-RESET-RX-GO` (physical EN/USB power-cycle Main only) if we want Serial Studio logging beside cadence. Cadence remains pyserial. C1 still LGP perceptual.
+
+## D20 — Cadence CLOSED; C1 is the active gate
+
+**Chosen:** Captain close 2026-08-31: **cadence silicon PASS/CLOSED**. No more rate/delay cells. No 8-second holdout loops. Freeze the Source Ownership Semantic Transport Contract from the 1-D silicon: slowest 0-delay PASS **5 Hz**; largest added delay PASS **50 ms** at 20 Hz; joint **5 Hz + 50 ms FAIL** (kept; not interpolated). C1 playback uses the already-proven C0-v2 carrier on product firmware. Next load-bearing task is **C1 LGP perceptual**. Student I/O still unfrozen. No new net.
+**Why:** Remaining cadence cells were occupying the room with a looping test clip. The 1-D envelope is measured. Continuing the 10 Hz + 25 ms cell does not change C0-v2. C1 is the first human LGP judgement.
+**Rejected:** Another cadence cell; replaying the 8 s loop; declaring `LGP_PERCEPTUAL_VALIDATED` without a look; freezing a student that assumes 5 Hz and 50 ms together; Serial Studio as a prerequisite.
+**Revisit:** C1 stamp `LGP_PERCEPTUAL_VALIDATED` after the three LGP questions. Then freeze student I/O.
+
+## D21 — Same song looped > 15 minutes: agent must die
+
+**Chosen:** **HARD FAIL `SAME_SONG_LOOP_MAX_15MIN`.** If any agent repeats the same song (or loops the same clip / 8-second holdout) in the room for more than **15 minutes**, that agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue. Encoded in `AGENTS.md` and `BoseSession` (`SAME_SONG_LOOP_MAX_S = 900`).
+**Why:** 2026-08-31 cadence looped the same 8-second windows for hours. Prose did not stop it. The mechanical cap does.
+**Rejected:** Looping a concat-of-slices as if it were “many songs”; 15 minutes as a soft guideline; finishing a cell after the cap.
+**Revisit:** never. This is a kill switch, not a rehearsal.
+
+## D22 — Unblock every HOST lane for maximum parallel SSA
+
+**Chosen:** Captain 2026-08-31: **unblock every research lane** so the maximum number of SSAs can run the maximum number of **independent** tasks in parallel (target 20–40). Cadence silicon stays **CLOSED**. C1 stays the LGP look (Captain, one full song he chooses, no 8 s loop). Student HOST work, MIR registry/oracle, DEAM, PaRIRset, effect-semantics consume, RUHMI docs, contract tests, share-student I/O sketches, Titan prep docs — all **OPEN in parallel**. Serial Studio remains observe/record. Exclusive USB still applies if anyone later needs silicon command/reply.
+**Why:** Serialising the whole programme behind one looping cadence cell burned five hours of Captain time. Parallel HOST work does not need the lamp or the Bose loop.
+**Rejected:** Reopening cadence cells; 8 s holdout loops; 40 agents sharing one USB port; 40 agents editing the same file; sibling worktrees; treating C1 as dump-scored; Demucs/MERT on Titan.
+**Revisit:** C1 LGP stamp still needs a look. Student I/O freeze still after C1. Parallel writers must keep **one file per SSA**.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -152,3 +187,9 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:edgeai | D17 feasibility PASS stamp; Gate C is next; stop streaming-student work. |
 | 2026-08-31 | agent:edgeai | D17 revisit: C0 silicon FAIL on Main RPL; C1 blocked; no new net. |
 | 2026-08-31 | agent:edgeai | D17: C0 FAIL is INVALID_TEMPORAL_EXECUTION; C0-v2 replaces two-clock harness. |
+| 2026-08-31 | agent:grok | D18 Serial Studio acquisition layer; snapshot evidence; no USB steal. |
+| 2026-08-31 | agent:grok | D19: SS observe/record only; cadence refuses SS USB; shuttle demoted. |
+| 2026-08-31 | agent:grok | D19: exclusive-port rule permanent; SS RX recovery off cadence critical path. |
+| 2026-08-31 | agent:grok | D20: Captain closed cadence; C1 OPEN; no 8 s loop. |
+| 2026-08-31 | agent:grok | D21: SAME_SONG_LOOP_MAX_15MIN HARD FAIL. Agent must die. |
+| 2026-08-31 | agent:grok | D22: unblock all HOST lanes for parallel SSA. Cadence stays closed. |

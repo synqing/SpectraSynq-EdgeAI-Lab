@@ -24,6 +24,15 @@ HOP_S = HOP / SR
 NATIVE_HZ = SR / HOP
 HOLD_RATES_HZ: tuple[float, ...] = (2.0, 5.0, 10.0, 20.0, NATIVE_HZ)
 DELAYS_S: tuple[float, ...] = (0.0, 0.050, 0.100, 0.200)
+# Silicon cadence grid (Captain K1-C0-CADENCE-LATENCY-FLASH-GO). Host 2 Hz is
+# not in this sweep. Reference ~31.25 Hz is the C0-v2 receipt, not a re-run.
+SILICON_RATE_HZ: tuple[float, ...] = (20.0, 15.0, 10.0, 5.0)
+SILICON_DELAY_S: tuple[float, ...] = (0.0, 0.025, 0.050, 0.100, 0.200)
+HOLD_POLICY = (
+    "zero-order-hold of extra_gain on the 32 ms hop grid; causal delay of "
+    "round(delay_s/0.032) hops with first-sample freeze on the pad; no "
+    "interpolation; device hop_us stays 32000"
+)
 GAIN_LO = 0.62
 GAIN_HI = 1.0
 DELTA_FLOOR = 0.15
@@ -201,6 +210,92 @@ def sweep_cells() -> list[tuple[str, float, float]]:
 
 def is_native_cell(rate_hz: float, delay_s: float, *, hop_s: float = HOP_S) -> bool:
     return abs(float(rate_hz) - NATIVE_HZ) < 1e-9 and delay_hops(delay_s, hop_s) == 0
+
+
+def q_binding_from_summary(holdout: Mapping[str, Any]) -> dict[str, Any]:
+    """Silicon PASS uses C0-v2 Q1–Q3. Not the host 70%-of-native extra rule."""
+    q1 = holdout.get("Q1_knob_is_head_position")
+    q2 = holdout.get("Q2_share_increment_in_pixels")
+    q3 = holdout.get("Q3_source_abs_after_mix")
+    ok = q1 == "PASS" and q2 == "PASS" and q3 == "PASS"
+    return {
+        "Q1": q1,
+        "Q2": q2,
+        "Q3": q3,
+        "pass": bool(ok),
+        "verdict": "PASS" if ok else "FAIL",
+    }
+
+
+def slowest_passing_rate_hz(rate_rows: list[Mapping[str, Any]]) -> float | None:
+    """Slowest tested rate whose silicon binding still PASSES. INVALID is not FAIL."""
+    ok = [
+        float(r["rate_hz"])
+        for r in rate_rows
+        if str(r.get("verdict") or "") == "PASS" and str(r.get("c0v2") or r.get("status") or "PASS") != "INVALID_RUN"
+    ]
+    return min(ok) if ok else None
+
+
+def largest_passing_delay_s(delay_rows: list[Mapping[str, Any]]) -> float | None:
+    ok = [
+        float(r["delay_s"])
+        for r in delay_rows
+        if str(r.get("verdict") or "") == "PASS" and str(r.get("status") or "PASS") != "INVALID_RUN"
+    ]
+    return max(ok) if ok else None
+
+
+def honest_rate_bracket(rate_rows: list[Mapping[str, Any]]) -> str:
+    rows = sorted(
+        [r for r in rate_rows if str(r.get("status") or r.get("c0v2") or "") != "INVALID_RUN"],
+        key=lambda z: float(z["rate_hz"]),
+    )
+    if not rows:
+        return "no valid rate cells"
+    passing = [r for r in rows if str(r.get("verdict")) == "PASS"]
+    failing = [r for r in rows if str(r.get("verdict")) != "PASS"]
+    if passing and not failing:
+        slow = min(float(r["rate_hz"]) for r in passing)
+        return f"PASS at all valid tested rates down to {slow:g} Hz"
+    if failing and not passing:
+        fast = max(float(r["rate_hz"]) for r in failing)
+        return f"FAIL at all valid tested rates (fastest fail {fast:g} Hz)"
+    slow_pass = min(float(r["rate_hz"]) for r in passing)
+    fast_fail = max((float(r["rate_hz"]) for r in failing if float(r["rate_hz"]) < slow_pass), default=None)
+    if fast_fail is None:
+        return f"PASS at {slow_pass:g} Hz (no slower valid fail on this grid)"
+    return (
+        f"PASS at {slow_pass:g} Hz; FAIL at {fast_fail:g} Hz → required rate is "
+        f">{fast_fail:g} Hz and ≤{slow_pass:g} Hz on this evidence"
+    )
+
+
+def honest_delay_bracket(delay_rows: list[Mapping[str, Any]]) -> str:
+    rows = sorted(
+        [r for r in delay_rows if str(r.get("status") or "") != "INVALID_RUN"],
+        key=lambda z: float(z["delay_s"]),
+    )
+    if not rows:
+        return "no valid delay cells"
+    passing = [r for r in rows if str(r.get("verdict")) == "PASS"]
+    if not passing:
+        return "FAIL at every valid tested added delay, including 0 ms"
+    largest = max(float(r["delay_s"]) for r in passing)
+    larger_fail = [
+        float(r["delay_s"])
+        for r in rows
+        if str(r.get("verdict")) != "PASS" and float(r["delay_s"]) > largest
+    ]
+    largest_ms = largest * 1000.0
+    if not larger_fail:
+        return f"PASS at all valid tested delays through {largest_ms:.0f} ms"
+    next_fail = min(larger_fail) * 1000.0
+    return (
+        f"PASS at {largest_ms:.0f} ms; FAIL at {next_fail:.0f} ms → admissible added "
+        f"semantic delay lies below {next_fail:.0f} ms and is demonstrated through "
+        f"{largest_ms:.0f} ms"
+    )
 
 
 def score_head_delta(

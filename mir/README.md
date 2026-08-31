@@ -4,6 +4,8 @@ abstract: "How to read the MIR registry. Machine-readable source of truth is reg
 
 # MIR registry
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 `registry.yaml` is the asset list. Load with:
 
 ```bash

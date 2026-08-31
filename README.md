@@ -5,6 +5,8 @@ and can a tiny NPU model carry any of it?
 
 **Not production firmware. Not “put an NPU in the product.”**
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Amendment 001 is in force: **MIR reconnaissance and a host oracle come before
 a bespoke student model.** Semantic-v0 (vocals/drums/bass CNN) is a kept
 **experiment** and a deployment-toolchain witness — not architecture authority.

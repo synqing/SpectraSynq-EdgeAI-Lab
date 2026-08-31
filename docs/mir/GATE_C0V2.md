@@ -4,6 +4,8 @@ abstract: "C0-v2 PASS 2026-08-31: source_share × WaveformTempo × head_position
 
 # Gate C0-v2 — one device epoch
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Previous C0 (`artifacts/gate_c0/`) stays **FAIL — INVALID TEMPORAL EXECUTION**. Do not rescore it with +14 hops. Do not overwrite those dumps.
 
 The two-clock runner `scripts/gate_c0_silicon.py` is **retired**. It armed rtrace and streamed PRSM on independent host clocks. That permitted `capture epoch != injection epoch` (~0.5 s).

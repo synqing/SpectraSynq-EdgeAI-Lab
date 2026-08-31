@@ -1,8 +1,10 @@
 ---
-abstract: "P3-B share ≠ mix. Bindings: source_share × WaveformTempo × head_position HOST PASS (holdout Δr=0.63, 9/9); composition_change × Comet × impact-launch FAIL. Tempo is a continuity carrier, not universal lighting proof. No Demucs. Student OPEN."
+abstract: "P3-B share ≠ mix. HOST PASS share×WaveformTempo×head. C0-v2 ON_SILICON_PIXEL_VALIDATED. Two-clock C0 corpse FAIL. Cadence CLOSED. C1 OPEN. composition_change parked. I/O unfrozen. Demucs not Titan."
 ---
 
 # Source activity — perfect oracle
+
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
 
 Question: if we had perfect vocals/drums/bass information, what should the lighting engine actually consume?
 
@@ -143,7 +145,7 @@ Waveform Tempo is a **reference continuity carrier**.
 
 If share had failed Q2/Q3 on holdout: do not train a dominance student. It passed **Gate B on this binding**. Gate A already passed. Gate C (physical show) is still OPEN.
 
-Share-student recoverability is **HOST PASS** (21k CNN, four-source including `other`). Programme stamp: **PRE-PRODUCT FEASIBILITY PASS**. Next is Gate C, not another network. Waveform Tempo remains the continuity/reference replay.
+Share-student recoverability is **HOST PASS** (21k CNN, four-source including `other`). Programme stamp: **PRE-PRODUCT FEASIBILITY PASS**. Two-clock C0 is a **FAIL corpse** (`artifacts/gate_c0/`). Live C0 is C0-v2 **`ON_SILICON_PIXEL_VALIDATED`**. Cadence silicon **CLOSED**. C1 **OPEN** (one full song Captain chooses). Student I/O unfrozen. D22 HOST sketches are legal; Titan and extra product nets are not. Waveform Tempo remains the continuity/reference replay.
 
 **Composition-change implementation is parked.** It is a deterministic function of share(t) vs share(t−Δ). No extra ML head. Atlas may find a macro-transition grammar or record a visual-language gap. Replaying the existing oracle through a new binding does not need new neural work.
 
@@ -168,3 +170,4 @@ Older HPSS-on-DEAM numbers remain a mixture-only baseline, not stem truth.
 | 2026-08-31 | agent:edgeai | FAIL narrowed to composition_change × Comet × impact-launch; Tempo is a continuity carrier. |
 | 2026-08-31 | agent:edgeai | Share student unblocked; composition-change ML parked; Gate C OPEN. |
 | 2026-08-31 | agent:edgeai | Feasibility PASS stamp; Gate C next; no hop-level student. |
+| 2026-08-31 | agent:grok | Record corpse FAIL + C0-v2 PASS + cadence CLOSED + C1 OPEN + D22 HOST sketches. |

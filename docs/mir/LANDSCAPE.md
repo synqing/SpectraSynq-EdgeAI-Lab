@@ -4,6 +4,8 @@ abstract: "MIR landscape for SpectraSynq reactive lighting. What each class can 
 
 # MIR landscape — SpectraSynq visual utility
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Question: **which existing MIR outputs move when the music perceptually changes, in a way lights could use?**
 
 Whole-track genre is almost useless for a lamp. Frame-level onset is already DSP. The interesting band is **seconds-scale semantics** that DSP does not already encode.

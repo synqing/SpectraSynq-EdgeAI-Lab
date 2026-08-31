@@ -4,6 +4,8 @@ abstract: "P2 HOST-ONLY: native Essentia-TF oracles. DEAM head vs human 2 Hz is 
 
 # Essentia host oracles
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Weights: CC BY-NC-SA. Native Apple-silicon `essentia_tensorflow`. Not TF1 `musicnn`. Not Titan.
 
 ## DEAM VA head (`deam-msd-musicnn-2` on MusiCNN embeddings)

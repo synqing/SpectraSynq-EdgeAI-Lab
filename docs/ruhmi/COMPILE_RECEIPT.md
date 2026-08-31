@@ -4,6 +4,8 @@ abstract: "PRE-SILICON RUHMI C99. GHA 33319114336 compiled ad01_int8.tflite and 
 
 # RUHMI compile receipt — PRE-SILICON
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 GitHub Actions run [33319114336](https://github.com/synqing/SpectraSynq-EdgeAI-Lab/actions/runs/33319114336) on `03d6352`.
 Pin: ruhmi-framework-mcu `6c5aad901a1a41e28f6e306bfc35c44659e89502`, MERA `2.6.0+pkg.4815`.
 

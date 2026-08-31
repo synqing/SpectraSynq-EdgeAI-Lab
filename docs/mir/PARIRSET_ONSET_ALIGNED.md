@@ -4,6 +4,8 @@ abstract: "HOST-ONLY delay-aware PaRIRset onset. Same 3 held-out venues as the f
 
 # PaRIRset onset — delay-aware re-score
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 **HOST-ONLY.** PaRIRset CC0 test split. DEAM research audio. CrowdioSet not ingested. Held-out venues intact.
 
 Question the first probe could not answer:

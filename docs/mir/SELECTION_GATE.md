@@ -4,6 +4,8 @@ abstract: "Feasibility PASS. A PASS, B HOST PASS. C0 FAIL INVALID_TEMPORAL_EXECU
 
 # Student-model selection gate
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Three questions. Never collapse them.
 
 ## Gate A — semantic information

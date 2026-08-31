@@ -4,6 +4,8 @@ abstract: "Semantic-v0 is an experiment from the pre-amendment brief. It is not 
 
 # Semantic-v0 — not architecture authority
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 This directory documents the vocals/drums/bass DS-CNN trained on **synthetic** stems on 2026-08-30.
 
 **Status:** experiment / toolchain witness.  

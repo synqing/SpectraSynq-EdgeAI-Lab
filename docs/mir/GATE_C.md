@@ -1,8 +1,10 @@
 ---
-abstract: "Gate C OPEN. C0 FAIL INVALID_TEMPORAL_EXECUTION 2026-08-31 (two-clock race). C0-v2 is the successor harness. C1 blocked. I/O unfrozen. No more nets."
+abstract: "C0-v2 ON_SILICON_PIXEL_VALIDATED. Cadence CLOSED Captain 2026-08-31 (5 Hz / 50 ms; joint 5+50 FAIL). C1 OPEN. I/O unfrozen. No more nets."
 ---
 
 # Gate C — source ownership on the physical K1
+
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
 
 Programme stamp: **Source Ownership — PRE-PRODUCT FEASIBILITY PASS.**  
 Gate A PASS. Gate B HOST PASS. Recoverability HOST PASS. **Gate C OPEN.** Student I/O unfrozen. No more neural-net work until C speaks.
@@ -22,23 +24,30 @@ BPM, phase, tick, and confidence are different bindings, not `"supports_tempo": 
 
 ## C0 — `ON_SILICON_PIXEL_VALIDATED`
 
-**2026-08-31 silicon close: FAIL — INVALID TEMPORAL EXECUTION.** Main RPL `9087A500`, probe `k1_main_rpl_rtrace_probe` @ `acaecaa8`, mode 18, palette 43, rgb16hex, P3-C scorer unchanged. Holdout n=10: Q1 **0.13** FAIL; Q2/Q3 **6/9** FAIL. Capture and PRSM injection used two clocks. Silicon response was not dead. Post-hoc +14 hops (~448 ms) recovers host-like Q1–Q3 — **diagnosis only, not a PASS, never an authority rescore.** Dumps frozen at `artifacts/gate_c0/`. The two-clock runner is **retired**. Successor: C0-v2 device epoch (`docs/mir/GATE_C0V2.md`). C1 blocked.
+**Live stamp (2026-08-31): C0-v2 PASS — `ON_SILICON_PIXEL_VALIDATED`.** Method: [GATE_C0V2.md](GATE_C0V2.md). Receipt `artifacts/gate_c0v2/C0V2_RESULT.json`. Binding `source_share × Waveform Tempo × head_position`. `lag_corrected: false`. Holdout n=10: Q1 **0.83** PASS; Q2 Δ **0.69** 9/9 PASS; Q3 Δ **0.58** 9/9 PASS. Probe `k1_main_rpl_rtrace_probe` @ `349d3cd4`. C1 is **OPEN**.
+
+### Two-clock corpse (historical, not live)
+
+**2026-08-31 two-clock C0: FAIL — INVALID TEMPORAL EXECUTION.** Frozen at `artifacts/gate_c0/`. Main RPL `9087A500`, probe `k1_main_rpl_rtrace_probe` @ `acaecaa8`. Holdout n=10: Q1 **0.13** FAIL; Q2/Q3 **6/9** FAIL. Capture and PRSM injection used two clocks. Silicon response was not dead. Post-hoc +14 hops (~448 ms) recovers host-like Q1–Q3 — **diagnosis only, not a PASS, never an authority rescore.** Do **not** quote this FAIL as the current C0 close. The two-clock runner is **retired**. Successor is C0-v2 above.
 
 Feed the real K1 the same extra-DoF as P3-C: A baseline, B mix-energy, D oracle share. Gain in [0.62, 1.0] on peak + chroma. Palette path. Waveform Tempo.
 
 Dump LED buffers (`:rtrace_dump` or the live equivalent). Score with the P3-C head-position extra-DoF test (partial r of D vs B vs share | mix). Captain is not the validator.
 
-**Cadence / latency characterisation is a later C0-v2 subtest**, run only after a nominal C0-v2 PASS. Not part of the two-clock corpse. Not part of the first C0-v2 silicon attempt.
+**Cadence / latency silicon is CLOSED** Captain 2026-08-31. Receipt: [GATE_C0_CADENCE.md](GATE_C0_CADENCE.md) / `artifacts/gate_c0_cadence_silicon/CADENCE_RESULT.json`. Do not reopen cells. Do not play the 8 s loop.
 
-| Hold rate | Added delay |
-| --- | --- |
-| 2, 5, 10, 20, ~31 Hz | 0, 50, 100, 200 ms |
+```text
+5 Hz @ 0 ms PASS (slowest useful 0-delay)
+50 ms extra at 20 Hz PASS
+100 ms at 20 Hz FAIL (Q1)
+200 ms at 20 Hz FAIL
+5 Hz + 50 ms FAIL (Q1)
+10 Hz + 25 ms NOT COMPLETED — do not interpolate
+```
 
-Zero-order-hold the oracle series; delay is causal. Report the slowest rate and largest delay that still clear the extra-DoF floor (P3-C holdout Δ ≥ 0.15 as the numeric floor; also ≥ ~70% of the native-rate Δ on the same clips).
+Zero-order-hold the oracle series; delay is causal. A student must **not** assume 5 Hz **and** 50 ms together.
 
-A HOST rehearsal of the same holds ([GATE_C_CADENCE_HOST.md](GATE_C_CADENCE_HOST.md)) is **design evidence only**. It is not C0.
-
-HOST holdout (n=10, native Δ 0.625): **20 Hz** still passes both floors (Δ 0.50, 80% of native). **10 Hz** is still above 0.15 (Δ 0.37) but only 60% of native. **50 ms** extra delay fails the 70% keep-rate; **200 ms** fails the 0.15 floor. Do **not** freeze 20 Hz as the student contract. C0 must re-measure on silicon.
+A HOST rehearsal of the same holds ([GATE_C_CADENCE_HOST.md](GATE_C_CADENCE_HOST.md)) is **design evidence only**. It is not C0. Do **not** freeze student I/O from the host 20 Hz / host 50 ms FAIL numbers. Silicon owns the product clock.
 
 Silicon inject + dump path: [GATE_C0_SILICON_PATH.md](GATE_C0_SILICON_PATH.md).
 
@@ -47,6 +56,8 @@ Shortest existing path (recon, **not** C0 PASS): USB-CDC **PRSM** Prim8 pressure
 Hold rates 2/5 Hz must **repeat** packets at ≥ 30 Hz (`hz` field rejects < 30). Do not put `hz=2` on the wire.
 
 ## C1 — `LGP_PERCEPTUAL_VALIDATED`
+
+**OPEN.** Cadence CLOSED Captain 2026-08-31. Method: [GATE_C1.md](GATE_C1.md). No 8 s holdout loop.
 
 Only after C0 pixels behave. Synchronised with music. Blinded where practical. Good Light Show Taxonomy — audio must change the *right* visual dimension.
 
@@ -76,8 +87,8 @@ Then: streaming infer → quant → goldens → RUHMI/U55 → clean/live domain 
 
 ## Parked
 
-- Hop-level / streaming student
-- Demucs
+- Product streaming-student freeze (HOST sketch OPEN; I/O unfrozen)
+- Demucs on Titan (HOST teacher docs OPEN; weights UNKNOWN; no download)
 - composition_change ML head
 - Declaring C from host pixels
 
@@ -89,3 +100,6 @@ Then: streaming infer → quant → goldens → RUHMI/U55 → clean/live domain 
 | 2026-08-31 | agent:edgeai | C0 silicon FAIL on Main RPL; Q1 0.13 / Q2–Q3 6/9; C1 blocked. |
 | 2026-08-31 | agent:edgeai | FAIL cause = inject alignment; lagged rescore not a PASS. |
 | 2026-08-31 | agent:edgeai | Stamp INVALID_TEMPORAL_EXECUTION; two-clock runner retired; C0-v2 successor. |
+| 2026-08-31 | agent:grok | C0-v2 PASS; cadence Captain-closed; C1 OPEN. |
+| 2026-08-31 | agent:grok | SAME_SONG_LOOP_MAX_15MIN HARD FAIL. |
+| 2026-08-31 | agent:grok | C0 body: two-clock FAIL labelled corpse; live stamp C0-v2 PASS; cadence CLOSED numbers. |

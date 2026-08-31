@@ -4,6 +4,8 @@ abstract: "Host/platform assumptions for SpectraSynq-EdgeAI-Lab training. M4 Pro
 
 # Host assumptions
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Recorded 2026-08-30 on this workstation. Re-probe with `uv run edgeai-host-probe`.
 
 | Item | Value |

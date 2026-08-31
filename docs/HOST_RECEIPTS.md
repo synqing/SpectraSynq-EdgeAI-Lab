@@ -4,6 +4,8 @@ abstract: "Measured HOST-ONLY numbers from the 2026-08-30 bootstrap. Not silicon
 
 # Host receipts — 2026-08-30 bootstrap
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 All rows **HOST-ONLY**. Corpus **SYNTHETIC**. Titan was not present. Docker daemon was not running on this Mac, so local RUHMI/MERA did not compile that day. GHA later did — see the 2026-08-31 update.
 
 ## Probe

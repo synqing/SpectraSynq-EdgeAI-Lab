@@ -12,11 +12,14 @@ from edgeai.mir.gate_c_cadence import (
     DELTA_FLOOR,
     GAIN_HI,
     GAIN_LO,
+    HOLD_POLICY,
     HOLD_RATES_HZ,
     HOP_S,
     NATIVE_HZ,
     NATIVE_KEEP_FRACTION,
     SHARE_SOURCES,
+    SILICON_DELAY_S,
+    SILICON_RATE_HZ,
     actual_delay_s,
     apply_cadence,
     causal_delay,
@@ -25,9 +28,14 @@ from edgeai.mir.gate_c_cadence import (
     delay_cliff_s,
     delay_hops,
     extra_gain_cadence,
+    honest_delay_bracket,
+    honest_rate_bracket,
     is_native_cell,
+    largest_passing_delay_s,
     lowest_passing_rate_hz,
+    q_binding_from_summary,
     require_four_source_share,
+    slowest_passing_rate_hz,
     summarise_holdout,
     sweep_cells,
     zero_order_hold,
@@ -145,6 +153,60 @@ def test_delay_is_causal_no_lookahead():
 def test_fifty_ms_quantizes_to_two_hops():
     assert delay_hops(0.050) == 2
     assert actual_delay_s(0.050) == pytest.approx(0.064)
+
+
+def test_twenty_five_ms_quantizes_to_one_hop():
+    assert delay_hops(0.025) == 1
+    assert actual_delay_s(0.025) == pytest.approx(0.032)
+
+
+def test_fifteen_hz_hold_is_not_identity():
+    x = np.linspace(0.0, 1.0, 200)
+    y = zero_order_hold(x, hop_s=HOP_S, rate_hz=15.0)
+    assert not np.allclose(y, x)
+    assert np.all(np.diff(np.where(np.diff(y) != 0)[0]) >= 1)
+
+
+def test_silicon_grid_is_the_named_bracket():
+    assert SILICON_RATE_HZ == (20.0, 15.0, 10.0, 5.0)
+    assert SILICON_DELAY_S == (0.0, 0.025, 0.050, 0.100, 0.200)
+    assert "zero-order-hold" in HOLD_POLICY
+    assert "no interpolation" in HOLD_POLICY
+
+
+def test_q_binding_uses_c0v2_bars_not_host_keep_rate():
+    ho = {
+        "Q1_knob_is_head_position": "PASS",
+        "Q2_share_increment_in_pixels": "PASS",
+        "Q3_source_abs_after_mix": "PASS",
+    }
+    assert q_binding_from_summary(ho)["verdict"] == "PASS"
+    ho["Q2_share_increment_in_pixels"] = "FAIL"
+    assert q_binding_from_summary(ho)["verdict"] == "FAIL"
+
+
+def test_honest_brackets_do_not_invent_precision():
+    rates = [
+        {"rate_hz": 31.25, "verdict": "PASS"},
+        {"rate_hz": 20.0, "verdict": "PASS"},
+        {"rate_hz": 15.0, "verdict": "PASS"},
+        {"rate_hz": 10.0, "verdict": "FAIL"},
+        {"rate_hz": 5.0, "verdict": "FAIL"},
+    ]
+    text = honest_rate_bracket(rates)
+    assert "15" in text and "10" in text
+    assert "13.7" not in text
+    assert slowest_passing_rate_hz(rates) == pytest.approx(15.0)
+    delays = [
+        {"delay_s": 0.0, "verdict": "PASS"},
+        {"delay_s": 0.025, "verdict": "PASS"},
+        {"delay_s": 0.050, "verdict": "FAIL"},
+        {"delay_s": 0.100, "verdict": "FAIL"},
+    ]
+    dtext = honest_delay_bracket(delays)
+    assert "25" in dtext and "50" in dtext
+    assert "49" not in dtext
+    assert largest_passing_delay_s(delays) == pytest.approx(0.025)
 
 
 def test_held_extra_gain_stays_in_p3c_band():

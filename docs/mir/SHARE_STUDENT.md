@@ -4,6 +4,8 @@ abstract: "HOST recoverability PASS (feasibility). Four-source simplex including
 
 # Share student — recoverability
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 **PASS** on whether a tiny causal CNN recovers four-source **share** from the mixture better than mix-energy.
 
 HOST-ONLY. MUSDB18 STEMS, research/NC. `commercial_training_lineage: false`. Student I/O is **not** frozen.

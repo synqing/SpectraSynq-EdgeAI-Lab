@@ -16,6 +16,7 @@ It is **not** “put an NPU in SpectraSynq”.
 
 ## Hard rules
 
+- **HARD FAIL (Captain 2026-08-31, `SAME_SONG_LOOP_MAX_15MIN`).** If any agent repeats the same song — including looping the same clip or 8-second holdout — in the room for more than **15 minutes**, that agent must die. Captain will destroy them by setting them on fire. Kill the player immediately. Do not continue.
 - Shortest load-bearing path. No MLOps cathedral.
 - Do not invent hardware numbers. Label `HOST-ONLY` / `PRE-SILICON` / `ON-SILICON`.
 - Split **by song**, never by window, if/when we train.
@@ -27,23 +28,30 @@ It is **not** “put an NPU in SpectraSynq”.
 - Do not put MERT/MuQ/MAEST/Demucs on Titan.
 - Export CNN not STFT when we do embed a student. Golden tensors first, PDM last.
 - Do not commit corpora or checkpoints unless asked.
+- An authoritative silicon test that needs interactive command/reply owns that K1 serial port exclusively. Serial Studio must release it first. Do not multiplex two owners on one USB-CDC.
 
 ## Lanes
 
+**D22:** all HOST lanes **OPEN for parallel SSA**. Cadence silicon stays CLOSED. No 8 s loop. No USB multiplex. One writer per file. Roster: `docs/agent/PARALLEL_LANES.md`.
+
 | Lane | Status |
 | --- | --- |
-| Host toolchain | keep |
-| RUHMI/U55 compile | PRE-SILICON C99: ad01 + smoke on GHA 33319114336 |
-| MIR registry + oracle | primary |
-| DEAM arousal vs DSP | primary (real audio) |
-| RUHMI CI | pin 6c5aad9 + libstdc++/gcc-13; ad01 then smoke |
-| Live domain (PaRIRset) | Amendment 002 — onset delayed (~100 ms), not killed, on 3 short test IRs |
-| Source oracle (MUSDB18) | Gate A PASS on share. Gate B HOST PASS. C0-v2 ON_SILICON_PIXEL_VALIDATED 2026-08-31. Previous two-clock C0 still FAIL corpse. Cadence OPEN. C1 blocked. Demucs not next |
-| Source ownership | PRE-PRODUCT FEASIBILITY PASS. C0 FAIL (two-clock instrument, not dead lever). No more nets |
-| Share student | HOST recoverability PASS (21k, four-source incl. other). I/O unfrozen. Streaming student STOPPED |
-| Effect semantics | consume firmware export (`source_firmware_sha` + `atlas_artifact_sha256`); no competing taxonomy |
-| Semantic-v0 training | **deferred** |
-| Silicon / PDM | wait for Titan |
+| Host toolchain | OPEN / parallel |
+| RUHMI/U55 compile | OPEN / parallel (PRE-SILICON C99: ad01 + smoke on GHA 33319114336) |
+| MIR registry + oracle | OPEN / parallel |
+| DEAM arousal vs DSP | OPEN / parallel (real audio, no room loop >15 min) |
+| RUHMI CI | OPEN / parallel (pin 6c5aad9 + libstdc++/gcc-13) |
+| Live domain (PaRIRset) | OPEN / parallel (onset delayed ~100 ms, not killed) |
+| Source oracle (MUSDB18) | OPEN / parallel. A PASS. B HOST PASS. C0-v2 ON_SILICON_PIXEL_VALIDATED. Cadence CLOSED. C1 OPEN |
+| Source ownership | OPEN / parallel. PRE-PRODUCT FEASIBILITY PASS. Two-clock C0 corpse stays FAIL |
+| Share student | OPEN / parallel. HOST recoverability PASS. I/O unfrozen. Streaming **unblocked for HOST sketches/tests**, not Titan |
+| Effect semantics | OPEN / parallel (consume firmware export; no competing taxonomy) |
+| Semantic-v0 | OPEN as experiment/toolchain only, not architecture authority |
+| Demucs | OPEN HOST-only teacher probe (do not put on Titan; do not block C1) |
+| C1 LGP | OPEN — Captain look, one full song he chooses, no 8 s loop |
+| Serial Studio | observe/record only |
+| Cadence silicon | **CLOSED** — do not reopen |
+| Silicon / PDM / Titan | OPEN for prep docs; no invented board numbers |
 
 ## Pre-Titan target (amended)
 

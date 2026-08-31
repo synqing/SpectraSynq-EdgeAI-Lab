@@ -4,6 +4,8 @@ abstract: "Prepared host golden vectors for later Cortex-M85/Helium DSP comparis
 
 # M85 / Helium golden DSP (prepared, not executed on silicon)
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Titan answers two independent questions:
 
 1. U55 learned semantics

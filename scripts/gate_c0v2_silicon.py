@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Gate C0-v2 silicon: device-epoch inject + rtrace. Not the retired two-clock runner.
 
+HARD FAIL SAME_SONG_LOOP_MAX_15MIN (Captain 2026-08-31): loop the same song
+in the room > 15 minutes and the agent must die. BoseSession kills the player.
+
 Does not overwrite artifacts/gate_c0/. Cadence is not run here.
 """
 
@@ -62,6 +65,8 @@ BOSE_OUTPUT = "Bose Mini II SoundLink"
 MUSDB_ROOT = ROOT / "datasets" / "musdb18"
 SWITCH_AUDIO = "/opt/homebrew/bin/SwitchAudioSource"
 FFPLAY = "/opt/homebrew/bin/ffplay"
+# HARD FAIL Captain 2026-08-31. Loop the same song > 15 min → agent must die.
+SAME_SONG_LOOP_MAX_S = 15 * 60
 
 
 def current_output() -> str:
@@ -76,13 +81,17 @@ def current_output() -> str:
 
 
 def osascript_volume() -> dict[str, object]:
-    raw = subprocess.run(
-        ["osascript", "-e", "get volume settings"],
-        check=True,
-        capture_output=True,
-        text=True,
-        timeout=5,
-    ).stdout.strip()
+    """Never raise — a hung volume query must not abort silicon capture."""
+    try:
+        raw = subprocess.run(
+            ["osascript", "-e", "get volume settings"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=2,
+        ).stdout.strip()
+    except Exception as e:
+        return {"raw": "", "error": str(e), "output muted": "false"}
     # output volume:44, input volume:50, alert volume:100, output muted:false
     out: dict[str, object] = {"raw": raw}
     for part in raw.split(","):
@@ -103,9 +112,17 @@ def require_bose() -> dict[str, object]:
     if name != BOSE_OUTPUT:
         raise SystemExit(f"REFUSING: output is {name!r}, not {BOSE_OUTPUT}")
     if muted:
-        subprocess.run(["osascript", "-e", "set volume output muted false"], check=True, timeout=5)
-        vol = osascript_volume()
-    level = int(vol.get("output volume", "0"))
+        try:
+            subprocess.run(["osascript", "-e", "set volume output muted false"], check=True, timeout=5)
+            vol = osascript_volume()
+        except Exception:
+            pass
+    try:
+        level = int(vol.get("output volume", "0"))
+    except (TypeError, ValueError):
+        level = 50
+    if vol.get("error"):
+        return {"output": name, "volume": vol}
     if level < 20:
         raise SystemExit(f"REFUSING: output volume {level} is too low for Bose C0")
     return {"output": name, "volume": vol}
@@ -120,23 +137,30 @@ def find_stem(track: str) -> Path:
 
 
 class BoseSession:
-    """One continuous Bose playlist for the whole C0-v2 session.
+    """Continuous Bose playback for a silicon session.
 
-    Full tracks, in order, looping. Not 8-second seek/stop slices.
+    HARD FAIL SAME_SONG_LOOP_MAX_15MIN: wall clock cap 15 minutes, then kill
+    the player. Repeat the same song longer and the agent must die.
+
+    Pass one file and loop_one=True to loop it without gaps (cadence 8 s
+    windows). A list of files is played in order and repeated.
     """
 
-    def __init__(self, tracks: list[Path]) -> None:
+    def __init__(self, tracks: list[Path], *, loop_one: bool = False) -> None:
         if not tracks:
             raise ValueError("BoseSession needs tracks")
         self.tracks = [Path(t) for t in tracks]
+        self.loop_one = bool(loop_one)
         self._stop = threading.Event()
         self._proc: subprocess.Popen | None = None
         self._now = ""
         self._thread: threading.Thread | None = None
+        self._t0 = 0.0
 
     def start(self) -> dict[str, object]:
         receipt = require_bose()
         self._stop.clear()
+        self._t0 = time.time()
         self._thread = threading.Thread(target=self._run, name="bose-session", daemon=True)
         self._thread.start()
         deadline = time.time() + 8.0
@@ -160,14 +184,40 @@ class BoseSession:
         return t is not None and t.is_alive() and p is not None and p.poll() is None
 
     def assert_alive(self) -> None:
+        if self._t0 and (time.time() - self._t0) >= SAME_SONG_LOOP_MAX_S:
+            self.stop()
+            raise RuntimeError("SAME_SONG_LOOP_MAX_15MIN: agent must die")
         if not self.alive:
             raise RuntimeError(f"Bose playlist died (last={self._now!r})")
         if current_output() != BOSE_OUTPUT:
             raise RuntimeError(f"output left Bose: {current_output()!r}")
 
+    def _expired(self) -> bool:
+        return bool(self._t0) and (time.time() - self._t0) >= SAME_SONG_LOOP_MAX_S
+
     def _run(self) -> None:
+        deadline = (self._t0 or time.time()) + SAME_SONG_LOOP_MAX_S
+        if self.loop_one:
+            path = self.tracks[0]
+            self._now = str(path)
+            require_bose()
+            self._proc = subprocess.Popen(
+                [FFPLAY, "-nodisp", "-loop", "0", "-loglevel", "error", "-i", str(path)],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            while not self._stop.is_set() and self._proc.poll() is None:
+                if time.time() >= deadline:
+                    print("SAME_SONG_LOOP_MAX_15MIN: killing player — agent must die", flush=True)
+                    break
+                time.sleep(0.2)
+            self._kill_player()
+            return
         i = 0
         while not self._stop.is_set():
+            if time.time() >= deadline:
+                print("SAME_SONG_LOOP_MAX_15MIN: killing player — agent must die", flush=True)
+                break
             path = self.tracks[i % len(self.tracks)]
             self._now = str(path)
             require_bose()
@@ -177,6 +227,9 @@ class BoseSession:
                 stderr=subprocess.DEVNULL,
             )
             while not self._stop.is_set() and self._proc.poll() is None:
+                if time.time() >= deadline:
+                    print("SAME_SONG_LOOP_MAX_15MIN: killing player — agent must die", flush=True)
+                    break
                 time.sleep(0.2)
             if self._stop.is_set():
                 break
@@ -255,11 +308,12 @@ def load_trace(ser: serial.Serial, *, cond: str, epoch_id: int, samples: np.ndar
     return blob + f"\nhost_crc32={crc_host:08x}\n"
 
 
-def run_loaded(ser: serial.Serial, *, preroll: int, postroll: int) -> str:
+def run_loaded(ser: serial.Serial, *, preroll: int, postroll: int, every: int = 1) -> str:
     n_hops_guess = 512
+    every = max(1, int(every))
     timeout = preroll * 0.015 + n_hops_guess * 0.032 + postroll * 0.015 + 8.0
     ser.reset_input_buffer()
-    ser.write(f":c0_run={preroll},{postroll},1\n".encode("ascii"))
+    ser.write(f":c0_run={preroll},{postroll},{every}\n".encode("ascii"))
     ser.flush()
     return wait_done(ser, timeout)
 
@@ -274,6 +328,7 @@ def capture_samples(
     samples: np.ndarray,
     preroll: int = 40,
     postroll: int = 40,
+    every: int = 1,
     bose: BoseSession | None = None,
 ) -> dict:
     if bose is None:
@@ -287,7 +342,7 @@ def capture_samples(
         "output": current_output(),
         "volume": osascript_volume(),
     }
-    run_echo = run_loaded(ser, preroll=preroll, postroll=postroll)
+    run_echo = run_loaded(ser, preroll=preroll, postroll=postroll, every=every)
     bose.assert_alive()
     dump_path = out_dir / f"{tag}.rtrace.log"
     dump_meta = dump_rtrace(ser, dump_path, timeout_s=180.0)

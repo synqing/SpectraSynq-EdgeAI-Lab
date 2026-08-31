@@ -4,6 +4,8 @@ abstract: "HOST-ONLY cadence of source_share × WaveformTempo × head_position. 
 
 # Gate C cadence — HOST rehearsal
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 This is a **host pixel** rehearsal of how slowly and how late the extra control can update before Waveform Tempo stops carrying source ownership. It is **not** Gate C, **not** C0, **not** silicon, **not** LGP.
 
 Binding (unchanged): `source_share × WaveformTempo × head_position`.

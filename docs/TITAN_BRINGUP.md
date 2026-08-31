@@ -4,6 +4,8 @@ abstract: "Arrival-day sequence for Titan Mini. Golden tensor first, PDM last. H
 
 # Titan Mini bring-up (designed, not run)
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 **Status: PRE-SILICON.** No RA8P1 is on the desk. Do not quote latency from this file.
 
 Board: Titan Mini, RA8P1, Cortex-M85 + M33, Ethos-U55, external SDRAM, PDM mic.

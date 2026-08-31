@@ -80,6 +80,8 @@ Reuse `p3c_quant.score_clip` + `summarise` on silicon LED cubes keyed `A`,`B`,`D
 
 `head_position_upper`: luma centroid of LEDs 80–159; 0 = centre seam, 79 = tip (`p3c_score.py`).
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 ## 6. Cadence / delay protocol (describe only — do not run)
 
 Oracle hop is 31.25 Hz (512/16000). Extra_gain series is that hop grid.

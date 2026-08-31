@@ -4,6 +4,8 @@ abstract: "P1 HOST-ONLY: human DEAM 2 Hz arousal vs deterministic DSP on real CC
 
 # DEAM human arousal vs DSP — 2026-08-30
 
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
 Canonical DEAM files (not mirdata). 82 tracks with local audio: 24 × 2013 45 s clips + **58 × 2015 full songs** (manual: dynamic arousal more reliable in 2015).
 
 Human annotations at 2 Hz, starting ~15 s. DSP from librosa, interpolated onto that grid.

@@ -213,3 +213,10 @@ def test_retired_c0_runner_refuses():
     src = (ROOT / "scripts" / "gate_c0_silicon.py").read_text(encoding="utf-8")
     assert "RETIRED" in src
     assert "gate_c0v2" in src
+
+
+def test_same_song_loop_max_is_fifteen_minutes():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from gate_c0v2_silicon import SAME_SONG_LOOP_MAX_S
+
+    assert SAME_SONG_LOOP_MAX_S == 15 * 60
