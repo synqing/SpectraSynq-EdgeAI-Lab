@@ -1,5 +1,5 @@
 ---
-abstract: "P3-B share ≠ mix. P3-C Waveform Tempo scored on dumps: share extra-DoF PASS in wave position (holdout Δr=0.63, 9/9); composition-change comets FAIL vs loudness. No Demucs. Student OPEN; share head is a candidate."
+abstract: "P3-B share ≠ mix. Bindings: source_share × WaveformTempo × head_position HOST PASS (holdout Δr=0.63, 9/9); composition_change × Comet × impact-launch FAIL. Tempo is a continuity carrier, not universal lighting proof. No Demucs. Student OPEN."
 ---
 
 # Source activity — perfect oracle
@@ -118,12 +118,22 @@ The close is on LED buffers vs the source oracle. Captain is not the validator. 
 | Q1 knob is head position | **PASS** | Spearman(position, extra gain) 0.68 |
 | Q2 share increment in pixels | **PASS** | partial r D 0.68 vs B 0.04; Δ 0.63; 9/9 clips |
 | Q3 source abs after mix | **PASS** | Δ 0.45; 9/9 (abs was not the driver) |
-| Q4 arrangement in pixels | **FAIL** | Δ partial r vs composition_change 0.06 |
-| Q5 comet vs loudness at drums | **FAIL** | F1 delta 0.02; 7/10 wins, below floor |
+| Q4 `composition_change × WaveformTempo × head_position` | **FAIL this comparator** | Δ partial r 0.06 — arrangement is not a continuous head-position signal |
+| Q5 `composition_change × Comet × impact-launch` | **FAIL this comparator** | F1 delta 0.02 vs `|Δ mix|` at drum attacks |
 
-Mean luminance is the wrong feature: extra gain **shortens** the Waveform Tempo trail, so luma vs gain is negative (~−0.44). Brighter-looking pages are not the same as “more extra energy.”
+Stamps (bound, not global):
 
-Stamps: **share continuous PASS**. **composition_change events FAIL**. Student share head is a **CANDIDATE**, not frozen. Event head **NO**. Demucs **NO**. Student gate still **OPEN**.
+| Binding | Stamp |
+| --- | --- |
+| `source_share × WaveformTempo × head_position` | **HOST PASS** |
+| `composition_change × Comet × impact-launch` | **FAIL this comparator** |
+| composition_change as a descriptor | **not decided** — wrong instrument for arrangement-state |
+| Student share head | **CANDIDATE**, not frozen |
+| Event head | **NO** |
+| Demucs | **NO** |
+| Student gate | **OPEN** |
+
+Waveform Tempo is a **reference continuity carrier**.
 
 - Scorer: `uv run python scripts/p3c_quant_score.py`
 - Receipt: `docs/mir/P3C_QUANT.json`
@@ -131,7 +141,13 @@ Stamps: **share continuous PASS**. **composition_change events FAIL**. Student s
 - Continuous page (reference, not the close): `docs/mir/visual_replay/p3c1_continuous.html`
 - Events page (reference, not the close): `docs/mir/visual_replay/p3c2_events.html`
 
-If share had failed Q2/Q3 on holdout: do not train a dominance student. It passed. Next research step is a tiny student on MUSDB stem powers with a **share** extra-DoF, not an arrangement-change event head. Demucs only after that, for unstemmed scale.
+If share had failed Q2/Q3 on holdout: do not train a dominance student. It passed **Gate B on this binding**. Gate A already passed. Gate C (physical show) is still OPEN.
+
+Share-student recoverability is **HOST PASS** (21k CNN, four-source including `other`). Programme stamp: **PRE-PRODUCT FEASIBILITY PASS**. Next is Gate C, not another network. Waveform Tempo remains the continuity/reference replay.
+
+**Composition-change implementation is parked.** It is a deterministic function of share(t) vs share(t−Δ). No extra ML head. Atlas may find a macro-transition grammar or record a visual-language gap. Replaying the existing oracle through a new binding does not need new neural work.
+
+Demucs only after recoverability, for unstemmed scale.
 
 Re-run: `uv run python scripts/download_musdb.py --fetch` then `uv run python scripts/musdb18_p3b.py` then `uv run --extra musdb python scripts/musdb18_p3c.py`. Requires `SPECTRASYNQ_K1_FIRMWARE` (or the workstation checkout) and g++-15.
 
@@ -149,3 +165,6 @@ Older HPSS-on-DEAM numbers remain a mixture-only baseline, not stem truth.
 | 2026-08-31 | agent:edgeai | P3-B stamps: abs demoted, share info-PASS; P3-C bloom+PHOTONS blinded replay. |
 | 2026-08-31 | agent:edgeai | P3-C continuous engine swapped to firmware Waveform Tempo on the palette path. |
 | 2026-08-31 | agent:edgeai | P3-C quantitative close: share extra-DoF PASS in wave position; composition-change comets FAIL. |
+| 2026-08-31 | agent:edgeai | FAIL narrowed to composition_change × Comet × impact-launch; Tempo is a continuity carrier. |
+| 2026-08-31 | agent:edgeai | Share student unblocked; composition-change ML parked; Gate C OPEN. |
+| 2026-08-31 | agent:edgeai | Feasibility PASS stamp; Gate C next; no hop-level student. |

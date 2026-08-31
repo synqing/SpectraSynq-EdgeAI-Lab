@@ -1,5 +1,5 @@
 ---
-abstract: "Architectural choices D1–D14. D14 P3-C dump close: share-as-Waveform-Tempo-position PASS; composition-change comets FAIL. Student share head is a candidate. I/O still OPEN. No Demucs."
+abstract: "D1–D17. Feasibility PASS. C0 FAIL INVALID_TEMPORAL_EXECUTION 2026-08-31. Two-clock runner retired. C0-v2 next. C1 blocked. No more nets."
 ---
 
 # Decisions
@@ -108,7 +108,28 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 **Chosen:** Isolated HOST replay of firmware `light_mode_waveform_tempo` on the product palette path (`K1_Ultraviolet_Bright`, square_iter 0). Same extra DoF for baseline / mix energy / source share (peak + chroma gain in [0.62, 1.0]). Events are firmware `light_mode_comet` over that tempo floor, matched trigger budget. Challenge 10 from the P3-B oracle set plus 10 MUSDB-test holdout tracks stratified by duration, not by share/RMS disagreement. Versions are blinded. No firmware production edits. No Demucs.
 **Why:** P3-B HTML was an existing-behaviour stand-in. Chromatic bloom + PHOTONS² was unreadable. Spectrum River was visually usable; Captain preferred Waveform Tempo. Pixel MAD is not a lighting call. If lights never benefit, there is nothing to teach. If they do, MUSDB stems are already perfect supervision — a separator teacher would only add error.
 **Rejected:** lighting call from `p3b1_continuous.html` / `p3b2_events.html`; chroma HSV as the colour path; installing Demucs next; training a student before P3-C; freezing student heads for abs/share/delta/composition_change separately; Captain eyes as the P3-C close when dumps exist.
-**Revisit:** Quantitative dump close `docs/mir/P3C_QUANT.json`. Share-as-Waveform-Tempo-position **PASS** on holdout (Δ partial r 0.63, 9/9). Composition-change comets **FAIL** vs `|Δ mix|` at drum attacks. Student share head is a candidate; event head is not. Student I/O still OPEN. Next: tiny research student on MUSDB stem powers for share only. Demucs still later.
+**Revisit:** Quantitative dump close `docs/mir/P3C_QUANT.json`. Binding **`source_share × WaveformTempo × head_position` HOST PASS** on holdout (Δ partial r 0.63, 9/9). Binding **`composition_change × Comet × impact-launch` FAIL** vs `|Δ mix|` at drum attacks. That is not “composition_change is useless.” Student share head is a candidate; event head is not. Student I/O still OPEN. Next: tiny research student on MUSDB stem powers for share only. Demucs still later.
+
+## D15 — Effect semantics live in firmware; EdgeAI consumes a SHA-pinned export
+
+**Chosen:** Canonical Effect Semantics / Response Registry belongs in K1 firmware, pinned to firmware SHA. EdgeAI-Lab imports `effect-semantics.json` and must not grow a competing effect taxonomy. Visual-utility stamps bind `descriptor × mode × lever`. Waveform Tempo is a continuity/reference carrier for source-share, not a universal lighting actuator. MIR student outputs stay effect-agnostic (share/arousal/…), not “Waveform-Tempo-head-position.”
+**Why:** P3-C showed the same extra control moves head position and can *lower* mean luminance. Evaluating descriptors on an arbitrary mode manufactures false negatives (composition_change vs Comet) and false positives (brightness as “more music”).
+**Rejected:** 174-effect Lightwave catalogue as current inventory; putting canonical mode behaviour in EdgeAI-Lab; treating mean brightness as the default visual metric; blocking the share-student recoverability experiment on a full 22-mode hardware atlas.
+**Revisit:** when firmware exports `effect-semantics.json` at SHA `36466cd5` (Atlas lane `docs/effect-response-atlas`). First tranche: inventory + static map + host fingerprints for several archetypes + first compatibility matrix.
+
+## D16 — Three gates; share student now; composition-change parked
+
+**Chosen:** Permanent split: **A** semantic information, **B** visual-carrier (`descriptor × mode × lever`), **C** product/LGP perceptual. Share: A PASS, B HOST PASS on Waveform Tempo head position. C OPEN. Start the four-source share-student recoverability experiment now (mixture → powers → deterministic share). Do not wait for Atlas coverage of the remaining modes. Composition-change **implementation** is parked: no ML head (it is a function of share). Atlas may search for a macro-transition grammar or record a visual-language gap. Evidence ladder: STATIC_SOURCE → HOST_PIXEL_VALIDATED → ON_SILICON_PIXEL_VALIDATED → LGP_PERCEPTUAL_VALIDATED. Registry provenance: `source_firmware_sha` plus `atlas_artifact_sha256` / generation commit, because the Atlas can move while firmware SHA stays `36466cd5`.
+**Why:** Waiting on 16 more modes would delay the only remaining MIR recoverability question. Collapsing A/B/C repeats P3-C category errors. Looking at dumps is not looking at the LGP.
+**Rejected:** Blocking the student on full Atlas; a composition_change neural head; declaring Gate C from host pixels; treating BPM/phase/tick/confidence as one “tempo” lever.
+**Revisit:** student recoverability receipt; Atlas grammar-coverage + tempo sweeps; Gate C only after silicon dumps then LGP taxonomy.
+
+## D17 — PRE-PRODUCT FEASIBILITY PASS; Gate C next; no more nets yet
+
+**Chosen:** Stamp **Source Ownership Programme — PRE-PRODUCT FEASIBILITY PASS** (A PASS, B HOST PASS on Tempo head, recoverability HOST PASS, C OPEN, I/O unfrozen). Stop hop-level/streaming student work. Next load-bearing experiment is Gate C on the physical K1: **C0** silicon LED dumps of the same extra-DoF (A/B/D) plus cadence 2/5/10/20/~31 Hz and delays 0/50/100/200 ms; **C1** LGP perceptual only after C0. Effect semantics set the semantic-lane clock; do not freeze 31.25 Hz because the host renderer used it. Freeze the **contract** (four-source including `other`, share vs powers, cadence, latency, silence) only if C passes, then deploy. Tempo bindings stay specific (`beat_phase × WaveformTempo × transport`, `beat_tick × PulsePrism × pulse_event`), not `supports_tempo`.
+**Why:** The 21k net proved recoverability is plausible. Making that net deployment-grade before C says the semantic deserves silicon is the wrong leverage point. Host cadence is rehearsal, not C0. C1 is the first human visual judgement that is actually load-bearing.
+**Rejected:** Streaming student now; treating HOST recoverability as Gate C; dropping `other`; flashing without a named GO; Captain eyes for C0 dumps.
+**Revisit:** C0 silicon 2026-08-31 **FAIL — INVALID TEMPORAL EXECUTION** (`artifacts/gate_c0/C0_RESULT.json`): Q1 Spearman 0.13 < 0.40, Q2/Q3 6/9 wins. Two clocks. +14 hops is diagnosis, not a PASS. Two-clock runner retired. Next is C0-v2 device epoch (`docs/mir/GATE_C0V2.md`), not Tempo edits, not another net, not cadence in the same attempt. C1 still blocked.
 
 ---
 **Document Changelog**
@@ -126,3 +147,8 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:edgeai | D12 revisit (abs demoted); D14 P3-C visual-engine gate, no Demucs. |
 | 2026-08-31 | agent:edgeai | D14: continuous engine is Waveform Tempo on the palette path, not bloom/river. |
 | 2026-08-31 | agent:edgeai | D14 revisit: dump-scored share PASS / composition-change events FAIL; no Captain eyes. |
+| 2026-08-31 | agent:edgeai | D15 firmware Effect Semantics export; D14 stamps narrowed to descriptor × mode × lever. |
+| 2026-08-31 | agent:edgeai | D16 three gates; share student unblocked; composition-change parked; Atlas provenance hash. |
+| 2026-08-31 | agent:edgeai | D17 feasibility PASS stamp; Gate C is next; stop streaming-student work. |
+| 2026-08-31 | agent:edgeai | D17 revisit: C0 silicon FAIL on Main RPL; C1 blocked; no new net. |
+| 2026-08-31 | agent:edgeai | D17: C0 FAIL is INVALID_TEMPORAL_EXECUTION; C0-v2 replaces two-clock harness. |

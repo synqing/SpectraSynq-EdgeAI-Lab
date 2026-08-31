@@ -103,6 +103,9 @@ def test_score_clip_does_not_pass_on_raw_share_correlation():
     # Raw r(D, share) would also be high; the pass is the *delta after mix*.
     summary = summarise([rec])
     assert summary["holdout"]["Q2_share_increment_in_pixels"] == "PASS"
+    assert "share_x_waveform_tempo_x_head_position" in summary["stamps"]
+    assert "composition_change_x_comet_x_impact_launch" in summary["stamps"]
+    assert "composition_change_events" not in summary["stamps"]
 
 
 def test_frame_luminance_shape():

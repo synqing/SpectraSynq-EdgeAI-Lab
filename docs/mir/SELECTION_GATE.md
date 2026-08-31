@@ -1,8 +1,52 @@
 ---
-abstract: "Student-model selection gate still OPEN. P3-C dump close: share extra-DoF PASS on Waveform Tempo position; composition-change events FAIL. No freeze. No Demucs."
+abstract: "Feasibility PASS. A PASS, B HOST PASS. C0 FAIL INVALID_TEMPORAL_EXECUTION 2026-08-31. C0-v2 next. C1 blocked. I/O unfrozen. No Demucs."
 ---
 
 # Student-model selection gate
+
+Three questions. Never collapse them.
+
+## Gate A — semantic information
+
+> Does descriptor X contain information that existing DSP lacks?
+
+Source share: **PASS** (P3-B, HOST-ONLY). Within-track r vs mix: vocals 0.17, drums 0.10, bass 0.16. Abs demoted.
+
+## Gate B — visual-carrier compatibility
+
+> Can mode Y express descriptor X through lever Z in a meaningful, measurable visual dimension?
+
+Bind every stamp as `descriptor × mode × lever`.
+
+| Binding | Stamp | Evidence |
+| --- | --- | --- |
+| `source_share × WaveformTempo × head_position` | **HOST PASS** | P3-C Δ partial r 0.63 holdout 9/9; Atlas ramp Spearman(head,gain)=0.998, luma=−0.956 |
+| `composition_change × Comet × impact-launch` | **FAIL this comparator** | P3-C Q5 F1 delta 0.02 |
+| `composition_change × WaveformTempo × head_position` | **FAIL this comparator** | P3-C Q4 Δ r 0.06 |
+| composition_change as a descriptor | **not decided** | park ML; Atlas may find a morph grammar or record `VISUAL_GRAMMAR_GAP` |
+
+Waveform Tempo is a **reference continuity carrier**, not universal lighting proof. A second compatible mode would be a cross-mode check that the student learned musical state, not Tempo-specific pixels.
+
+## Gate C — product / perceptual utility
+
+> Does that binding actually improve the physical K1 light-show?
+
+**OPEN.** Host pixels ≠ silicon pixels ≠ LGP look.
+
+Evidence ladder (Atlas / consume export):
+
+```text
+STATIC_SOURCE
+    → HOST_PIXEL_VALIDATED
+    → ON_SILICON_PIXEL_VALIDATED   (dumps/traces; no taste)
+    → LGP_PERCEPTUAL_VALIDATED     (optics; Good Light Show Taxonomy)
+```
+
+Gate C is not Gate B. Encoding a number in LEDs is not “the show got better.”
+
+## Recoverability (student experiment)
+
+HOST PASS on a 21k causal CNN, official MUSDB18 song splits (see `docs/mir/SHARE_STUDENT.md`). Four sources including **`other`**. That feasibility question is closed. **Do not start a hop-level or streaming student** until Gate C (`docs/mir/GATE_C.md`) measures the cadence/latency the binding actually needs. I/O remains unfrozen. Composition change remains a function of share(t) vs share(t−Δ).
 
 A small RA8P1/U55 student becomes the primary implementation target only after
 **material evidence** for:
@@ -14,7 +58,7 @@ A small RA8P1/U55 student becomes the primary implementation target only after
 5. **CLEAN/STUDIO behaviour**
 6. **Live/venue-domain robustness** — Amendment 002: CLEAN vs PA/ROOM vs PA/ROOM+CROWD; PaRIRset held-out venues intact.
 7. **Licensing/provenance** — `mir/registry.yaml`. Teacher use ≠ derived-weight clearance.
-8. **Visual utility** — offline replay against **actual host visual-engine pixels** (P3-C Waveform Tempo on the palette path), scored on dumps not eyes, **before** student training. If a perfect oracle does not improve lights, do not train.
+8. **Visual utility** — Gates B then C. Bind `descriptor × mode × lever`. Mean brightness is not the default metric. A fail on one binding is not a global fail.
 9. **U55 compressibility** — PRE-SILICON compile of a candidate graph (RUHMI), not Semantic-v0-synthetic authority. GHA 33319114336: `ad01_int8.tflite` and `smoke.onnx` both emitted C99. Receipt: `docs/ruhmi/COMPILE_RECEIPT.md`. Not ON-SILICON.
 
 Do not freeze Student-v0 yet.
@@ -24,7 +68,7 @@ Evidence so far (HOST-ONLY, not a freeze):
 - Real-audio incremental vs DSP: DEAM 2015 human arousal vs energy mean r=0.37, R²=0.30. Not Semantic-v0's r=0.99.
 - Visual utility (A/B/C replay, not firmware): A = onset baseline; B = same extra DoF from RMS; C = same extra DoF from human arousal; w=0.65. Five 2015 songs (2030/2028 controls; 2034/2041/2056 residuals). `docs/mir/visual_replay/index.html`. Not a Captain LED judgement and not a student freeze.
 - Live/venue: PaRIRset test-split convolution on three held-out venues. Unaligned onset r is low because the IRs inject ~100 ms delay, not because events vanish. Delay-aligned native-hop F1@50 ms recovers 0.05 → 0.86 (HOST-ONLY). Old “onset dies” reading **invalidated**. Residual smear remains (aligned F1 0.79–0.92). CrowdioSet not ingested. Receipt: `docs/mir/PARIRSET_ONSET_ALIGNED.md`.
-- Source activity: P3-B full MUSDB18 n=150. Within-track r(drums_share, mix)=0.10 vs r(drums_abs, mix)=0.62. Vocals 0.17 vs 0.44. Bass 0.16 vs 0.64. **abs DEMOTE; share PASS incremental-info.** P3-C dump close on Waveform Tempo: **share extra-DoF PASS** (holdout Δ partial r of head position vs share \| mix = 0.63, 9/9); **composition-change events FAIL** vs `|Δ mix|` at drum attacks. Demucs not installed. Student I/O still OPEN. Share head is a candidate only. `docs/mir/P3C_QUANT.json`.
+- Source activity: P3-B full MUSDB18 n=150. Within-track r(drums_share, mix)=0.10 vs r(drums_abs, mix)=0.62. Vocals 0.17 vs 0.44. Bass 0.16 vs 0.64. **abs DEMOTE; share PASS incremental-info (Gate A).** P3-C dump close: **`source_share × WaveformTempo × head_position` HOST PASS (Gate B)** (holdout Δ partial r 0.63, 9/9). Waveform Tempo is a **reference continuity carrier**. **`composition_change × Comet × impact-launch` FAIL** this comparator. Gate C OPEN. Recoverability: tiny causal CNN 20 788 params, official MUSDB18 song-level test n=50, within-track r(pred,true) vocals/drums/bass = 0.64/0.57/0.54 vs mix-linear 0.13/0.19/0.20. HOST-ONLY. I/O not frozen. `docs/mir/SHARE_STUDENT.md`. Demucs not installed.
 - U55 compressibility: PRE-SILICON C99 for Renesas `ad01_int8.tflite` and lab `smoke.onnx` (GHA 33319114336, AdaptiveAvgPool2d after D11 ReduceMean split). Not ON-SILICON.
 - Teacher/oracle quality: Essentia DEAM head ≠ human 2 Hz on two songs. Jamendo mood means differ; often clip-flat.
 
@@ -44,6 +88,10 @@ Worth keeping on the visual-utility list after landscape + conventional traces:
 
 **Do not invent BUILDING/DROPPING/CHAOTIC labels yet.** Check whether novelty + arousal + source activity + a mood head already cover the lighting intent.
 
+A descriptor has no visual utility in the abstract. Gate A is information, Gate B is a named carrier, Gate C is the physical show. Recoverability (“can we infer it cheaply?”) is a fourth engineering question, not a lighting judgement.
+
+Consume firmware `effect-semantics.json` with `source_firmware_sha` **and** `atlas_artifact_sha256` (the registry can move while firmware SHA stays put). See `docs/mir/EFFECT_SEMANTICS_CONSUME.md`.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -56,3 +104,7 @@ Worth keeping on the visual-utility list after landscape + conventional traces:
 | 2026-08-31 | agent:edgeai | P3-B 150 tracks; within-track share vs mix; visual pages not a pass. |
 | 2026-08-31 | agent:edgeai | Visual utility = P3-C engine pixels; abs demoted; Demucs still not next. |
 | 2026-08-31 | agent:edgeai | P3-C dump-scored: share position PASS; composition-change comets FAIL. |
+| 2026-08-31 | agent:edgeai | Visual utility binds descriptor × mode × lever; composition_change FAIL narrowed to Comet impact-launch. |
+| 2026-08-31 | agent:edgeai | Permanent A/B/C gates; recoverability unblocked; C remains OPEN. |
+| 2026-08-31 | agent:edgeai | Feasibility PASS; Gate C next; halt hop-level student. |
+| 2026-08-31 | agent:edgeai | C0 FAIL INVALID_TEMPORAL_EXECUTION; C0-v2 successor. |

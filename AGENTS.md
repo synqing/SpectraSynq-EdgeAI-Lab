@@ -38,7 +38,10 @@ It is **not** “put an NPU in SpectraSynq”.
 | DEAM arousal vs DSP | primary (real audio) |
 | RUHMI CI | pin 6c5aad9 + libstdc++/gcc-13; ad01 then smoke |
 | Live domain (PaRIRset) | Amendment 002 — onset delayed (~100 ms), not killed, on 3 short test IRs |
-| Source oracle (MUSDB18) | P3-B info-PASS on share; abs demoted; P3-C visual-engine replay is the lighting gate; Demucs not next |
+| Source oracle (MUSDB18) | Gate A PASS on share. Gate B HOST PASS. C0-v2 ON_SILICON_PIXEL_VALIDATED 2026-08-31. Previous two-clock C0 still FAIL corpse. Cadence OPEN. C1 blocked. Demucs not next |
+| Source ownership | PRE-PRODUCT FEASIBILITY PASS. C0 FAIL (two-clock instrument, not dead lever). No more nets |
+| Share student | HOST recoverability PASS (21k, four-source incl. other). I/O unfrozen. Streaming student STOPPED |
+| Effect semantics | consume firmware export (`source_firmware_sha` + `atlas_artifact_sha256`); no competing taxonomy |
 | Semantic-v0 training | **deferred** |
 | Silicon / PDM | wait for Titan |
 

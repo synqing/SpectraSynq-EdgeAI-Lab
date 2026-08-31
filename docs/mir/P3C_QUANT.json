@@ -118,12 +118,14 @@
     "Q5_comet_beats_loudness_at_drums": "FAIL"
   },
   "stamps": {
-    "share_continuous": "PASS",
-    "composition_change_events": "FAIL",
+    "share_x_waveform_tempo_x_head_position": "PASS",
+    "composition_change_x_comet_x_impact_launch": "FAIL",
+    "composition_change_x_comet_x_impact_launch_note": "Fails this comparator only. Not a global verdict on composition_change. Arrangement-state may still suit morph/transition/spatial-redistribution grammars.",
     "student_share_head": "CANDIDATE",
     "student_event_head": "NO",
     "demucs": "NO",
-    "student_gate": "OPEN"
+    "student_gate": "OPEN",
+    "waveform_tempo_role": "reference_continuity_carrier"
   },
   "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
   "html": [

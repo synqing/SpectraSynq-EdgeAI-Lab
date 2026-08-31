@@ -1,0 +1,879 @@
+{
+  "label": "HOST-ONLY",
+  "generation_status": "tranche2_grammar_tempo",
+  "on_silicon_pixel_validated": null,
+  "lgp_perceptual_validated": null,
+  "modes": [
+    {
+      "id": 3,
+      "display_name": "BLOOM",
+      "enum": "LIGHT_MODE_BLOOM",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_bloom.cpp",
+      "guidebook_class": "02-bloom",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "chroma",
+        "control.mood",
+        "control.saturation",
+        "control.chroma",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": true,
+      "harness_key": "bloom",
+      "visual_carriers": [
+        "chroma_colour (native)",
+        "scroll transport"
+      ],
+      "metric_traps": [
+        "peak is not a Bloom lever",
+        "palette path hides hue_centroid"
+      ],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "NONE_OR_TIME_CONFOUND",
+          "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+        },
+        "chroma_rotate": {
+          "transfer": "DETECTED",
+          "primary": "symmetry",
+          "r": -0.4893,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "onset_train": {
+          "transfer": "NONE_OR_TIME_CONFOUND",
+          "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+        },
+        "band_low_vs_high": {
+          "transfer": "DETECTED",
+          "primary": "frame_derivative",
+          "r": -0.7655,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 7,
+      "display_name": "WAVEFORM-FAST",
+      "enum": "LIGHT_MODE_WAVEFORM_FAST",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_waveform_fast.cpp",
+      "guidebook_class": "01-waveform",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "chroma",
+        "waveform_peak",
+        "waveform_raw",
+        "control.saturation",
+        "control.chroma",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": true,
+      "harness_key": "waveform_fast",
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 8,
+      "display_name": "WAVEFORM",
+      "enum": "LIGHT_MODE_WAVEFORM",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_waveform.cpp",
+      "guidebook_class": "01-waveform",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "chroma",
+        "waveform_peak",
+        "vu",
+        "control.saturation",
+        "control.chroma",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": true,
+      "harness_key": "waveform",
+      "visual_carriers": [
+        "head_position_upper"
+      ],
+      "metric_traps": [
+        "mean_luminance inverts"
+      ],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "DETECTED",
+          "primary": "head_position_upper",
+          "r": 0.9993,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "chroma_rotate": {
+          "transfer": "DETECTED",
+          "primary": "chroma_spread",
+          "r": 0.9642,
+          "trap": null
+        },
+        "onset_train": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": 0.8045,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "band_low_vs_high": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": -0.871,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 9,
+      "display_name": "BLOOM (FAST)",
+      "enum": "LIGHT_MODE_BLOOM_FAST",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_bloom.cpp",
+      "guidebook_class": "02-bloom",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "chroma",
+        "control.mood",
+        "control.saturation",
+        "control.chroma",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 11,
+      "display_name": "WAVEFORM_HYBRID",
+      "enum": "LIGHT_MODE_WAVEFORM_HYBRID",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_waveform_hybrid.cpp",
+      "guidebook_class": "01-waveform",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "chroma",
+        "waveform_peak",
+        "waveform_raw",
+        "vu",
+        "control.saturation",
+        "control.chroma",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 12,
+      "display_name": "AURORA",
+      "enum": "LIGHT_MODE_AURORA",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_aurora.cpp",
+      "guidebook_class": "02-bloom",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "palette_or_chroma_colour",
+        "control.mood",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 13,
+      "display_name": "COMET",
+      "enum": "LIGHT_MODE_COMET",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_comet.cpp",
+      "guidebook_class": "04-comet",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "onset_beat",
+        "palette_or_chroma_colour",
+        "bass_onset",
+        "control.mood",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": true,
+      "harness_key": "comet",
+      "visual_carriers": [
+        "event_spawn",
+        "frame_derivative"
+      ],
+      "metric_traps": [
+        "spearman vs sparse impulse understates trail memory",
+        "ignores peak"
+      ],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "NONE_OR_TIME_CONFOUND",
+          "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+        },
+        "chroma_rotate": {
+          "transfer": "NONE_OR_TIME_CONFOUND",
+          "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+        },
+        "onset_train": {
+          "transfer": "DETECTED",
+          "primary": "symmetry",
+          "r": 0.8045,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "band_low_vs_high": {
+          "transfer": "NONE_OR_TIME_CONFOUND",
+          "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 14,
+      "display_name": "SPECTRUM RIVER",
+      "enum": "LIGHT_MODE_SPECTRUM_RIVER",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_spectrum_river.cpp",
+      "guidebook_class": "03-spectrum-river",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "spectrum_80",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": true,
+      "harness_key": "spectrum_river",
+      "visual_carriers": [
+        "freq_to_space",
+        "centre_vs_tip_energy"
+      ],
+      "metric_traps": [],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": 1.0,
+          "trap": null
+        },
+        "chroma_rotate": {
+          "transfer": "DETECTED",
+          "primary": "frame_derivative",
+          "r": -0.7787,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "onset_train": {
+          "transfer": "NONE_OR_TIME_CONFOUND",
+          "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+        },
+        "band_low_vs_high": {
+          "transfer": "DETECTED",
+          "primary": "component_count",
+          "r": 0.9714,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 15,
+      "display_name": "SPECTRUM RIVER 2",
+      "enum": "LIGHT_MODE_SPECTRUM_RIVER_V2",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_spectrum_river_v2.cpp",
+      "guidebook_class": "03-spectrum-river",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "audio_snapshot",
+        "spectrum_80",
+        "snapshot.low_energy",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 16,
+      "display_name": "EMBER FIELD",
+      "enum": "LIGHT_MODE_EMBER",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_ember.cpp",
+      "guidebook_class": "05-ember",
+      "guidebook_fit": "CURRENT_CONFIRMED",
+      "native_inputs": [
+        "audio_snapshot",
+        "chroma_centroid",
+        "snapshot.spectral_energy",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": true,
+      "harness_key": "ember",
+      "visual_carriers": [
+        "radial_extent",
+        "occupancy",
+        "mean_luminance"
+      ],
+      "metric_traps": [],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "DETECTED",
+          "primary": "head_position_upper",
+          "r": 1.0,
+          "trap": null
+        },
+        "chroma_rotate": {
+          "transfer": "DETECTED",
+          "primary": "tip_energy",
+          "r": 0.5538,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "onset_train": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": 0.8045,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "band_low_vs_high": {
+          "transfer": "DETECTED",
+          "primary": "head_position_upper",
+          "r": 0.816,
+          "trap": null
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 18,
+      "display_name": "WAVEFORM TEMPO",
+      "enum": "LIGHT_MODE_WAVEFORM_TEMPO",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_waveform_tempo.cpp",
+      "guidebook_class": "01-waveform",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "audio_snapshot",
+        "waveform_peak",
+        "snapshot.peak",
+        "snapshot.vu",
+        "snapshot.spectral_energy",
+        "snapshot.low_energy",
+        "snapshot.mid_energy",
+        "snapshot.high_energy",
+        "snapshot.novelty",
+        "snapshot.chroma_strength",
+        "snapshot.silence",
+        "palette_or_chroma_colour",
+        "control.saturation",
+        "control.chroma",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "host_renderable": true,
+      "harness_key": "waveform_tempo",
+      "visual_carriers": [
+        "head_position_upper",
+        "trail_length_inverse_luma"
+      ],
+      "metric_traps": [
+        "mean_luminance inverts as head moves out"
+      ],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "DETECTED",
+          "primary": "head_position_upper",
+          "r": 0.9979,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "chroma_rotate": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": -0.4893,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "onset_train": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": 0.8045,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "band_low_vs_high": {
+          "transfer": "DETECTED",
+          "primary": "centre_energy",
+          "r": -0.7608,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 19,
+      "display_name": "TEMPO RIVER",
+      "enum": "LIGHT_MODE_TEMPO_RIVER",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_tempo_river.cpp",
+      "guidebook_class": "03-spectrum-river",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "spectrum_80",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 20,
+      "display_name": "TEMPO COMET",
+      "enum": "LIGHT_MODE_TEMPO_COMET",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_tempo_comet.cpp",
+      "guidebook_class": "04-comet",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "particle_colour",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ],
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 21,
+      "display_name": "DENSE FORGE",
+      "enum": "LIGHT_MODE_DENSE_FORGE",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_dense_forge.cpp",
+      "guidebook_class": null,
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "onset_beat",
+        "audio_snapshot",
+        "chroma_centroid",
+        "spectrum_80",
+        "snapshot.spectral_energy",
+        "snapshot.novelty",
+        "snapshot.silence",
+        "control.mood",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "tempo_fields": [
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 22,
+      "display_name": "SNAPWAVE",
+      "enum": "LIGHT_MODE_SNAPWAVE",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_snapwave.cpp",
+      "guidebook_class": null,
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "audio_snapshot",
+        "chroma",
+        "snapshot.peak",
+        "particle_colour",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ],
+      "tempo_fields": [
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 23,
+      "display_name": "PULSE PRISM",
+      "enum": "LIGHT_MODE_PULSE_PRISM",
+      "enabled": true,
+      "director_ok": true,
+      "implementation": "effects/light_mode_pulse_prism.cpp",
+      "guidebook_class": null,
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "onset_beat",
+        "audio_snapshot",
+        "chroma_centroid",
+        "snapshot.vu",
+        "snapshot.low_energy",
+        "particle_colour",
+        "bass_onset",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.bpm",
+        "tempo.beat_tick",
+        "tempo.locked",
+        "tempo.beat_strength"
+      ],
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.beat_tick",
+        "tempo.locked",
+        "tempo.beat_strength"
+      ],
+      "host_renderable": true,
+      "harness_key": "pulse_prism",
+      "visual_carriers": [
+        "shockwave_rings (STATIC)",
+        "chroma_spread (HOST peak-ramp)"
+      ],
+      "metric_traps": [],
+      "host_notes": {
+        "peak_ramp": {
+          "transfer": "DETECTED",
+          "primary": "chroma_spread",
+          "r": 0.9606,
+          "trap": null
+        },
+        "chroma_rotate": {
+          "transfer": "DETECTED",
+          "primary": "symmetry",
+          "r": -0.4893,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "onset_train": {
+          "transfer": "DETECTED",
+          "primary": "symmetry",
+          "r": 0.8045,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        },
+        "band_low_vs_high": {
+          "transfer": "DETECTED",
+          "primary": "symmetry",
+          "r": -0.7608,
+          "trap": "mean_luminance is not the primary carrier (and may invert)"
+        }
+      },
+      "evidence": "HOST_PIXEL_VALIDATED"
+    },
+    {
+      "id": 24,
+      "display_name": "DENSE FORGE CHORD",
+      "enum": "LIGHT_MODE_DENSE_FORGE_CHORD",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_dense_forge_chord.cpp",
+      "guidebook_class": null,
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "onset_beat",
+        "audio_snapshot",
+        "chroma_centroid",
+        "spectrum_80",
+        "snapshot.spectral_energy",
+        "snapshot.novelty",
+        "snapshot.silence",
+        "control.mood",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "tempo_fields": [
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 25,
+      "display_name": "CHROMA CONSTELLATION",
+      "enum": "LIGHT_MODE_CHROMA_CONSTELLATION",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_chroma_constellation.cpp",
+      "guidebook_class": null,
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "audio_snapshot",
+        "chroma",
+        "snapshot.spectral_energy",
+        "snapshot.novelty",
+        "snapshot.silence",
+        "snapshot.chroma_pc",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 26,
+      "display_name": "PERCUSSION BURST",
+      "enum": "LIGHT_MODE_PERCUSSION_BURST",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_percussion_burst.cpp",
+      "guidebook_class": "04-comet",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "onset_beat",
+        "audio_snapshot",
+        "chroma_centroid",
+        "snapshot.spectral_energy",
+        "snapshot.novelty",
+        "snapshot.silence",
+        "particle_colour",
+        "bass_onset",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 27,
+      "display_name": "TEMPO COMET ANTICIPATE",
+      "enum": "LIGHT_MODE_TEMPO_COMET_ANTICIPATE",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_tempo_comet_anticipate.cpp",
+      "guidebook_class": "04-comet",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "particle_colour",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ],
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 28,
+      "display_name": "RIVER SURGE",
+      "enum": "LIGHT_MODE_RIVER_SURGE",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_river_surge.cpp",
+      "guidebook_class": "03-spectrum-river",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "audio_snapshot",
+        "spectrum_80",
+        "snapshot.spectral_energy",
+        "snapshot.low_energy",
+        "snapshot.silence",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 29,
+      "display_name": "TEMPO RIVER WALK",
+      "enum": "LIGHT_MODE_TEMPO_RIVER_WALK",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_tempo_river_walk.cpp",
+      "guidebook_class": "03-spectrum-river",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "tempo",
+        "spectrum_80",
+        "control.mirror",
+        "centre_origin_mirror",
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    },
+    {
+      "id": 32,
+      "display_name": "WAVEFORM HYBRID K1",
+      "enum": "LIGHT_MODE_WAVEFORM_HYBRID_K1",
+      "enabled": true,
+      "director_ok": false,
+      "implementation": "effects/light_mode_waveform_hybrid_k1.cpp",
+      "guidebook_class": "01-waveform",
+      "guidebook_fit": "CURRENT_CHANGED",
+      "native_inputs": [
+        "audio_snapshot",
+        "chroma",
+        "waveform_peak",
+        "snapshot.peak",
+        "snapshot.vu",
+        "snapshot.silence",
+        "particle_colour",
+        "control.saturation",
+        "control.chroma",
+        "control.mirror",
+        "centre_origin_mirror"
+      ],
+      "tempo_fields": [],
+      "host_renderable": false,
+      "harness_key": null,
+      "visual_carriers": [],
+      "metric_traps": [],
+      "host_notes": null,
+      "evidence": "STATIC_SOURCE"
+    }
+  ],
+  "schema_version": 2,
+  "source_firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "atlas_generation_commit": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "generated_at": "2026-08-30T20:10:46Z",
+  "evidence_levels": {
+    "STATIC_SOURCE": "Read from firmware source at source_firmware_sha. Comments and M18_DARK_DIAG blocks stripped. Not a pixel proof.",
+    "HOST_PIXEL_VALIDATED": "Host-compiled LED-buffer bytes (pre-gamma, pre-dither). Not the device buffer and not the diffused plate.",
+    "ON_SILICON_PIXEL_VALIDATED": "Device LED-buffer dump (rtrace / VPAB). None in this atlas yet.",
+    "LGP_PERCEPTUAL_VALIDATED": "Diffused-plate perceptual validation. Host pixels \u2260 LGP. None yet."
+  },
+  "atlas_artifact_sha256": "ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d"
+}

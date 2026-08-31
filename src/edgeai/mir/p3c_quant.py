@@ -240,11 +240,16 @@ def summarise(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "challenge": ch,
         "holdout": ho,
         "stamps": {
-            "share_continuous": "PASS" if share_ok else "FAIL",
-            "composition_change_events": "PASS" if events_ok else "FAIL",
+            "share_x_waveform_tempo_x_head_position": "PASS" if share_ok else "FAIL",
+            "composition_change_x_comet_x_impact_launch": "FAIL" if not events_ok else "PASS",
+            "composition_change_x_comet_x_impact_launch_note": (
+                "Fails this comparator only. Not a global verdict on composition_change. "
+                "Arrangement-state may still suit morph/transition/spatial-redistribution grammars."
+            ),
             "student_share_head": "CANDIDATE" if share_ok else "NO",
             "student_event_head": "NO",
             "demucs": "NO",
             "student_gate": "OPEN",
+            "waveform_tempo_role": "reference_continuity_carrier",
         },
     }

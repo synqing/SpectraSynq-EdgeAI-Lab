@@ -1,0 +1,373 @@
+{
+  "label": "HOST-ONLY",
+  "generation_status": "tranche2_grammar_tempo",
+  "on_silicon_pixel_validated": null,
+  "lgp_perceptual_validated": null,
+  "grammars": [
+    {
+      "id": "continuous_spatial",
+      "status": "represented",
+      "evidence_level": "HOST_PIXEL_VALIDATED",
+      "representative": {
+        "mode_id": 18,
+        "slug": "waveform_tempo",
+        "lever": "head_position_upper",
+        "host": "peak ramp Spearman(head,peak)=0.9979"
+      },
+      "also": [
+        {
+          "mode_id": 8,
+          "slug": "waveform",
+          "note": "same spatial verb, no tempo lock"
+        },
+        {
+          "mode_id": 7,
+          "slug": "waveform_fast"
+        },
+        {
+          "mode_id": 11,
+          "slug": "waveform_hybrid"
+        },
+        {
+          "mode_id": 32,
+          "slug": "waveform_hybrid_k1"
+        }
+      ],
+      "note": "Energy/share maps to head position. Mean luminance inverts (trap)."
+    },
+    {
+      "id": "continuous_amplitude",
+      "status": "represented",
+      "evidence_level": "HOST_PIXEL_VALIDATED",
+      "representative": {
+        "mode_id": 16,
+        "slug": "ember",
+        "lever": "radial_extent + luminance",
+        "host": "peak ramp extent=0.9998 luma=1.0"
+      },
+      "also": [
+        {
+          "mode_id": 22,
+          "slug": "snapwave",
+          "note": "STATIC: peak envelope + beat_strength brightness"
+        }
+      ],
+      "note": "Ember extent and luma rise together. Not the Tempo inversion."
+    },
+    {
+      "id": "transport_phase",
+      "status": "represented",
+      "evidence_level": "HOST_PIXEL_VALIDATED",
+      "representative": {
+        "mode_id": 18,
+        "slug": "waveform_tempo",
+        "lever": "scroll velocity",
+        "host": {
+          "bpm": "TRANSFER",
+          "phase": "TRANSFER",
+          "confidence": "TRANSFER",
+          "beat_tick": "NONE"
+        }
+      },
+      "also": [
+        {
+          "mode_id": 19,
+          "slug": "tempo_river",
+          "note": "STATIC: bpm rate, phase envelope, confidence gate. Not tick."
+        },
+        {
+          "mode_id": 29,
+          "slug": "tempo_river_walk",
+          "note": "same transport + bar-stepped palette (harmonic, not macro)."
+        },
+        {
+          "mode_id": 20,
+          "slug": "tempo_comet",
+          "note": "STATIC: bpm flywheel + phase resync; spawn on internal wrap, not tracker tick."
+        }
+      ],
+      "note": "BPM is continuous rate. phase01 is circular envelope. confidence is a gate. Waveform Tempo does not consume beat_tick (negative-control sweep)."
+    },
+    {
+      "id": "event_object",
+      "status": "represented",
+      "evidence_level": "HOST_PIXEL_VALIDATED",
+      "representative": {
+        "mode_id": 13,
+        "slug": "comet",
+        "lever": "onset spawn / frame_derivative",
+        "host": "onset-train mean_derivative=4.105790441176471"
+      },
+      "also": [
+        {
+          "mode_id": 23,
+          "slug": "pulse_prism",
+          "host_tick": "TRANSFER",
+          "host_phase": "NONE"
+        },
+        {
+          "mode_id": 26,
+          "slug": "percussion_burst",
+          "note": "STATIC: kick/snare/hat event-id pool"
+        },
+        {
+          "mode_id": 27,
+          "slug": "tempo_comet_anticipate"
+        }
+      ],
+      "note": "Impulse grammar. composition_change \u00d7 Comet remains FAIL this comparator."
+    },
+    {
+      "id": "harmonic_colour",
+      "status": "partial",
+      "evidence_level": "STATIC_SOURCE",
+      "representative": {
+        "mode_id": 3,
+        "slug": "bloom",
+        "lever": "chromagram / palette colour",
+        "host": "palette path (K1_Ultraviolet_Bright, chromatic_mode=false) hides hue_centroid"
+      },
+      "also": [
+        {
+          "mode_id": 25,
+          "slug": "chroma_constellation",
+          "note": "STATIC: pitch-class \u2192 circle-of-fifths space"
+        },
+        {
+          "mode_id": 24,
+          "slug": "dense_forge_chord"
+        },
+        {
+          "mode_id": 12,
+          "slug": "aurora"
+        },
+        {
+          "mode_id": 9,
+          "slug": "bloom_fast"
+        }
+      ],
+      "note": "Native chroma mapping exists. Host hue is not a chroma test under product palette."
+    },
+    {
+      "id": "field_texture",
+      "status": "represented",
+      "evidence_level": "HOST_PIXEL_VALIDATED",
+      "representative": {
+        "mode_id": 14,
+        "slug": "spectrum_river",
+        "lever": "frequency \u2192 space",
+        "host": "band_low_vs_high primary_spearman=0.9714"
+      },
+      "also": [
+        {
+          "mode_id": 15,
+          "slug": "spectrum_river_v2"
+        },
+        {
+          "mode_id": 21,
+          "slug": "dense_forge",
+          "note": "STATIC: moir\u00e9 lattice; phase\u00d7confidence texture"
+        }
+      ],
+      "note": "Freq=space is not an ownership lever. Share on this grammar is a mismatch risk."
+    },
+    {
+      "id": "persistent_stateful",
+      "status": "represented",
+      "evidence_level": "HOST_PIXEL_VALIDATED",
+      "representative": {
+        "mode_id": 13,
+        "slug": "comet",
+        "lever": "trail memory",
+        "host": "Spearman vs a one-sample impulse understates trail. Persistence is the trap."
+      },
+      "also": [
+        {
+          "mode_id": 18,
+          "slug": "waveform_tempo",
+          "note": "leds_16 history transport"
+        },
+        {
+          "mode_id": 23,
+          "slug": "pulse_prism",
+          "note": "ring life/position pool"
+        }
+      ],
+      "note": "Memory lives in the LED buffer / particle pool, not a scene graph."
+    },
+    {
+      "id": "macro_transition",
+      "status": "GAP",
+      "evidence_level": "STATIC_SOURCE",
+      "representative": null,
+      "inspected": [
+        {
+          "mode_id": 28,
+          "slug": "river_surge",
+          "verdict": "NOT_THE_GRAMMAR",
+          "why": "Song-arc overlay on Spectrum River: dual-EMA build_ratio accelerates drift; a drop spawns one travelling wavefront. Energy-arc, not arrangement morph / spatial redistribution / scene change."
+        },
+        {
+          "source": "director/k1_mode_selection.cpp",
+          "verdict": "NOT_THE_GRAMMAR",
+          "why": "Director switches among allowed modes with dwell/cooldown. That is mode change, not a visual morph carrier inside a mode."
+        },
+        {
+          "mode_id": 29,
+          "slug": "tempo_river_walk",
+          "verdict": "NOT_THE_GRAMMAR",
+          "why": "Palette position walks +0.125 per counted bar. Harmonic/colour over structure, not an arrangement-level transition."
+        }
+      ],
+      "claim": "VISUAL_GRAMMAR_GAP: no current K1 mode provides a validated macro arrangement-transition carrier.",
+      "do_not": [
+        "Do not bind composition_change to Comet impact-launch.",
+        "Do not bind composition_change to Waveform Tempo head position."
+      ]
+    }
+  ],
+  "tempo_field_map": [
+    {
+      "id": 18,
+      "slug": "waveform_tempo",
+      "display_name": "WAVEFORM TEMPO",
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ]
+    },
+    {
+      "id": 19,
+      "slug": "tempo_river",
+      "display_name": "TEMPO RIVER",
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ]
+    },
+    {
+      "id": 20,
+      "slug": "tempo_comet",
+      "display_name": "TEMPO COMET",
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ]
+    },
+    {
+      "id": 21,
+      "slug": "dense_forge",
+      "display_name": "DENSE FORGE",
+      "tempo_fields": [
+        "tempo.phase",
+        "tempo.confidence"
+      ]
+    },
+    {
+      "id": 22,
+      "slug": "snapwave",
+      "display_name": "SNAPWAVE",
+      "tempo_fields": [
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ]
+    },
+    {
+      "id": 23,
+      "slug": "pulse_prism",
+      "display_name": "PULSE PRISM",
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.beat_tick",
+        "tempo.locked",
+        "tempo.beat_strength"
+      ]
+    },
+    {
+      "id": 24,
+      "slug": "dense_forge_chord",
+      "display_name": "DENSE FORGE CHORD",
+      "tempo_fields": [
+        "tempo.phase",
+        "tempo.confidence"
+      ]
+    },
+    {
+      "id": 27,
+      "slug": "tempo_comet_anticipate",
+      "display_name": "TEMPO COMET ANTICIPATE",
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence",
+        "tempo.beat_strength"
+      ]
+    },
+    {
+      "id": 29,
+      "slug": "tempo_river_walk",
+      "display_name": "TEMPO RIVER WALK",
+      "tempo_fields": [
+        "tempo.bpm",
+        "tempo.phase",
+        "tempo.confidence"
+      ]
+    }
+  ],
+  "enabled_count": 23,
+  "enabled_ids": [
+    3,
+    7,
+    8,
+    9,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    32
+  ],
+  "host_archetypes": [
+    "bloom",
+    "waveform",
+    "waveform_tempo",
+    "spectrum_river",
+    "comet",
+    "ember",
+    "pulse_prism"
+  ],
+  "notes": [
+    "Coverage-driven: 7 host archetypes cover the first 7 grammars. Macro transition is the hole.",
+    "Host pixels \u2260 LGP. ON_SILICON_PIXEL_VALIDATED and LGP_PERCEPTUAL_VALIDATED are none."
+  ],
+  "schema_version": 2,
+  "source_firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "atlas_generation_commit": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "generated_at": "2026-08-30T20:10:46Z",
+  "evidence_levels": {
+    "STATIC_SOURCE": "Read from firmware source at source_firmware_sha. Comments and M18_DARK_DIAG blocks stripped. Not a pixel proof.",
+    "HOST_PIXEL_VALIDATED": "Host-compiled LED-buffer bytes (pre-gamma, pre-dither). Not the device buffer and not the diffused plate.",
+    "ON_SILICON_PIXEL_VALIDATED": "Device LED-buffer dump (rtrace / VPAB). None in this atlas yet.",
+    "LGP_PERCEPTUAL_VALIDATED": "Diffused-plate perceptual validation. Host pixels \u2260 LGP. None yet."
+  },
+  "atlas_artifact_sha256": "e447e4b636d5ab2a33b79cfe0cdc60c6e7a4c089e25c9870617fa7a244f56971"
+}

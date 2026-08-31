@@ -1,0 +1,414 @@
+{
+  "label": "HOST-ONLY",
+  "unit": "descriptor \u00d7 mode \u00d7 lever",
+  "generation_status": "tranche2_grammar_tempo",
+  "on_silicon_pixel_validated": null,
+  "lgp_perceptual_validated": null,
+  "stimulus_notes": {
+    "bloom": {
+      "peak_ramp": {
+        "transfer": "NONE_OR_TIME_CONFOUND",
+        "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+      },
+      "chroma_rotate": {
+        "transfer": "DETECTED",
+        "primary": "symmetry",
+        "r": -0.4893,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "onset_train": {
+        "transfer": "NONE_OR_TIME_CONFOUND",
+        "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+      },
+      "band_low_vs_high": {
+        "transfer": "DETECTED",
+        "primary": "frame_derivative",
+        "r": -0.7655,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      }
+    },
+    "waveform": {
+      "peak_ramp": {
+        "transfer": "DETECTED",
+        "primary": "head_position_upper",
+        "r": 0.9993,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "chroma_rotate": {
+        "transfer": "DETECTED",
+        "primary": "chroma_spread",
+        "r": 0.9642,
+        "trap": null
+      },
+      "onset_train": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": 0.8045,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "band_low_vs_high": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": -0.871,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      }
+    },
+    "waveform_tempo": {
+      "peak_ramp": {
+        "transfer": "DETECTED",
+        "primary": "head_position_upper",
+        "r": 0.9979,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "chroma_rotate": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": -0.4893,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "onset_train": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": 0.8045,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "band_low_vs_high": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": -0.7608,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      }
+    },
+    "spectrum_river": {
+      "peak_ramp": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": 1.0,
+        "trap": null
+      },
+      "chroma_rotate": {
+        "transfer": "DETECTED",
+        "primary": "frame_derivative",
+        "r": -0.7787,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "onset_train": {
+        "transfer": "NONE_OR_TIME_CONFOUND",
+        "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+      },
+      "band_low_vs_high": {
+        "transfer": "DETECTED",
+        "primary": "component_count",
+        "r": 0.9714,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      }
+    },
+    "comet": {
+      "peak_ramp": {
+        "transfer": "NONE_OR_TIME_CONFOUND",
+        "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+      },
+      "chroma_rotate": {
+        "transfer": "NONE_OR_TIME_CONFOUND",
+        "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+      },
+      "onset_train": {
+        "transfer": "DETECTED",
+        "primary": "symmetry",
+        "r": 0.8045,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "band_low_vs_high": {
+        "transfer": "NONE_OR_TIME_CONFOUND",
+        "reason": "all observables share the same Spearman vs control; mode likely ignores this input"
+      }
+    },
+    "ember": {
+      "peak_ramp": {
+        "transfer": "DETECTED",
+        "primary": "head_position_upper",
+        "r": 1.0,
+        "trap": null
+      },
+      "chroma_rotate": {
+        "transfer": "DETECTED",
+        "primary": "tip_energy",
+        "r": 0.5538,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "onset_train": {
+        "transfer": "DETECTED",
+        "primary": "centre_energy",
+        "r": 0.8045,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "band_low_vs_high": {
+        "transfer": "DETECTED",
+        "primary": "head_position_upper",
+        "r": 0.816,
+        "trap": null
+      }
+    },
+    "pulse_prism": {
+      "peak_ramp": {
+        "transfer": "DETECTED",
+        "primary": "chroma_spread",
+        "r": 0.9606,
+        "trap": null
+      },
+      "chroma_rotate": {
+        "transfer": "DETECTED",
+        "primary": "symmetry",
+        "r": -0.4893,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "onset_train": {
+        "transfer": "DETECTED",
+        "primary": "symmetry",
+        "r": 0.8045,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      },
+      "band_low_vs_high": {
+        "transfer": "DETECTED",
+        "primary": "symmetry",
+        "r": -0.7608,
+        "trap": "mean_luminance is not the primary carrier (and may invert)"
+      }
+    }
+  },
+  "rows": [
+    {
+      "descriptor": "source_share",
+      "timescale": "continuous / ~10\u201330 Hz useful",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "head_position_upper",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "P3-C extra-DoF \u0394 partial r=0.63 holdout 9/9; Atlas ramp Spearman(head,peak)=0.9979; luma Spearman=-0.9555 (trap).",
+      "p3c_binding": "source_share \u00d7 WaveformTempo \u00d7 head_position = HOST PASS"
+    },
+    {
+      "descriptor": "source_share",
+      "timescale": "continuous",
+      "mode": "WAVEFORM",
+      "mode_id": 8,
+      "lever": "head_position_upper",
+      "fit": "CANDIDATE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Same spatial verb without tempo lock. Peak ramp primary=head_position r=0.9993. Luma inverts."
+    },
+    {
+      "descriptor": "source_share",
+      "timescale": "continuous",
+      "mode": "EMBER FIELD",
+      "mode_id": 16,
+      "lever": "radial_extent / occupancy",
+      "fit": "CANDIDATE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Energy\u2192extent. Peak ramp transfer=DETECTED primary=head_position_upper r=1.0. Luma rises with energy (unlike Tempo)."
+    },
+    {
+      "descriptor": "source_share",
+      "timescale": "continuous",
+      "mode": "SPECTRUM RIVER",
+      "mode_id": 14,
+      "lever": "spatial frequency layout",
+      "fit": "MISMATCH_RISK",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Native mapping is freq=space, not ownership. Low-vs-high band moves components r=0.9714. Share would look like a spectrum meter unless bound to a different lever."
+    },
+    {
+      "descriptor": "source_share",
+      "timescale": "continuous",
+      "mode": "COMET",
+      "mode_id": 13,
+      "lever": "impact launch",
+      "fit": "INCOMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Peak ramp is NONE_OR_TIME_CONFOUND (luma 0). Event grammar, not continuous ownership."
+    },
+    {
+      "descriptor": "composition_change",
+      "timescale": "0.5\u20132 s arrangement-state event",
+      "mode": "COMET",
+      "mode_id": 13,
+      "lever": "impact-launch timing vs |\u0394mix| at drums",
+      "fit": "INCOMPATIBLE_FOR_THIS_USE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "P3-C Q5 F1 delta 0.02. Comet speaks 'something hit'. Composition change is arrangement state.",
+      "p3c_binding": "composition_change \u00d7 Comet \u00d7 impact-launch = FAIL this comparator"
+    },
+    {
+      "descriptor": "composition_change",
+      "timescale": "0.5\u20132 s",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "head_position_upper",
+      "fit": "INCOMPATIBLE_FOR_THIS_USE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "P3-C Q4 \u0394 partial r=0.06. A sparse arrangement event is not a continuous radial head."
+    },
+    {
+      "descriptor": "composition_change",
+      "timescale": "macro transition",
+      "mode": null,
+      "mode_id": null,
+      "lever": "scene morph / mode blend / spatial redistribution",
+      "fit": "GAP",
+      "evidence": "STATIC_SOURCE",
+      "why": "VISUAL_GRAMMAR_GAP: no current K1 mode provides a validated macro arrangement-transition carrier. River Surge is an energy-arc overlay (build/drop wavefront) on Spectrum River, not arrangement morph. Tempo River Walk is palette-per-bar (harmonic/colour). Director k1_mode_selection.cpp switches modes; it is not a visual grammar. Do not bind composition_change to Comet or Waveform Tempo.",
+      "p3c_binding": "composition_change \u00d7 (no current mode) = GAP"
+    },
+    {
+      "descriptor": "onset / kick",
+      "timescale": "impulse",
+      "mode": "COMET",
+      "mode_id": 13,
+      "lever": "object spawn / frame derivative",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Onset train mean frame-derivative=4.105790441176471. Spearman vs the binary impulse is a trap (trail memory). {'transfer': 'DETECTED', 'primary': 'symmetry', 'r': 0.8045, 'trap': 'mean_luminance is not the primary carrier (and may invert)'}"
+    },
+    {
+      "descriptor": "onset / kick",
+      "timescale": "impulse",
+      "mode": "PULSE PRISM",
+      "mode_id": 23,
+      "lever": "shockwave rings",
+      "fit": "CANDIDATE",
+      "evidence": "STATIC_SOURCE",
+      "why": "Source reads bass_onset + beat_tick. Tick isolation is in tempo_sweeps.json (Pulse Prism). Do not treat as composition_change."
+    },
+    {
+      "descriptor": "RMS / energy",
+      "timescale": "continuous fast",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "head_position (not luminance)",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Anchor PASS. Luminance inverts as trail shortens."
+    },
+    {
+      "descriptor": "RMS / energy",
+      "timescale": "continuous fast",
+      "mode": "EMBER FIELD",
+      "mode_id": 16,
+      "lever": "extent + luminance",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Extent, occupancy, and luma all rise with energy. Different grammar from Tempo."
+    },
+    {
+      "descriptor": "chroma / harmony",
+      "timescale": "circular",
+      "mode": "BLOOM",
+      "mode_id": 3,
+      "lever": "palette / chromagram colour",
+      "fit": "CANDIDATE",
+      "evidence": "STATIC_SOURCE",
+      "why": "Native chroma read. Product palette path (K1_Ultraviolet_Bright, chromatic_mode=false) made hue_centroid a weak HOST observable. Do not treat palette-locked hue as a chroma test."
+    },
+    {
+      "descriptor": "arousal / slow affect",
+      "timescale": "slow continuous",
+      "mode": "EMBER FIELD",
+      "mode_id": 16,
+      "lever": "radial extent",
+      "fit": "CANDIDATE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Extent is a slow-looking field grammar. Not hardware-validated as 'tension'."
+    },
+    {
+      "descriptor": "beat / phase",
+      "timescale": "cyclic",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "scroll velocity (tempo-locked)",
+      "fit": "CANDIDATE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "BPM, phase01, and confidence are distinct. See tempo_sweeps.json. beat_tick is a negative control on this mode."
+    },
+    {
+      "descriptor": "tempo.bpm",
+      "timescale": "continuous rate",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "occupancy",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Isolation sweep verdict=TRANSFER primary=occupancy corr=-0.994 spread=0.1621 delta_deriv=None."
+    },
+    {
+      "descriptor": "tempo.phase",
+      "timescale": "circular 0..1, held",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "component_count",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Isolation sweep verdict=TRANSFER primary=component_count corr=0.9886 spread=30.0 delta_deriv=None."
+    },
+    {
+      "descriptor": "tempo.confidence",
+      "timescale": "gate 0..1",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "mean_luminance",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Isolation sweep verdict=TRANSFER primary=mean_luminance corr=-0.9682 spread=1.755 delta_deriv=None."
+    },
+    {
+      "descriptor": "tempo.beat_tick",
+      "timescale": "discrete event",
+      "mode": "WAVEFORM TEMPO",
+      "mode_id": 18,
+      "lever": "frame_derivative",
+      "fit": "INCOMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Isolation sweep verdict=NONE primary=None corr=None spread=None delta_deriv=0.0."
+    },
+    {
+      "descriptor": "tempo.beat_tick",
+      "timescale": "impulse",
+      "mode": "PULSE PRISM",
+      "mode_id": 23,
+      "lever": "ring spawn / frame_derivative",
+      "fit": "COMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Isolation sweep verdict=TRANSFER delta_deriv=2.8777 corr=None spread=None."
+    },
+    {
+      "descriptor": "tempo.phase",
+      "timescale": "held cyclic",
+      "mode": "PULSE PRISM",
+      "mode_id": 23,
+      "lever": "none expected",
+      "fit": "INCOMPATIBLE",
+      "evidence": "HOST_PIXEL_VALIDATED",
+      "why": "Isolation sweep verdict=NONE delta_deriv=None corr=None spread=0.0."
+    }
+  ],
+  "gaps": [
+    "VISUAL_GRAMMAR_GAP: no current K1 mode provides a validated macro arrangement-transition carrier.",
+    "composition_change \u00d7 Comet \u00d7 impact-launch = FAIL this comparator (kept).",
+    "composition_change \u00d7 WaveformTempo \u00d7 head = FAIL this comparator (kept).",
+    "Waveform Tempo is enabled for user cycle but NOT director_ok \u2014 Auto will not pick the share continuity carrier.",
+    "Product palette path is a poor chroma-as-hue test.",
+    "Host pixels \u2260 LGP. ON_SILICON_PIXEL_VALIDATED and LGP_PERCEPTUAL_VALIDATED are none."
+  ],
+  "schema_version": 2,
+  "source_firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "atlas_generation_commit": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+  "generated_at": "2026-08-30T20:10:46Z",
+  "evidence_levels": {
+    "STATIC_SOURCE": "Read from firmware source at source_firmware_sha. Comments and M18_DARK_DIAG blocks stripped. Not a pixel proof.",
+    "HOST_PIXEL_VALIDATED": "Host-compiled LED-buffer bytes (pre-gamma, pre-dither). Not the device buffer and not the diffused plate.",
+    "ON_SILICON_PIXEL_VALIDATED": "Device LED-buffer dump (rtrace / VPAB). None in this atlas yet.",
+    "LGP_PERCEPTUAL_VALIDATED": "Diffused-plate perceptual validation. Host pixels \u2260 LGP. None yet."
+  },
+  "atlas_artifact_sha256": "fedf156ac4513c74ac424b8737e0aee797472a2203e9fbf5edc67c98b18615c0"
+}
