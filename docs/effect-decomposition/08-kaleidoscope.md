@@ -1,15 +1,104 @@
 ---
-abstract: "Kaleidoscope effect decomposition: what it listens to (low/mid/high spectral band sums driving three independent Perlin-noise walkers), how it renders (Walk → Sample → Modulate → Paint, mirrored onto the first and second halves in a single pass), the named levers, and reusable principles specific to the generative-noise family. Mechanism grounded in light_mode_kaleidoscope.cpp and channel_effect_state.h. Read when tuning or extending Kaleidoscope, or mining it for new generative-noise effect ideas. Reflects feat/gdft-harness as of 2026-06-02."
+abstract: "HISTORICAL 2026-06-02 Kaleidoscope guidebook. NOT inventory. LIGHT_MODE_KALEIDOSCOPE id 5 is absent from the lab pin (23 LIGHT_MODE_* at source_firmware_sha 36466cd56c90b9cafa571bc5029b5d38bc0543bb). No pin guidebook_class points here. Do not revive, bind, or author a generative-noise family in EdgeAI. D15 consume-only. Cadence CLOSED. No USB."
 ---
 
-# Kaleidoscope — Decomposition
+# HISTORICAL — Kaleidoscope (snapshot id 5)
 
-*Family: GENERATIVE-NOISE · Modes: `LIGHT_MODE_KALEIDOSCOPE` (enum index 5) · Status: DISABLED*
-*Files: `light_mode_kaleidoscope.cpp:1–189`, state `channel_effect_state.h:33–38`, gate `config_types.h:91–105`*
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
+Cadence silicon is **CLOSED**. No USB. No `k1-flash`. No 8 s loop. This file is **HOST-ONLY** documentation.
+
+> **RETIRED / HISTORICAL.** This file is a **2026-06-02** conceptual write-up from the firmware architecture guidebook (`feat/gdft-harness`). It is **not** current inventory, **not** Atlas authority, **not** a revival brief, and **not** a student I/O shape. The 2026-06-02 line “`LIGHT_MODE_KALEIDOSCOPE` (enum index 5) · Status: DISABLED” is **what that snapshot believed**. It is withdrawn as product truth.
 
 ---
 
-## Pass 1 — What it is
+## Authority (read this first)
+
+| What you need | Where it lives | Status of *this* file |
+| --- | --- | --- |
+| Enabled `LIGHT_MODE_*` inventory | [`../mir/effect_semantics/effect-semantics.json`](../mir/effect_semantics/effect-semantics.json) | **Not here** |
+| How EdgeAI consumes that pin | [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md) | Consume only (D15) |
+| Folder demotion | [`README.md`](README.md), [`SNAPSHOT.md`](SNAPSHOT.md) | Same demotion |
+| Decision | [`../DECISIONS.md`](../DECISIONS.md) **D15 / D16** | Firmware owns semantics |
+
+**Pin stamp** (JSON wins if this file disagrees):
+
+- path: `docs/mir/effect_semantics/effect-semantics.json`
+- `schema_version`: `2`
+- `generation_status`: `tranche2_grammar_tempo`
+- `label`: `HOST-ONLY`
+- `source_firmware_sha` / `firmware_sha` / `atlas_generation_commit`: `36466cd56c90b9cafa571bc5029b5d38bc0543bb`
+- `atlas_artifact_sha256`: `ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d`
+- `generated_at`: `2026-08-30T20:10:46Z`
+- `modes`: **23** objects, every one `enabled: true`
+- `on_silicon_pixel_validated`: `null`
+- `lgp_perceptual_validated`: `null`
+
+Re-derived from that pin on 2026-08-31:
+
+- Pin ids present: **3, 7, 8, 9, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 32**
+- Pin ids **absent** (among others): **0, 1, 2, 4, 5, 6, 10, 17**
+- **`id` 5 is not a mode object.** No `enum` `LIGHT_MODE_KALEIDOSCOPE`. No `display_name` Kaleidoscope. No `harness_key` kaleidoscope.
+- Every pin `guidebook_class` is one of `01-waveform`, `02-bloom`, `03-spectrum-river`, `04-comet`, `05-ember`, or `null`. **None is `08-kaleidoscope`.**
+
+Dump the inventory from the pin, never from this file:
+
+```bash
+python3 -c "import json; d=json.load(open('docs/mir/effect_semantics/effect-semantics.json')); print(d['source_firmware_sha'], len(d['modes']));
+print('kaleidoscope', [m for m in d['modes'] if m['id']==5 or 'KALE' in m['enum']]);
+print('guidebook_class set', sorted({m['guidebook_class'] for m in d['modes']}))"
+```
+
+If the lab pin and the firmware Atlas generated files disagree: **delete the pin and recopy**. Do not “fix” Kaleidoscope behaviour in EdgeAI markdown. Do not grow a second taxonomy here.
+
+Evidence ladder (from the pin, not from this class doc):
+
+`STATIC_SOURCE` → `HOST_PIXEL_VALIDATED` → `ON_SILICON_PIXEL_VALIDATED` → `LGP_PERCEPTUAL_VALIDATED`
+
+Host LED-buffer bytes are not silicon. Silicon dumps are not LGP look. Cadence silicon is **CLOSED**. `[PERCEPTION]` sentences below are 2026-06-02 interpretation, not `LGP_PERCEPTUAL_VALIDATED`.
+
+---
+
+## What this file is
+
+A **byte-identical conceptual snapshot** of how Kaleidoscope was described on 2026-06-02: Motion ∘ Mapping language, six layers, named levers, Perlin-walk mechanism. Useful as **prior** if you need the old map of a generative-noise field driven by three spectral-band cursors.
+
+Read it the way you read an old schematic: it teaches a way of looking. It does not tell you what is on the board today.
+
+## What this file is not
+
+- **Not inventory.** Do not cite Kaleidoscope as a current `LIGHT_MODE_*`. Do not cite “DISABLED but dispatched” as product state. The pin has 23 enabled modes and **does not contain id 5**.
+- **Not a revival path.** The 2026-06-02 “What it would take to revive” list is **not** a ship path. Do not un-gate, re-enable, flash, or bind `descriptor × Kaleidoscope × lever`.
+- **Not a family to author in this lab.** Do not add a generative-noise class, Cannonade, Shockwave, Iris, or any other proposed family as inventory. D15: firmware owns semantics; EdgeAI consumes.
+- **Not student I/O.** A student may emit `vocals_share` / `drums_share` / …. It must not emit “Kaleidoscope cursor position” or “band-walk velocity”. Binding is a separate layer and this mode is not in the pin.
+- **Not silicon / LGP evidence.** `file:line` anchors (`light_mode_kaleidoscope.cpp:1–189`, `channel_effect_state.h:33–38`, `config_types.h:91–105`) are **snapshot-era**. They are not verified against firmware at `36466cd5`. Do not open the live Atlas worktree from this lab to refresh them.
+- **Not `supports_tempo: true`.** Tempo is not one lever. This snapshot does not bind tempo fields; the pin’s tempo consumers are other enums.
+
+---
+
+## Snapshot vs pin (do not “fix” the write-up to match)
+
+| 2026-06-02 snapshot claim (below) | Pin at `36466cd5` |
+| --- | --- |
+| `LIGHT_MODE_KALEIDOSCOPE` enum index 5 exists; Status DISABLED | **Absent.** No object with `id` 5 |
+| Generative-noise family; only such effect in the library | No `guidebook_class` `08-kaleidoscope`; five pin modes have `guidebook_class: null` and are **not** to be given class docs in EdgeAI |
+| Gate `light_mode_is_enabled()` returns false (`config_types.h:97`); unselectable but render exists | Not a pin fact. Do not infer current gate from this markdown |
+| Revive by implementing non-mirror path + `SBAudioSnapshot` + removing the disabled case | **Not a remaining ship path.** Who acts: nobody in this lab. Shipped for Kaleidoscope = **not a programme goal**. Current remaining Gate-C action is C1 LGP on the already-proven Waveform Tempo carrier |
+
+Do not recopy Kaleidoscope into `effect-semantics.json`. Do not invent `guidebook_fit` for a missing enum.
+
+---
+
+## Historical 2026-06-02 write-up (snapshot text)
+
+The rest of this file is the original guidebook body, left as historical text. **Status, LIVE/DISABLED, file:line, and revival language inside it are stale.** Treat them as *what the snapshot believed on 2026-06-02*, then check the pin.
+
+*Family: GENERATIVE-NOISE · Modes: `LIGHT_MODE_KALEIDOSCOPE` (enum index 5) · Status: DISABLED (snapshot 2026-06-02, not pin)*
+*Files (snapshot-era, not verified at `36466cd5`): `light_mode_kaleidoscope.cpp:1–189`, state `channel_effect_state.h:33–38`, gate `config_types.h:91–105`*
+
+---
+
+### Pass 1 — What it is
 
 Kaleidoscope is the firmware's only **generative-noise** effect: instead of scrolling or blooming
 a directly computed audio feature through space, it navigates a continuous 16-bit Perlin noise
@@ -22,7 +111,7 @@ picture; it *moves the camera* through an already-infinite landscape.
 
 ---
 
-## Pass 2 — Semantic mechanism (the verbs)
+### Pass 2 — Semantic mechanism (the verbs)
 
 **Sum → Walk → Sample → Modulate → Paint**
 
@@ -51,7 +140,7 @@ picture; it *moves the camera* through an already-infinite landscape.
 
 ---
 
-## Pass 3 — The six layers
+### Pass 3 — The six layers
 
 | Layer | This effect's choice | file:line | Label |
 |---|---|---|---|
@@ -64,7 +153,7 @@ picture; it *moves the camera* through an already-infinite landscape.
 
 ---
 
-## Pass 4 — Named levers (the dials, with ranges)
+### Pass 4 — Named levers (the dials, with ranges)
 
 | Lever | What it controls | Range / default | Musical effect of turning it up | file:line |
 |---|---|---|---|---|
@@ -84,9 +173,9 @@ picture; it *moves the camera* through an already-infinite landscape.
 
 ---
 
-## Pass 5 — Maths → perception → musical meaning
+### Pass 5 — Maths → perception → musical meaning
 
-### 5.1 · The three-cursor Perlin walk: band energy as velocity
+#### 5.1 · The three-cursor Perlin walk: band energy as velocity
 
 Each frame, `sum_low`, `sum_mid`, and `sum_high` accumulate the energy in 20 spectral bins
 each, with gentle half-squaring emphasis (`bin = 0.5·bin + 0.5·bin²`, line 39–41) that
@@ -123,7 +212,7 @@ Without it, a sudden energy peak (e.g. a clipped transient) could advance the cu
 of noise units in one frame, producing a completely discontinuous colour change that looks like a
 glitch rather than a musical response.
 
-### 5.2 · Noise sampling: space as X, time as Y
+#### 5.2 · Noise sampling: space as X, time as Y
 
 For pixel `i` in the first half of the strip:
 
@@ -154,7 +243,7 @@ depends on which of the three musical bands currently contributes the most energ
 position. Visually this reads as large, smooth colour regions that drift and reshape with the
 music rather than flash or pulse.
 
-### 5.3 · Contrast shaping via SQUARE_ITER
+#### 5.3 · Contrast shaping via SQUARE_ITER
 
 After clamping, each channel undergoes fractional power-law shaping:
 
@@ -176,7 +265,7 @@ The musical consequence is that `SQUARE_ITER` sets whether the kaleidoscope read
 *presence effect* (high value: discrete colour islands that burst with each energy peak) or a
 *atmosphere effect* (low value: continuously evolving colour wash).
 
-### 5.4 · Band brightness envelopes: per-band luminosity memory
+#### 5.4 · Band brightness envelopes: per-band luminosity memory
 
 Each band has a parallel brightness follower, distinct from the cursor walk:
 
@@ -207,7 +296,7 @@ peaks immediately but forgives silence slowly — the field never goes dark duri
 unless the pause is prolonged (several seconds). This gives the mode a characteristic
 ambient-glow quality during quiet passages.
 
-### 5.5 · Quadratic spatial ramp: the soft shoulder
+#### 5.5 · Quadratic spatial ramp: the soft shoulder
 
 Pixels in the first quarter of the strip (`i < NATIVE_RESOLUTION/4`) are dimmed by
 `prog = (i / (quarter_res - 1))²` before band brightness modulation.
@@ -222,7 +311,7 @@ the physical tip, creating a hard truncation. The quadratic ramp creates a soft 
 end, making the strip appear to *fade into darkness* at its tips — the field reads as
 boundless rather than clipped.
 
-### 5.6 · Colour output: two paths with very different musical semantics
+#### 5.6 · Colour output: two paths with very different musical semantics
 
 **Palette path** (`palette_owns_colour == true`):
 The palette is sampled at `palette_index = i / (half_res − 1) × 255` — the pixel's *spatial
@@ -258,7 +347,7 @@ the most musically rich colour path: different instruments paint different hues 
 
 ---
 
-## Systems view — stocks, flows, feedback, emergence
+### Systems view — stocks, flows, feedback, emergence
 
 **Stocks:**
 - `kal_pos_r/g/b` — accumulated noise-space position for each channel (monotonically increasing
@@ -291,7 +380,7 @@ spectral balance of the recent past, not just the present frame.
 
 ---
 
-## Trade-offs chosen (archetype dials)
+### Trade-offs chosen (archetype dials)
 
 **Instant vs. temporal:** Hard temporal. The effect encodes music as velocity through an
 infinite landscape; nothing about the current frame is meaningful without the context of all
@@ -319,7 +408,10 @@ limitation: when `MIRROR_ENABLED = false`, the second half is left unwritten.
 
 ---
 
-## Pass 6 — Reusable principles
+### Pass 6 — Reusable principles
+
+These are 2026-06-02 design notes. They are **not** a licence to author a new Kaleidoscope-class
+mode in this lab.
 
 1. **Use band energy as cursor velocity, not as brightness.** Encoding spectral energy as
    *position displacement* in a noise or parametric field divorces visual change from
@@ -355,7 +447,13 @@ limitation: when `MIRROR_ENABLED = false`, the second half is left unwritten.
 
 ---
 
-## If disabled — why
+### If disabled — why (snapshot 2026-06-02; not a ship path)
+
+> **Not remaining work.** Do not execute the numbered revival list. Kaleidoscope is **absent
+> from the pin**. Shipped for this mode = **not a programme goal**. (1) already on silicon or
+> in source: **neither as current inventory**. (2) remaining steps: **none in EdgeAI**.
+> (3) who acts: **nobody here**. (4) the stamp that means shipped: **does not exist**; the
+> allowed inventory stamp is the pin (`23` enabled `LIGHT_MODE_*` at `36466cd5`).
 
 `LIGHT_MODE_KALEIDOSCOPE` is listed in the `light_mode_is_enabled()` switch-case as returning
 `false` (`config_types.h:97`). The gate is enforced by the encoder/mode-scroll logic
@@ -378,7 +476,7 @@ stated reason. The most probable causes, reading against the code, are:
   rather than via the `SBAudioSnapshot` / `SBOnsetBeatEvent` pipeline that the live effects use.
   This is an architectural regression relative to the current audio-analysis contract.
 
-**What it would take to revive:**
+**What it would take to revive** (historical speculation only — **do not do this from EdgeAI**):
 1. Implement the non-mirror render path for the second half (either compute a second pass or
    extend the loop to cover `[half_res, NATIVE_RESOLUTION)` independently).
 2. Audit whether `spectrogram_smooth[]` is the appropriate input or whether `SBAudioSnapshot`
@@ -387,9 +485,13 @@ stated reason. The most probable causes, reading against the code, are:
 4. Regression-test the mirror and non-mirror paths; the Tier A probe hash at lines 906–910 already
    covers the mode and will provide determinism verification once re-enabled.
 
+Those four steps are **not** Gate C. They are **not** C1. They are **not** student work. Firmware
+Atlas owns whether this enum ever returns. This lab consumes the pin.
+
 ---
 
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-06-02 | agent:Explore-sonnet | Created — Kaleidoscope effect decomposition (6 Passes + Systems view + Trade-offs); mechanism grounded in `light_mode_kaleidoscope.cpp:1–189`, `channel_effect_state.h:33–38`, `config_types.h:91–105`; UNCERTAIN flag applied to disable reason. |
+| 2026-08-31 | agent:grok-w4-l10 | **HISTORICAL.** Demoted. Pin has 23 enabled `LIGHT_MODE_*` at `36466cd5`; id 5 / `LIGHT_MODE_KALEIDOSCOPE` **absent**; no `guidebook_class` `08-kaleidoscope`. Snapshot body kept. Revival list marked not a ship path. Cadence CLOSED. No USB. |

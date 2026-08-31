@@ -1,117 +1,110 @@
 ---
-abstract: "C0 2026-08-31 FAIL INVALID_TEMPORAL_EXECUTION. Two-clock runner retired. Successor GATE_C0V2.md. Do not overwrite artifacts/gate_c0/."
+abstract: "RETIRED/HISTORICAL. Two-clock C0 2026-08-31 FAIL corpse. C0-v2 already ON_SILICON_PIXEL_VALIDATED. Do not flash. Do not run C0-v2. Successors GATE_C0V2.md + GATE_C1.md."
 ---
 
-# Gate C0 — silicon inject + dump path (recon)
+# Gate C0 — silicon inject + dump path
 
-**Status:** Silicon run **FAIL — INVALID TEMPORAL EXECUTION** 2026-08-31. Receipt `artifacts/gate_c0/C0_RESULT.json`. Two-clock runner **retired**. Successor [GATE_C0V2.md](GATE_C0V2.md). **Not C0 PASS.** Captain is not the LED validator.
-
-Binding stays exact: `source_share × WaveformTempo × head_position`.
-
-Host extra-DoF (P3-C): A = constant mid gain, B = mix energy, D = oracle share; `extra_gain` maps frozen 0–1 → **[0.62, 1.0]** and multiplies **both** `waveform_peak_scaled` and the 12-bin chroma (`scripts/musdb18_p3c.py`, `src/edgeai/mir/host_chroma.py`). Scorer: `src/edgeai/mir/p3c_quant.py` (partial r of upper-half head vs share | mix). Floor: holdout Δ ≥ **0.15** and ≥ ~70% of native-rate Δ (`docs/mir/GATE_C.md`). HOST holdout Δ was **0.63**, 9/9 (`docs/mir/P3C_QUANT.json`).
-
-## 1. Candidate paths (shortest first)
-
-| Rank | Path | Already in source? | Drives the binding lever? | Blocked by |
-| --- | --- | --- | --- | --- |
-| **1** | USB-CDC **PRSM** 34-byte frames → authored snapshot `peak_scaled` = Prim8 pressure → Waveform Tempo draw position | Yes (`audio/k1_prsm.*`, `audio/k1_authored_source.*`, `.ino` one-writer publish, `scripts/agent/k1_authored_silicon_proof.py` packer) | **Yes for head_position** (draw `amp = peak`). **No for chroma×gain** | Named **flash GO** of a probe that has **PRSM + `K1_RENDER_TRACE_V1`**. Current product flashes reject `:rtrace_*`. Live USB port this session: **NOT_VERIFIED** |
-| 2 | Same PRSM inject, dump via some other LED harvest | Same inject | Same lever | No second dump that is already the rtrace ring. Do not invent a tap. Do not ask Captain to look at the plate |
-| 3 | USB-audio UAC PCM of mix vs stems | Source exists as **diagnostic** `k1_usb_audio_mac_probe` only; product Main RPL is **UAC-absent** (`docs/hardware/device-build-registry.md`) | **No** — that retunes the whole DSP, not P3-C extra-DoF on peak+chroma | Wrong experiment. Restored off. Not C0 |
-| 4 | Host `k1_render_host.py` / `render_replay` | Yes | Yes, already HOST PASS | **HOST-ONLY.** Not `ON_SILICON_PIXEL_VALIDATED` |
-
-**HARD STOP** (no inject without production **effect** edits): **not triggered.** Waveform Tempo already reads `max(snap.peak_scaled, waveform_peak_scaled)` and paints at `waveform_upper_half_source_position(amp)`. PRSM already writes `snap.peak_scaled`. No edit of `light_mode_waveform_tempo.cpp` is required.
-
-Do **not** flash `lane/colourlab-bench` dirt. Do **not** revert or commit it. Do **not** invent a sibling worktree.
-
-## 2. Can authored drive peak + chroma like host `extra_gain`?
-
-**Peak / head: yes, with one operational caveat.**  
-**Chroma × gain: no.** That is acceptable for this binding because the lever is **head position**, not hue.
-
-[FACT] Prim8 map (`k1_authored_map_prim8`): pressure → `vu_level`, `peak_scaled`, `spectral_energy`; impact → `novelty`; mass/momentum/texture → band energies. Hz must be **30–240** or the frame is rejected. Freshness **50 ms**.
-
-[FACT] Publish (`.ino`): authored snapshot copies those scalars, sets `chroma_strength = 0`, does **not** write the global `waveform_peak_scaled`. Core-1 **zeros `chromagram_smooth`** while authored is fresh (palette-only Ember rule). Drop-cut scale forced to 1.
-
-[FACT] Waveform Tempo draw: `peak = clamp01(max(snap.peak_scaled, waveform_peak_scaled))`; `pos = waveform_upper_half_source_position(peak)` then mirror. Colour: `effect_palette_or_chroma_colour`; if chroma is black and peak ≥ 0.02, **peak-seeded fallback**.
-
-[FACT] Host P3-C: `waveform_peak = extra_gain(...)` **and** `chroma * extra_gain`. Host also freezes tempo at 120 BPM in the harness stub (`k1_render_host.py`).
-
-[INFERENCE] For C0 head_position, pack `prim8[0] = round(extra_gain * 65535)` (A/B/D series). Leave other Prim8 at values that keep presence (`peak ≥ 0.02`, not the all-zero silence latch). Colour will be fallback, not host chroma×gain. Luma-weighted centroid can therefore differ from HOST absolute r; the **delta D vs B after partialling mix** is still the pass law.
-
-[FACT] Tempo uses `fmax(snap.peak_scaled, waveform_peak_scaled)`. Live I2S still updates the global even when snapshot updates are suppressed. If the mic peak exceeds authored pressure, extra-DoF is swamped. Operational control: quiet room / no playback. Do not edit the effect to paper over that.
-
-## 3. Dump tool and env
-
-[FACT] Serial: `:rtrace_arm=<seconds 1..600>[,<every_n 1..100>]`, `:rtrace_status=1`, `:rtrace_dump=1` (`visual/k1_render_trace.{h,cpp}`). Compiles to **nothing** without `-DK1_RENDER_TRACE_V1`.
-
-[FACT] Shipping `k1_main_rpl_im69d` must **not** carry that flag. Registry: Main RPL `9087A500` / USB `B4:3A:45:A5:87:90` last identity `git=acaecaa8 env=k1_main_rpl_im69d` — **`:rtrace_*` rejected.** Bench `B489A500` last `git=f2014c29 env=k1_bench_im69d_led150` — rtrace rejected. Ports drift; chip-ID is truth.
-
-[FACT] Probe envs already in `platformio.ini`:
-
-- Main RPL 160 WS2816 (P3-C canvas): `k1_main_rpl_rtrace_probe` extends `k1_main_rpl_im69d` + `-DK1_RENDER_TRACE_V1`. Tap is Lever-2 packed wire → dump `fmt=rgb16hex`.
-- Bench 150-px WS2812: `k1_bench_im69d_led150_rtrace` → `fmt=rgb8hex`. **Wrong physical loom for a 160-LED host match.** Prefer Main RPL.
-
-[FACT] Decoder: occupancy `scripts/regression-harness/score_rtrace_occupancy.py` (`rgb16hex` → R16BE G16BE B16BE). `hue_coverage.rtrace_frames` is **RGB8 only** — do not feed it `rgb16hex` and call it 160 pixels.
-
-C0 8-bit frames for `head_position_upper`: take `rgb16 >> 8` → `uint8 (T, 160, 3)`. Do **not** use MAD. Do **not** use mean luminance as the stamp (Tempo polarity: extra gain often **lowers** luma). Host HTML used `preview_encode`; silicon close should score the dump bytes (preview only as a diagnostic vs HOST 0.63).
-
-Authored Prim8 packer already in firmware tree: `scripts/agent/k1_authored_silicon_proof.py` `prsm()` — 34 bytes, magic `PRSM`, v1, hz, seq u32le, t_us u64le, eight u16le. That script pins Ember 16 on B489; C0 must pin **mode 18** (`LIGHT_MODE_WAVEFORM_TEMPO`) and palette **43** (`K1_Ultraviolet_Bright`) to match P3-C `PALETTE_RENDER_PARAMS`.
-
-`+<audio/k1_*.cpp>` already compiles PRSM into hardware envs. rtrace `.cpp` is always in the src-filter; the flag is what arms it.
-
-## 4. Remaining ship path (C0 FAIL, not closed)
-
-1. **Already on silicon / in source:** 2026-08-31 Main RPL two-clock C0 corpse (FAIL INVALID_TEMPORAL_EXECUTION). C0-v2 probe instrument in firmware `probe/c0-epoch-v2` + host `scripts/gate_c0v2_silicon.py`. Product last restored `k1_main_rpl_im69d` @ `acaecaa8`.
-2. **Remaining:** Flash `k1_main_rpl_rtrace_probe` with C0-v2 flags → timing self-test → one nominal C0-v2 (no cadence) → restore product env. State duration before the long capture.
-3. **Who:** Agent, under the C0-v2 brief. Captain is not the LED validator.
-4. **Stamp that means C0 shipped:** C0-v2 `PASS` / `ON_SILICON_PIXEL_VALIDATED` with metadata join and no lag correction, plus restore IDENTITY OK. Not a lagged rescore of the corpse. Not Captain eyes.
-
-## 5. What C0 PASS means
-
-Reuse `p3c_quant.score_clip` + `summarise` on silicon LED cubes keyed `A`,`B`,`D` plus `gain_*` and the same oracle slices as P3-C holdout.
-
-| Must | Must not |
-| --- | --- |
-| Q1 Spearman(head_position, extra_gain) ≥ 0.40 | MAD(B,D) as the stamp |
-| Q2 median Δ partial r(head, share \| mix) ≥ 0.15 and ≥ 70% clips Δ>0 | Mean luminance / occupancy as the binding |
-| Q3 source-abs after mix still moves (same function as HOST Q3) | Captain looking at the plate |
-| Holdout is the close (challenge is diagnostic) | Declaring C1 / student freeze |
-| Cadence later: ZOH + delay still clear Δ≥0.15 **and** ≥ ~70% of that clip’s native-rate Δ | Running 2/5/10/20/31 Hz × 0/50/100/200 ms on hardware in this recon |
-
-`head_position_upper`: luma centroid of LEDs 80–159; 0 = centre seam, 79 = tip (`p3c_score.py`).
+> **RETIRED / HISTORICAL.** This file is **not** a live ship path, **not** a flash brief, and **not** a licence to run C0, C0-v2, or cadence. Two-clock C0 is already a **FAIL corpse**. C0-v2 is already **PASS**. Cadence silicon is **CLOSED**. Do **not** flash a probe. Do **not** run `scripts/gate_c0_silicon.py`. Do **not** run `scripts/gate_c0v2_silicon.py`. Do **not** reopen cells. The live successor for pixels is [GATE_C0V2.md](GATE_C0V2.md) (receipt already written). The live remaining gate is [GATE_C1.md](GATE_C1.md) (Captain LGP look, product firmware, no probe).
 
 **HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
 
-## 6. Cadence / delay protocol (describe only — do not run)
+## Authority (read these, not this file)
 
-Oracle hop is 31.25 Hz (512/16000). Extra_gain series is that hop grid.
-
-**Packet rate ≠ descriptor rate.** Authored **rejects** `hz < 30` and drops AUTHORED if age > 50 ms. Therefore:
-
-- Sample (or ZOH) extra_gain at the **hold rate** 2 / 5 / 10 / 20 / ~31 Hz.
-- Apply causal delay 0 / 50 / 100 / 200 ms on that series.
-- **Re-send** PRSM packets at **≥ 30 Hz** (recommend 31 or 120) with `hz` in 30–240, repeating the held sample. Seq must be monotonic (gap > 3 re-acquires).
-
-2 Hz and 5 Hz **must not** put `hz=2` on the wire.
-
-Tempo on silicon is live `k1_tempo` from the authored snapshot, not the host 120 BPM stub. Treat that as a confound to report, not a licence to edit Tempo.
-
-## 7. Field coverage vs P3-C extra_gain
-
-| Host extra_gain target | Authored Prim8 / snapshot | C0 |
+| What | Where | Status |
 | --- | --- | --- |
-| `waveform_peak_scaled` | `peak_scaled` ← pressure (global peak **not** overwritten) | Use; keep mic quiet |
-| chroma[12] × gain | **none**; chromagram **zeroed** | Colour via peak fallback. Not host-identical. Binding lever still peak→head |
-| frozen 120 BPM | live tempo from authored novelty/peak | Report; do not retune the effect |
-| palette 43 / mood 0.65 | must pin on device | Operator serial, not a new renderer |
+| Live C0 pixels | [GATE_C0V2.md](GATE_C0V2.md) · `artifacts/gate_c0v2/C0V2_RESULT.json` | **PASS** `ON_SILICON_PIXEL_VALIDATED` 2026-08-31 |
+| Two-clock C0 corpse | `artifacts/gate_c0/C0_RESULT.json` · `CORPSE_MANIFEST.json` | **FAIL** `INVALID_TEMPORAL_EXECUTION` — frozen, do not overwrite, do not rescore |
+| Cadence / transport | [GATE_C0_CADENCE.md](GATE_C0_CADENCE.md) · [SEMANTIC_TRANSPORT_CONTRACT.md](SEMANTIC_TRANSPORT_CONTRACT.md) | **CLOSED** / frozen for C1. Runner `scripts/gate_c0_cadence_silicon.py` **RETIRED** (D20) |
+| Remaining gate | [GATE_C1.md](GATE_C1.md) | **OPEN** — one full song Captain chooses, product firmware, no 8 s loop, no probe flash |
+| Programme wrapper | [GATE_C.md](GATE_C.md) | C0-v2 is the live C0 stamp. This file is history |
 
-A prior authored silicon **energy** proof (`k1_authored_silicon_proof.py`, B489, Ember 16, git `feb472ba`) is **not** C0: no LED dump, wrong mode, wrong device vs 160 WS2816 RPL.
+Binding (unchanged, already proven on silicon): `source_share × Waveform Tempo × head_position`.
+
+Captain is **not** the LED validator for C0 dumps. C1 is a different question: Captain **is** the LGP viewer.
+
+## Stricken — obsolete “remaining” C0-v2 run
+
+The 2026-08-31 recon closed with a numbered remaining path that told an agent to load a probe env and capture a nominal C0-v2. That work **already shipped**. It is **obsolete**. Do not execute it. Do not restore it as a task list.
+
+Struck items (paraphrase, not a recipe): (1) corpse already on disk, C0-v2 instrument already in source, product already restored `k1_main_rpl_im69d` @ `acaecaa8`; (2) **obsolete remaining work** — probe env + timing self-test + one nominal C0-v2 + restore; (3) **obsolete owner** — agent under a C0-v2 brief; (4) **obsolete close stamp** — C0-v2 `PASS` / `ON_SILICON_PIXEL_VALIDATED` (already true in `artifacts/gate_c0v2/C0V2_RESULT.json`).
+
+**Strike reason:** item 2 was the live remaining work when the two-clock runner died. C0-v2 then ran, passed, and restored product firmware. Repeating a probe load to “complete” this file would be a second C0-v2, not a close. This file no longer authorises a probe env, that script, or that capture.
+
+## Do not
+
+- Do not load a probe env, product env, or any other firmware image **from this file**.
+- Do not run `scripts/gate_c0_silicon.py` (two-clock harness **RETIRED**).
+- Do not run `scripts/gate_c0v2_silicon.py` (already produced the PASS receipt).
+- Do not run `scripts/gate_c0_cadence_silicon.py` (D20 mechanical retire; dies before USB/Bose).
+- Do not open `/dev/cu.usbmodem*`, invoke a firmware writer, or use Serial Studio as command transport.
+- Do not play `holdout_8s_loop.wav` or loop the same clip in the room.
+- Do not overwrite `artifacts/gate_c0/`.
+- Do not promote the corpse with post-hoc +14 hops (~448 ms) and call it PASS.
+- Do not ask Captain to look at the plate for buffer/pixel questions.
+
+## Two-clock C0 — FAIL corpse (historical)
+
+**2026-08-31 silicon:** `c0=FAIL`, `execution=INVALID_TEMPORAL_EXECUTION`, `stamp=not ON_SILICON_PIXEL_VALIDATED`.
+
+Receipt `artifacts/gate_c0/C0_RESULT.json`. Manifest `artifacts/gate_c0/CORPSE_MANIFEST.json` (89 files; `C0_RESULT.json` SHA-256 `35075e7d244c20b5fd45e5969469d74d7e70fc04962ea593c58394e731265161`). Authority line in the receipt: raw dumps and `diagnosis.json` **are the corpse**. Do not score with a corrected offset.
+
+| | Corpse |
+| --- | --- |
+| Device | Main RPL chip `9087A500`, USB `B4:3A:45:A5:87:90` |
+| Probe that run | `k1_main_rpl_rtrace_probe` @ `acaecaa8` |
+| Runner | `scripts/gate_c0_silicon.py` — **RETIRED** |
+| Holdout n=10 | Q1 Spearman **0.13** FAIL (< 0.40); Q2/Q3 **6/9** FAIL |
+| Cause | Two host clocks. rtrace armed before PRSM. Capture epoch ≠ injection epoch (~0.5 s). Silicon response was not dead |
+| +14 hops | Diagnostic only. Recovers host-like Q1–Q3. **Not a PASS. Never an authority rescore** |
+| Product restore that run | `IDENTITY OK git=acaecaa8 env=k1_main_rpl_im69d` |
+
+D17 Revisit records this FAIL and said “next is C0-v2 … C1 still blocked.” That revisit is **history**. Do not execute it. Live programme is D19–D22: C0-v2 already PASS, cadence CLOSED, C1 OPEN.
+
+## C0-v2 — already PASS (successor receipt)
+
+**Live C0 stamp:** `source_share × WaveformTempo × head_position = ON_SILICON_PIXEL_VALIDATED`.
+
+Method: [GATE_C0V2.md](GATE_C0V2.md). Receipt `artifacts/gate_c0v2/C0V2_RESULT.json`. `c0v2=PASS`. `lag_corrected=false`. `retired_c0_untouched=true`. Timing self-test PASS. Best lag 0 hops. 0/10 clips timing-invalid.
+
+| | C0-v2 (authority) |
+| --- | --- |
+| Device | Same Main RPL `9087A500` |
+| Probe that run | `k1_main_rpl_rtrace_probe` @ `349d3cd4` |
+| Holdout n=10 | Q1 **0.83** PASS; Q2 Δ **0.69** 9/9 PASS; Q3 Δ **0.58** 9/9 PASS |
+| Join | One device-side epoch. Scorer reads applied PRSM per rendered frame |
+| Product restore that run | `IDENTITY OK git=acaecaa8 env=k1_main_rpl_im69d` (GATE_C0V2.md) |
+
+The receipt’s own `cadence: OPEN` / `c1: blocked until ON_SILICON_PIXEL_VALIDATED` fields are **stale inside the artefact**. Programme after D20: cadence **CLOSED**; C1 **OPEN**. Do not reopen cadence to “finish” those strings.
+
+## Remaining ship path (C1 only — no flash, no C0-v2)
+
+C0 silicon pixels **already shipped**. This file has no remaining C0 work.
+
+1. **Already on silicon / in source:** two-clock C0 FAIL corpse at `artifacts/gate_c0/`; C0-v2 PASS `ON_SILICON_PIXEL_VALIDATED` at `artifacts/gate_c0v2/C0V2_RESULT.json`; cadence CLOSED (`artifacts/gate_c0_cadence_silicon/CADENCE_RESULT.json`); product last restored `k1_main_rpl_im69d` @ `acaecaa8`.
+2. **Remaining:** Gate **C1** LGP perceptual only — method [GATE_C1.md](GATE_C1.md). One full song **Captain chooses**. Already-proven C0-v2 carrier (~31.25 Hz, 0 ms extra delay) on **product firmware**. No 8 s holdout loop. No probe. No rtrace concert. Dumps do not answer C1.
+3. **Who:** Captain is the viewer. An agent does **not** flash, does **not** run C0-v2, does **not** start ffplay / `holdout_8s_loop`.
+4. **Stamp that means C1 shipped:** `LGP_PERCEPTUAL_VALIDATED` after the three LGP questions in GATE_C1. Student I/O freeze is still not automatic.
+
+## Historical recon (do not execute)
+
+This section is **why the two-clock attempt existed**, not a procedure. Facts below were true of the 2026-08-31 recon. They are not a GO.
+
+The shortest existing inject was USB-CDC **PRSM** 34-byte Prim8 frames → authored `peak_scaled` → Waveform Tempo upper-half head. Dump was `:rtrace_*` on a **probe** env that compiled `-DK1_RENDER_TRACE_V1`. Shipping `k1_main_rpl_im69d` rejected `:rtrace_*`. Scorer was `src/edgeai/mir/p3c_quant.py` (partial r of upper-half head vs share | mix), **not** MAD, **not** mean luminance. Floors: Q1 Spearman(head, extra_gain) ≥ 0.40; Q2/Q3 median Δ ≥ 0.15 and ≥ 70% clips Δ > 0. HOST holdout Δ was **0.63**, 9/9 (`docs/mir/P3C_QUANT.json`).
+
+Authored Prim8 mapped pressure → peak. It did **not** multiply chroma; colour was peak fallback. That was acceptable because the lever was **head position**, not hue. Live I2S `waveform_peak_scaled` could swamp authored pressure if the room was loud — operational, not a Tempo source edit. Packet field `hz` had to be 30–240; hold rates 2/5 Hz could not put `hz=2` on the wire (repeat the held sample at ≥ 30 Hz instead). That packet-clock fact is consumed by the **frozen** transport contract; it is not a reason to inject again.
+
+UAC PCM of mix vs stems was the **wrong** experiment (retunes DSP, not P3-C extra-DoF). Host `k1_render_host.py` / `render_replay` was HOST-ONLY and never `ON_SILICON_PIXEL_VALIDATED`. Colourlab-bench dirt was never a flash source.
+
+Two-clock execution violated the later C0-v2 invariant: injection and capture must share one **device-side epoch**. Arm-then-PRSM on independent host clocks is why the corpse is FAIL even though lagged diagnosis looks host-like.
+
+Cadence/delay cells that this recon only **described** were later measured, then **Captain-closed**. Envelope (do not re-measure): slowest 0-delay PASS **5 Hz**; largest added delay PASS **50 ms** at 20 Hz; **5 Hz + 50 ms together FAIL**. C1 playback is the C0-v2 carrier, not the slow envelope.
 
 ---
 **Document Changelog**
 | Date | Author | Change |
-| --- | --- | --- |
+|------|--------|--------|
 | 2026-08-31 | agent:edgeai-ssa | Ranked existing PRSM+rtrace path; chroma gap; flash GO; C0 scorer law. Not PASS. |
 | 2026-08-31 | agent:edgeai | Silicon run FAIL; Q1 0.13 / Q2–Q3 6/9; product restored acaecaa8 im69d. |
 | 2026-08-31 | agent:edgeai | Cause: arm-before-PRSM; +14 hop diagnostic would pass; stamp stays FAIL. |
 | 2026-08-31 | agent:edgeai | INVALID_TEMPORAL_EXECUTION; runner retired; C0-v2 is the path. |
+| 2026-08-31 | agent:grok | RETIRED/HISTORICAL banner. Two-clock corpse FAIL kept. C0-v2 already PASS. Strike flash/run-C0-v2 remaining path. Point GATE_C0V2 receipt + GATE_C1. No flash, no C0-v2 re-run. |

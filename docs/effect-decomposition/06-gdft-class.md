@@ -1,17 +1,72 @@
 ---
-abstract: "GDFT-class effect decomposition: three raw-spectral display modes (LIGHT_MODE_GDFT, LIGHT_MODE_GDFT_CHROMAGRAM, LIGHT_MODE_GDFT_CHROMAGRAM_DOTS) that render the 80-bin Goertzel spectrogram or its 12-bin chromagram fold almost verbatim onto the LED strip. Covers the near-1:1 feature-to-pixel mapping, the shared L1 input, how L3/L4 diverge across the three modes, the SQUARE_ITER contrast lever, chromatic vs CHROMA colour engines, and the design reasons all three are currently disabled. Mechanism grounded in light_mode_gdft.cpp, light_mode_chromagram_gradient.cpp, light_mode_chromagram_dots.cpp, GDFT.h, led_utilities.h, config_types.h. Read when tuning or reviving raw-spectral display, understanding the foundational spectrum pipeline, or mining the per-note-detail vs gestalt archetype. Reflects feat/gdft-harness as of 2026-06-02."
+abstract: "HISTORICAL 2026-06-02 GDFT-class write-up. NOT inventory. Snapshot modes LIGHT_MODE_GDFT (0), LIGHT_MODE_GDFT_CHROMAGRAM (1), LIGHT_MODE_GDFT_CHROMAGRAM_DOTS (2) are ABSENT from the lab pin (23 enabled LIGHT_MODE_* at source_firmware_sha 36466cd56c90b9cafa571bc5029b5d38bc0543bb). No pin row has guidebook_class 06-gdft. Consume docs/mir/effect_semantics/effect-semantics.json. Do not revive, retarget IDs, or grow a competing taxonomy from this file."
 ---
 
-# GDFT Class — Decomposition
+# HISTORICAL — GDFT Class (2026-06-02 snapshot)
 
-*Family: RAW-SPECTRAL · Modes: LIGHT_MODE_GDFT (0), LIGHT_MODE_GDFT_CHROMAGRAM (1), LIGHT_MODE_GDFT_CHROMAGRAM_DOTS (2) · Status: ALL DISABLED (Captain 2026-06-02)*
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
+Cadence silicon **CLOSED**. No USB. No `k1-flash`. HOST-ONLY documentation. D15 consume-only.
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  HISTORICAL RECORD — feat/gdft-harness 2026-06-02                ║
+║  NOT the product mode list. NOT Atlas authority. NOT a revival.  ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+> **This file is not inventory.** It is the 2026-06-02 six-pass write-up of a raw-spectral display family that the snapshot treated as modes **0 / 1 / 2, all DISABLED**. The only allowed mode list in this lab is [`../mir/effect_semantics/effect-semantics.json`](../mir/effect_semantics/effect-semantics.json). Folder contract: [`README.md`](README.md). Consume: [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md). Decisions: D15 / D16.
+
+## Authority vs this snapshot
+
+| Claim in the 2026-06-02 body below | What is true now |
+| --- | --- |
+| `LIGHT_MODE_GDFT` (0), `LIGHT_MODE_GDFT_CHROMAGRAM` (1), `LIGHT_MODE_GDFT_CHROMAGRAM_DOTS` (2) exist as the GDFT class | **Absent from the pin.** Pin ids are 3, 7–9, 11–16, 18–29, 32. No `GDFT`, no `CHROMAGRAM` string in the JSON. |
+| Status: ALL DISABLED (Captain 2026-06-02) | Snapshot-era gate language. The pin does not list disabled members of this family. Absence ≠ a current DISABLED row. |
+| `guidebook_class` for these modes | **No pin row** points at `06-gdft`. The pin’s `guidebook_class` values in use are `01-waveform`, `02-bloom`, `03-spectrum-river`, `04-comet`, `05-ember`, or `null`. |
+| “Currently disabled” / revival list (Pass “If disabled — why”) | **Not a work ticket.** Do not revive GDFT / chromagram display from EdgeAI. Firmware owns semantics. Do not reuse ids 0/1/2 from this markdown. |
+| 9-class / 18-mode library; LIVE vs DISABLED as product truth | **Withdrawn.** 23 enabled `LIGHT_MODE_*`. See README §5. |
+| Host chroma / 80-bin GDFT as student I/O | Host chroma is a causal 12-bin STFT on the oracle hop grid. **Not firmware GDFT.** Do not freeze student I/O on this class. |
+
+**Pin stamp** (JSON wins if this file drifts):
+
+- path: `docs/mir/effect_semantics/effect-semantics.json`
+- `schema_version`: `2`
+- `generation_status`: `tranche2_grammar_tempo`
+- `label`: `HOST-ONLY`
+- `source_firmware_sha` / `firmware_sha` / `atlas_generation_commit`: `36466cd56c90b9cafa571bc5029b5d38bc0543bb`
+- `atlas_artifact_sha256`: `ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d`
+- `generated_at`: `2026-08-30T20:10:46Z`
+- `modes`: **23** objects, every one `enabled: true`
+- `on_silicon_pixel_validated`: `null`
+- `lgp_perceptual_validated`: `null`
+
+Dump inventory from the pin, never from this class doc:
+
+```bash
+python3 -c "import json; d=json.load(open('docs/mir/effect_semantics/effect-semantics.json')); print(d['source_firmware_sha'], len(d['modes']));
+print('GDFT/CHROMA rows', [m['enum'] for m in d['modes'] if 'GDFT' in m['enum'] or 'CHROMAGRAM' in m['enum']]);
+print('ids', [m['id'] for m in d['modes']])"
+```
+
+Expected: SHA `36466cd5…`, **23** modes, **empty** GDFT/CHROMAGRAM enum list, ids without 0, 1, 2.
+
+`file:line` anchors below are snapshot citations against `feat/gdft-harness` (2026-06-02). They are **not** verified against firmware at `36466cd5`. `[PERCEPTION]` lines are interpretation, not `HOST_PIXEL_VALIDATED` / silicon / LGP.
+
+Do not add Cannonade / Shockwave / Iris / BUILDING / DROPPING here. Do not author a GDFT revival family in this lab.
+
+---
+
+# GDFT Class — Decomposition *(historical body, unchanged in mechanism)*
+
+*Family: RAW-SPECTRAL · Modes: LIGHT_MODE_GDFT (0), LIGHT_MODE_GDFT_CHROMAGRAM (1), LIGHT_MODE_GDFT_CHROMAGRAM_DOTS (2) · Status: ALL DISABLED (Captain 2026-06-02) — **snapshot claim, not pin inventory***
 *Files: light_mode_gdft.cpp:1–139, light_mode_chromagram_gradient.cpp:1–95, light_mode_chromagram_dots.cpp:1–62 · Helpers: GDFT.h (spectrogram pipeline), led_utilities.h:1546–1632 (`make_smooth_chromagram`), render_params.h (RenderParams), config_types.h:61–84 (`light_mode_is_enabled` gate)*
 
 ---
 
 ## Pass 1 — What it is
 
-The GDFT class is the firmware's raw-spectral display family: three modes that take the 80-bin Goertzel spectrogram (`spectrogram_smooth[]`) or its 12-bin chromagram fold (`chromagram_smooth[]`) and paint that data directly onto the LED strip with minimal transformation. Where other families (Bloom, Waveform) interpret the spectrum through secondary musical abstractions — energy envelopes, temporal trails, onset events — this family is an oscilloscope: what is in the buffer is what lights up. The three modes share an identical L1 input pipeline but differ sharply in L3 (spatial layout) and L4 (colour source): GDFT renders the full 80-bin spectrum as a continuous gradient across the half-strip; Chromagram Gradient folds that spectrum into 12 pitch-class bins and renders the fold as a smooth gradient; Chromagram Dots renders the same 12 bins as 24 anti-aliased floating dots (two per pitch class, spread symmetrically about the strip centre). All three are the most informationally faithful effects in the firmware and among its most technically foundational, which is also the cause of their current disabled status.
+The GDFT class is the firmware's raw-spectral display family: three modes that take the 80-bin Goertzel spectrogram (`spectrogram_smooth[]`) or its 12-bin chromagram fold (`chromagram_smooth[]`) and paint that data directly onto the LED strip with minimal transformation. Where other families (Bloom, Waveform) interpret the spectrum through secondary musical abstractions — energy envelopes, temporal trails, onset events — this family is an oscilloscope: what is in the buffer is what lights up. The three modes share an identical L1 input pipeline but differ sharply in L3 (spatial layout) and L4 (colour source): GDFT renders the full 80-bin spectrum as a continuous gradient across the half-strip; Chromagram Gradient folds that spectrum into 12 pitch-class bins and renders the fold as a smooth gradient; Chromagram Dots renders the same 12 bins as 24 anti-aliased floating dots (two per pitch class, spread symmetrically about the strip centre). All three are the most informationally faithful effects in the firmware and among its most technically foundational, which is also the cause of their **snapshot-era** disabled status.
 
 ---
 
@@ -130,7 +185,7 @@ All three modes share the same lever set, read through `active_render_params()`.
 
 **What the eye sees:** The strip never goes fully dark. In silence, all 12 pitch-class positions glow at 10% brightness, creating a persistent dim scaffold. [PERCEPTION]
 
-**Musical meaning:** The floor removes the silence-blackout of GDFT. The strip reads as "always active" — a dim harmonic structure is always present. This blurs the perceptual boundary between music and silence; whether that is desirable is a design judgement the current disabled status has left open. [PERCEPTION]
+**Musical meaning:** The floor removes the silence-blackout of GDFT. The strip reads as "always active" — a dim harmonic structure is always present. This blurs the perceptual boundary between music and silence; whether that is desirable is a design judgement the snapshot-era disabled status left open. [PERCEPTION]
 
 ### 5.6 Chromagram Dots: symmetric dot placement
 
@@ -182,9 +237,13 @@ All three modes share the same lever set, read through `active_render_params()`.
 
 **P6 — The oscilloscope archetype is a distinct design pole.** These modes demonstrate that maximum information fidelity and compelling visual experience are not the same goal. The raw-spectral family is valuable as a diagnostic and as a reference, but the §4 tension table shows it maximises information at the cost of gestalt, stability, and motion. New effects that pull toward the other poles (Bloom, Waveform) should understand that they are choosing deliberately away from what this family offers.
 
+These principles are **conceptual prior** from the snapshot. They are not a licence to author a GDFT family, freeze student I/O, or add modes in EdgeAI.
+
 ---
 
-## If disabled — why
+## If disabled — why *(snapshot gate, not a revival brief)*
+
+> **Not a work list.** The numbered “what revival would need” items below are 2026-06-02 design notes. This lab does not revive GDFT. Firmware Atlas owns semantics. Ids 0/1/2 are **absent** from the pin; do not treat absence as a DISABLED inventory row, and do not reuse those ids from this markdown.
 
 ### The gate
 
@@ -200,7 +259,7 @@ These modes sit at the extreme per-note-detail end of the §4 "Per-note detail �
 
 **The specific failure mode.** With complex musical content (chords, dense mixes), all three modes produce a cluttered multi-region display. Because there is no L5 temporal smoothing in the render path, transients cause abrupt frame-to-frame flicker. Because L2 is empty, there is no trail or persistence to allow the eye to integrate the signal into a coherent visual shape. The display reads as an oscilloscope would: correct, honest, and cold.
 
-**What revival or rework would need:**
+**What revival or rework would need** *(historical notes only)*:
 
 1. **Add L5 temporal smoothing.** At minimum, a per-LED exponential decay (`leds_16[i] = lerp(leds_16_prev[i], target, alpha)`) to give the display visual persistence. Even a 60 ms half-life trail would transform the oscilloscope into something with warmth.
 
@@ -218,3 +277,4 @@ These modes sit at the extreme per-note-detail end of the §4 "Per-note detail �
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-06-02 | agent:Explore-sonnet | Created — full 6-pass decomposition of the GDFT raw-spectral class (modes 0, 1, 2), grounded in light_mode_gdft.cpp, light_mode_chromagram_gradient.cpp, light_mode_chromagram_dots.cpp; disable gate traced to config_types.h:768–784 and globals_config.cpp:53. |
+| 2026-08-31 | agent:grok-w4-l08 | **HISTORICAL.** Banner + authority table. Snapshot 0/1/2 ALL DISABLED is not pin inventory: those ids and enums are **absent** from `effect-semantics.json` (23 enabled `LIGHT_MODE_*`, SHA `36466cd5`). No `guidebook_class` 06-gdft in the pin. Revival list demoted to historical notes. Mechanism body kept as 2026-06-02 conceptual prior. Cadence CLOSED. No USB. |

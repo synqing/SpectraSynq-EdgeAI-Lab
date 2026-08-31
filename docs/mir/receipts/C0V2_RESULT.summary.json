@@ -1,0 +1,12 @@
+{
+  "source": "docs/mir/SILICON_RECEIPTS.md",
+  "artifact": "artifacts/gate_c0v2/C0V2_RESULT.json",
+  "sha256": "57b408be9d9941735b42c09fba7e174488ddcd02b81494c3eb84f29e72391928",
+  "verdict": "PASS",
+  "stamp": "ON_SILICON_PIXEL_VALIDATED",
+  "Q1": "PASS",
+  "Q2": "PASS",
+  "Q3": "PASS",
+  "chip": "9087A500",
+  "git": "349d3cd4"
+}

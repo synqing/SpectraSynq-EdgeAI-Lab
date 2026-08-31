@@ -1,11 +1,112 @@
 ---
-abstract: "Bloom-class effect decomposition: what it listens to (chromagram — 12 pitch-class bins), how it renders (centre-origin outward scroll via draw_sprite history transport), the three-tier colour engine, the named levers with ranges, and reusable principles. Mechanism grounded in light_mode_bloom.cpp, light_mode_aurora.cpp, lightshow_modes.h. Read when tuning or extending Bloom / Bloom-Fast / Aurora, or mining the class for new-effect ideas. Reflects feat/gdft-harness as of 2026-06-02."
+abstract: "Historical 2026-06-02 Bloom-class guidebook (centre-origin chromagram fountain). NOT inventory. Pin is authority: LIGHT_MODE_BLOOM 3, BLOOM_FAST 9, AURORA 12 at source_firmware_sha 36466cd56c90b9cafa571bc5029b5d38bc0543bb, guidebook_class 02-bloom, guidebook_fit CURRENT_CONFIRMED. BLOOM HOST_PIXEL_VALIDATED; Fast/Aurora STATIC_SOURCE. D15 consume-only. Peak is not a Bloom lever."
 ---
 
-# Bloom Class — Decomposition
+# Bloom class — historical guidebook, not inventory
 
-*Family: BLOOM · Modes: LIGHT_MODE_BLOOM (3), LIGHT_MODE_BLOOM_FAST (9), LIGHT_MODE_AURORA (12) · Status: LIVE*
-*Files: `light_mode_bloom.cpp:1–118`, `light_mode_aurora.cpp:1–68`, helpers in `lightshow_modes.h` (declarations ~L199–L240, dispatch ~L654–L680)*
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
+Cadence silicon **CLOSED**. No USB. No `k1-flash`. This file is **HOST-ONLY** documentation.
+
+> **This file is not the product Bloom-line census.** It is a **historical 2026-06-02** six-pass write-up of Motion ∘ Mapping for three modes. The only allowed inventory in this lab is the firmware pin below. Do not grow a competing taxonomy here.
+
+---
+
+## 0 · Authority (pin wins)
+
+Need a mode, a lever, a test binding, or an enabled-list? **Stop.** Open the pin, not this write-up.
+
+| What you need | Where it lives |
+| --- | --- |
+| Enabled `LIGHT_MODE_*` inventory | [`../mir/effect_semantics/effect-semantics.json`](../mir/effect_semantics/effect-semantics.json) |
+| How this lab consumes that pin | [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md) |
+| Recopy rule | [`../mir/effect_semantics/README.md`](../mir/effect_semantics/README.md) |
+| `descriptor × mode × lever` | [`../mir/effect_semantics/compatibility.json`](../mir/effect_semantics/compatibility.json) |
+| Visual-grammar coverage | [`../mir/effect_semantics/grammar_coverage.json`](../mir/effect_semantics/grammar_coverage.json) |
+| Decision | [`../DECISIONS.md`](../DECISIONS.md) **D14 / D15 / D16** |
+| Folder demotion | [`README.md`](README.md), [`SNAPSHOT.md`](SNAPSHOT.md) |
+
+**Pin stamp** (re-read from the JSON; if this markdown and the file disagree, **the file wins**):
+
+- path: `docs/mir/effect_semantics/effect-semantics.json`
+- `schema_version`: `2`
+- `generation_status`: `tranche2_grammar_tempo`
+- `label`: `HOST-ONLY`
+- `source_firmware_sha` / `firmware_sha` / `atlas_generation_commit`: `36466cd56c90b9cafa571bc5029b5d38bc0543bb`
+- `atlas_artifact_sha256`: `ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d`
+- `generated_at`: `2026-08-30T20:10:46Z`
+- `on_silicon_pixel_validated`: `null`
+- `lgp_perceptual_validated`: `null`
+
+Dump **this class’s pin rows** from the JSON, never from this markdown:
+
+```bash
+python3 -c "import json; d=json.load(open('docs/mir/effect_semantics/effect-semantics.json')); print(d['source_firmware_sha']);
+[print(m['id'], m['enum'], m['enabled'], m['guidebook_fit'], m['evidence'], m['director_ok'], m['host_renderable'], m['harness_key'], m['native_inputs'], m['tempo_fields']) for m in d['modes'] if m.get('guidebook_class')=='02-bloom']"
+```
+
+If the lab pin and the firmware Atlas generated files disagree: **delete the pin and recopy**. Do not “fix” Bloom behaviour in EdgeAI markdown.
+
+Evidence ladder (from the pin, not from Pass 5 `[PERCEPTION]`):
+
+`STATIC_SOURCE` → `HOST_PIXEL_VALIDATED` → `ON_SILICON_PIXEL_VALIDATED` → `LGP_PERCEPTUAL_VALIDATED`
+
+Host LED-buffer bytes are not silicon. Silicon dumps are not LGP look.
+
+### Pin members of `guidebook_class` `02-bloom`
+
+Re-derived from the pin (JSON wins if this table drifts). All three are `enabled: true`, `guidebook_fit: CURRENT_CONFIRMED`, `tempo_fields: []`.
+
+| id | enum / display | implementation | `evidence` | `director_ok` | `host_renderable` | `harness_key` | native_inputs (pin) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 3 | `LIGHT_MODE_BLOOM` / BLOOM | `effects/light_mode_bloom.cpp` | `HOST_PIXEL_VALIDATED` | true | true | `bloom` | `chroma`, `control.mood`, `control.saturation`, `control.chroma`, `centre_origin_mirror` |
+| 9 | `LIGHT_MODE_BLOOM_FAST` / BLOOM (FAST) | `effects/light_mode_bloom.cpp` | `STATIC_SOURCE` | true | false | `null` | same as BLOOM |
+| 12 | `LIGHT_MODE_AURORA` / AURORA | `effects/light_mode_aurora.cpp` | `STATIC_SOURCE` | **false** | false | `null` | `palette_or_chroma_colour`, `control.mood`, `control.mirror`, `centre_origin_mirror` |
+
+`CURRENT_CONFIRMED` means this 2026-06-02 write-up **still describes** those three modes. It does **not** mean this file is inventory, silicon proof, or LGP look. It does **not** mean Bloom-Fast or Aurora have host pixel stamps.
+
+Pin visual carriers on BLOOM only: `chroma_colour (native)`, `scroll transport`.
+
+Pin metric traps on BLOOM: **`peak is not a Bloom lever`**; **`palette path hides hue_centroid`**.
+
+Pin `host_notes` on BLOOM (`compatibility.json` `stimulus_notes.bloom` is the same object):
+
+| stimulus | transfer | primary | r | trap |
+| --- | --- | --- | --- | --- |
+| `peak_ramp` | `NONE_OR_TIME_CONFOUND` | — | — | mode likely ignores this input |
+| `chroma_rotate` | `DETECTED` | `symmetry` | −0.4893 | `mean_luminance` is not the primary carrier (and may invert) |
+| `onset_train` | `NONE_OR_TIME_CONFOUND` | — | — | mode likely ignores this input |
+| `band_low_vs_high` | `DETECTED` | `frame_derivative` | −0.7655 | `mean_luminance` is not the primary carrier (and may invert) |
+
+Compatibility row (pin, not this write-up): `chroma / harmony × BLOOM × palette / chromagram colour` is **`CANDIDATE`** at evidence **`STATIC_SOURCE`**. Why (pin text): native chroma read exists; product palette path (`K1_Ultraviolet_Bright`, `chromatic_mode=false`) made `hue_centroid` a weak HOST observable. **Do not treat palette-locked hue as a chroma test.** Mode-level `HOST_PIXEL_VALIDATED` on BLOOM is not a HOST stamp on that chroma binding.
+
+Grammar coverage (pin): `harmonic_colour` is **`partial`**, evidence **`STATIC_SOURCE`**, representative BLOOM 3; also-listed AURORA 12 and BLOOM_FAST 9 (plus CHROMA_CONSTELLATION 25 and DENSE_FORGE_CHORD 24, which are **`guidebook_class: null`** — do not pull them into this class doc).
+
+### What this file is
+
+A 2026-06-02 conceptual snapshot (`feat/gdft-harness`) of how Bloom / Bloom-Fast / Aurora were decomposed: six layers, named levers, `[MECHANISM]` vs `[PERCEPTION]`. Useful as **prior** for reading those three pin rows. File:line anchors are that snapshot; verify against firmware at `36466cd5` before quoting. This lab does not open the live Atlas worktree to refresh them.
+
+### What this file is not
+
+- **Not inventory.** Do not cite “Status: LIVE”, “the Bloom line”, or these three modes as the whole product list. The pin has **23** enabled `LIGHT_MODE_*`.
+- **Not an exhaustive Bloom-line census.** `guidebook_class: 02-bloom` is exactly the three rows above. Do not add families, aliases, or “BLOOM-lineage” modes here.
+- **Not a place to author effects.** Pass 6 below once said new BLOOM-family effects must use `effect_palette_or_chroma_colour`. That is **historical firmware authoring**. This lab **consumes** (D15). Do not add Cannonade / Shockwave / Iris / Implosion / Chladni / Meniscus — none are in the pin.
+- **Not lighting labels.** Do not invent BUILDING / DROPPING / … as modes or Bloom variants.
+- **Not student I/O.** A student may emit `vocals_share` / `drums_share` / …. It must not emit “Bloom centre colour” or any mode-lever name.
+- **Not `supports_tempo: true`.** These three pin rows have empty `tempo_fields`. Bind named `descriptor × mode × lever` elsewhere; do not invent a Bloom tempo lever here.
+- **Not the P3-C lighting engine.** D14: chromatic bloom + PHOTONS² was **unreadable** and is **rejected** as a lighting instrument. Continuous engine is Waveform Tempo on the product palette path, **not** bloom/river.
+- **Not silicon / LGP evidence.** `[PERCEPTION]` claims in Pass 5 are interpretation. Cadence is CLOSED.
+
+Score the named lever. Never mean brightness by default.
+
+---
+
+## Historical write-up (captured 2026-06-02)
+
+*Snapshot family: BLOOM · snapshot modes: `LIGHT_MODE_BLOOM` (3), `LIGHT_MODE_BLOOM_FAST` (9), `LIGHT_MODE_AURORA` (12). Snapshot header said “Status: LIVE” — that word is retired; the pin uses `enabled: true`.*
+*Snapshot files: `light_mode_bloom.cpp:1–118`, `light_mode_aurora.cpp:1–68`, helpers in `lightshow_modes.h` (declarations ~L199–L240, dispatch ~L654–L680). Line numbers are 2026-06-02, not a live recopy.*
+
+The rest of this document is the original six-pass guidebook. Read it as an old schematic. Check the pin before any consume or test binding.
 
 ---
 
@@ -43,6 +144,8 @@ Every frame is four operations — identical across all three variants; only the
 
 ## Pass 4 — Named levers (the dials, with ranges)
 
+Snapshot lever table. For consume/test bindings use pin `native_inputs` and `compatibility.json`, not this list as inventory.
+
 | Lever | What it controls | Range / default | Musical effect of turning it up | file:line |
 |---|---|---|---|---|
 | `MOOD` (user knob, `rp->MOOD`) | Outward scroll speed (px/frame) | 0.0–1.0 / — | Higher MOOD → colour travels faster from centre to edges; bloom propagates more strip per second | `light_mode_bloom.cpp:15`; `light_mode_aurora.cpp:37` |
@@ -66,6 +169,8 @@ Every frame is four operations — identical across all three variants; only the
 
 ## Pass 5 — Maths → perception → musical meaning
 
+`[MECHANISM]` below is the 2026-06-02 source reading. `[PERCEPTION]` is interpretation, not LGP evidence, not silicon.
+
 ### 5.1 · The chromagram sum — tonal centre as colour
 
 **Maths** (chromatic mode, `light_mode_bloom.cpp:29–44`):
@@ -81,6 +186,8 @@ for i in 0..11:
 `bin² · share` squares each note's energy before mixing — a note at 0.5 strength contributes `0.25 · 1/6 ≈ 0.04` to the channel total, while a note at 1.0 contributes `1.0 · 1/6 ≈ 0.17`. The squaring means **only notes that are genuinely prominent colour the mix** — background harmonics are suppressed to near-zero. [MECHANISM]
 
 [PERCEPTION] The injected colour is likely perceived as tracking the tonal centre of the music: a major chord in C reads as one colour, shifting to a chord in F# shifts the hue, single sustained notes produce a nearly pure hue while dense chords blend multiple bins into a complex mixed colour.
+
+Consume note (pin, not Pass 5): on the product palette path the HOST chroma observable is weak. Native mapping exists; a palette-locked hue test is not a chroma test.
 
 ### 5.2 · SQUARE_ITER — contrast amplification
 
@@ -164,6 +271,8 @@ Both Bloom and Aurora perform `memcpy(leds_prev_buffer, leds_16, ...)` *before* 
 
 ## Pass 6 — Reusable principles
 
+Historical firmware-side principles from 2026-06-02. **This lab does not author new effects.** Do not treat the list as a build order.
+
 1. **Centre-origin injection is a spatial contract.** Injecting at `(NR/2)−1` and `NR/2` plus `mirror_image_downwards` gives bilateral symmetry from a single injection point. Any effect that wants symmetric outward spread can adopt this pattern directly.
 
 2. **Snapshot-before-display protects the history stock.** Display-only operations (edge fades, brightness scaling for output) must happen *after* `memcpy(leds_prev_buffer, leds_16, ...)`. Forgetting this causes those operations to recursively accumulate into the history, producing progressive darkening or colour shift that is hard to diagnose.
@@ -174,12 +283,14 @@ Both Bloom and Aurora perform `memcpy(leds_prev_buffer, leds_16, ...)` *before* 
 
 5. **The outer-quarter fade is what makes Bloom a bloom.** Removing it (Aurora's approach) converts a contained fountain into a full-strip fill. This single change transforms the character of the effect without altering any audio coupling or colour logic. It is a pure spatial envelope decision.
 
-6. **`effect_palette_or_chroma_colour` is the canonical colour authority for BLOOM-lineage effects.** New effects in the BLOOM family must use this helper rather than calling `palette_chroma_colour` directly — the latter is palette-mode only and silently ignores chromatic mode (K1 default), producing a single-colour lock. The helper routes correctly to both colour-authority branches and is the integration point for auto-colour-shift. (`lightshow_modes.h:199–217`)
+6. **`effect_palette_or_chroma_colour` is the canonical colour authority for BLOOM-lineage effects.** Historical firmware instruction: new effects in the BLOOM family must use this helper rather than calling `palette_chroma_colour` directly — the latter is palette-mode only and silently ignores chromatic mode (K1 default), producing a single-colour lock. The helper routes correctly to both colour-authority branches and is the integration point for auto-colour-shift. (`lightshow_modes.h:199–217`) **EdgeAI does not author a BLOOM family. Firmware owns that helper.**
 
 7. **Two-bin injection beats one.** Injecting into pixels `centre−1` and `centre` simultaneously gives a 2-pixel-wide seed that avoids a 1-pixel "needle" artefact at the very centre when the strip count is even.
 
 ---
+
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-06-02 | agent:Explore-sonnet | Created — full Bloom-class decomposition (BLOOM/3, BLOOM-FAST/9, AURORA/12). 6 Passes, systems view, trade-offs, reusable principles. Mechanism claims grounded in light_mode_bloom.cpp, light_mode_aurora.cpp, lightshow_modes.h, globals.h, config_types.h. |
+| 2026-08-31 | agent:grok-w4-l04 | **Demoted.** Historical guidebook only. Pin `docs/mir/effect_semantics/effect-semantics.json` (`source_firmware_sha` `36466cd5`) is inventory: BLOOM 3 / BLOOM_FAST 9 / AURORA 12, `guidebook_fit` CURRENT_CONFIRMED. BLOOM HOST_PIXEL_VALIDATED; Fast/Aurora STATIC_SOURCE. D15 consume-only. D14 bloom+PHOTONS rejected. |

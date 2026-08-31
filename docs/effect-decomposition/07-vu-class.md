@@ -1,11 +1,93 @@
 ---
-abstract: "VU-class effect decomposition: what it listens to (broadband RMS amplitude only), how it renders (centre-origin bar for LIGHT_MODE_VU; mirrored dot-pair for LIGHT_MODE_VU_DOT), the named levers (level EMA alpha, max_level peak-follower, bar/dot brightness gamma, dot-position second EMA, colour route), and why both modes are DISABLED. Mechanism grounded in light_mode_vu.cpp, light_mode_vu_dot.cpp, channel_effect_state.h, config_types.h:91–101. Read when considering revival, mining the peak-follower primitive, or understanding why amplitude-only effects fail the musical-meaning bar. Reflects main branch as of 2026-06-02."
+abstract: "HISTORICAL 2026-06-02 VU-class guidebook (LIGHT_MODE_VU 10, LIGHT_MODE_VU_DOT 4). Not inventory. Both enums ABSENT from the 23-mode pin at 36466cd5. Pin 'vu'/'snapshot.vu' inputs on Waveform/Pulse Prism are not this class. Do not revive here."
 ---
 
-# VU — Decomposition
+# HISTORICAL — VU class (2026-06-02 snapshot)
 
-*Family: LEVEL-METER · Modes: `LIGHT_MODE_VU` (index 10), `LIGHT_MODE_VU_DOT` (index 4) · Status: BOTH DISABLED (2026-06-02)*
-*Files: `light_mode_vu.cpp:1–63`, `light_mode_vu_dot.cpp:1–63`, state: `channel_effect_state.h:27–30`, gate: `config_types.h:91–101`, dispatch: `lightshow_modes.h:658–673`*
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
+Cadence silicon **CLOSED**. No USB. No `k1-flash`. HOST-ONLY documentation. D15 consume-only.
+
+> **This file is not product inventory and not a revival brief.** It is the 2026-06-02 six-pass write-up of two amplitude-only level-meter modes. The snapshot called both **DISABLED**. The lab pin does not list them at all. Do not cite “VU is disabled in the product” as current truth. Do not treat this class as a ship path. Do not grow a competing taxonomy from it.
+
+---
+
+## Authority (read this first)
+
+| What you need | Where it lives | Status of *this* file |
+| --- | --- | --- |
+| Enabled `LIGHT_MODE_*` inventory | [`../mir/effect_semantics/effect-semantics.json`](../mir/effect_semantics/effect-semantics.json) | **Not here** |
+| How this lab consumes that pin | [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md) | Consume only |
+| Decision | [`../DECISIONS.md`](../DECISIONS.md) **D15 / D16** | Firmware owns semantics |
+| Folder demotion | [`README.md`](README.md), [`SNAPSHOT.md`](SNAPSHOT.md) | Historical guidebook |
+
+**Pin stamp** (JSON wins if this page drifts):
+
+- path: `docs/mir/effect_semantics/effect-semantics.json`
+- `schema_version`: `2`
+- `generation_status`: `tranche2_grammar_tempo`
+- `label`: `HOST-ONLY`
+- `source_firmware_sha` / `firmware_sha` / `atlas_generation_commit`: `36466cd56c90b9cafa571bc5029b5d38bc0543bb`
+- `atlas_artifact_sha256`: `ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d`
+- `generated_at`: `2026-08-30T20:10:46Z`
+- `modes`: **23** objects, every one `enabled: true`
+- `on_silicon_pixel_validated`: `null`
+- `lgp_perceptual_validated`: `null`
+
+Dump the inventory from the pin, never from this class doc:
+
+```bash
+python3 -c "import json; d=json.load(open('docs/mir/effect_semantics/effect-semantics.json')); print(d['source_firmware_sha'], len(d['modes']));
+print('VU' in [m['enum'] for m in d['modes']], 'VU_DOT' in [m['enum'] for m in d['modes']]);
+[print(m['id'], m['enum']) for m in d['modes'] if 'VU' in m['enum'] or m['id'] in (4,10)]"
+```
+
+If the lab pin and the firmware Atlas generated files disagree: **delete the pin and recopy**. Do not “fix” VU behaviour in EdgeAI markdown.
+
+---
+
+## What the pin actually says (re-derived)
+
+[FACT] Pin mode ids are: 3, 7, 8, 9, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 32. **Id 4 and id 10 are not present.**
+
+[FACT] No pin object has `enum` `LIGHT_MODE_VU` or `LIGHT_MODE_VU_DOT`. No pin object has `guidebook_class` `07-vu`. README §5 maps `guidebook_class` only for classes that still have live pin members; this class has **none**.
+
+[FACT] The string `vu` in the pin is a **native input / snapshot field**, not this effect family:
+
+| Pin enum (id) | Field | `guidebook_class` | `guidebook_fit` | `evidence` |
+| --- | --- | --- | --- | --- |
+| `LIGHT_MODE_WAVEFORM` (8) | `vu` | `01-waveform` | `CURRENT_CONFIRMED` | `HOST_PIXEL_VALIDATED` |
+| `LIGHT_MODE_WAVEFORM_HYBRID` (11) | `vu` | `01-waveform` | `CURRENT_CONFIRMED` | `STATIC_SOURCE` |
+| `LIGHT_MODE_WAVEFORM_TEMPO` (18) | `snapshot.vu` | `01-waveform` | `CURRENT_CHANGED` | `HOST_PIXEL_VALIDATED` |
+| `LIGHT_MODE_PULSE_PRISM` (23) | `snapshot.vu` | `null` | `CURRENT_CHANGED` | `STATIC_SOURCE` |
+| `LIGHT_MODE_WAVEFORM_HYBRID_K1` (32) | `snapshot.vu` | `01-waveform` | `CURRENT_CHANGED` | `STATIC_SOURCE` |
+
+Those five rows are **not** VU-class modes. Binding a descriptor to `vu` / `snapshot.vu` on Waveform Tempo or Pulse Prism is a pin/consume question. It is not a licence to re-author `LIGHT_MODE_VU`.
+
+[FACT] Pass 4–6 `file:line` anchors (`light_mode_vu.cpp`, `light_mode_vu_dot.cpp`, `config_types.h:91–101`) were grounded against the 2026-06-02 firmware snapshot. They were **not** re-opened against `36466cd5` in this lab. Do not quote them as current silicon.
+
+---
+
+## What this file must not be used for
+
+- **Not inventory.** Do not add VU / VU-Dot to any 23-mode list.
+- **Not “DISABLED but still in the library.”** Snapshot status was DISABLED (Captain 2026-06-02, “unfit for purpose”). Pin status is **absent**.
+- **Not a revival path in EdgeAI.** The Pass-6 “what it would take to revive” note is historical speculation. Effect semantics are firmware-owned. Do not re-enable, re-index, or design a “VU with chroma” family here.
+- **Not student I/O.** A student may emit `vocals_share` / RMS / arousal. It must not emit “VU bar length” or “VU-Dot position.”
+- **Not BUILDING / DROPPING.** Do not invent lighting-mode labels from this meter.
+- **Not silicon / LGP evidence.** `[PERCEPTION]` lines below are 2026-06-02 interpretation. This file has no `HOST_PIXEL_VALIDATED` stamp of its own because the modes are not in the pin.
+- **Not a second taxonomy.** Peak-follower-with-decay, two-EMA cascade, centre-origin bar, and `sqrtf` gamma are **method language**. If a live mode uses a similar primitive, name the pin enum and the named lever — do not call that mode “VU class.”
+
+Read the six passes below the way you read an old schematic: they teach how a level-meter was built. They do not tell you what ships.
+
+---
+
+# VU — Decomposition *(historical body, captured 2026-06-02)*
+
+*Family: LEVEL-METER · Modes: `LIGHT_MODE_VU` (index 10), `LIGHT_MODE_VU_DOT` (index 4) · Snapshot status: BOTH DISABLED (2026-06-02). Pin status (2026-08-30): **ABSENT**.*
+*Files (snapshot-time): `light_mode_vu.cpp:1–63`, `light_mode_vu_dot.cpp:1–63`, state: `channel_effect_state.h:27–30`, gate: `config_types.h:91–101`, dispatch: `lightshow_modes.h:658–673`*
+
+> Snapshot LIVE/DISABLED lines, `file:line` citations, and revival notes below are **what the 2026-06-02 guidebook believed**. They are not current product truth.
 
 ---
 
@@ -179,13 +261,15 @@ The VU class sits at the extreme "clarity" end of the information↔clarity dial
 
 **5. Sub-pixel coverage at a bar tip removes LED-quantisation stepping.** Computing `coverage = (bar_level − inner) * half_res` for the partial boundary LED produces a smooth leading edge at any resolution. This pattern generalises to any bar-fill, progress-display, or anti-aliased boundary fill. — [MECHANISM] `light_mode_vu.cpp:41–43`
 
+> **Historical only.** These five principles are method language from 2026-06-02. They are not a licence to author a VU family in this lab, and they are not pin levers. If a live mode needs automatic gain or centre-origin fill, bind `descriptor × pin enum × named lever` via consume docs — do not reopen ids 4/10.
+
 ---
 
-## If disabled — why
+## If disabled — why *(snapshot gate; pin: absent)*
 
 ### The gate
 
-Both `LIGHT_MODE_VU` (10) and `LIGHT_MODE_VU_DOT` (4) return `false` from `light_mode_is_enabled()`. [MECHANISM] `config_types.h:91–101`
+Both `LIGHT_MODE_VU` (10) and `LIGHT_MODE_VU_DOT` (4) return `false` from `light_mode_is_enabled()`. [MECHANISM] `config_types.h:91–101` — **snapshot-time.** The 2026-08-30 pin does not contain these enums, so the gate is not current inventory.
 
 ```cpp
 // config_types.h:91–101
@@ -209,7 +293,7 @@ This is not a fixable implementation problem. It is an architectural information
 
 The VU_DOT comment in the enum (`// -- Not a real VU, just a dance-y LED show`) is additionally telling: even the author acknowledged at time of writing that this mode's perceptual claim ("a VU meter") is inaccurate. It is a visual toy, not a musical instrument.
 
-**What it would take to revive either mode.** Adding a second dimension of musical information — at minimum, `chroma_val` (chromagram centroid) driving hue in the HSV path — would begin to satisfy the north-star. This already exists as a code path (`light_mode_vu.cpp:56`: `hue = chroma_val + hue_position`) but is only active when palette mode is *disabled*. If palette mode is disabled and the colour path is confirmed to use chromagram-derived hue, the HSV path already encodes one musical dimension (harmony) into colour. Whether that is sufficient to warrant re-enabling is a Captain decision. The bar's spatial dimension would still encode only loudness; the two-dimensional information density (loudness → space, harmony → colour) would match the Waveform class's core claim. The VU_DOT mode would require the same audit of its HSV colour path (`light_mode_vu_dot.cpp:57`). [MECHANISM + PERCEPTION, revival path unverified on-device]
+**What it would take to revive either mode.** *Historical speculation — not a ship path, not an EdgeAI task, not a Captain ask.* Adding a second dimension of musical information — at minimum, `chroma_val` (chromagram centroid) driving hue in the HSV path — would begin to satisfy the north-star. This already exists as a code path (`light_mode_vu.cpp:56`: `hue = chroma_val + hue_position`) but is only active when palette mode is *disabled*. Whether that is sufficient to warrant re-enabling was a firmware/Captain decision in 2026-06-02. **This lab does not revive them.** The pin is later and still omits ids 4 and 10. Do not treat HSV-chroma as a current revival programme.
 
 ---
 
@@ -218,3 +302,4 @@ The VU_DOT comment in the enum (`// -- Not a real VU, just a dance-y LED show`) 
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-06-02 | agent:Explore-sonnet | Created — full 6-Pass decomposition of VU class (LIGHT_MODE_VU index 10, LIGHT_MODE_VU_DOT index 4). Covers level EMA, peak-follower-with-decay, centre-origin bar, dot cascade EMA, brightness gamma, colour routes, disable gate, and revival path analysis. Grounded in light_mode_vu.cpp, light_mode_vu_dot.cpp, channel_effect_state.h, config_types.h, lightshow_modes.h. |
+| 2026-08-31 | agent:grok-w4-l09 | **HISTORICAL.** Demoted. Pin 23 `LIGHT_MODE_*` @ `36466cd5` has no VU / VU-Dot (ids 4/10 **absent**). Pin `vu`/`snapshot.vu` on Waveform / Hybrid / Tempo / Pulse Prism / Hybrid-K1 is not this class. Six-pass body kept as 2026-06-02 conceptual prior. Revival note struck as non-ship. Cadence CLOSED. No USB. |

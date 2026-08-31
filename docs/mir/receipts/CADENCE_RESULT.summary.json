@@ -1,0 +1,55 @@
+{
+  "kind": "CADENCE_RESULT.summary",
+  "label": "ON-SILICON numbers copied HOST-ONLY; cadence not re-run",
+  "source": "artifacts/gate_c0_cadence_silicon/CADENCE_RESULT.json",
+  "source_sha256": "371573dc9e5769629dae5dc1c572fb57c0a0884d9239a8c0245a8576f9b4449d",
+  "presence": "IN_WORKSPACE",
+  "ssa": "W4-L21",
+  "STATUS": "CLOSED",
+  "CLAIM": "Cadence silicon is CLOSED. Slowest 0-delay PASS is 5 Hz. Largest added delay PASS is 50 ms at 20 Hz. Joint 5 Hz + 50 ms is FAIL. Runner retired. Do not reopen cells.",
+  "EVIDENCE": "docs/mir/receipts/CADENCE_RESULT.summary.json; artifacts/gate_c0_cadence_silicon/CADENCE_RESULT.json sha256 371573dc9e5769629dae5dc1c572fb57c0a0884d9239a8c0245a8576f9b4449d; docs/mir/GATE_C0_CADENCE.md; docs/mir/SILICON_RECEIPTS.md",
+  "COMMAND": "none. Did not run scripts/gate_c0_cadence_silicon.py. No USB. No flash. No 8 s loop.",
+  "METHOD_RISK": "This file is a git-visible HOST copy. Authority remains the artifacts JSON. SHA-256 is the orchestrator stamp from SILICON_RECEIPTS.md / on-disk bytes. Not a student freeze. Not C1 LGP_PERCEPTUAL_VALIDATED.",
+  "NEXT": "Leave cadence CLOSED. C1 OPEN on the C0-v2 carrier (~31.25 Hz, 0 ms). Student I/O unfrozen. Do not assume 5 Hz and 50 ms together.",
+  "gate_c0_cadence": "CLOSED",
+  "cadence": "PASS",
+  "cadence_close": "CAPTAIN_CLOSE_2026-08-31",
+  "c0v2": "ON_SILICON_PIXEL_VALIDATED",
+  "student_freeze": false,
+  "lag_corrected": false,
+  "stopped_audio": true,
+  "c1": "OPEN — next task",
+  "authorisation": "K1-C0-CADENCE-LATENCY-FLASH-GO",
+  "runner": "RETIRED",
+  "runner_path": "scripts/gate_c0_cadence_silicon.py",
+  "plain": {
+    "minimum_demonstrated_useful_rate_hz": 5.0,
+    "maximum_demonstrated_added_delay_s": 0.05,
+    "maximum_demonstrated_added_delay_ms": 50,
+    "combined_5hz_50ms": "FAIL",
+    "combined_10hz_25ms": "NOT_COMPLETED",
+    "Q": {
+      "5Hz": {"Q1": "PASS", "Q2": "PASS", "Q3": "PASS"},
+      "20Hz_50ms": {"Q1": "PASS", "Q2": "PASS", "Q3": "PASS"},
+      "20Hz_100ms": {"Q1": "FAIL", "Q2": "PASS", "Q3": "PASS"},
+      "5Hz_50ms": {"Q1": "FAIL", "Q2": "PASS", "Q3": "PASS"}
+    }
+  },
+  "joint": {
+    "rate_hz": 5.0,
+    "delay_ms": 50,
+    "verdict": "FAIL"
+  },
+  "identity": {
+    "chip": "9087A500",
+    "git": "349d3cd4",
+    "env": "k1_main_rpl_rtrace_probe"
+  },
+  "non_claims": [
+    "C0-v2 remains ON_SILICON_PIXEL_VALIDATED",
+    "combined 5 Hz + 50 ms FAIL is kept (not interpolated)",
+    "10 Hz + 25 ms not completed",
+    "C1 not yet LGP_PERCEPTUAL_VALIDATED",
+    "no student freeze of network architecture"
+  ]
+}

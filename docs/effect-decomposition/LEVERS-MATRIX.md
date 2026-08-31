@@ -1,27 +1,115 @@
 ---
-abstract: "The cross-effect synthesis of the K1 effect-decomposition guidebook. LEADS with §0 the Motion ∘ Mapping separability map — every effect classified by motion-engine family (Transport / Particle / Field / Static) and whether its layers separate cleanly; the predictive finding is that every LIVE effect is separable (transport/particle) and every DISABLED one is fused (field) or near-static. Then: (1) the L1–L6 layer matrix, (2) the owned-primitive means-set, (3) archetype-dial positions, (4) the TRIZ musical-dimension × visual-primitive generative map with UNUSED cells ranked as the roadmap (#1 = beat/tempo-phase-lock; sb_tempo built but unconsumed) — each gap read as a new MAPPING on an owned engine. Read when deciding what to build next or where the white space is. Derived from class docs 01–09. Reflects feat/gdft-harness as of 2026-06-02."
+abstract: "Historical 2026-06-02 levers matrix. NOT the firmware pin. LIVE/DISABLED and Gap #1 (sb_tempo unconsumed) are snapshot claims. Inventory is docs/mir/effect_semantics/effect-semantics.json (23 LIGHT_MODE_* @ 36466cd5). D15 consume-only. Do not grow a competing taxonomy."
 ---
 
-# Effect Levers Matrix & Generative Roadmap
+# Effect Levers Matrix — historical 2026-06-02 synthesis, not inventory
 
-*Cross-effect synthesis · captured 2026-06-02 · derives from class docs [01](../waveform-mode-design-rationale.md), [02](02-bloom-class.md)–[09](09-quantum-collapse.md)*
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
 
-> This is where the decomposition stops being retrospective and becomes **generative**.
-> Once every effect is reduced to its layer choices and named levers, the *gaps* become
-> visible — musical dimensions we capture but never render, visual primitives we own but
-> never drive with the right signal. Those gaps are the roadmap. See
-> [`00-the-method.md`](00-the-method.md) for the framework these tables apply.
+> **This file is not the product mode list, not the current lever map, and not a build roadmap.** It is the **2026-06-02** cross-effect synthesis from class docs 01–09 (`feat/gdft-harness`). It used to present a 9-class LIVE/DISABLED table and seven generative gaps as what to ship next. Those claims are **withdrawn as current**. The only allowed inventory in this lab is the firmware pin below.
+
+Cadence silicon is **CLOSED**. No USB. No `k1-flash`. Do not author Cannonade / Shockwave / Iris / Implosion / Chladni / Meniscus here. Do not invent BUILDING / DROPPING lighting labels. Students stay effect-agnostic.
 
 ---
 
-## 0 · Motion ∘ Mapping across the library — the separability map
+## Authority (read this first)
 
-Per [`00-the-method.md`](00-the-method.md) §1, every effect factors as **Motion ∘ Mapping**.
-Applying that root lens across the whole library is the **highest-signal cross-effect view
-we have** — because separability *correlates with shippability.* This section leads the
-matrix because it is the coarsest, most predictive partition; everything below refines it.
+| What you need | Where it lives | Status of *this* file |
+| --- | --- | --- |
+| Enabled `LIGHT_MODE_*` inventory | [`../mir/effect_semantics/effect-semantics.json`](../mir/effect_semantics/effect-semantics.json) | **Not here** |
+| How EdgeAI consumes that pin | [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md) | Consume only |
+| `descriptor × mode × lever` rows | [`../mir/effect_semantics/compatibility.json`](../mir/effect_semantics/compatibility.json) | Not here |
+| Visual-grammar coverage | [`../mir/effect_semantics/grammar_coverage.json`](../mir/effect_semantics/grammar_coverage.json) | Not here |
+| Decision | [`../DECISIONS.md`](../DECISIONS.md) **D15 / D16** | Firmware owns semantics |
+| Folder demotion | [`README.md`](README.md), [`SNAPSHOT.md`](SNAPSHOT.md) | Same demotion |
+| Conceptual method (old map) | [`00-the-method.md`](00-the-method.md), class `01`–`09`, this file | Historical |
 
-| Effect (mode) | Motion engine | Mapping (audio → sample) | Separable? | Status |
+**Pin stamp** (re-read from the JSON; if this file and the pin disagree, **the pin wins**):
+
+- path: `docs/mir/effect_semantics/effect-semantics.json`
+- `schema_version`: `2`
+- `generation_status`: `tranche2_grammar_tempo`
+- `label`: `HOST-ONLY`
+- `source_firmware_sha` / `firmware_sha` / `atlas_generation_commit`: `36466cd56c90b9cafa571bc5029b5d38bc0543bb`
+- `atlas_artifact_sha256`: `ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d`
+- `generated_at`: `2026-08-30T20:10:46Z`
+- `modes`: **23** objects, every one `enabled: true`, **23** distinct `LIGHT_MODE_*` enums
+- `on_silicon_pixel_validated`: `null`
+- `lgp_perceptual_validated`: `null`
+
+Dump the inventory from the pin, never from the LIVE/DISABLED table below:
+
+```bash
+python3 -c "import json; d=json.load(open('docs/mir/effect_semantics/effect-semantics.json')); print(d['source_firmware_sha'], len(d['modes']));
+[print(m['id'], m['enum'], m['guidebook_class'], m['guidebook_fit'], bool(m.get('tempo_fields')), 'onset' if 'onset_beat' in m.get('native_inputs',[]) else '-', m['evidence']) for m in d['modes']]"
+```
+
+If the lab pin and the firmware Atlas generated files disagree: **delete the pin and recopy**. Do not “fix” mode behaviour by rewriting these tables into a second taxonomy.
+
+---
+
+## What this file is
+
+A **2026-06-02** synthesis: Motion ∘ Mapping separability across the *then* library, six-layer columns, owned primitives, archetype dials, and a TRIZ gap list. Useful as **conceptual prior** for talking about *how an effect is built* (engine family, sample seam, named lever).
+
+Read it the way you read an old schematic. It does not tell you what is on the board today.
+
+Captured against `feat/gdft-harness`. Class-doc `file:line` anchors in those write-ups will have drifted; verify against firmware at `36466cd5` before quoting. `guidebook_fit` on the pin says whether a class write-up still describes that mode.
+
+The 2026-06-02 link to `docs/waveform-mode-design-rationale.md` **does not exist in this lab**. Do not recreate it. Historical Waveform write-up here is [`01-waveform-class.md`](01-waveform-class.md).
+
+---
+
+## What this file is not
+
+- **Not inventory.** Do not cite the §0 LIVE/DISABLED column, “9 classes”, or “18 modes / 10 live / 8 disabled” as the current product list.
+- **Not a generative roadmap.** The §5 gaps are a 2026-06-02 probe list. They are not a firmware build queue and not an EdgeAI authoring list.
+- **Not Gap #1 as current.** “`sb_tempo` built but consumed by nothing” is **false on the pin**. See stale-claims table.
+- **Not “Comet is the only onset consumer.”** False on the pin.
+- **Not `supports_tempo: true`.** Tempo is not one lever. Bind `beat_phase × LIGHT_MODE_WAVEFORM_TEMPO × transport_position` (or the named pin lever), never a boolean.
+- **Not student I/O.** A student may emit `vocals_share` / `drums_share` / …. It must not emit “Waveform Tempo head position”. Binding is a separate layer (`descriptor × mode × lever`).
+- **Not silicon / LGP evidence.** `[PERCEPTION]` cells are interpretation. Pin `HOST_PIXEL_VALIDATED` is host LED-buffer, pre-gamma, pre-dither. Cadence CLOSED. This file is HOST-ONLY documentation.
+
+---
+
+## Snapshot vs pin (do not “fix” the tables to match)
+
+The pin’s `guidebook_class` field is the **only** allowed pointer from current inventory → these historical write-ups. Do not add class docs for pin modes with `guidebook_class: null`. Firmware Atlas owns that map.
+
+Re-derived from the pin (JSON wins if this table drifts):
+
+| Snapshot claim in this file (2026-06-02) | Pin (`36466cd5`, 23 enabled) |
+| --- | --- |
+| LIVE/DISABLED 9-class map (ids 0–17) as library census | **23** enabled `LIGHT_MODE_*`; ids **0,1,2,4,5,6,10,17 absent** |
+| Every LIVE effect separable; every DISABLED fused or static | Predictive lens on *that* LIVE/DISABLED set. The pin’s 23 enabled modes are **not** classified LIVE/DISABLED by those nine classes |
+| Gap #1: entire beat/tempo-phase row empty; `sb_tempo` unconsumed | **Withdrawn.** Non-empty `tempo_fields` on WAVEFORM_TEMPO 18, TEMPO_RIVER 19, TEMPO_COMET 20, DENSE_FORGE 21, SNAPWAVE 22, PULSE_PRISM 23, DENSE_FORGE_CHORD 24, TEMPO_COMET_ANTICIPATE 27, TEMPO_RIVER_WALK 29 |
+| Gap #2: onset drives only Comet spawn | **Withdrawn as “sole consumer.”** `onset_beat` also on DENSE_FORGE 21, PULSE_PRISM 23, DENSE_FORGE_CHORD 24, PERCUSSION_BURST 26 (COMET 13 still listed) |
+| Waveform Tempo (18) missing / roadmap | `enabled` true, `guidebook_fit` `CURRENT_CHANGED`, `evidence` `HOST_PIXEL_VALIDATED` |
+| GDFT 0/1/2, VU 10/4, Kaleidoscope 5, Quantum 6, Ember V2 17 as DISABLED library members | Those ids **not present** in the pin |
+| Structure row empty except director switching; BUILDING/DROPPING as effect names | Do **not** invent lighting labels. MIR structure words are not a second mode taxonomy |
+| “Read when deciding what to build next” | Do not author families in this lab. Consume the pin |
+
+`HOST_PIXEL_VALIDATED` on this pin (host LED-buffer, not LGP): BLOOM, WAVEFORM, COMET, SPECTRUM_RIVER, EMBER, WAVEFORM_TEMPO, PULSE_PRISM. Everything else in the pin is `STATIC_SOURCE`.
+
+[`00b-captivation-transposition.md`](00b-captivation-transposition.md) already noted (2026-07-11) that “tempo unconsumed” was stale. This file’s Gap #1 text below is **kept as historical wording** so the snapshot can be read; it is not current.
+
+Need a mode, a lever, or a test binding? Stop. Open the pin and [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md). Query `compatibility.json`. Reject `INCOMPATIBLE` / `INCOMPATIBLE_FOR_THIS_USE`. Prefer `HOST_PIXEL_VALIDATED` over `STATIC_SOURCE`. Score the named lever, never mean brightness by default.
+
+---
+
+# Historical body — captured 2026-06-02
+
+*Derives from class docs [01](01-waveform-class.md), [02](02-bloom-class.md)–[09](09-quantum-collapse.md). Status columns are what the snapshot believed then.*
+
+The original framing (“once every effect is reduced, the gaps become the roadmap”) is **retired**. Gaps below are a 2026-06-02 means-set reading, not a ship list. See [`00-the-method.md`](00-the-method.md) for the framework these tables apply.
+
+---
+
+## 0 · Motion ∘ Mapping across the 2026-06-02 library — the separability map
+
+Per [`00-the-method.md`](00-the-method.md) §1, every effect factors as **Motion ∘ Mapping**. Applying that root lens across the *snapshot* library is the coarsest partition in this file. **Separability as a design lens still holds.** “Separability predicts shippability / LIVE = separable / DISABLED = fused” is a finding about **this table’s LIVE/DISABLED set**, not a census of the pin’s 23 enabled modes.
+
+| Effect (mode) | Motion engine | Mapping (audio → sample) | Separable? | Status (snapshot 2026-06-02) |
 |---|---|---|---|---|
 | Waveform / Fast (8/7) | **Transport**: scroll + reactive-fade + draw | amp→position, chromagram→colour | ✓ clean | LIVE |
 | Waveform-Hybrid (11) | **Transport**: centre-out scroll + fade | raw-audio-shape seed + chromagram→colour | ✓ clean (richer sample) | LIVE |
@@ -37,45 +125,24 @@ matrix because it is the coarsest, most predictive partition; everything below r
 | Kaleidoscope (5) | **Field**: Perlin noise field (coupled) | band energy→field excitation | ✗ fused | DISABLED |
 | Quantum Collapse (6) | **Field**: wave PDE + stochastic collapse (coupled) | band/VU→disturbance + collapse-rate | ✗ fused (+ non-deterministic) | DISABLED |
 
-**The pattern is unambiguous.** Every **LIVE** effect is **separable** (Transport or
-Particle). Every **DISABLED** effect is either **degenerate** (Static — motion layer ≈
-empty, so it reads as a technical readout, not a living effect) or **fused** (Field — motion
-and mapping coupled). [MECHANISM on status; [PERCEPTION] on the quality verdicts that drove
-the disables — see each class doc's "If disabled — why".]
+**The 2026-06-02 pattern (historical):** every **LIVE** row in *this* table is **separable** (Transport or Particle). Every **DISABLED** row is either **degenerate** (Static) or **fused** (Field). [MECHANISM on snapshot status; [PERCEPTION] on the quality verdicts that drove the then-disables — see each class doc's "If disabled — why".] Do not retarget this paragraph onto the pin.
 
-**Motion-engine families — the reusable half of the means-set:**
+**Motion-engine families — reusable half of the means-set (still the method language):**
 
-- **Transport** — scroll/advect a buffer, fade it, draw new samples in. The workhorse (7
-  live effects). Owns "constant refresh" structurally → satisfies Organic-Law clause 1 for
-  free.
-- **Particle** — integrate a small pool of moving objects (`pos += vel`), decay life, draw.
-  Best for discrete/onset events (Comet). Owns object identity.
-- **Field** *(handle with care)* — a spatially-coupled dynamical system. Rich, but fuses the
-  layers → the four failure modes (untunable, screensaver, indirect causality,
-  unverifiable). **No live effect uses it.** Reviving Quantum/Kaleidoscope means
-  re-expressing as Transport+mapping or paying the coupling cost.
-- **Static** *(avoid standalone)* — near-instant redraw, no transport. Honest but flat (the
-  GDFT/VU "oscilloscope" problem).
+- **Transport** — scroll/advect a buffer, fade it, draw new samples in. Snapshot workhorse (7 live rows). Owns "constant refresh" structurally → Organic-Law clause 1 for free.
+- **Particle** — integrate a small pool of moving objects (`pos += vel`), decay life, draw. Best for discrete/onset events (Comet in the snapshot). Owns object identity.
+- **Field** *(handle with care)* — a spatially-coupled dynamical system. Rich, but fuses the layers → four failure modes (untunable, screensaver, indirect causality, unverifiable). **No live row in the snapshot uses it.** That is not a licence to revive Quantum/Kaleidoscope in this lab.
+- **Static** *(avoid standalone)* — near-instant redraw, no transport. Honest but flat (the GDFT/VU "oscilloscope" problem).
 
-**Why this earns root status (the claim, tested — not just asserted).** The separability
-lens is *predictive*, not merely descriptive: it draws the live/disabled boundary that the
-6-layer decomposition did not foreground, it explains *why* the disabled effects are
-disabled (structure, not taste), and it yields a go/no-go test before a line is written —
-*can you name the `{where, colour, intensity}` sample? If not, you are in Field territory;
-expect a hard road.* A lens that predicts shippability and accounts for every existing kill
-decision has earned the root. The honest boundary: the law is *root for the separable
-(transport/particle) regime, and its breakdown defines the non-shippable regime* — which is
-a stronger statement than "all effects separate," and is exactly what makes it load-bearing.
+**Why the lens earned root status in 2026-06-02 (kept as method, not census).** The separability lens was *predictive* for that LIVE/DISABLED cut: it explained *why* those disabled effects were disabled (structure, not taste), and it yields a go/no-go before a line is written — *can you name the `{where, colour, intensity}` sample? If not, you are in Field territory.* The honest boundary: the law is *root for the separable (transport/particle) regime, and its breakdown defines a hard road* — which is stronger than "all effects separate." **It is not a statement that the pin’s 23 enabled modes are all Transport.**
 
 ---
 
-## 1 · The layer matrix — what every effect chooses
+## 1 · The layer matrix — what every snapshot effect chooses
 
-Each effect is its choice of the six layers. Read a column to see how one design decision
-(e.g. "what drives colour?") varies across the library. `[MECHANISM]` throughout — every
-cell traces to the cited class doc.
+Each row is a choice of the six layers *as written in class docs 01–09 on 2026-06-02*. Read a column to see how one design decision (e.g. "what drives colour?") varied across **that** library. `[MECHANISM]` throughout — every cell traces to the cited class doc, not to the pin.
 
-| Effect (mode) | Family | L1 Feature(s) | L3 Spatial | L4 Colour | L5 Temporal | Status |
+| Effect (mode) | Family | L1 Feature(s) | L3 Spatial | L4 Colour | L5 Temporal | Status (snapshot) |
 |---|---|---|---|---|---|---|
 | **Waveform** (8) | WAVEFORM | peak envelope + chromagram | amplitude → position; scroll | chromagram centroid / palette / HSV-shift | EMA 0.08; fade `1−0.10·|amp|`; 1px scroll | LIVE |
 | **Waveform-Fast** (7) | WAVEFORM | peak + chromagram | same | same | EMA 0.05; dt scroll ≤8px | LIVE |
@@ -94,43 +161,33 @@ cell traces to the cited class doc.
 | **Kaleidoscope** (5) | generative-noise | 3 band energies (low/mid/high) | **Perlin noise field** | RGB-per-band | Perlin-walk speed; brightness decay 0.99 | DISABLED |
 | **Quantum Collapse** (6) | stochastic | 3 bands + VU | **wave field**, 3 spatial thirds | position+velocity HSV / palette | Laplacian + stochastic collapse | DISABLED |
 
-**What the columns reveal:**
+**What the columns revealed in 2026-06-02:**
 
-- **L4 Colour is dominated by harmony.** Almost every live effect maps *pitch/chromagram*
-  to colour. This is a strength (musical) but also a concentration — colour is rarely
-  driven by anything else.
-- **L3 Spatial is where effects differ most.** Amplitude→position (Waveform), freq→position
-  (River), energy→extent (Ember), particle-pool (Comet), noise-field (Kaleidoscope),
-  wave-field (Quantum). The spatial layer is the primary identity axis.
-- **L1 Feature concentrates on chromagram + energy.** Onset is used by exactly one live
-  effect (Comet). Beat/tempo phase by **none**. Timbre (centroid/flux) by almost none.
+- **L4 Colour was dominated by harmony.** Almost every live row mapped *pitch/chromagram* to colour. Concentration, not current census.
+- **L3 Spatial is where those rows differed most.** Amplitude→position (Waveform), freq→position (River), energy→extent (Ember), particle-pool (Comet), noise-field (Kaleidoscope), wave-field (Quantum). Spatial layer as identity axis is method language, still usable.
+- **L1 Feature concentrated on chromagram + energy.** Onset used by exactly one live row in this table (Comet). Beat/tempo phase by **none in this table**. That last sentence is **why Gap #1 existed then**. It is not true of the pin.
 
 ---
 
-## 2 · The owned-primitive inventory (Effectuation means-set)
+## 2 · The owned-primitive inventory (Effectuation means-set, 2026-06-02)
 
-Per `00-the-method.md` §5, new effects are **recombinations of owned primitives**, not
-blue-sky. This is the full bird-in-hand inventory the library has already paid for:
+Per `00-the-method.md` §5, new effects *in that guidebook* were recombinations of owned primitives. This is the bird-in-hand inventory **the snapshot** claimed the library had already paid for. It is **not** a current Atlas `static_levers.json` (that file is **not** in this lab pin).
 
-| Column | Owned primitives (the means) |
+| Column | Owned primitives (the means, snapshot) |
 |---|---|
 | **Spatial** | centre-origin scroll · outward scroll · up-scroll · static mirror · bin→pixel (freq=space) · particle pool (6/ch) · Perlin noise field · 1-D wave field · energy→reach (extent) · spatial band-thirds |
 | **Colour** | chromagram centroid → hue · frequency → palette position · 33-palette LUT · forced-HSV auto-shift · RGB-per-band · fixed palette-class hue · position → hue · velocity → hue · harmonic edge-mix (6 modes, *secondary only*) |
 | **Temporal** | EMA smoothing (any coeff) · amplitude-linked fade · energy-linked drift/surge · life-decay (particles) · dt-scaled scroll · tide-EMA (slow energy integral) · Laplacian wave · peak-follower-with-decay |
-| **Feature** | chromagram (12) · GDFT spectrum (80-bin) · VU/peak envelope · novelty/flux · low/mid/high band energy · `spectral_energy` · onset + bass-onset events · **(latent) BPM + beat-phase** · **(latent) spectral centroid** |
+| **Feature** | chromagram (12) · GDFT spectrum (80-bin) · VU/peak envelope · novelty/flux · low/mid/high band energy · `spectral_energy` · onset + bass-onset events · **(then-latent) BPM + beat-phase** · **(then-latent) spectral centroid** |
 | **Guards** | calibrated silence floor · `clamp01` · VU failsafe · per-channel state isolation · drift floor (no-stop) · multi-detector seed gate |
 
-**The two latent (built-but-unspent) means are the highest-value resources:** BPM/beat-phase
-(`sb_tempo`, computed but consumed by nothing) and spectral centroid/flux (computed, used
-only for hue auto-shift and the removed Ember shimmer). TRIZ resource analysis says: *spend
-the resources you already own before adding new ones.*
+**Then-latent means (historical):** BPM/beat-phase (`sb_tempo`, computed but *then* consumed by nothing) and spectral centroid/flux (computed, used only for hue auto-shift and the removed Ember shimmer). TRIZ resource analysis said: *spend the resources you already own before adding new ones.* **Spend-status of tempo is now the pin, not this paragraph.**
 
 ---
 
-## 3 · Archetype dials — where each effect sits
+## 3 · Archetype dials — where each snapshot effect sits
 
-From `00-the-method.md` §4. This shows the library's *aggregate bias* — and the bias is
-real: almost everything leans toward grace, gestalt, and stability.
+From `00-the-method.md` §4. Shows the *then* library's aggregate bias. Not a pin classification.
 
 | Effect | Responsive↔Grace | Information↔Clarity | Reactivity↔Stability | Per-note↔Gestalt |
 |---|---|---|---|---|
@@ -145,20 +202,13 @@ real: almost everything leans toward grace, gestalt, and stability.
 | Kaleidoscope | grace | information | stable | gestalt |
 | Quantum Collapse | responsive | information | **none** (no silence floor) | gestalt |
 
-**Reading the aggregate:** the live library clusters in *grace + clarity + stable*. That is
-a deliberate and defensible taste — but it means the **"responsive/punchy/per-note"** corner
-is thinly populated (only Comet and high-iter River live there). A new effect that
-deliberately occupies the responsive corner — tight, snappy, transient-forward — would add
-contrast the library currently lacks. [PERCEPTION — corner-coverage is an interpretation of
-the dial table, pending viewing.]
+**Reading the 2026-06-02 aggregate:** the live rows clustered in *grace + clarity + stable*. The **"responsive/punchy/per-note"** corner was thinly populated (only Comet and high-iter River in this table). [PERCEPTION — corner-coverage is an interpretation of the dial table, pending viewing. Not a licence to author a new family in EdgeAI.]
 
 ---
 
-## 4 · The TRIZ generative map — musical dimension × visual primitive
+## 4 · The TRIZ map — musical dimension × visual primitive (2026-06-02)
 
-This is the engine. Rows = the **musical dimensions** we extract from audio. Columns = the
-**visual primitives** we can drive. A filled cell = an effect already does this. An **empty
-cell where the row signal exists = a candidate new effect.**
+Rows = musical dimensions extracted. Columns = visual primitives. A filled cell = a snapshot effect already did this. An empty cell was a *then* candidate. **Empty cells in this table are not current white space** — check `native_inputs` / `tempo_fields` / `compatibility.json` on the pin.
 
 | Musical dimension ↓ / drives → | Position | Colour/hue | Brightness | Motion / scroll-speed | Persistence / trail | Spawn / event |
 |---|---|---|---|---|---|---|
@@ -169,109 +219,74 @@ cell where the row signal exists = a candidate new effect.**
 | **Rhythm — beat/tempo phase** (BPM) | — | — | — | — | — | — |
 | **Structure** (build/drop/breakdown) | — | — | — | — | — | (Director *switches*, no self-mod) |
 
-**The empty cells tell the story.** Two rows are almost entirely blank — **beat/tempo phase
-(completely empty)** and **structure (empty except director-level switching)** — and the
-**timbre** row is nearly blank. Meanwhile pitch→colour is *saturated* (five effects). We are
-over-investing one mapping and ignoring three rich signals we already compute.
+**The empty cells told the 2026-06-02 story.** Two rows were almost entirely blank — **beat/tempo phase (completely empty in this table)** and **structure** — and the **timbre** row was nearly blank. Pitch→colour was saturated (five effects). That reading is **historical**. The beat/tempo row is **not empty on the pin**. The structure row is **not** an invitation to invent BUILDING/DROPPING as lighting-mode names.
 
 ---
 
-## 5 · The roadmap — ranked generative gaps
+## 5 · Ranked generative gaps — 2026-06-02 probe list, not a ship queue
 
-Each gap names: the empty cell, the TRIZ separation it fills, and the **owned primitives it
-recombines** (so each is affordable-loss — a recombination, not a moonshot).
+Each gap named: the empty cell, the TRIZ separation it filled, and the owned primitives it recombined. **Do not treat this section as firmware work remaining, and do not implement these recombinations in this lab.**
 
-> **Read every gap through §0's root law.** A gap is almost always a missing **mapping**, not
-> a missing motion engine — so the cheapest build is *a new mapping composed onto an owned
-> Transport or Particle engine*, never a new Field system. Concretely: "beat-phase-lock" =
-> a new `beat-phase → scroll-speed` (or `beat_tick → trail-reset`) **mapping** dropped into
-> the existing Transport engine. Same engine, new sample source. If a proposed effect
-> *can't* be phrased as "owned engine + new mapping," treat that as a warning flag (§1.4).
+> **Method remainder (still valid as language):** a gap is almost always a missing **mapping**, not a missing motion engine — cheapest build *would be* a new mapping on an owned Transport or Particle engine, never a new Field. If a proposed effect *can't* be phrased as "owned engine + new mapping," treat that as a warning flag (`00-the-method` §1.4). **Authoring the mapping is firmware’s job.**
 
-### Gap #1 — Beat/tempo-phase-locked motion *(highest leverage)*
-- **Empty cells:** the entire *beat/tempo-phase* row.
-- **Owned but unspent:** `sb_tempo` already computes BPM, beat-phase (0–1), confidence,
-  `beat_tick` — and **nothing consumes it** (`sb_tempo.h:17`). This is a fully-built resource
-  sitting idle.
-- **TRIZ separation:** *separate in time at the bar/beat scale* — the one temporal scale no
-  effect operates on (we have frame-scale EMA and second-scale trails, but no beat-scale).
-- **Recombinations (cheap):** scroll-speed *locked* to BPM (the river flows one strip-length
-  per bar); trail-reset / colour-advance on `beat_tick`; a pulse or symmetry-flip on the
-  downbeat; Comet velocity quantised so comets *land* on the beat instead of firing on raw
-  onset. Each reuses an existing effect + one new `SBTempoEvent` read.
-- **Why #1:** it is the single largest unused signal, it is already built, and beat-sync is
-  the most universally legible musical cue to a viewer. [PERCEPTION on legibility; MECHANISM
-  on availability.]
+### Gap #1 — Beat/tempo-phase-locked motion — **WITHDRAWN as current**
 
-### Gap #2 — Onset stream beyond Comet
-- **Empty cells:** onset drives only Comet's spawn + (globally) the visual-hooks layer.
-- **Owned:** `SBOnsetBeatEvent` (onset, bass_onset, strengths) is read-ready.
-- **TRIZ separation:** *separate on condition* (event-gated).
-- **Recombinations:** onset→ripple (a bloom that only blooms on hits); onset→palette-advance
-  (colour steps each onset); onset→symmetry-flip; onset→brightness-flash overlay on any
-  existing effect. Onsets are already detected solidly — spending them is nearly free.
+- **2026-06-02 claim:** the entire *beat/tempo-phase* row empty; `sb_tempo` already computes BPM, beat-phase (0–1), confidence, `beat_tick` — and **nothing consumes it** (`sb_tempo.h:17`).
+- **Pin (current):** that unconsumed claim is **false**. Non-empty `tempo_fields` on WAVEFORM_TEMPO 18, TEMPO_RIVER 19, TEMPO_COMET 20, DENSE_FORGE 21, SNAPWAVE 22, PULSE_PRISM 23, DENSE_FORGE_CHORD 24, TEMPO_COMET_ANTICIPATE 27, TEMPO_RIVER_WALK 29. Bind named fields (`tempo.phase`, `tempo.bpm`, `tempo.beat_tick`, …), never `supports_tempo`.
+- **Historical recombinations (not a build list):** scroll-speed locked to BPM; trail-reset / colour-advance on `beat_tick`; pulse or symmetry-flip on the downbeat; Comet velocity quantised to the beat. Do not add Cannonade/Shockwave/Iris to “claim this axis.”
+- **Why it was #1 then:** largest unused signal in the snapshot, already built, beat-sync as a legible cue. [PERCEPTION on legibility; MECHANISM on 2026-06-02 availability.] [`00b`](00b-captivation-transposition.md) corrected the unused claim on 2026-07-11.
 
-### Gap #3 — Structure-aware self-modulation
-- **Empty cells:** the *structure* row — Smart-Director's 7-state classification
-  (silence/ambient/steady/build/drop/breakdown/dense) only *switches between* effects; no
-  effect changes *its own* character on structure.
-- **TRIZ separation:** *separate by condition* at the song-section scale.
-- **Recombinations:** an effect that tightens/contracts on `build`, explodes its
-  reach/spawn-rate on `drop`, and relaxes on `breakdown` — reading the state it could already
-  receive. One effect spanning the dynamic arc rather than the director hopping between
-  several.
+### Gap #2 — Onset stream beyond Comet — **WITHDRAWN as “sole live onset consumer”**
 
-### Gap #4 — Timbre as a primary axis
-- **Empty cells:** timbre→position, timbre→motion, timbre→spawn all empty; only Ember uses
-  centroid (→hue).
-- **Owned:** spectral centroid and novelty/flux are computed.
-- **Recombinations:** centroid→position (bright/harsh timbre pushes the trace outward, dark
-  timbre pulls it in — a "brightness of sound = distance" mapping); flux→spawn-rate. Distinct
-  from loudness and pitch; adds a genuinely new perceptual dimension.
+- **2026-06-02 claim:** onset drives only Comet's spawn + (globally) the visual-hooks layer.
+- **Pin (current):** `onset_beat` also on DENSE_FORGE 21, PULSE_PRISM 23, DENSE_FORGE_CHORD 24, PERCUSSION_BURST 26. COMET 13 still has `onset_beat`.
+- **Historical recombinations (not a build list):** onset→ripple; onset→palette-advance; onset→symmetry-flip; onset→brightness-flash overlay.
 
-### Gap #5 — Pitch-as-position (a melody line)
-- **Empty cell:** pitch→position is used only by the *disabled* GDFT family (as a full
-  spectrum, not a melody). No live effect plots the *dominant* pitch as a moving position.
-- **Recombination:** track the chromagram-argmax (or centroid) and plot it as a single
-  travelling point over time — a literal melody contour, harmony-coloured. Combines
-  Waveform's time-axis with pitch-as-position instead of amplitude-as-position.
+### Gap #3 — Structure-aware self-modulation — **do not invent lighting labels**
 
-### Gap #6 — Time × frequency (scrolling spectrogram)
-- **Empty:** no effect uses both axes. Waveform = time-axis; River = frequency-axis.
-- **Recombination:** a 2-D scroll where one axis is frequency (bin→pixel) and the display
-  scrolls in time — a true spectrogram waterfall. Pure recombination of two owned spatial
-  primitives.
+- **2026-06-02 claim:** Smart-Director’s 7-state classification (silence/ambient/steady/build/drop/breakdown/dense) only *switches between* effects; no effect changes *its own* character on structure.
+- **Now:** inspect existing ontologies before any structure vocabulary. This lab does **not** freeze student I/O on invented lighting classes. Do not publish BUILDING/DROPPING as `LIGHT_MODE_*` names.
 
-### Gap #7 — Harmonic edge-mix as a primary colour engine
-- **Underused:** the 6-mode harmonic edge-mixer (analogous/complementary/triadic/…) runs
-  *only on the secondary channel*. It is a rich colour-theory primitive confined to a niche.
-- **Recombination:** promote edge-mix to drive a primary effect's palette relationships
-  (e.g. bass and treble rendered as complementary colours), making harmonic colour structure
-  a first-class effect rather than a secondary garnish.
+### Gap #4 — Timbre as a primary axis (historical)
+
+- **2026-06-02 claim:** timbre→position, timbre→motion, timbre→spawn all empty; only Ember uses centroid (→hue). Spectral centroid and novelty/flux computed.
+- **Now:** do not author a timbre-primary family here. Query the pin / compatibility matrix for what actually binds.
+
+### Gap #5 — Pitch-as-position (a melody line) (historical)
+
+- **2026-06-02 claim:** pitch→position used only by the *then-disabled* GDFT family (full spectrum, not a melody). No live snapshot effect plotted dominant pitch as a moving position.
+- **Now:** GDFT ids 0/1/2 are **absent** from the pin. CHROMA_CONSTELLATION 25 exists on the pin (`guidebook_class` null) — do not invent a class doc for it here.
+
+### Gap #6 — Time × frequency (scrolling spectrogram) (historical)
+
+- **2026-06-02 claim:** no effect used both axes. Waveform = time-axis; River = frequency-axis.
+- **Now:** not a licence to add a waterfall mode in this lab.
+
+### Gap #7 — Harmonic edge-mix as a primary colour engine (historical)
+
+- **2026-06-02 claim:** 6-mode harmonic edge-mixer ran *only on the secondary channel*.
+- **Now:** colour-engine census is firmware Atlas, not this gap list.
 
 ---
 
-## 6 · Cynefin honesty — what is now knowable vs. what still needs the eye
+## 6 · Cynefin honesty — what the 2026-06-02 decomposition made knowable
 
-Per `00-the-method.md` §6, the guidebook migrates the **mechanical** layer Complex→Complicated.
-After this decomposition, the following are now **Complicated (knowable, deterministic)** —
-no more guessing:
+Per `00-the-method.md` §6, the guidebook migrated the **mechanical** layer Complex→Complicated. After *that* decomposition, the following were treated as **Complicated (knowable, deterministic)** *for the snapshot library*:
 
-- Every named lever's range, default, and the direction of its effect on the rendered pixels.
-- Which musical dimension each effect listens to and how it maps to space/colour/time.
-- Why each disabled effect is disabled, and the concrete revival path.
-- The owned-primitive inventory and which combinations are unused.
+- Every named lever's range, default, and the direction of its effect on the rendered pixels *(verify `file:line` at `36466cd5` before quoting; `CURRENT_CHANGED` means the write-up is behind)*.
+- Which musical dimension each snapshot effect listened to and how it mapped to space/colour/time.
+- Why each *then-disabled* effect was disabled, and the revival path **as written then**.
+- The owned-primitive inventory and which combinations were unused **then**.
 
-The following remain **Complex (require the probe — build it and view it)** — no document
-resolves them:
+The following remain **Complex (require the probe — build it and view it)** — no document resolves them:
 
 - Whether any given lever *value* is musically *right* (taste).
-- Whether a proposed gap-filling effect will actually be compelling, or merely novel.
-- Whether the "responsive corner" or beat-lock genuinely improves the experience.
+- Whether a proposed mapping is compelling, or merely novel.
+- Whether beat-lock genuinely improves the experience on the LGP.
 
-The method's discipline: **do not pretend the Complex column is solved by analysis.** The
-roadmap above narrows *where* to probe and tells you *which owned means to recombine* — it
-does not promise the result is good. That verdict is the Captain's eye on hardware.
+**Discipline:** do not pretend the Complex column is solved by analysis. **This lab does not run that probe.** Cadence silicon is CLOSED. No USB. Captain is not in the LED-look loop. Pin `HOST_PIXEL_VALIDATED` is host LED-buffer, not silicon, not LGP. Gate C / C1 own perceptual look when those lanes are open — not this markdown.
+
+Firmware source + Atlas export = territory. This file = an old map.
 
 ---
 **Document Changelog**
@@ -279,3 +294,4 @@ does not promise the result is good. That verdict is the Captain's eye on hardwa
 |------|--------|--------|
 | 2026-06-02 | agent:claude-opus | Created — cross-effect layer matrix, owned-primitive inventory, archetype-dial positions, and the TRIZ musical-dimension × visual-primitive generative map with 7 ranked gaps (beat/tempo-phase-lock #1). Synthesised from class docs 01–09. The forward-looking roadmap half of the effect-decomposition guidebook. |
 | 2026-06-02 | agent:claude-opus | Added §0 **Motion ∘ Mapping separability map** (now leads the doc) — per-effect motion-engine + mapping + separable? + status table; the predictive live=separable / disabled=fused-or-static finding; the Transport/Particle/Field/Static engine taxonomy. Reframed §5 roadmap: every gap = a new mapping on an owned engine. Extrapolation of the root law (00-the-method §1) across the full library. |
+| 2026-08-31 | agent:grok-w4-l12 | **Demoted.** Stopped treating this file as inventory or generative roadmap. Firmware pin `docs/mir/effect_semantics/effect-semantics.json` (23 `LIGHT_MODE_*`, `source_firmware_sha` `36466cd5`) is the only allowed inventory. Gap #1 `sb_tempo` unconsumed and 9-class LIVE/DISABLED map marked snapshot-only. Historical tables retained. |

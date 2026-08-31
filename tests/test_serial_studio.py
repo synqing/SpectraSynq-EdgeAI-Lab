@@ -182,6 +182,18 @@ def test_refuse_if_serial_studio_owns_usb_allows_unowned_path():
     refuse_if_serial_studio_owns_usb("/dev/does-not-exist-ss-refuse-test")
 
 
+def test_refuse_if_serial_studio_owns_usb_raises_when_holder_is_serial_studio(monkeypatch):
+    monkeypatch.setattr(
+        "edgeai.serial_studio.holder_is_serial_studio",
+        lambda _dev: True,
+    )
+    try:
+        refuse_if_serial_studio_owns_usb("/dev/does-not-exist-ss-owned-raise-test")
+        raise AssertionError("expected SerialStudioError")
+    except SerialStudioError as e:
+        assert "SERIAL_STUDIO_NOT_TRANSPORT" in str(e)
+
+
 def test_collect_frames_counts_sequence_gaps():
     frames = [
         {"hasData": True, "sequence": 1, "text": "A\n"},

@@ -1,5 +1,5 @@
 ---
-abstract: "P3-B share ≠ mix. HOST PASS share×WaveformTempo×head. C0-v2 ON_SILICON_PIXEL_VALIDATED. Two-clock C0 corpse FAIL. Cadence CLOSED. C1 OPEN. composition_change parked. I/O unfrozen. Demucs not Titan."
+abstract: "P3-B share ≠ mix. HOST PASS share×WaveformTempo×head. C0-v2 ON_SILICON_PIXEL_VALIDATED. Two-clock C0 corpse FAIL. Cadence CLOSED. C1 OPEN. composition_change parked. I/O unfrozen. Demucs HOST teacher probe OPEN (D22): not installed, weights UNKNOWN scientific-use, not Titan, no download."
 ---
 
 # Source activity — perfect oracle
@@ -24,7 +24,7 @@ Three channels per source:
 
 Silence does not invent equal shares. `acoustic_path_delay_s` is a different variable (venue), not this oracle.
 
-HPSS remains a cheap baseline, not ground truth. Demucs is **not** installed.
+HPSS remains a cheap baseline, not ground truth. Demucs is **not** installed. The HOST teacher *probe* is **OPEN** (D22); weights stay **UNKNOWN — scientific-use**. Do **not** put Demucs on Titan. Do **not** download weights from this page.
 
 ## P3-A — pipeline proof (this session)
 
@@ -132,7 +132,8 @@ Stamps (bound, not global):
 | composition_change as a descriptor | **not decided** — wrong instrument for arrangement-state |
 | Student share head | **CANDIDATE**, not frozen |
 | Event head | **NO** |
-| Demucs | **NO** |
+| Demucs install / Titan / product net | **NO** |
+| Demucs HOST teacher probe | **OPEN** (D22). Not installed. Weights UNKNOWN scientific-use. No download. |
 | Student gate | **OPEN** |
 
 Waveform Tempo is a **reference continuity carrier**.
@@ -149,7 +150,24 @@ Share-student recoverability is **HOST PASS** (21k CNN, four-source including `o
 
 **Composition-change implementation is parked.** It is a deterministic function of share(t) vs share(t−Δ). No extra ML head. Atlas may find a macro-transition grammar or record a visual-language gap. Replaying the existing oracle through a new binding does not need new neural work.
 
-Demucs only after recoverability, for unstemmed scale.
+## Demucs — HOST teacher probe (D22)
+
+Recoverability already **HOST PASS**. D14 still forbids installing Demucs as the P3-C teacher. D22 / `AGENTS.md` open a **HOST-only** probe: envelopes from stems, not SDR, not a product net.
+
+This page does **not** install it and does **not** fetch weights.
+
+| Layer | Stamp | Authority |
+| --- | --- | --- |
+| Lane | **OPEN** HOST teacher probe | D22; `AGENTS.md` Demucs row |
+| Installed | **NO** | `src/edgeai/mir/teachers.py::try_demucs` (`import demucs.api` → `None`); `pyproject.toml` extras `{musdb, mir, dev, silicon}` — no `demucs`; `uv.lock` zero `demucs`; `docs/mir/P3C_RECEIPT.json` `demucs_installed: false`; `docs/mir/P3C_QUANT.json` `"demucs": "NO"` |
+| Code | **MIT** | `https://raw.githubusercontent.com/facebookresearch/demucs/main/LICENSE` — “MIT License / Copyright (c) Meta Platforms, Inc. and affiliates.” PyPI MIT is the **code**, not checkpoints. |
+| Weights | **UNKNOWN — not MIT. Scientific-use only.** | Maintainer `adefossez`, 2022-05-23T15:36:04Z, `facebookresearch/demucs#327` comment `1134828611`: “The model weights are not covered by the MIT license, and are provided only for scientific purposes.” Issue still Open. Third-party “MIT weights” mirrors are not a Meta grant. |
+| Training data | MUSDB-HQ + ~800 internal songs | `mir/registry.yaml` `id: htdemucs`. MUSDB already `commercial_training_lineage: false`. |
+| Derived student | **UNKNOWN/LEGAL REVIEW** | Teacher use does not clear shipping weights. Do not freeze student I/O on Demucs stems. |
+| Titan / U55 / PDM | **NO** | Hard rule: do not put MERT/MuQ/MAEST/Demucs on Titan. |
+| Download / `uv add demucs` / `torch.hub` | **NO** | This session and this page. |
+
+If a later named GO runs the probe on HOST, `try_demucs()` is the hook; the signal is activity envelopes. That GO is not this file. It still would not go to Titan and still would not clear a derived student.
 
 Re-run: `uv run python scripts/download_musdb.py --fetch` then `uv run python scripts/musdb18_p3b.py` then `uv run --extra musdb python scripts/musdb18_p3c.py`. Requires `SPECTRASYNQ_K1_FIRMWARE` (or the workstation checkout) and g++-15.
 
@@ -171,3 +189,4 @@ Older HPSS-on-DEAM numbers remain a mixture-only baseline, not stem truth.
 | 2026-08-31 | agent:edgeai | Share student unblocked; composition-change ML parked; Gate C OPEN. |
 | 2026-08-31 | agent:edgeai | Feasibility PASS stamp; Gate C next; no hop-level student. |
 | 2026-08-31 | agent:grok | Record corpse FAIL + C0-v2 PASS + cadence CLOSED + C1 OPEN + D22 HOST sketches. |
+| 2026-08-31 | agent:grok-ssa-w3-l19 | Demucs HOST teacher probe OPEN (D22): not installed; weights UNKNOWN scientific-use; not Titan; no download. C0-v2 PASS / cadence CLOSED / C1 OPEN kept. |

@@ -4,8 +4,9 @@
 HARD FAIL SAME_SONG_LOOP_MAX_15MIN (Captain 2026-08-31): loop the same song
 in the room > 15 minutes and the agent must die. BoseSession kills the player.
 
-Named GO: K1-C0-CADENCE-LATENCY-FLASH-GO. Cadence is CLOSED. Do not reopen
-C0-v2. Do not train a net. Restore product firmware after capture.
+Named GO: K1-C0-CADENCE-LATENCY-FLASH-GO. Cadence is CLOSED (D20).
+This file is RETIRED. Default execution dies before flash, USB, or Bose.
+Do not reopen C0-v2. Do not train a net. Use existing cadence receipts.
 """
 
 from __future__ import annotations
@@ -16,6 +17,12 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+
+CADENCE_CLOSED = True
+CADENCE_RETIRED_MESSAGE = (
+    "RETIRED: D20 CADENCE CLOSED.\n"
+    "Do not run more silicon cells. Use existing cadence receipts."
+)
 
 import numpy as np
 
@@ -473,7 +480,13 @@ def write_contract(out: Path, payload: dict) -> None:
     write_json(out / "SEMANTIC_TRANSPORT_CONTRACT.json", payload)
 
 
+def refuse_if_cadence_closed() -> None:
+    raise SystemExit(CADENCE_RETIRED_MESSAGE)
+
+
 def main() -> int:
+    refuse_if_cadence_closed()
+    # Unreachable: argparse, --resume, and both CADENCE_RESULT writers (D20 first-line refuse).
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", default="")
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)

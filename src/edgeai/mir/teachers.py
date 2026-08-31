@@ -4,10 +4,17 @@ We want envelopes, not a leaderboard. Optional backends:
 - ground-truth stems (MUSDB/MoisesDB)
 - HT-Demucs if installed (weights licence UNKNOWN — research)
 - other separators via a future MSST wrapper
+
+Demucs is a HOST teacher probe, not architecture:
+- Refuse Titan / U55 / PDM. SPECTRASYNQ_TITAN set → not allowed.
+- Refuse auto-download. No torch.hub, no dl.fbaipublicfiles.com, no
+  demucs.api.Separator(repo=None). Named weight GO + local repo first.
+- ImportError → None. demucs is not a pyproject extra.
 """
 
 from __future__ import annotations
 
+import os
 from typing import Protocol
 
 import numpy as np
@@ -71,24 +78,51 @@ def envelope_vs_mixture(
     return out
 
 
+def demucs_host_allowed() -> bool:
+    """True only when demucs.api imports and SPECTRASYNQ_TITAN is unset.
+
+    HOST-ONLY. Refuse Titan. Refuse auto-download of weights.
+    """
+    if "SPECTRASYNQ_TITAN" in os.environ:
+        return False
+    try:
+        import demucs.api  # type: ignore  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
 def try_demucs() -> Separator | None:
+    """Optional HT-Demucs handle. ImportError → None.
+
+    Does not construct demucs.api.Separator. Does not download weights.
+    SPECTRASYNQ_TITAN → None even if the package is present.
+    """
+    # Refuse Titan before import, Separator, or any hub fetch.
+    if "SPECTRASYNQ_TITAN" in os.environ:
+        return None
     try:
         import demucs.api  # type: ignore
     except ImportError:
         return None
+    if not demucs_host_allowed():
+        return None
 
     class DemucsSep:
         name = "htdemucs"
+        _api = demucs.api  # imported; Separator is not constructed here
 
         def separate(self, pcm: NDArray[np.float32], sr: int) -> dict[str, NDArray[np.float32]]:
-            import torch
-
-            wav = torch.from_numpy(np.stack([pcm, pcm]))  # stereo fake
-            sep = demucs.api.Separator(model="htdemucs")
-            _, stems = sep.separate_tensor(wav, sr)
-            out = {}
-            for k, v in stems.items():
-                out[k] = v.mean(0).cpu().numpy().astype(np.float32)
-            return out
+            # pcm/sr unused: refuse-auto-download returns before any tensor work.
+            # Refuse Titan on every call, not only at handle creation.
+            if not demucs_host_allowed():
+                raise RuntimeError("Demucs HOST: refuse Titan")
+            # Refuse auto-download. Do not call Separator unless import
+            # succeeded — it has — and never with repo=None (torch.hub /
+            # dl.fbaipublicfiles.com). Named weight GO + local repo first.
+            raise RuntimeError(
+                "Demucs HOST: refuse auto-download. Do not call "
+                "demucs.api.Separator without a named weight GO and a local repo."
+            )
 
     return DemucsSep()

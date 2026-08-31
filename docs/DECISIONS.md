@@ -1,5 +1,5 @@
 ---
-abstract: "D1–D22. Cadence CLOSED. Parallel HOST lanes OPEN. SAME_SONG_LOOP_MAX_15MIN. C1 OPEN. SS observe/record."
+abstract: "D1–D22. Cadence CLOSED; gate_c0_cadence_silicon.py RETIRED (dies; no --resume). D22 HOST OPEN: Demucs teacher probe + Titan PRE-SILICON docs. C1 OPEN."
 ---
 
 # Decisions
@@ -147,10 +147,10 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 
 ## D20 — Cadence CLOSED; C1 is the active gate
 
-**Chosen:** Captain close 2026-08-31: **cadence silicon PASS/CLOSED**. No more rate/delay cells. No 8-second holdout loops. Freeze the Source Ownership Semantic Transport Contract from the 1-D silicon: slowest 0-delay PASS **5 Hz**; largest added delay PASS **50 ms** at 20 Hz; joint **5 Hz + 50 ms FAIL** (kept; not interpolated). C1 playback uses the already-proven C0-v2 carrier on product firmware. Next load-bearing task is **C1 LGP perceptual**. Student I/O still unfrozen. No new net.
-**Why:** Remaining cadence cells were occupying the room with a looping test clip. The 1-D envelope is measured. Continuing the 10 Hz + 25 ms cell does not change C0-v2. C1 is the first human LGP judgement.
-**Rejected:** Another cadence cell; replaying the 8 s loop; declaring `LGP_PERCEPTUAL_VALIDATED` without a look; freezing a student that assumes 5 Hz and 50 ms together; Serial Studio as a prerequisite.
-**Revisit:** C1 stamp `LGP_PERCEPTUAL_VALIDATED` after the three LGP questions. Then freeze student I/O.
+**Chosen:** Captain close 2026-08-31: **cadence silicon PASS/CLOSED**. No more rate/delay cells. No 8-second holdout loops. Freeze the Source Ownership Semantic Transport Contract from the 1-D silicon: slowest 0-delay PASS **5 Hz**; largest added delay PASS **50 ms** at 20 Hz; joint **5 Hz + 50 ms FAIL** (kept; not interpolated). C1 playback uses the already-proven C0-v2 carrier on product firmware. Next load-bearing task is **C1 LGP perceptual**. Student I/O still unfrozen. No new net. Runner `scripts/gate_c0_cadence_silicon.py` is mechanically **RETIRED**: `main()` calls `refuse_if_cadence_closed()` before argparse, so execution dies (`CADENCE_RETIRED_MESSAGE`) before flash, USB, or Bose. `--resume` is not an escape. Closed means closed.
+**Why:** Remaining cadence cells were occupying the room with a looping test clip. The 1-D envelope is measured. Continuing the 10 Hz + 25 ms cell does not change C0-v2. C1 is the first human LGP judgement. Prose CLOSED without a kill left `--resume` as a path back into the room.
+**Rejected:** Another cadence cell; replaying the 8 s loop; declaring `LGP_PERCEPTUAL_VALIDATED` without a look; freezing a student that assumes 5 Hz and 50 ms together; Serial Studio as a prerequisite; `--resume` (or any flag) as a way to reopen cells.
+**Revisit:** C1 stamp `LGP_PERCEPTUAL_VALIDATED` after the three LGP questions. Then freeze student I/O. Do not un-retire the runner to “finish” remaining cells.
 
 ## D21 — Same song looped > 15 minutes: agent must die
 
@@ -161,9 +161,9 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 
 ## D22 — Unblock every HOST lane for maximum parallel SSA
 
-**Chosen:** Captain 2026-08-31: **unblock every research lane** so the maximum number of SSAs can run the maximum number of **independent** tasks in parallel (target 20–40). Cadence silicon stays **CLOSED**. C1 stays the LGP look (Captain, one full song he chooses, no 8 s loop). Student HOST work, MIR registry/oracle, DEAM, PaRIRset, effect-semantics consume, RUHMI docs, contract tests, share-student I/O sketches, Titan prep docs — all **OPEN in parallel**. Serial Studio remains observe/record. Exclusive USB still applies if anyone later needs silicon command/reply.
-**Why:** Serialising the whole programme behind one looping cadence cell burned five hours of Captain time. Parallel HOST work does not need the lamp or the Bose loop.
-**Rejected:** Reopening cadence cells; 8 s holdout loops; 40 agents sharing one USB port; 40 agents editing the same file; sibling worktrees; treating C1 as dump-scored; Demucs/MERT on Titan.
+**Chosen:** Captain 2026-08-31: **unblock every research lane** so the maximum number of SSAs can run the maximum number of **independent** tasks in parallel (target 20–40). Cadence silicon stays **CLOSED** (D20 mechanical retire; no `--resume`). C1 stays the LGP look (Captain, one full song he chooses, no 8 s loop). Student HOST work, MIR registry/oracle, DEAM, PaRIRset, effect-semantics consume, RUHMI docs, contract tests, share-student I/O sketches — all **OPEN in parallel**. **Demucs HOST-only teacher probe remains OPEN** (docs/licence; not Titan; does not block C1). **Titan PRE-SILICON prep docs remain OPEN** (no invented board numbers). Serial Studio remains observe/record. Exclusive USB still applies if anyone later needs silicon command/reply.
+**Why:** Serialising the whole programme behind one looping cadence cell burned five hours of Captain time. Parallel HOST work does not need the lamp or the Bose loop. Closing cadence does not close HOST teacher/docs lanes.
+**Rejected:** Reopening cadence cells; 8 s holdout loops; 40 agents sharing one USB port; 40 agents editing the same file; sibling worktrees; treating C1 as dump-scored; Demucs/MERT on Titan; treating D20 retire as a freeze of Demucs HOST probe or Titan prep docs.
 **Revisit:** C1 LGP stamp still needs a look. Student I/O freeze still after C1. Parallel writers must keep **one file per SSA**.
 
 ---
@@ -193,3 +193,4 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:grok | D20: Captain closed cadence; C1 OPEN; no 8 s loop. |
 | 2026-08-31 | agent:grok | D21: SAME_SONG_LOOP_MAX_15MIN HARD FAIL. Agent must die. |
 | 2026-08-31 | agent:grok | D22: unblock all HOST lanes for parallel SSA. Cadence stays closed. |
+| 2026-08-31 | agent:grok | D20: `gate_c0_cadence_silicon.py` mechanically RETIRED (dies before argparse; `--resume` is not an escape). D22: Demucs HOST teacher probe + Titan PRE-SILICON prep docs remain OPEN. |

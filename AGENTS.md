@@ -29,10 +29,11 @@ It is **not** “put an NPU in SpectraSynq”.
 - Export CNN not STFT when we do embed a student. Golden tensors first, PDM last.
 - Do not commit corpora or checkpoints unless asked.
 - An authoritative silicon test that needs interactive command/reply owns that K1 serial port exclusively. Serial Studio must release it first. Do not multiplex two owners on one USB-CDC.
+- **Cadence runner mechanically RETIRED (D20).** `scripts/gate_c0_cadence_silicon.py` dies before flash, USB, or Bose. Do **not** run it. Do **not** reopen cadence silicon cells. Use existing receipts only.
 
 ## Lanes
 
-**D22:** all HOST lanes **OPEN for parallel SSA**. Cadence silicon stays CLOSED. No 8 s loop. No USB multiplex. One writer per file. Roster: `docs/agent/PARALLEL_LANES.md`.
+**D22:** all HOST lanes **OPEN for parallel SSA**. Cadence silicon stays **CLOSED** — do not reopen. Cadence runner **RETIRED**. No 8 s loop. No USB multiplex. Exclusive USB-CDC rule still binds if silicon command/reply ever returns. One writer per file. Roster: `docs/agent/PARALLEL_LANES.md`.
 
 | Lane | Status |
 | --- | --- |
@@ -47,11 +48,11 @@ It is **not** “put an NPU in SpectraSynq”.
 | Share student | OPEN / parallel. HOST recoverability PASS. I/O unfrozen. Streaming **unblocked for HOST sketches/tests**, not Titan |
 | Effect semantics | OPEN / parallel (consume firmware export; no competing taxonomy) |
 | Semantic-v0 | OPEN as experiment/toolchain only, not architecture authority |
-| Demucs | OPEN HOST-only teacher probe (do not put on Titan; do not block C1) |
+| Demucs | OPEN HOST teacher probe. Not Titan. Not U55/PDM. **No weight download this lane.** Do not `uv add demucs` / torch.hub / fbaipublicfiles. Do not block C1 |
 | C1 LGP | OPEN — Captain look, one full song he chooses, no 8 s loop |
 | Serial Studio | observe/record only |
-| Cadence silicon | **CLOSED** — do not reopen |
-| Silicon / PDM / Titan | OPEN for prep docs; no invented board numbers |
+| Cadence silicon | **CLOSED** — do not reopen. Runner `scripts/gate_c0_cadence_silicon.py` **RETIRED** (D20) |
+| Silicon / PDM / Titan | **OPEN PRE-SILICON prep** (docs, golden tensors, RUHMI compile receipts). No invented board numbers. No teacher nets on Titan |
 
 ## Pre-Titan target (amended)
 

@@ -1,16 +1,88 @@
 ---
-abstract: "Spectrum River class decomposition: what it listens to (80-bin GDFT spectrum, bass low_energy), how it renders (1:1 bin-to-pixel spatial map, outward draw_sprite transport, additive palette injection), the named levers (drift, trail alpha, floor, inject gain, SQUARE_ITER, tide EMA), and reusable principles. Mechanism grounded in light_mode_spectrum_river.cpp and light_mode_spectrum_river_v2.cpp. Read when tuning or extending the Spectrum River class, understanding the V1↔V2 breathing-tide delta, or mining the frequency-as-space primitive for new effects. Reflects feat/gdft-harness as of 2026-06-02."
+abstract: "HISTORICAL 2026-06-02 Spectrum River class write-up (V1/V2 era). NOT inventory. Pin guidebook_class 03-spectrum-river: SPECTRUM_RIVER 14 and SPECTRUM_RIVER_V2 15 are CURRENT_CONFIRMED; TEMPO_RIVER 19, RIVER_SURGE 28, TEMPO_RIVER_WALK 29 are CURRENT_CHANGED and are not described here. Firmware pin docs/mir/effect_semantics/effect-semantics.json at 36466cd5 is the only allowed mode list. D15 consume-only. Cadence CLOSED. No USB."
 ---
 
-# Spectrum River — Decomposition
+# HISTORICAL — Spectrum River class (V1/V2-era write-up)
 
-*Family: WAVEFORM (spectrum-as-space, flowed outward) · Modes: `LIGHT_MODE_SPECTRUM_RIVER` (14), `LIGHT_MODE_SPECTRUM_RIVER_V2` (15) · Status: LIVE*
+```text
+╔══════════════════════════════════════════════════════════════════╗
+║  HISTORICAL RECORD — 2026-06-02 GUIDEBOOK SNAPSHOT               ║
+║                                                                  ║
+║  This file is conceptual prior (Motion ∘ Mapping, six layers,    ║
+║  named levers for Spectrum River V1/V2).                         ║
+║                                                                  ║
+║  It is NOT the product mode list.                                ║
+║  It is NOT Atlas authority.                                      ║
+║  It does NOT describe Tempo River / River Surge / Tempo River    ║
+║  Walk. Those pin enums are CURRENT_CHANGED vs this write-up.     ║
+║                                                                  ║
+║  Inventory: docs/mir/effect_semantics/effect-semantics.json      ║
+║  Consume:   docs/mir/EFFECT_SEMANTICS_CONSUME.md                 ║
+║  Cadence silicon: CLOSED. No USB. No 8 s loop.                   ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
+
+Cadence silicon **CLOSED**. No USB. No `k1-flash`. Do not grow a competing effect taxonomy in this lab. Do not invent BUILDING / DROPPING lighting labels. Students stay effect-agnostic.
+
+---
+
+## Authority (read this first)
+
+| What you need | Where it lives | Status of *this* file |
+| --- | --- | --- |
+| Enabled `LIGHT_MODE_*` inventory | [`../mir/effect_semantics/effect-semantics.json`](../mir/effect_semantics/effect-semantics.json) | **Not here** |
+| How EdgeAI consumes that pin | [`../mir/EFFECT_SEMANTICS_CONSUME.md`](../mir/EFFECT_SEMANTICS_CONSUME.md) | Consume only |
+| `descriptor × mode × lever` rows | [`../mir/effect_semantics/compatibility.json`](../mir/effect_semantics/compatibility.json) | Not here |
+| Folder demotion | [`README.md`](README.md), [`SNAPSHOT.md`](SNAPSHOT.md) | Binding |
+| This write-up | 2026-06-02 V1/V2 mechanism language | Historical |
+
+**Pin stamp** (JSON wins if this page drifts): `schema_version` 2, `generation_status` `tranche2_grammar_tempo`, `label` `HOST-ONLY`, `source_firmware_sha` / `firmware_sha` / `atlas_generation_commit` `36466cd56c90b9cafa571bc5029b5d38bc0543bb`, `atlas_artifact_sha256` `ac9552cb8ee4d9b3a65ab60dfdf63a86f12f62967f41d494ac91d7242f630b8d`, `generated_at` `2026-08-30T20:10:46Z`, **23** enabled `LIGHT_MODE_*`. `on_silicon_pixel_validated` / `lgp_perceptual_validated` are null.
+
+Evidence ladder (from the pin, not from Pass 5 `[PERCEPTION]`):
+
+`STATIC_SOURCE` → `HOST_PIXEL_VALIDATED` → `ON_SILICON_PIXEL_VALIDATED` → `LGP_PERCEPTUAL_VALIDATED`
+
+Host LED-buffer bytes are not silicon. Silicon dumps are not LGP look.
+
+---
+
+## Pin map for `guidebook_class` `03-spectrum-river`
+
+Re-read from the pin. Do not treat the 2026-06-02 “LIVE · modes 14/15” header below as the current census.
+
+| Pin `display_name` | `enum` (id) | `guidebook_fit` | `evidence` | This write-up |
+| --- | --- | --- | --- | --- |
+| SPECTRUM RIVER | `LIGHT_MODE_SPECTRUM_RIVER` (14) | `CURRENT_CONFIRMED` | `HOST_PIXEL_VALIDATED` | Historical V1 body may still name the *kind* of mechanism. Verify `file:line` at firmware `36466cd5` before quoting. Host pixels ≠ LGP. |
+| SPECTRUM RIVER 2 | `LIGHT_MODE_SPECTRUM_RIVER_V2` (15) | `CURRENT_CONFIRMED` | `STATIC_SOURCE` | Historical V2 breathing-tide body. **Not** host-pixel-validated on this pin. |
+| TEMPO RIVER | `LIGHT_MODE_TEMPO_RIVER` (19) | `CURRENT_CHANGED` | `STATIC_SOURCE` | **Not this document.** Has `tempo_fields`. Do not bind as V1/V2. |
+| RIVER SURGE | `LIGHT_MODE_RIVER_SURGE` (28) | `CURRENT_CHANGED` | `STATIC_SOURCE` | **Not this document.** |
+| TEMPO RIVER WALK | `LIGHT_MODE_TEMPO_RIVER_WALK` (29) | `CURRENT_CHANGED` | `STATIC_SOURCE` | **Not this document.** Has `tempo_fields`. |
+
+`CURRENT_CHANGED` means the write-up is behind the pin. Do not author Tempo River / River Surge / Walk decompositions here. Firmware Atlas owns that map. Do not store `supports_tempo: true`; bind a named `descriptor × mode × lever` from the pin.
+
+Consume note (compatibility pin, not this class doc): `source_share × SPECTRUM RIVER (14) × spatial frequency layout` is `MISMATCH_RISK` — native mapping is freq=space, not ownership.
+
+Stale lines still sitting in the historical body (left as 2026-06-02 text; **do not consume**):
+
+- “Status: LIVE” and “the only K1 effect that renders the frequency spectrum as space”
+- Family listed as WAVEFORM-lineage as if that were inventory
+- `file:line` against `feat/gdft-harness` as of 2026-06-02, not re-verified in this lab against `36466cd5`
+
+---
+
+## Historical body — captured 2026-06-02 (V1/V2 only)
+
+*Snapshot header (stale as inventory): Family: WAVEFORM (spectrum-as-space, flowed outward) · Modes: `LIGHT_MODE_SPECTRUM_RIVER` (14), `LIGHT_MODE_SPECTRUM_RIVER_V2` (15) · Status: LIVE*
 *Files: `light_mode_spectrum_river.cpp:32–84`, `light_mode_spectrum_river_v2.cpp:39–92`*
 *Helpers: `lightshow_modes.h` (`draw_sprite`, `mirror_image_downwards`, `palette_manual_colour`, `cached_gradient_palette`, `clamp_crgb16`), `sb_audio_snapshot.h` (`SBAudioSnapshot.low_energy` — V2 only), `channel_effect_state.h` (`river_tide_env` — V2 only)*
 
+The six-pass text below is the 2026-06-02 guidebook snapshot. Read it as an old schematic of V1/V2. It does not add Tempo River, River Surge, or Tempo River Walk.
+
 ---
 
-## Pass 1 — What it is
+### Pass 1 — What it is
 
 Spectrum River is the only K1 effect that renders **the frequency spectrum as space**: the 80 GDFT bins map 1:1 onto the 80 pixels of the upper half of the strip (bin 0 / bass → centre pixel HALF+0; bin 79 / treble → outer edge pixel HALF+79). Each frame, the live spectrum is injected additively at those positions and the accumulated image is transported outward via `draw_sprite`, leaving a flowing history of spectral colour: bass wells up at the centre and drifts toward the edge, treble flickers as fine filaments at the periphery.
 
@@ -18,7 +90,7 @@ The family is WAVEFORM-lineage (the LED buffer *is* the persisted trail; the his
 
 ---
 
-## Pass 2 — Semantic mechanism (the verbs)
+### Pass 2 — Semantic mechanism (the verbs)
 
 **Flow → Clear centre → Inject spectrum → Snapshot → Clamp → Mirror**
 
@@ -33,7 +105,7 @@ In V2, an extra step precedes step 1: **Update tide** — advance `fx.river_tide
 
 ---
 
-## Pass 3 — The six layers
+### Pass 3 — The six layers
 
 | Layer | This effect's choice | file:line | Label |
 |---|---|---|---|
@@ -46,7 +118,7 @@ In V2, an extra step precedes step 1: **Update tide** — advance `fx.river_tide
 
 ---
 
-## Pass 4 — Named levers (the dials, with ranges)
+### Pass 4 — Named levers (the dials, with ranges)
 
 | Lever | What it controls | Range / default | Musical effect of turning it up | file:line |
 |---|---|---|---|---|
@@ -64,9 +136,9 @@ In V2, an extra step precedes step 1: **Update tide** — advance `fx.river_tide
 
 ---
 
-## Pass 5 — Maths → perception → musical meaning
+### Pass 5 — Maths → perception → musical meaning
 
-### 5.1 The 1:1 bin→pixel map — frequency *is* space
+#### 5.1 The 1:1 bin→pixel map — frequency *is* space
 
 **Maths:** `idx = HALF + k` where k ∈ [0, NUM_FREQS−1] = [0, 79], HALF = NATIVE_RESOLUTION / 2 = 80. [MECHANISM: `light_mode_spectrum_river.cpp:38,66`]
 
@@ -76,7 +148,7 @@ Every GDFT frequency bin is pinned to a fixed, permanent spatial address on the 
 
 [PERCEPTION] Bass "wells up" from the centre and streams outward; treble "flickers" as thin filaments at the edge. The spatial separation of frequency content is what makes the display legible as a spectrum readout rather than a coloured pulse.
 
-### 5.2 The frequency-to-palette hue mapping
+#### 5.2 The frequency-to-palette hue mapping
 
 **Maths:** `hue = float(k) / float(NUM_FREQS - 1)` → 0.0 for bin 0, 1.0 for bin 79. This hue is passed to `palette_manual_colour(pal, SQ15x16(hue), brightness)`, which samples the gradient palette at `palette_index_with_phase(uint8_t(hue × 255))`, folding in the auto-colour-shift phase offset. [MECHANISM: `light_mode_spectrum_river.cpp:64–65`; `lightshow_modes.h` `palette_manual_colour`]
 
@@ -84,7 +156,7 @@ The gradient palette is traversed bass-to-treble across the full 0..1 range each
 
 [PERCEPTION] The colour of each stripe of the river directly encodes its frequency: a viewer can read "bass is red/orange here, treble is cyan" from the palette assignment. The auto-shift means the palette slowly cycles so the same bass frequency cycles through all palette colours over time — preventing colour-lock while keeping the frequency→colour contract intact within any short musical phrase.
 
-### 5.3 Outward transport via draw_sprite — the river flows
+#### 5.3 Outward transport via draw_sprite — the river flows
 
 **Maths:** `draw_sprite(leds_16, leds_prev_buffer, NR, NR, drift, alpha)` — sub-pixel additive blit of `leds_prev_buffer` into `leds_16` offset by `drift` pixels in the positive direction, with each source pixel multiplied by `alpha` before blending. V1: `drift = 0.55 × (NR/128)` (constant, ≈0.55 px/frame at NR=128). Alpha = 0.90. [MECHANISM: `light_mode_spectrum_river.cpp:42–44`]
 
@@ -94,7 +166,7 @@ The sub-pixel interpolation means the transport is smooth rather than integer-st
 
 The choice of alpha=0.90 (versus 0.80 or 0.95) is load-bearing: lower makes the trail too short and the display too sparse; higher makes it too persistent and the colour bands start to stack into white. The 2026-06-02 V2 fix confirmed this — raising alpha caused a "mechanical hold" where the strip appeared frozen rather than flowing. [MECHANISM: `light_mode_spectrum_river_v2.cpp:15–20`]
 
-### 5.4 Contrast enhancement via SQUARE_ITER
+#### 5.4 Contrast enhancement via SQUARE_ITER
 
 **Maths:** `for (s=0; s<iters; s++) e *= e;` where iters ≤ 4. This applies e → e^(2^iters): iters=1 → e², iters=2 → e⁴, iters=3 → e⁸, iters=4 → e^16. Followed by the floor gate `if (e < 0.015) continue`. [MECHANISM: `light_mode_spectrum_river.cpp:57,62–63`]
 
@@ -102,7 +174,7 @@ At iters=4, a bin at e=0.5 (mid-energy) is pushed to e=0.5^16 ≈ 0.000015, whic
 
 [PERCEPTION] SQUARE_ITER is the "selectivity dial" for Spectrum River. At iters=0 (linear), all active bins paint the strip and the river is a dense continuous carpet of colour. At iters=4, only the dominant frequency clusters survive — the river becomes a sparse set of vivid filaments that map precisely to the prominent notes in the mix. For melodic content (clear pitches), iters=3–4 reads as individual pitch colours streaming outward; for dense mix content, iters=1–2 shows the full spectral texture.
 
-### 5.5 Additive injection and the white-out guard
+#### 5.5 Additive injection and the white-out guard
 
 **Maths:** `leds_16[idx].r += col.r` — channels are summed, not replaced. On frames where many bins are active and bright, a single pixel can accumulate energy from all simultaneously active bins. The upstream cap is `e × RIVER_INJECT_GAIN = e × 0.90`; the downstream guard is `clamp_crgb16` which saturates at 1.0. [MECHANISM: `light_mode_spectrum_river.cpp:67–70,76–78`]
 
@@ -110,7 +182,7 @@ The injection is not energy-normalised across bins: if 10 simultaneous bins all 
 
 [PERCEPTION] On dense mix content with iters=0 and many active bins, the outer edge (treble region) can bloom white — the high-frequency bins are numerous and tend to overlap spatially. Raising SQUARE_ITER is the correct corrective; it selectively suppresses the lower-energy high-frequency content while preserving dominant spectral peaks.
 
-### 5.6 V2 — the breathing tide
+#### 5.6 V2 — the breathing tide
 
 **Maths:**
 ```
@@ -129,7 +201,7 @@ The DRIFT_FLOOR=0.9 constant is architecturally critical: it ensures `drift ≥ 
 
 ---
 
-## Systems view — stocks, flows, feedback, emergence
+### Systems view — stocks, flows, feedback, emergence
 
 **Stock:** `leds_prev_buffer` — the CRGB16 buffer of NATIVE_RESOLUTION pixels is the sole memory of the effect's state. It holds a full frame's worth of spectral history rendered as a spatial colour image.
 
@@ -145,7 +217,7 @@ The DRIFT_FLOOR=0.9 constant is architecturally critical: it ensures `drift ≥ 
 
 ---
 
-## Trade-offs chosen (archetype dials)
+### Trade-offs chosen (archetype dials)
 
 - **Responsiveness ↔ Grace:** biased to **grace** throughout — `spectrogram_smooth` applies a symmetric 0.75 EMA per bin, the floor gate and SQUARE_ITER suppress noise, and V2's tide EMA (0.05) adds a further integration layer. Transient snap is traded for smoothed curves.
 - **Detail ↔ Simplicity:** SQUARE_ITER is the dial — iters=0 shows all 80 bins (dense spectral heatmap), iters=4 shows only the 3–5 dominant peaks (legible melody tracker).
@@ -154,7 +226,7 @@ The DRIFT_FLOOR=0.9 constant is architecturally critical: it ensures `drift ≥ 
 
 ---
 
-## Pass 6 — Reusable principles
+### Pass 6 — Reusable principles
 
 1. **Frequency-as-space is a distinct encoding axis.** Waveform uses space as time; Spectrum River uses it as frequency. These are orthogonal — a future effect could combine them (frequency × time 2-D) or use space for another monotonic feature (spectral centroid, onset density). The 1:1 bin→pixel assignment is the reusable primitive.
 2. **Constant transport speed is the contract with the viewer.** The 2026-06-02 V2 fix established a categorical rule: varying trail *persistence* causes artefacts (frozen look, on/off transitions); vary *drift speed* with persistence constant. Add to the shared set: **tune transport, not persistence.**
@@ -165,14 +237,16 @@ The DRIFT_FLOOR=0.9 constant is architecturally critical: it ensures `drift ≥ 
 
 ---
 
-## UNCERTAIN / open items (Map–Territory flags)
+### UNCERTAIN / open items (Map–Territory flags)
 
 - `draw_sprite`'s exact interpolation maths (sub-pixel additive blit) were referenced but not read; the "~150-frame river" lifetime assumes linear energy decay. Verify against `led_utilities.h` `draw_sprite` before quoting the figure externally.
 - `SBAudioSnapshot.low_energy`'s exact frequency cutoff is not in the snapshot header; "rises on kick drums and bass lines" is [PERCEPTION] pending `sb_audio_snapshot_update()`.
 - The `NR/128` resolution-scaling factor means effective px/second is hardware-dependent and has not been measured on-device.
+- Snapshot `file:line` anchors were not re-opened against firmware `36466cd5` in this EdgeAI lane. If a lever value is needed for a binding, recopy Atlas / read firmware at that SHA — do not “fix” behaviour in this markdown.
 
 ---
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-06-02 | agent:Explore-sonnet (drafted) / agent:claude-opus (persisted) | Created — full 6-Pass decomposition of LIGHT_MODE_SPECTRUM_RIVER (14) and SPECTRUM_RIVER_V2 (15); Pass-4 lever table; V1↔V2 breathing-tide delta; reusable principles. Drafted by read-only Explore agent, written to disk by orchestrator. |
+| 2026-08-31 | agent:grok-w4-l05 | HISTORICAL stamp. Folder is 2026-06-02 guidebook, not inventory. Pin `03-spectrum-river`: 14/15 CURRENT_CONFIRMED; 19/28/29 CURRENT_CHANGED and not described here. D15 consume-only. Cadence CLOSED. No USB. |

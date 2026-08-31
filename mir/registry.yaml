@@ -5,6 +5,11 @@ updated: 2026-08-31
 # commercial_training_lineage: false means never mix this audio/weights into a
 # shipping SpectraSynq student. Research oracles may still be used as HOST-ONLY
 # perfect-information tests. UNKNOWN is allowed.
+# Programme stamps (2026-08-31; not licences, not SHA pins):
+#   C0-v2 PASS / ON_SILICON_PIXEL_VALIDATED (artifacts/gate_c0v2/C0V2_RESULT.json)
+#   cadence silicon CLOSED (Captain; docs/mir/GATE_C0_CADENCE.md)
+#   C1 OPEN (docs/mir/GATE_C1.md)
+# Two-clock C0 corpse remains FAIL (artifacts/gate_c0/). Do not invent SHAs.
 entries:
 
   - id: librosa
@@ -355,7 +360,7 @@ entries:
     redistribution: no
     status: executed
     commercial_training_lineage: false
-    spectrasynq: "P3-B perfect V/D/B oracle on full STEMS (not HQ). Educational/NC. Not a shipping corpus."
+    spectrasynq: "P3-B perfect V/D/B oracle on full STEMS (not HQ). Gate A PASS. B HOST PASS. C0-v2 PASS ON_SILICON_PIXEL_VALIDATED (artifacts/gate_c0v2/C0V2_RESULT.json). Cadence silicon CLOSED. C1 OPEN. Two-clock C0 corpse FAIL (artifacts/gate_c0/). Educational/NC. Not a shipping corpus."
 
   - id: musdb-sample
     kind: dataset
@@ -383,7 +388,7 @@ entries:
     redistribution: no
     status: executed
     commercial_training_lineage: false
-    spectrasynq: "P3-A pipeline proof. 140 MB sample, not 4.7 GB. Traces in artifacts/source_activity/."
+    spectrasynq: "P3-A pipeline proof. 140 MB sample, not 4.7 GB. Traces in artifacts/source_activity/. Not the C0-v2 silicon stamp (that is musdb18 / GATE_C0V2). Cadence CLOSED. C1 OPEN."
 
   - id: medleydb
     kind: dataset
@@ -493,7 +498,7 @@ entries:
     attribution: required
     redistribution: weights unclear
     status: researched
-    spectrasynq: "Best practical host separator-as-teacher. Do not put on Titan. Do not treat PyPI MIT as a weights grant."
+    spectrasynq: "HOST teacher only, not Titan. Not executed here (weights not installed). Teacher use does not clear derived student weights. Do not treat PyPI MIT as a weights grant."
 
   - id: banquet
     kind: model
