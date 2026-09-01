@@ -11,6 +11,7 @@ import json
 import socket
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 
@@ -21,11 +22,13 @@ _READ_COMMANDS = frozenset(
     {
         "project.source.list",
         "project.source.getConfig",
+        "project.getStatus",
         "dashboard.getStatus",
         "dashboard.getData",
         "io.getStatus",
         "io.getLatestFrame",
         "sessions.getStatus",
+        "sessions.getDbPath",
     }
 )
 
@@ -121,6 +124,9 @@ class SerialStudioReadClient:
     def dashboard_status(self) -> dict[str, Any]:
         return self._mapping_request("dashboard.getStatus")
 
+    def project_status(self) -> dict[str, Any]:
+        return self._mapping_request("project.getStatus")
+
     def source_config(self, source_id: str) -> dict[str, Any]:
         return self._mapping_request(
             "project.source.getConfig", {"sourceId": _source_param(source_id)}
@@ -137,6 +143,15 @@ class SerialStudioReadClient:
 
     def sessions_status(self) -> dict[str, Any]:
         return self._mapping_request("sessions.getStatus")
+
+    def sessions_db_path(self, project_title: str) -> Path:
+        result = self._mapping_request(
+            "sessions.getDbPath", {"projectTitle": project_title}
+        )
+        path = result.get("path")
+        if not isinstance(path, str) or not path:
+            raise SerialStudioError("sessions.getDbPath returned no database path")
+        return Path(path)
 
     def source_rx_snapshot(
         self, source_id: str, source_title: str = ""

@@ -82,11 +82,13 @@ def test_client_only_emits_read_allowlisted_commands() -> None:
             "sourceId": 0,
             "connection": {"deviceId": {"serial": "B4:3A:45:A5:89:B4"}},
         },
+        "project.getStatus": {"title": "K1 Dual UART Observability v2"},
         "dashboard.getStatus": {"active": True},
         "dashboard.getData": {"groups": []},
         "io.getStatus": {"connected": True},
         "io.getLatestFrame": {"hasData": True, "ageMs": 17},
         "sessions.getStatus": {"enabled": True},
+        "sessions.getDbPath": {"path": "/tmp/k1-v2.db"},
     }
     port, thread = _start_server(
         lambda request: _success(request, replies[request["command"]]), seen
@@ -95,22 +97,26 @@ def test_client_only_emits_read_allowlisted_commands() -> None:
     with SerialStudioReadClient(port=port, timeout_s=1) as client:
         assert len(client.list_sources()) == 2
         assert client.source_config("0")["connection"]["deviceId"]["serial"].endswith("89:B4")
+        assert client.project_status()["title"] == "K1 Dual UART Observability v2"
         assert client.dashboard_status()["active"] is True
         assert client.dashboard_data() == {"groups": []}
         snapshot = client.source_rx_snapshot("1", "Main")
         assert snapshot.age_ms == 17
         assert client.sessions_status()["enabled"] is True
+        assert client.sessions_db_path("K1 Dual UART Observability v2").name == "k1-v2.db"
 
     thread.join(timeout=1)
     commands = [request["command"] for request in seen]
     assert commands == [
         "project.source.list",
         "project.source.getConfig",
+        "project.getStatus",
         "dashboard.getStatus",
         "dashboard.getData",
         "io.getStatus",
         "io.getLatestFrame",
         "sessions.getStatus",
+        "sessions.getDbPath",
     ]
     assert all(request["type"] == "command" for request in seen)
     assert not any("write" in command.casefold() for command in commands)

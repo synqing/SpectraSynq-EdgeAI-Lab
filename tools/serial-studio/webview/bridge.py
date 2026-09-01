@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 import mimetypes
+import sqlite3
 import sys
 import threading
 import time
@@ -106,6 +107,100 @@ class SnapshotCache:
             return copy.deepcopy(self.value)
 
 
+class HistorianIngressSampler:
+    """Measure per-source ingress from the live Historian without writing to it."""
+
+    def __init__(self, database: Path) -> None:
+        self.database = database
+        self.previous: dict[int, dict[str, float | int]] = {}
+        self.last_change_at: dict[int, float] = {}
+
+    def sample(self, now: float) -> dict[str, Any]:
+        if not self.database.is_file():
+            return {"state": "DATABASE_MISSING", "session_id": None, "sources": {}}
+        try:
+            with sqlite3.connect(
+                f"file:{self.database}?mode=ro", uri=True, timeout=0.2
+            ) as connection:
+                session = connection.execute(
+                    "SELECT session_id FROM sessions WHERE ended_at IS NULL "
+                    "ORDER BY session_id DESC LIMIT 1"
+                ).fetchone()
+                if session is None:
+                    return {"state": "NO_OPEN_SESSION", "session_id": None, "sources": {}}
+                session_id = int(session[0])
+                raw_rows = connection.execute(
+                    "SELECT device_id, COUNT(*), COALESCE(SUM(length(data)),0) "
+                    "FROM raw_bytes WHERE session_id=? GROUP BY device_id",
+                    (session_id,),
+                ).fetchall()
+                parsed_rows = connection.execute(
+                    "SELECT c.source_id, MAX(r.final_numeric_value) "
+                    "FROM columns c JOIN readings r "
+                    "ON r.session_id=c.session_id AND r.unique_id=c.unique_id "
+                    "WHERE c.session_id=? AND lower(c.title) IN "
+                    "('host parse sequence','host_parse_seq') "
+                    "AND lower(c.group_title) LIKE '%decoded forensics%' "
+                    "GROUP BY c.source_id",
+                    (session_id,),
+                ).fetchall()
+        except sqlite3.Error as error:
+            return {
+                "state": "QUERY_FAILED",
+                "session_id": None,
+                "sources": {},
+                "error": str(error),
+            }
+
+        parsed = {int(source_id): int(value or 0) for source_id, value in parsed_rows}
+        sources: dict[str, Any] = {}
+        for source_id, raw_count, raw_bytes in raw_rows:
+            sid = int(source_id)
+            current = {
+                "session_id": session_id,
+                "sampled_at": now,
+                "raw_rows": int(raw_count),
+                "raw_bytes": int(raw_bytes),
+                "parsed_publications": parsed.get(sid, 0),
+            }
+            previous = self.previous.get(sid)
+            rates = {
+                "raw_bytes_per_second": None,
+                "raw_rows_per_second": None,
+                "parsed_publications_per_second": None,
+            }
+            if previous and previous.get("session_id") == session_id:
+                elapsed = now - float(previous["sampled_at"])
+                if elapsed > 0:
+                    rates = {
+                        "raw_bytes_per_second": round(
+                            (current["raw_bytes"] - int(previous["raw_bytes"])) / elapsed,
+                            1,
+                        ),
+                        "raw_rows_per_second": round(
+                            (current["raw_rows"] - int(previous["raw_rows"])) / elapsed,
+                            2,
+                        ),
+                        "parsed_publications_per_second": round(
+                            (
+                                current["parsed_publications"]
+                                - int(previous["parsed_publications"])
+                            )
+                            / elapsed,
+                            2,
+                        ),
+                    }
+            if not previous or current["raw_bytes"] != previous.get("raw_bytes"):
+                self.last_change_at[sid] = now
+            current.update(rates)
+            current["last_raw_byte_age_ms"] = round(
+                max(0.0, now - self.last_change_at.get(sid, now)) * 1000
+            )
+            self.previous[sid] = current
+            sources[str(sid)] = current
+        return {"state": "MEASURED", "session_id": session_id, "sources": sources}
+
+
 def empty_snapshot(mode: str) -> dict[str, Any]:
     return {
         "schema": "spectrasynq.serial-studio.mission-control.v2",
@@ -189,6 +284,11 @@ class LiveSampler(threading.Thread):
 
     def _sample_loop(self, client: SerialStudioReadClient) -> None:
         sources = client.list_sources()
+        project = client.project_status()
+        project_title = str(project.get("title") or "")
+        ingress_sampler = HistorianIngressSampler(
+            client.sessions_db_path(project_title)
+        )
         source_configs = {
             str(source.get("sourceId")): client.source_config(str(source.get("sourceId")))
             for source in sources
@@ -202,6 +302,7 @@ class LiveSampler(threading.Thread):
                     "dashboard": client.dashboard_status(),
                     "io": client.io_status("0"),
                     "historian": client.sessions_status(),
+                    "ingress": ingress_sampler.sample(now),
                 }
                 next_slow = now + 1.0
 
@@ -221,6 +322,12 @@ class LiveSampler(threading.Thread):
                 for source in uart_sources
             ]
             historian = slow.get("historian", {})
+            ingress = slow.get("ingress", {})
+            ingress_sources = ingress.get("sources", {})
+            for source_row in source_rows:
+                source_row["ingress"] = ingress_sources.get(
+                    str(source_row.get("source_id")), {}
+                )
             snapshot = empty_snapshot("live")
             snapshot["bridge"] = {"api_state": "UP", "last_error": None}
             snapshot["instrument"]["dashboard"] = slow.get("dashboard", {})
@@ -228,10 +335,25 @@ class LiveSampler(threading.Thread):
             snapshot["instrument"]["historian"] = {
                 "state": "RECORDING" if historian.get("isOpen") else "NOT_RECORDING",
                 "export_enabled": historian.get("exportEnabled"),
-                "session_id": None,
-                "row_count": None,
-                "note": "The current status API exposes flags, not session identity or row counts.",
+                "session_id": ingress.get("session_id"),
+                "row_count": sum(
+                    int(item.get("raw_rows", 0)) for item in ingress_sources.values()
+                ),
+                "note": "Session identity and ingress counts are measured read-only from the Historian.",
             }
+            rates = [
+                item.get("raw_bytes_per_second") for item in ingress_sources.values()
+            ]
+            snapshot["instrument"]["raw_bytes_per_second"] = (
+                round(sum(float(rate) for rate in rates), 1)
+                if rates and all(isinstance(rate, (int, float)) for rate in rates)
+                else None
+            )
+            snapshot["instrument"]["raw_bytes_note"] = (
+                "MEASURED READ-ONLY FROM HISTORIAN RAW_BYTES"
+                if ingress.get("state") == "MEASURED"
+                else ingress.get("state", "NOT INSTRUMENTED")
+            )
             snapshot["sources"] = source_rows
             snapshot["audio_reference"] = self._sample_audio_reference(
                 client, audio_sources

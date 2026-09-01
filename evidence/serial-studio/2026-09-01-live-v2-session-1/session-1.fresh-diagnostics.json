@@ -1,0 +1,128 @@
+{
+  "schema": "spectrasynq.serial-studio.capture-diagnostics.v1",
+  "status": "MEASURED",
+  "session_id": 1,
+  "project_title": "K1 Dual UART Observability v2",
+  "snapshot_sha256": "35fec5964e3cd42ce1ff78ddeb7d54ab647b71f1da68653da82f3e7c295e7faf",
+  "sources": [
+    {
+      "source_id": 0,
+      "valid_uptime_s": 236.461376332,
+      "raw_rows": 1493,
+      "raw_bytes": 127625,
+      "metrics": {
+        "bpm": {
+          "semantics": "value",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 98.93723849372385,
+          "maximum": 155.0
+        },
+        "confidence": {
+          "semantics": "value",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 0.3014225941422594,
+          "maximum": 0.97
+        },
+        "lock": {
+          "semantics": "state",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 0.08786610878661087,
+          "maximum": 1.0,
+          "high_fresh_updates": 21,
+          "high_fraction": 0.08786610878661087,
+          "high_updates_per_valid_minute": 5.3285657875513515
+        },
+        "onset": {
+          "semantics": "event",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 0.4100418410041841,
+          "maximum": 1.0,
+          "high_fresh_updates": 98,
+          "high_fraction": 0.4100418410041841,
+          "high_updates_per_valid_minute": 24.866640341906308
+        },
+        "bass_onset": {
+          "semantics": "event",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 0.2594142259414226,
+          "maximum": 1.0,
+          "high_fresh_updates": 62,
+          "high_fraction": 0.2594142259414226,
+          "high_updates_per_valid_minute": 15.731956134675418
+        },
+        "peak_envelope": {
+          "semantics": "value",
+          "fresh_updates": 239,
+          "minimum": 0.002,
+          "mean": 0.2673179916317992,
+          "maximum": 1.305
+        }
+      }
+    },
+    {
+      "source_id": 1,
+      "valid_uptime_s": 237.337012709,
+      "raw_rows": 1402,
+      "raw_bytes": 129865,
+      "metrics": {
+        "bpm": {
+          "semantics": "value",
+          "fresh_updates": 240,
+          "minimum": 69.0,
+          "mean": 100.625,
+          "maximum": 143.0
+        },
+        "confidence": {
+          "semantics": "value",
+          "fresh_updates": 240,
+          "minimum": 0.0,
+          "mean": 0.24066666666666667,
+          "maximum": 0.95
+        },
+        "lock": {
+          "semantics": "state",
+          "fresh_updates": 240,
+          "minimum": 0.0,
+          "mean": 0.025,
+          "maximum": 1.0,
+          "high_fresh_updates": 6,
+          "high_fraction": 0.025,
+          "high_updates_per_valid_minute": 1.5168304171814855
+        },
+        "onset": {
+          "semantics": "event",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 0.35564853556485354,
+          "maximum": 1.0,
+          "high_fresh_updates": 85,
+          "high_fraction": 0.35564853556485354,
+          "high_updates_per_valid_minute": 21.488430910071045
+        },
+        "bass_onset": {
+          "semantics": "event",
+          "fresh_updates": 239,
+          "minimum": 0.0,
+          "mean": 0.3891213389121339,
+          "maximum": 1.0,
+          "high_fresh_updates": 93,
+          "high_fraction": 0.3891213389121339,
+          "high_updates_per_valid_minute": 23.510871466313027
+        },
+        "peak_envelope": {
+          "semantics": "value",
+          "fresh_updates": 240,
+          "minimum": 0.0,
+          "mean": 0.3240208333333333,
+          "maximum": 2.235
+        }
+      }
+    }
+  ],
+  "verdict_boundary": "Freshness-normalised observer diagnostics only; no controlled shared stimulus, acoustic equivalence, clock map, or algorithm verdict is claimed."
+}

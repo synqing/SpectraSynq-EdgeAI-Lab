@@ -6,6 +6,7 @@ import http.client
 import hashlib
 import importlib.util
 import json
+import sqlite3
 import sys
 import threading
 from pathlib import Path
@@ -170,3 +171,50 @@ def test_live_audio_source_is_not_decoded_as_k1_telemetry() -> None:
     assert result["capture"]["level_dbfs"] is None
     assert "metrics" not in result
     assert "FRESHNESS_THRESHOLD_PROFILE_MISSING" in result["reason_codes"]
+
+
+def test_historian_ingress_sampler_measures_per_source_rates(tmp_path: Path) -> None:
+    database = tmp_path / "live.db"
+    with sqlite3.connect(database) as connection:
+        connection.executescript(
+            """
+            CREATE TABLE sessions (session_id INTEGER PRIMARY KEY, ended_at TEXT);
+            CREATE TABLE raw_bytes (
+              session_id INTEGER, device_id INTEGER, data BLOB
+            );
+            CREATE TABLE columns (
+              session_id INTEGER, source_id INTEGER, unique_id INTEGER,
+              title TEXT, group_title TEXT
+            );
+            CREATE TABLE readings (
+              session_id INTEGER, unique_id INTEGER, final_numeric_value REAL
+            );
+            INSERT INTO sessions VALUES (9, NULL);
+            INSERT INTO columns VALUES
+              (9, 0, 100, 'Host parse sequence', 'Bench decoded forensics'),
+              (9, 1, 200, 'Host parse sequence', 'Main decoded forensics');
+            INSERT INTO readings VALUES (9, 100, 10), (9, 200, 20);
+            INSERT INTO raw_bytes VALUES (9, 0, X'0102'), (9, 1, X'010203');
+            """
+        )
+
+    sampler = bridge.HistorianIngressSampler(database)
+    first = sampler.sample(10.0)
+    assert first["state"] == "MEASURED"
+    assert first["session_id"] == 9
+    assert first["sources"]["0"]["raw_bytes"] == 2
+    assert first["sources"]["0"]["raw_bytes_per_second"] is None
+
+    with sqlite3.connect(database) as connection:
+        connection.executescript(
+            """
+            INSERT INTO readings VALUES (9, 100, 14), (9, 200, 22);
+            INSERT INTO raw_bytes VALUES (9, 0, X'01020304'), (9, 1, X'0102030405');
+            """
+        )
+
+    second = sampler.sample(12.0)
+    assert second["sources"]["0"]["raw_bytes_per_second"] == 2.0
+    assert second["sources"]["0"]["raw_rows_per_second"] == 0.5
+    assert second["sources"]["0"]["parsed_publications_per_second"] == 2.0
+    assert sampler.sample(14.0)["sources"]["0"]["last_raw_byte_age_ms"] == 2000

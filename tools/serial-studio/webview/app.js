@@ -11,6 +11,7 @@ const number = value => value === null || value === undefined || value === "" ? 
 const shown = (value, digits = 0) => number(value) === null ? "—" : Number(value).toFixed(digits);
 const age = value => number(value) === null ? "AGE —" : `${Math.round(Number(value))} ms`;
 const record = value => RECORDS[Math.round(Number(value))] || `RECORD ${value ?? "—"}`;
+const rate = (value, unit) => number(value) === null ? `— ${unit}` : `${shown(value, 1)} ${unit}`;
 
 function setDot(id, state) {
   const node = byId(id);
@@ -75,10 +76,16 @@ function renderSource(article, source, role) {
   const identity = source.identity || String(source.title || "").split(" ").at(-1) || String(source.source_id);
   text(article.querySelector(".serial"), identity);
   const rx = article.querySelector(".rx");
+  const ingress = source.ingress || {};
   rx.replaceChildren(document.createTextNode("RX "));
   const rxAge = document.createElement("b");
   rxAge.textContent = age(source.rx?.age_ms);
-  rx.append(rxAge, document.createTextNode(` · ${source.rx?.state || "UNKNOWN"}`));
+  rx.append(
+    rxAge,
+    document.createTextNode(
+      ` · ${rate(ingress.raw_bytes_per_second, "B/s")} · ${rate(ingress.parsed_publications_per_second, "parsed/s")}`
+    )
+  );
 
   const bpm = metric(source, "bpm");
   text(article.querySelector(".tempo strong"), shown(bpm?.value, 0));
@@ -117,7 +124,10 @@ function renderDetail(snapshot) {
   grid.replaceChildren();
   for (const source of snapshot.sources || []) {
     const facts = timing ? [
-      ["RAW FRAME AGE", age(source.rx?.age_ms), "io.getLatestFrame"],
+      ["RAW BYTE AGE", age(source.ingress?.last_raw_byte_age_ms), "HISTORIAN RAW_BYTES"],
+      ["RAW RX", rate(source.ingress?.raw_bytes_per_second, "B/s"), rate(source.ingress?.raw_rows_per_second, "raw rows/s")],
+      ["PARSED PUBLICATIONS", rate(source.ingress?.parsed_publications_per_second, "pub/s"), "HOST PARSER SEQUENCE"],
+      ["PARSED FRAME AGE", age(source.rx?.age_ms), "io.getLatestFrame"],
       ["AP AGE", age(metric(source, "bpm")?.age_ms), "update_mask"],
       ["EVENT_STATUS AGE", age(metric(source, "energy")?.age_ms), "update_mask"],
       ["SYSTEM FPS AGE", age(metric(source, "system_fps")?.age_ms), "update_mask"],
@@ -125,6 +135,8 @@ function renderDetail(snapshot) {
       ["DEVICE CLOCK", number(metric(source, "device_ms")?.value) === null ? "NOT INSTRUMENTED" : shown(metric(source, "device_ms")?.value, 0) + " ms", "device"],
     ] : [
       ["SOURCE RX", source.rx?.state || "UNKNOWN", age(source.rx?.age_ms)],
+      ["RAW RX", rate(source.ingress?.raw_bytes_per_second, "B/s"), `${rate(source.ingress?.raw_rows_per_second, "raw rows/s")} · ${age(source.ingress?.last_raw_byte_age_ms)}`],
+      ["PARSED PUBLICATIONS", rate(source.ingress?.parsed_publications_per_second, "pub/s"), "HOST DIAGNOSTIC"],
       ["SYSTEM FPS", shown(metric(source, "system_fps")?.value, 0) + " Hz", age(metric(source, "system_fps")?.age_ms)],
       ["LED FPS", shown(metric(source, "led_fps")?.value, 0) + " Hz", age(metric(source, "led_fps")?.age_ms)],
       ["PARSER SEQUENCE", shown(metric(source, "host_parse_seq")?.value, 0), "HOST DIAGNOSTIC ONLY"],
@@ -198,7 +210,7 @@ function render(snapshot) {
   setDot("api-dot", apiUp);
   const policy = snapshot.instrument?.policy || {};
   const projectObserveOnly = policy.project_policy === "OBSERVE_ONLY";
-  text(byId("policy"), projectObserveOnly ? "OBSERVE-ONLY" : "POLICY NOT CONFIRMED");
+  text(byId("policy"), projectObserveOnly ? "OBSERVE-ONLY · NO TX SURFACES" : "POLICY NOT CONFIRMED");
   setDot("policy-dot", projectObserveOnly ? null : apiUp ? null : false);
   text(byId("app-egress-guard"), policy.app_egress_guard === "STOCK_PRO_NOT_PATCHED" ? "STOCK PRO / NOT PATCHED" : (policy.app_egress_guard || "UNKNOWN"));
   const witness = policy.tx_witness || "REQUIRED_PENDING";
@@ -208,7 +220,7 @@ function render(snapshot) {
   setDot("historian-dot", historian.state === "RECORDING" ? true : historian.state === "NOT_RECORDING" ? false : null);
   const sessionId = historian.session_id;
   text(byId("session"), sessionId === null || sessionId === undefined ? "SESSION —" : `SESSION #${sessionId}`);
-  text(byId("raw-rate"), snapshot.instrument?.raw_bytes_per_second ?? "NOT INSTRUMENTED");
+  text(byId("raw-rate"), rate(snapshot.instrument?.raw_bytes_per_second, "B/s"));
   const audio = snapshot.audio_reference || {};
   const audioState = audio.state || "NOT INSTRUMENTED";
   const audioAge = number(audio.age_ms);

@@ -23,11 +23,13 @@ EDGE_FILES = [
     "tools/serial-studio/audio_reference_validate.py",
     "tools/serial-studio/official_pro_audio_preflight.py",
     "tools/serial-studio/capture_audio_source_binding.py",
+    "tools/serial-studio/capture_diagnostics.py",
     "tools/serial-studio/generate_audio_profile.py",
     "tools/serial-studio/lint_audio_profile.py",
     "tools/serial-studio/release_manifest_v2_1.py",
     "tools/serial-studio/projects/official-pro-audio-preflight.v1.json",
     "tools/serial-studio/validate_bundle.py",
+    "tools/serial-studio/zero_tx_witness.py",
     "tools/serial-studio/profiles/capture-profiles.v1.json",
     "tools/serial-studio/schemas/audio-reference-validation.schema.json",
     "tools/serial-studio/schemas/audio-reference-scoring-profile.schema.json",
@@ -46,7 +48,9 @@ EDGE_FILES = [
     "tests/test_serial_studio_official_pro_preflight.py",
     "tests/test_serial_studio_audio_profile.py",
     "tests/test_serial_studio_bundle.py",
+    "tests/test_serial_studio_capture_diagnostics.py",
     "tests/test_serial_studio_webview.py",
+    "tests/test_serial_studio_zero_tx_witness.py",
     "docs/serial-studio/ADR-002-host-audio-reference.md",
 ]
 
