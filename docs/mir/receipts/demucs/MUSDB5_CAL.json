@@ -1,0 +1,159 @@
+{
+  "checkpoint_sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd",
+  "claim": "N=5 FUNCTIONAL_CALIBRATION \u2014 NOT GENERALIZATION CLAIM",
+  "demucs_role": "approximation_calibration_only",
+  "finite_hop_fraction": 1.0,
+  "hard_checks": {
+    "finite_hop_fraction_is_one": true,
+    "frozen_n_is_five": true,
+    "mapping_valid": true,
+    "silence_ok": true,
+    "simplex_error_p99_lte_1e-6": true
+  },
+  "job": "J3",
+  "label": "HOST-ONLY",
+  "lag_corrected": false,
+  "mapping_valid": true,
+  "n": 5,
+  "network_fetch": false,
+  "per_source": {
+    "bass": {
+      "mae": 0.040419015626798775,
+      "pearson": 0.9690066213476835,
+      "rmse": 0.08083422405700923,
+      "spearman": 0.8904942516205039
+    },
+    "drums": {
+      "mae": 0.036775395355216414,
+      "pearson": 0.9604036836904258,
+      "rmse": 0.09670282218538799,
+      "spearman": 0.9294509506131727
+    },
+    "other": {
+      "mae": 0.056573275603670974,
+      "pearson": 0.9311837354337381,
+      "rmse": 0.1204414901340409,
+      "spearman": 0.9045072062041171
+    },
+    "vocals": {
+      "mae": 0.03452579092135996,
+      "pearson": 0.9440276792774132,
+      "rmse": 0.09318517287410176,
+      "spearman": 0.7750379731624482
+    }
+  },
+  "sdr_used_for_pass": false,
+  "share_sum_error_p99": 2.220446049250313e-16,
+  "silence_ok": true,
+  "simplex_js_mean": 0.023199081331854752,
+  "source_mapping": {
+    "best_assignment": {
+      "bass": "bass",
+      "drums": "drums",
+      "other": "other",
+      "vocals": "vocals"
+    },
+    "best_mean_spearman": 0.8748725954000605,
+    "identity_mean_spearman": 0.8748725954000605,
+    "margin_over_runner_up": 0.4498964101783419,
+    "matrix": {
+      "bass": {
+        "bass": 0.8904942516205039,
+        "drums": -0.3426345545001286,
+        "other": -0.05696233903260736,
+        "vocals": -0.255524779176303
+      },
+      "drums": {
+        "bass": -0.3133549699748692,
+        "drums": 0.9294509506131727,
+        "other": -0.39307815172877913,
+        "vocals": -0.07447766508496333
+      },
+      "other": {
+        "bass": -0.1153836135927151,
+        "drums": -0.3767415912674195,
+        "other": 0.9045072062041171,
+        "vocals": -0.09917601031642484
+      },
+      "vocals": {
+        "bass": -0.24942911476614413,
+        "drums": -0.19515481044798935,
+        "other": -0.0208644510303777,
+        "vocals": 0.7750379731624482
+      }
+    },
+    "valid": true
+  },
+  "stems_beat_demucs": true,
+  "student_io_frozen": false,
+  "teacher_authority": "MUSDB_STEMS",
+  "teacher_schema": "DEMUCS_TEACHER_SCHEMA_V1",
+  "timing_lag_diagnostic_s": {
+    "bass": 0.0,
+    "drums": 0.0,
+    "other": 0.0,
+    "vocals": 0.0
+  },
+  "titan": false,
+  "track_receipts": [
+    {
+      "demucs_silent_hops": 0,
+      "finite": true,
+      "hops": 20972,
+      "oracle_silent_hops": 324,
+      "role": "vocal_dominant",
+      "samples": 10737664,
+      "source_file": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/datasets/musdb18/test/Side Effects Project - Sing With Me.stem.mp4",
+      "track": "Side Effects Project - Sing With Me"
+    },
+    {
+      "demucs_silent_hops": 0,
+      "finite": true,
+      "hops": 13998,
+      "oracle_silent_hops": 0,
+      "role": "drum_dominant",
+      "samples": 7166976,
+      "source_file": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/datasets/musdb18/test/PR - Happy Daze.stem.mp4",
+      "track": "PR - Happy Daze"
+    },
+    {
+      "demucs_silent_hops": 0,
+      "finite": true,
+      "hops": 34064,
+      "oracle_silent_hops": 549,
+      "role": "bass_heavy",
+      "samples": 17440768,
+      "source_file": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/datasets/musdb18/test/Skelpolu - Resurrection.stem.mp4",
+      "track": "Skelpolu - Resurrection"
+    },
+    {
+      "demucs_silent_hops": 0,
+      "finite": true,
+      "hops": 21780,
+      "oracle_silent_hops": 374,
+      "role": "other_heavy",
+      "samples": 11151360,
+      "source_file": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/datasets/musdb18/test/Timboz - Pony.stem.mp4",
+      "track": "Timboz - Pony"
+    },
+    {
+      "demucs_silent_hops": 0,
+      "finite": true,
+      "hops": 21874,
+      "oracle_silent_hops": 2,
+      "role": "balanced",
+      "samples": 11199488,
+      "source_file": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/datasets/musdb18/test/Cristina Vane - So Easy.stem.mp4",
+      "track": "Cristina Vane - So Easy"
+    }
+  ],
+  "tracks": [
+    "Side Effects Project - Sing With Me",
+    "PR - Happy Daze",
+    "Skelpolu - Resurrection",
+    "Timboz - Pony",
+    "Cristina Vane - So Easy"
+  ],
+  "verdict": "FUNCTIONAL_CALIBRATION_PASS",
+  "waveforms_persisted": false
+}

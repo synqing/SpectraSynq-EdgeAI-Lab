@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectrasynq.local/schemas/k1-bench-session-v2.json",
+  "title": "K1 conditionally instrumented bench session manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "session",
+    "targets",
+    "rig",
+    "stimulus",
+    "instrumentation",
+    "non_perturbation",
+    "artifacts"
+  ],
+  "properties": {
+    "schema": {"const": "k1.bench-session.v2"},
+    "session": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "session_id",
+        "purpose",
+        "capture_profile_id",
+        "capture_profile_catalogue_sha256",
+        "started_utc",
+        "status"
+      ],
+      "properties": {
+        "session_id": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "capture_profile_id": {
+          "enum": [
+            "PASSIVE_DUAL_UART",
+            "PASSIVE_DUAL_UART_AUDIO_REF",
+            "EXCLUSIVE_PROBE",
+            "EXCLUSIVE_CALIBRATION",
+            "REPLAY_FORENSICS"
+          ]
+        },
+        "capture_profile_catalogue_sha256": {"$ref": "#/$defs/sha256"},
+        "started_utc": {"type": "string", "format": "date-time"},
+        "ended_utc": {"type": ["string", "null"], "format": "date-time"},
+        "status": {"enum": ["planned", "capturing", "archived", "quarantined"]}
+      }
+    },
+    "targets": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "rig": {"type": "object"},
+    "stimulus": {
+      "type": "object",
+      "required": ["class", "same_song_cumulative_seconds", "same_song_cap_seconds"],
+      "properties": {
+        "class": {"enum": ["real_music", "quiet", "recovery", "synthetic", "none"]},
+        "same_song_cumulative_seconds": {"type": "number", "minimum": 0, "maximum": 900},
+        "same_song_cap_seconds": {"const": 900}
+      }
+    },
+    "instrumentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "serial_studio": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "required": [
+                "version",
+                "project_sha256",
+                "observe_only",
+                "source_bindings",
+                "device_tx_budget_bytes"
+              ],
+              "properties": {
+                "version": {"type": "string", "minLength": 1},
+                "project_sha256": {"$ref": "#/$defs/sha256"},
+                "observe_only": {"const": true},
+                "source_bindings": {"type": "array", "minItems": 1},
+                "device_tx_budget_bytes": {"const": 0}
+              }
+            }
+          ]
+        },
+        "host_audio_reference": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "required": ["mode", "authority", "time_authority"],
+              "properties": {
+                "mode": {"enum": ["STIMULUS_FILE", "SERIAL_STUDIO_AUDIO_CAPTURE"]},
+                "authority": {"const": "HOST_AUDIO_REFERENCE"},
+                "time_authority": {"const": "HOST_AUDIO_REFERENCE_TIME"},
+                "binding_sha256": {
+                  "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+                },
+                "validation_receipt_sha256": {
+                  "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "non_perturbation": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["uncharacterised", "pass", "fail", "not_required"]},
+        "serial_studio_tx_commands_per_second": {"type": ["number", "null"], "maximum": 0},
+        "serial_studio_tx_bytes_per_second": {"type": ["number", "null"], "maximum": 0}
+      }
+    },
+    "artifacts": {"type": "object"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "policy_version": 1,
+  "target_serial_studio": "4.0.3",
+  "canonical_profile": "passive",
+  "profiles": {
+    "passive": {
+      "auto_reconnect_allowed": false,
+      "auto_execute_actions_allowed": false,
+      "timer_actions_allowed": false,
+      "device_write_in_scripts_allowed": false,
+      "output_controls_allowed": false
+    },
+    "active-polling": {
+      "auto_reconnect_allowed": false,
+      "auto_execute_actions_allowed": false,
+      "timer_actions_allowed": true,
+      "device_write_in_scripts_allowed": false,
+      "output_controls_allowed": false,
+      "min_timer_interval_ms": 1000,
+      "allowed_action_payload_tokens": [
+        ":event_status",
+        ":fps",
+        ":led_fps"
+      ]
+    }
+  },
+  "forbidden_tables": [
+    "k1_gate"
+  ],
+  "forbidden_dataset_title_regex": [
+    "^unused_slot"
+  ],
+  "forbidden_script_tokens": [
+    "deviceWrite(",
+    "deviceWriteAndWait(",
+    "actionFire(",
+    "WriteRawData",
+    "io.writeData",
+    "k1_gate"
+  ],
+  "event_titles": [
+    "Beat",
+    "Onset",
+    "Bass onset"
+  ],
+  "state_titles": [
+    "Lock",
+    "Silence"
+  ],
+  "semantic_classes": {
+    "BPM": "tempo",
+    "Beat conf": "normalized",
+    "Lock": "boolean_state",
+    "Beat": "boolean_event",
+    "Onset": "boolean_event",
+    "Bass onset": "boolean_event",
+    "Silence": "boolean_state",
+    "AGC gain": "normalized_or_unknown",
+    "Peak scaled": "normalized",
+    "peak_scaled": "normalized",
+    "Energy": "normalized",
+    "Novelty": "normalized",
+    "System FPS": "fps",
+    "LED FPS": "fps",
+    "device_ms": "monotonic_clock",
+    "frame_ms": "timing",
+    "host_parse_seq": "host_counter",
+    "event_tid": "device_counter",
+    "record_kind": "enum",
+    "update_mask": "bitmask",
+    "transport_residual_ms": "host_timing_diagnostic",
+    "host_device_skew_ms": "host_timing_diagnostic"
+  },
+  "multiplot_compatible_classes": [
+    [
+      "normalized",
+      "normalized_or_unknown"
+    ],
+    [
+      "fps"
+    ],
+    [
+      "tempo"
+    ],
+    [
+      "host_timing_diagnostic",
+      "timing"
+    ]
+  ],
+  "fft_allowlist": {
+    "peak_scaled": {
+      "expected_hz": 133.0,
+      "diagnostic_only": true
+    }
+  },
+  "workspace_duplicate_refs_allowed": []
+}

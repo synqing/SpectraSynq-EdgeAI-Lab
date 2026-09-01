@@ -1,0 +1,392 @@
+{
+  "schema": "spectrasynq.serial-studio.v2-release-manifest.v1",
+  "status": "TIER_A_BINARY_IDENTIFIED",
+  "project": {
+    "path": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
+    "sha256": "62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d",
+    "writer_version": "4.0.3",
+    "observe_only_required": true
+  },
+  "component_identity": {
+    "webview_application": {
+      "aggregate_sha256": "f182d3a0b253cf0ad1f6f26d4eb174d6813b4bde8eaf930b638dfa5cf5b4d677",
+      "files": [
+        {
+          "path": "tools/serial-studio/webview/bridge.py",
+          "sha256": "302d2aeaf06265d890fdc7e33998808fe23d06770cd8cbcd4affc049cf4852f6",
+          "bytes": 14259
+        },
+        {
+          "path": "tools/serial-studio/webview/index.html",
+          "sha256": "96f8e86984ddb591bd8b073b0828c60220d8fed4dadf3080fee42fb1c623a8ac",
+          "bytes": 4034
+        },
+        {
+          "path": "tools/serial-studio/webview/styles.css",
+          "sha256": "1f90dcd93cecaca3e29e67f0121770d5ef6677a6f6f306a09070ecf7280871fd",
+          "bytes": 6672
+        },
+        {
+          "path": "tools/serial-studio/webview/app.js",
+          "sha256": "3cd53a5366e0385e02da90c1c0477ee6b4a7c019feeb420061532b706ba0f9fc",
+          "bytes": 9262
+        }
+      ]
+    },
+    "font_assets_manifest_sha256": "d65ad58018b2c4d69d71f111335304b3b6a00fa4e57666783073b0d74708425f",
+    "parser_sha256": "929c3a9fc6ac92b48cdcbca98cfa975bfabfff39bd9faec4639570a98b50c5c6",
+    "semantic_linter": {
+      "version": "1.1.0",
+      "sha256": "da758b700417fc93471ff0501804e7b7c83140b67916b5e6b4badf5bdaa5a330"
+    },
+    "session_19_invalid_fixture_sha256": "91f3cabac0dad59942687a72e912b0831a6c9e6807a1edebffa61061702d715b",
+    "tier_b_host_policy_receipt_sha256": "57a8490c085f7cd9082301679b3d28da88aa94dfc87fbeec5ad1e23530085649",
+    "serial_studio_binary": {
+      "schema": "spectrasynq.serial-studio.binary-identity.v1",
+      "status": "TIER_A_BINARY_IDENTIFIED",
+      "edition": "GPLv3",
+      "application_version": "4.0.3",
+      "upstream_tag": "v4.0.3",
+      "upstream_tag_commit": "639daafb2fe7d324c3b2d5583d2514c8c470676f",
+      "source_branch": "feat/observe-only-project-policy",
+      "source_commit": "b47031d13b9226687e7b3c93d68d74921e40e058",
+      "binary_path": "/Users/spectrasynq/Serial-Studio/build-observe-only/app/Serial-Studio-GPL3.app/Contents/MacOS/Serial-Studio-GPL3",
+      "binary_sha256": "7dc93ed6e2c6a00a5e35a6835267d6e809d370d86cef417828880d035c0fd35b",
+      "binary_format": "Mach-O 64-bit executable arm64",
+      "code_signature": "adhoc linker-signed",
+      "build_configuration": {
+        "generator": "Ninja",
+        "build_type": "Release",
+        "production_optimisation": true,
+        "hardening": true,
+        "lto": true,
+        "build_gpl3": true,
+        "build_commercial": false,
+        "grpc": true,
+        "webengine": true,
+        "in_app_tests": true,
+        "mimalloc": false,
+        "system_zlib": true,
+        "system_expat": true
+      },
+      "dependencies": {
+        "qt": "6.11.1",
+        "grpc": "1.83.1",
+        "protobuf": "36.0"
+      },
+      "tier_a_checks": {
+        "application_link": "PASS",
+        "version_command": "PASS",
+        "headless_selftest": "PASS: 1 suite, 4 checks, 0 failures",
+        "headless_v2_load_smoke": "PASS: clean exit",
+        "focused_qt_tests": "PASS: 7 executables",
+        "malicious_all_write_surfaces": "PASS: 14 surfaces, zero transport callbacks",
+        "isolated_test_instance": "PASS: unique settings identity, loopback-only services, updater disabled, inherited write consent removed, project persistence refused"
+      },
+      "installed": false,
+      "runtime_validated": false,
+      "tier_b_host_policy_probe": {
+        "status": "PASS_GPL_POLICY_BOUNDARY",
+        "receipt": "tools/serial-studio/projects/tier-b-gpl-policy.v1.json",
+        "tcp_reads": "PASS",
+        "grpc_reads": "PASS",
+        "tcp_command_write": "OBSERVE_ONLY_PROJECT",
+        "tcp_raw_write": "OBSERVE_ONLY_PROJECT",
+        "grpc_command_write": "OBSERVE_ONLY_PROJECT",
+        "grpc_raw_write": "OBSERVE_ONLY_PROJECT",
+        "empty_streams": "DEADLINE_EXCEEDED",
+        "canonical_project_unchanged": true
+      },
+      "runtime_validation_open_reason": "The built GPL policy binary passed isolated Tier B read/refusal checks, but it is not installed and GPL strips the second source plus Pro Painter/Data Grid bindings. Full six-workspace runtime validation requires a Pro build carrying source commit b47031d13b9226687e7b3c93d68d74921e40e058."
+    }
+  },
+  "edgeai_source_tree_sha256": "cf04f5f2865001d39a7c3de211aeb3b856fb76d41c34534d6c3ae1d14e96e26a",
+  "edgeai_files": [
+    {
+      "path": "src/edgeai/serial_studio.py",
+      "sha256": "c7ff494b206414f67d06b62d751a6e09e07dafd17047cd49ac5352f956467da3",
+      "bytes": 8825
+    },
+    {
+      "path": "src/edgeai/serial_studio_parser.py",
+      "sha256": "180ff46778f821b1a28fcfd1a5127b36fc138dd1162a4588d0de8ae65c7272a5",
+      "bytes": 3793
+    },
+    {
+      "path": "tools/serial-studio/generate_project.py",
+      "sha256": "25d96947c1aa6217c648fae28b88eeeafe9da1b15092d976d1b85d6e9caeb0c0",
+      "bytes": 8621
+    },
+    {
+      "path": "tools/serial-studio/lint_project.py",
+      "sha256": "da758b700417fc93471ff0501804e7b7c83140b67916b5e6b4badf5bdaa5a330",
+      "bytes": 10295
+    },
+    {
+      "path": "tools/serial-studio/historian.py",
+      "sha256": "71ffd97584fc5be306c1446affd9c592cd056e1e08167186060842911fd315d9",
+      "bytes": 14379
+    },
+    {
+      "path": "tools/serial-studio/validate_bundle.py",
+      "sha256": "8eb5d6a3d71e0216a5e23ab6d7b7c5d4f2e022428e5e2887d0f4277f6c147302",
+      "bytes": 4174
+    },
+    {
+      "path": "tools/serial-studio/parsers/k1_observe_v1_2.js",
+      "sha256": "929c3a9fc6ac92b48cdcbca98cfa975bfabfff39bd9faec4639570a98b50c5c6",
+      "bytes": 2729
+    },
+    {
+      "path": "tools/serial-studio/parsers/event_raster.js",
+      "sha256": "c91580e24ae24422cb84c0d16843fb3a5f469c37e625480b232246d9a7ed5461",
+      "bytes": 5100
+    },
+    {
+      "path": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
+      "sha256": "62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d",
+      "bytes": 77555
+    },
+    {
+      "path": "tools/serial-studio/projects/v1.manifest.json",
+      "sha256": "ad3c445612438cdc582a7ad427ece0fdb7a9602b6e9f8bd95b979ed8da34eefc",
+      "bytes": 2789
+    },
+    {
+      "path": "tools/serial-studio/projects/v2.workspace-manifest.json",
+      "sha256": "8f205f463c83eff8a4fff28ba62c3875a40f06a3b6659b66013bf71aeafa50bb",
+      "bytes": 2739
+    },
+    {
+      "path": "tools/serial-studio/projects/entity-ids.v1.json",
+      "sha256": "c234530b975a00dd320c7cd14b392c6fafc9856a41794e2bfffe378c0923011d",
+      "bytes": 928
+    },
+    {
+      "path": "tools/serial-studio/projects/tier-b-gpl-policy.v1.json",
+      "sha256": "57a8490c085f7cd9082301679b3d28da88aa94dfc87fbeec5ad1e23530085649",
+      "bytes": 5319
+    },
+    {
+      "path": "tools/serial-studio/fixtures/historian/session-19-project-drift.instrument-receipt.json",
+      "sha256": "91f3cabac0dad59942687a72e912b0831a6c9e6807a1edebffa61061702d715b",
+      "bytes": 13355
+    },
+    {
+      "path": "tools/serial-studio/schemas/telemetry-catalogue.v1.json",
+      "sha256": "5f8dbf79165b069433a84571815e6a0374ad0e88c9b67f5fc0ecb35f18a2c8f3",
+      "bytes": 7412
+    },
+    {
+      "path": "tools/serial-studio/schemas/bench-session.schema.json",
+      "sha256": "40740daf9a7e1120f9ffeaf15301acec831c03adcd45dd1fc5fa4bc70ad7ed3b",
+      "bytes": 5922
+    },
+    {
+      "path": "tools/serial-studio/schemas/evidence-bundle.schema.json",
+      "sha256": "d05b6a02f4fd4497a61d84e20feca97a38ef2f2eee21078b8c35ccc46dfe499a",
+      "bytes": 1480
+    },
+    {
+      "path": "tools/serial-studio/webview/bridge.py",
+      "sha256": "302d2aeaf06265d890fdc7e33998808fe23d06770cd8cbcd4affc049cf4852f6",
+      "bytes": 14259
+    },
+    {
+      "path": "tools/serial-studio/webview/index.html",
+      "sha256": "96f8e86984ddb591bd8b073b0828c60220d8fed4dadf3080fee42fb1c623a8ac",
+      "bytes": 4034
+    },
+    {
+      "path": "tools/serial-studio/webview/styles.css",
+      "sha256": "1f90dcd93cecaca3e29e67f0121770d5ef6677a6f6f306a09070ecf7280871fd",
+      "bytes": 6672
+    },
+    {
+      "path": "tools/serial-studio/webview/app.js",
+      "sha256": "3cd53a5366e0385e02da90c1c0477ee6b4a7c019feeb420061532b706ba0f9fc",
+      "bytes": 9262
+    },
+    {
+      "path": "tools/serial-studio/webview/font-assets.json",
+      "sha256": "d65ad58018b2c4d69d71f111335304b3b6a00fa4e57666783073b0d74708425f",
+      "bytes": 1258
+    },
+    {
+      "path": "tools/serial-studio/projects/serial-studio-binary.v1.json",
+      "sha256": "65e724199b069b01253b5f468ecc63962a1eeeb00760827f3af88c3b76c0271a",
+      "bytes": 2495
+    }
+  ],
+  "serial_studio_policy": {
+    "repository": "/Users/spectrasynq/Serial-Studio",
+    "branch": "feat/observe-only-project-policy",
+    "source_commit": "b47031d13b9226687e7b3c93d68d74921e40e058",
+    "source_tree_sha256": "5c1325cba4a723f3a905be508d9ebf3dda626c53090d582e6f4db0b138358719",
+    "files": [
+      {
+        "path": "app/src/API/GRPC/GRPCServer.cpp",
+        "sha256": "c4d530f977bd71ec2ce76ba6d1100c52909314d7df5e4f59b56182b75c52b944",
+        "bytes": 20694
+      },
+      {
+        "path": "app/src/API/GRPC/GRPCServer.h",
+        "sha256": "84481574f04fa4965bc6b184274ca1e64bb47c52cac7be34ca1310e60acadb26",
+        "bytes": 4103
+      },
+      {
+        "path": "app/src/API/Handlers/BluetoothLEHandler.cpp",
+        "sha256": "3b00f0ccbd3a0e5d6a72b80276132ce3593602bebb7deca1afa7a18b9043f025",
+        "bytes": 20871
+      },
+      {
+        "path": "app/src/API/Handlers/IOManagerHandler.cpp",
+        "sha256": "baec2629ca4ba163b1d9550af9287905f6dfbf7ff782c3219984225acd45dc9b",
+        "bytes": 21220
+      },
+      {
+        "path": "app/src/API/Server.cpp",
+        "sha256": "5937a138da11bdfe9a1caef7fbeff8255dfed449d7fd81a62d4b62b13c959f43",
+        "bytes": 34765
+      },
+      {
+        "path": "app/src/API/Server.h",
+        "sha256": "5814a02e6e915e8b277d6f2c8bcf94fdd83afd2a94531011f8123501a57feb29",
+        "bytes": 6617
+      },
+      {
+        "path": "app/src/API/Server/ClientReception.cpp",
+        "sha256": "c142c47b88b602b63ed510461d6f85ab6b6c0238862dc2405d5e0e2771f9528f",
+        "bytes": 24204
+      },
+      {
+        "path": "app/src/API/Server/ClientReception.h",
+        "sha256": "ba84ad3eb059efb620344c663429fda638b14c5418c0ba2d2011149f7b6fadd2",
+        "bytes": 4727
+      },
+      {
+        "path": "app/src/API/Server/ServerAuth.cpp",
+        "sha256": "b26afdff570f9289e4507d6d3d8e3e126c39d087be5f7ce8467086da108f75ce",
+        "bytes": 5613
+      },
+      {
+        "path": "app/src/DataModel/FrameKeys.h",
+        "sha256": "e748aebf1c96b348f5b586f3fbd9a820cf67ef7180710b1928ad1d95d521b36c",
+        "bytes": 10065
+      },
+      {
+        "path": "app/src/DataModel/Project/ProjectLoader.cpp",
+        "sha256": "06ad21d2bdfde2bb250abc34037dc180893c4c263585f220dac4ae740ba5fd01",
+        "bytes": 42443
+      },
+      {
+        "path": "app/src/DataModel/Project/ProjectPersistence.cpp",
+        "sha256": "0d8af4b3f5859951987a8c1417b2a3ce221a2f1c7480424291ee090eabb0af51",
+        "bytes": 22585
+      },
+      {
+        "path": "app/src/DataModel/ProjectModel.cpp",
+        "sha256": "60c6716e8f6068b7759fc0cdbf1a2d17ecd626fd463842872ed77357d25d69a0",
+        "bytes": 35642
+      },
+      {
+        "path": "app/src/DataModel/ProjectModel.h",
+        "sha256": "2cd2951cef073a625fda07d0b6bdf344da7f67e219ae9391fd4a4fe8ce3227b8",
+        "bytes": 38804
+      },
+      {
+        "path": "app/src/DataModel/Scripting/DeviceWriteApi.cpp",
+        "sha256": "f327e6ade0cc1b4794902a77a40049f0315afbbc06a5062702de0d8390df9e11",
+        "bytes": 11384
+      },
+      {
+        "path": "app/src/DataModel/Scripting/ScriptDeviceWait.cpp",
+        "sha256": "357112518e4156537b5b09648ab6b7a257ae8d829f446c43a9d1b055517c4052",
+        "bytes": 6620
+      },
+      {
+        "path": "app/src/IO/ConnectionManager.cpp",
+        "sha256": "2751d77db9e09954a8344a001d05d57180fd3aa4d027c4e6293b3bd9c5d8b399",
+        "bytes": 53972
+      },
+      {
+        "path": "app/src/IO/ConnectionManager.h",
+        "sha256": "4d972b2da30b9888da7d00dd7548430c2059a9a1e2f6549ca4771c7f9eb85396",
+        "bytes": 10743
+      },
+      {
+        "path": "app/src/IO/ConnectionManager/EgressPolicy.h",
+        "sha256": "8afd20873205b14e7a92146a1454898f626ab9f22123facc4bd042afddd12386",
+        "bytes": 2950
+      },
+      {
+        "path": "app/src/Misc/CLI.cpp",
+        "sha256": "7160154348a9c5442affde9f9145db1c6e46b1de9b91d586da2c521d138eba2e",
+        "bytes": 36821
+      },
+      {
+        "path": "app/src/Misc/CLI.h",
+        "sha256": "92f218430daddc6db3ac2e1906e33dd8a12b7825b5dbbfa820cee1adfe110ecb",
+        "bytes": 15099
+      },
+      {
+        "path": "app/src/main.cpp",
+        "sha256": "c8214e6d979ffb340c5d5ec36f2aac643cdaff2e5b3d46c6aa8dd15590727796",
+        "bytes": 8341
+      },
+      {
+        "path": "app/tests/CMakeLists.txt",
+        "sha256": "c027ef526756ed239bab3739d0a914ea84e2f0a7a1c23c8b9553131145cd4ba8",
+        "bytes": 67222
+      },
+      {
+        "path": "app/tests/tst_observe_only_policy.cpp",
+        "sha256": "c91feb2fbfcd91f45c44a32f4ead52523c291f32a4e4d8b7f18d44e08e9e4a2c",
+        "bytes": 3419
+      },
+      {
+        "path": "app/tests/tst_server_auth.cpp",
+        "sha256": "3166f30ca3f31e782aac596ce147da2fc15941eefaed2f33aac3d48b7edef89b",
+        "bytes": 19915
+      },
+      {
+        "path": "tests/scripts/test_observe_only_policy.py",
+        "sha256": "1ac86dfa0a614cee25a4e709d3a55d4628093dd975a48bea4fcda7cb0deb5b36",
+        "bytes": 7068
+      }
+    ],
+    "runtime_validated": false
+  },
+  "local_fonts": {
+    "policy": "local-user-assets-only",
+    "redistribution_permitted": false,
+    "assets": [
+      {
+        "path": "/Users/spectrasynq/Library/Fonts/Countach-Regular.otf",
+        "sha256": "5e7745254b6019bbde867c245956d7f0773ac3fd7eae6a149f6023b3e75b4504",
+        "family": "Countach",
+        "style": "normal",
+        "weight": 400
+      },
+      {
+        "path": "/Users/spectrasynq/Library/Fonts/Countach-BoldItalic.otf",
+        "sha256": "3d73ae0009ae4c299addee70610bc921fc2203c4164b29958d69a20d6cc3ee34",
+        "family": "Countach",
+        "style": "italic",
+        "weight": 700
+      },
+      {
+        "path": "/Users/spectrasynq/Library/Fonts/BerkeleyMono-Regular.ttf",
+        "sha256": "9ec90775ec47d2142036f3907f299bac38c9ba0fd7e14148696bcda4b419cada",
+        "family": "Berkeley Mono",
+        "style": "normal",
+        "weight": 400
+      }
+    ]
+  },
+  "non_claims": [
+    "No v2 project was opened against live hardware by this manifest.",
+    "Local font files are referenced and verified, not redistributed.",
+    "The GPL binary passed the bounded Tier B policy probe, but full Pro-workspace and installed-binary runtime validation remain open."
+  ]
+}

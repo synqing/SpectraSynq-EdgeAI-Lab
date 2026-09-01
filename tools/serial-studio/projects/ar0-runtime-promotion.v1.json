@@ -1,0 +1,73 @@
+{
+  "schema": "spectrasynq.serial-studio.ar0-runtime-promotion.v1",
+  "gate": "AR0_BINARY_IDENTITY",
+  "observed_at_utc": "2026-08-31T23:52:01Z",
+  "status": "BLOCKED_EXTERNAL",
+  "patched_source": {
+    "repository": "/Users/spectrasynq/Serial-Studio",
+    "branch": "feat/observe-only-project-policy",
+    "commit": "a92501cb7035b12f5f8fb4796a339e52b54f8601",
+    "audio_binding_policy_guard": "PASS",
+    "missing_saved_audio_identity_retarget": "BLOCKED",
+    "policy_test_count": 72
+  },
+  "installed_official_pro": {
+    "bundle": "/Applications/Serial Studio Pro.app",
+    "version": "4.0.3",
+    "binary_sha256": "edde7a73992aa51e002a8ec4180b1199910c8ce54e30ce6ced90f191da2b444a",
+    "signature_authority": "Developer ID Application: Valentin Alexandro Spataru (KUT95Q3J63)",
+    "team_identifier": "KUT95Q3J63",
+    "contains_patched_source_commit": false,
+    "running_process_observed": true
+  },
+  "installed_observe_only_gpl": {
+    "bundle": "/Users/spectrasynq/Applications/Serial Studio Observe Only GPL.app",
+    "version": "4.0.3",
+    "binary_sha256": "7dc93ed6e2c6a00a5e35a6835267d6e809d370d86cef417828880d035c0fd35b",
+    "compiled_source_identity": "b47031d13b9226687e7b3c93d68d74921e40e058",
+    "checkout_at_rebuild": "a92501cb7035b12f5f8fb4796a339e52b54f8601",
+    "rebuild_result": "NO_WORK_AUDIO_DRIVER_EXCLUDED_FROM_GPL_GRAPH",
+    "edition": "GPLv3",
+    "audio_driver_compiled": false,
+    "selftest": "PASS_4_CHECKS",
+    "scope": "OBSERVE_ONLY_POLICY_RUNTIME_ONLY"
+  },
+  "commercial_build_authority": {
+    "serial_studio_license_key_environment_present": false,
+    "serial_studio_instance_id_environment_present": false,
+    "online_license_cache_present": false,
+    "offline_certificate_present": false,
+    "licence_gate_bypass_attempted": false
+  },
+  "blackhole": {
+    "required_device": "BlackHole 2ch",
+    "version": "0.7.1",
+    "package": "/Users/spectrasynq/Library/Caches/Homebrew/Cask/blackhole-2ch--0.7.1.pkg",
+    "package_sha256": "57b540f27a3e29c37e310e01bee0fdfab76733087e47f997ef9dccf851400dcf",
+    "package_signature_authority": "Developer ID Application: Existential Audio Inc. (Q5C99V536K)",
+    "installed": false,
+    "installer_result": "BLOCKED_ADMIN_CREDENTIAL_REQUIRED",
+    "restart_required_by_vendor": true,
+    "unsupported_user_local_install_attempted": false
+  },
+  "reason_codes": [
+    "COMMERCIAL_BUILD_CREDENTIAL_NOT_PRESENT",
+    "BLACKHOLE_ROOT_INSTALL_REQUIRES_INTERACTIVE_ADMIN",
+    "OFFICIAL_PRO_PROCESS_ACTIVE_USER_STATE_PRESERVED"
+  ],
+  "non_claims": [
+    "The installed GPL runtime does not contain the commercial Audio driver.",
+    "The official Pro runtime does not contain source commit a92501cb7035b12f5f8fb4796a339e52b54f8601.",
+    "AR1 audio binding, AR2 Pro runtime egress, AR3 loopback capture, and AR4 three-source HIL are not claimed.",
+    "No K1 serial port was opened or written during this gate."
+  ],
+  "close_condition": {
+    "ar0_pass_requires": [
+      "A legitimately authorised BUILD_COMMERCIAL binary built from a92501cb7035b12f5f8fb4796a339e52b54f8601",
+      "A separately named installed bundle",
+      "A bound source commit, build configuration, executable SHA256, and application-bundle SHA256",
+      "Successful commercial guard validation and hostile observe-only runtime tests"
+    ],
+    "next_gate": "AR1_AUDIO_BINDING"
+  }
+}

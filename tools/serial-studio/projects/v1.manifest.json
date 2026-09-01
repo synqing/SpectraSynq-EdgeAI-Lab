@@ -1,0 +1,96 @@
+{
+  "schema": "spectrasynq.serial-studio.v1-freeze.v1",
+  "captured_utc": "2026-09-01T00:00:00Z",
+  "purpose": "Replay compatibility plus a reviewed source-identity projection. Never transform the mutable live v1 project into v2 at runtime.",
+  "live": {
+    "path": "/Users/spectrasynq/Documents/Serial Studio/Projects/K1 Dual UART Observability.ssproj",
+    "sha256": "f65b99272c91d246791128ec21b3850b60f8c8002520942d25a3392cbdc22332",
+    "bytes": 122587,
+    "writer_version": "4.0.3"
+  },
+  "backup": {
+    "path": "/Users/spectrasynq/Documents/Serial Studio/Projects/K1 Dual UART Observability.bak-1788185916.ssproj",
+    "sha256": "a8e1d0fd916118eab22ba7af567502bc4695565fa7e1d8a03da3870cd430832a"
+  },
+  "source_projection": [
+    {
+      "busType": 0,
+      "checksum": "",
+      "checksumAlgorithm": "",
+      "connection": {
+        "autoReconnect": false,
+        "baudRate": 115200,
+        "dataBitsIndex": 3,
+        "deviceId": {
+          "description": "USB JTAG/serial debug unit",
+          "pid": "1001",
+          "portName": "cu.usbmodem1401",
+          "serial": "B4:3A:45:A5:89:B4",
+          "vid": "303A"
+        },
+        "dtr": false,
+        "flowControlIndex": 0,
+        "parityIndex": 0,
+        "portIndex": 3,
+        "stopBitsIndex": 0
+      },
+      "decoder": 0,
+      "decoderMethod": 0,
+      "frameDetection": 0,
+      "frameEnd": "\n",
+      "frameParserParams": {
+        "quoteChar": "",
+        "separator": ",",
+        "skipEmpty": false,
+        "trimFields": false
+      },
+      "frameParserTemplate": "delimited",
+      "frameStart": "$",
+      "hexadecimalDelimiters": false,
+      "sourceId": 0,
+      "title": "K1 Bench B489A500"
+    },
+    {
+      "busType": 0,
+      "checksum": "",
+      "checksumAlgorithm": "",
+      "connection": {
+        "autoReconnect": false,
+        "baudRate": 115200,
+        "dataBitsIndex": 3,
+        "deviceId": {
+          "description": "USB JTAG/serial debug unit",
+          "pid": "1001",
+          "portName": "cu.usbmodem12201",
+          "serial": "B4:3A:45:A5:87:90",
+          "vid": "303A"
+        },
+        "dtr": false,
+        "flowControlIndex": 0,
+        "parityIndex": 0,
+        "portIndex": 4,
+        "stopBitsIndex": 0
+      },
+      "decoder": 0,
+      "decoderMethod": 0,
+      "frameDetection": 0,
+      "frameEnd": "\n",
+      "frameParserParams": {
+        "quoteChar": "",
+        "separator": ",",
+        "skipEmpty": false,
+        "trimFields": false
+      },
+      "frameParserTemplate": "delimited",
+      "frameStart": "$",
+      "hexadecimalDelimiters": false,
+      "sourceId": 1,
+      "title": "K1 Main RPL 9087A500"
+    }
+  ],
+  "known_egress": [
+    "two 250 ms auto-start TX actions",
+    "k1_gate data table",
+    "deviceWriteAndWait control script"
+  ]
+}

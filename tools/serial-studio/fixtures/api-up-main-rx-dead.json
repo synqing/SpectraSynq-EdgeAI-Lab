@@ -1,0 +1,28 @@
+{
+  "schema": "spectrasynq.serial-studio.mission-control.v2",
+  "mode": "fixture",
+  "sampled_at_unix_ms": 1788172800000,
+  "bridge": {"api_state": "UP", "last_error": null},
+  "instrument": {
+    "dashboard": {"running": true, "fps": 60, "timeRange": 20},
+    "io": {"isConnected": true, "readOnly": true, "readWrite": false, "writeRefusal": "OBSERVE_ONLY_PROJECT"},
+    "historian": {"state": "RECORDING", "export_enabled": true, "session_id": 125, "row_count": null},
+    "raw_bytes_per_second": null,
+    "raw_bytes_note": "NOT INSTRUMENTED BY THE CURRENT READ API"
+  },
+  "sources": [
+    {
+      "source_id": 0,
+      "title": "K1 Bench B489A500",
+      "rx": {"state": "HAS_DATA_UNCLASSIFIED", "has_data": true, "age_ms": 22, "sequence": 48231, "threshold_profile": null},
+      "metrics": {"bpm": {"value": 128, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 22}, "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 22}}
+    },
+    {
+      "source_id": 1,
+      "title": "K1 Main RPL 9087A500",
+      "rx": {"state": "NO_DATA", "has_data": false, "age_ms": null, "sequence": null, "threshold_profile": null},
+      "metrics": {}
+    }
+  ],
+  "non_claims": ["Fixture values are layout-test data, not device evidence.", "API availability is not source RX health."]
+}

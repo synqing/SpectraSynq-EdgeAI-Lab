@@ -1,0 +1,38 @@
+{
+  "schema": "spectrasynq.telemetry-catalogue.v1",
+  "parser_schema": "k1.usb-serial.v1.2",
+  "slot_count": 24,
+  "record_kinds": {
+    "1": "AP",
+    "2": "EVENT_STATUS",
+    "3": "SYSTEM_FPS",
+    "4": "LED_FPS",
+    "5": "BUILD"
+  },
+  "fields": [
+    {"index": 1, "id": "bpm", "title": "BPM", "units": "BPM", "provenance": "device", "semantics": "continuous", "domain": "tempo", "record_kinds": ["AP"], "expected_period_ms": null, "cadence_source": "run_manifest", "current_source_range": [0, 155], "display_range": [0, 180], "surface": "rhythm"},
+    {"index": 2, "id": "confidence", "title": "Legacy mixed confidence", "units": "ratio", "provenance": "device", "semantics": "mixed", "domain": "legacy_mixed", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "forensics_only"},
+    {"index": 3, "id": "lock", "title": "Lock", "units": "boolean", "provenance": "device", "semantics": "state", "domain": "boolean", "record_kinds": ["AP"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "rhythm"},
+    {"index": 4, "id": "beat", "title": "Legacy mixed beat", "units": "event", "provenance": "device", "semantics": "mixed_event", "domain": "legacy_mixed", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "event_raster_by_kind"},
+    {"index": 5, "id": "onset", "title": "Onset", "units": "event", "provenance": "device", "semantics": "event", "domain": "boolean", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "event_raster"},
+    {"index": 6, "id": "bass_onset", "title": "Bass onset", "units": "event", "provenance": "device", "semantics": "event", "domain": "boolean", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "event_raster"},
+    {"index": 7, "id": "silence", "title": "Silence", "units": "boolean", "provenance": "device", "semantics": "state", "domain": "boolean", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "event_raster"},
+    {"index": 8, "id": "agc_gain", "title": "AGC gain", "units": "multiplier", "provenance": "device", "semantics": "continuous", "domain": "gain", "record_kinds": ["AP"], "expected_period_ms": null, "cadence_source": "run_manifest", "current_source_range": [0.02, 10], "display_range": [0, 10], "surface": "dynamics_gain"},
+    {"index": 9, "id": "peak_scaled", "title": "Peak envelope", "units": "ratio", "provenance": "device", "semantics": "continuous", "domain": "envelope", "record_kinds": ["AP"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 2], "display_range_note": "visual range, not a validity bound; recorded value 1.205 exists", "surface": "dynamics_peak"},
+    {"index": 10, "id": "ssl", "title": "SSL", "units": "unknown", "provenance": "device", "semantics": "unknown", "domain": "undocumented", "record_kinds": ["AP"], "expected_period_ms": 8, "display_range": null, "surface": "forensics_only"},
+    {"index": 11, "id": "energy", "title": "Energy", "units": "ratio", "provenance": "device", "semantics": "continuous", "domain": "normalised", "record_kinds": ["EVENT_STATUS"], "expected_period_ms": null, "display_range": [0, 1], "surface": "dynamics"},
+    {"index": 12, "id": "novelty", "title": "Novelty", "units": "ratio", "provenance": "device", "semantics": "continuous", "domain": "normalised", "record_kinds": ["EVENT_STATUS"], "expected_period_ms": null, "display_range": [0, 1], "surface": "dynamics"},
+    {"index": 13, "id": "system_fps", "title": "System FPS", "units": "Hz", "provenance": "device", "semantics": "continuous", "domain": "rate", "record_kinds": ["SYSTEM_FPS"], "expected_period_ms": null, "display_range": [0, 240], "surface": "health"},
+    {"index": 14, "id": "led_fps", "title": "LED FPS", "units": "Hz", "provenance": "device", "semantics": "continuous", "domain": "rate", "record_kinds": ["LED_FPS"], "expected_period_ms": null, "display_range": [0, 240], "surface": "health"},
+    {"index": 15, "id": "lightshow", "title": "Lightshow", "units": "id", "provenance": "device", "semantics": "categorical", "domain": "mode", "record_kinds": ["AP"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": null, "surface": "forensics_only"},
+    {"index": 16, "id": "device_ms", "title": "Device time", "units": "ms", "provenance": "device_clock", "semantics": "counter", "domain": "time", "record_kinds": ["EVENT_STATUS"], "expected_period_ms": null, "display_range": null, "surface": "forensics_only"},
+    {"index": 17, "id": "frame_ms", "title": "Frame interval", "units": "ms", "provenance": "device_clock", "semantics": "continuous", "domain": "time_interval", "record_kinds": ["EVENT_STATUS"], "expected_period_ms": null, "display_range": null, "surface": "timing"},
+    {"index": 18, "id": "host_parse_seq", "title": "Host parse sequence", "units": "count", "provenance": "parser", "semantics": "counter", "domain": "counter", "record_kinds": ["AP", "EVENT_STATUS", "SYSTEM_FPS", "LED_FPS", "BUILD"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": null, "surface": "forensics_only"},
+    {"index": 19, "id": "event_tid", "title": "Event TID", "units": "count", "provenance": "device", "semantics": "counter", "domain": "counter", "record_kinds": ["EVENT_STATUS"], "expected_period_ms": null, "display_range": null, "surface": "timing"},
+    {"index": 20, "id": "record_kind", "title": "Record kind", "units": "enum", "provenance": "parser", "semantics": "categorical", "domain": "provenance", "record_kinds": ["AP", "EVENT_STATUS", "SYSTEM_FPS", "LED_FPS", "BUILD"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [1, 5], "surface": "forensics_only"},
+    {"index": 21, "id": "update_mask", "title": "Update mask", "units": "bitmask", "provenance": "parser", "semantics": "bitmask", "domain": "provenance", "record_kinds": ["AP", "EVENT_STATUS", "SYSTEM_FPS", "LED_FPS", "BUILD"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": null, "surface": "forensics_only"},
+    {"index": 22, "id": "phase", "title": "Legacy mixed phase", "units": "turn", "provenance": "device", "semantics": "mixed", "domain": "legacy_mixed", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": [0, 1], "surface": "forensics_only"},
+    {"index": 23, "id": "orbit_x", "title": "Orbit X", "units": "peak units", "provenance": "parser_presentation", "semantics": "derived_with_held_inputs", "domain": "presentation", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": null, "surface": "forensics_only"},
+    {"index": 24, "id": "orbit_y", "title": "Orbit Y", "units": "peak units", "provenance": "parser_presentation", "semantics": "derived_with_held_inputs", "domain": "presentation", "record_kinds": ["AP", "EVENT_STATUS"], "expected_period_ms": null, "cadence_source": "run_manifest", "display_range": null, "surface": "forensics_only"}
+  ]
+}

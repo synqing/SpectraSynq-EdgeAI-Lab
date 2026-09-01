@@ -2,6 +2,8 @@
 abstract: "PRE-SILICON Titan Mini arrival sequence. Golden tensor first, PDM last. 1 ms NPU is hypothetical, 100 ms is PaRIRset HOST-ONLY, 50 ms is K1 C0-v2 cadence — none are Titan board latency. MERT/MuQ/MAEST/Demucs stay off the board."
 ---
 
+Arrival-day mechanical sequence (board on desk): **[titan/ARRIVAL_RUNBOOK.md](titan/ARRIVAL_RUNBOOK.md)**.
+
 # Titan Mini bring-up — PRE-SILICON prep
 
 **HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.

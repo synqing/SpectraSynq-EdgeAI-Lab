@@ -203,3 +203,12 @@ def test_empty_stems_do_not_nan_the_share():
     )
     assert np.all(np.isfinite(out["vocals_share"]))
     assert float(np.max(out["vocals_share"])) == 0.0
+
+
+def test_oracle_reexports_the_shared_power_primitive():
+    from edgeai.mir import source_oracle as oracle_module
+    from edgeai.mir.source_power import SOURCES as SHARED_SOURCES
+    from edgeai.mir.source_power import frame_mean_square as shared_frame_mean_square
+
+    assert oracle_module.SOURCES is SHARED_SOURCES
+    assert oracle_module.frame_mean_square is shared_frame_mean_square

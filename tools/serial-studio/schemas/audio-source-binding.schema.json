@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectrasynq.local/schemas/audio-source-binding.v1.schema.json",
+  "title": "Exact Serial Studio Pro Audio source binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "profile_id",
+    "authority",
+    "captured_from",
+    "source_projection_sha256",
+    "source_projection",
+    "non_claims"
+  ],
+  "properties": {
+    "schema": {"const": "spectrasynq.serial-studio.audio-source-binding.v1"},
+    "profile_id": {"const": "PASSIVE_DUAL_UART_AUDIO_REF"},
+    "authority": {"const": "SERIAL_STUDIO_PRO_SAVED_SOURCE"},
+    "captured_from": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_path", "project_sha256", "writer_version", "observe_only"],
+      "properties": {
+        "project_path": {"type": "string", "minLength": 1},
+        "project_sha256": {"$ref": "#/$defs/sha256"},
+        "writer_version": {"type": "string", "minLength": 1},
+        "observe_only": {"const": true}
+      }
+    },
+    "source_projection_sha256": {"$ref": "#/$defs/sha256"},
+    "source_projection": {
+      "type": "object",
+      "required": ["sourceId", "busType", "connection"],
+      "properties": {
+        "sourceId": {"const": 2},
+        "busType": {"const": 3},
+        "connection": {
+          "type": "object",
+          "required": [
+            "inputDevice",
+            "sampleRate",
+            "normalization",
+            "inputFormat",
+            "inputChannels",
+            "deviceId"
+          ],
+          "properties": {
+            "normalization": {"const": false},
+            "deviceId": {
+              "type": "object",
+              "required": [
+                "inputDeviceName",
+                "sampleRateValue",
+                "formatName",
+                "channelCount"
+              ],
+              "properties": {
+                "inputDeviceName": {"type": "string", "minLength": 1},
+                "sampleRateValue": {"type": "integer", "minimum": 1},
+                "formatName": {"type": "string", "minLength": 1},
+                "channelCount": {"type": "integer", "minimum": 1}
+              }
+            }
+          }
+        }
+      }
+    },
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

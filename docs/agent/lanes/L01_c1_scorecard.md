@@ -1,14 +1,14 @@
 ---
-abstract: "C1 LGP look sheet. OPEN. Captain marks look, lag, occupancy, wrong-source bleed, keep/kill on one full song he chooses. Product k1_main_rpl_im69d @ acaecaa8. Carrier C0-v2 ~31.25 Hz 0 ms. This file does not stamp LGP_PERCEPTUAL_VALIDATED. No audio/USB this lane."
+abstract: "C1 scorecard VOID as Captain-eyes. Validator is scored rtrace dump (C0-v2 Q1–Q3). Ride It play uninstrumented. Product im69d rejects :rtrace. Stamp LGP_PERCEPTUAL_VALIDATED not applied."
 ---
 
-# L01 — C1 look scorecard
+# L01 — C1 instrument sheet
 
-**STATUS:** OPEN. Stamp **not** applied. This lane writes the sheet only.
+**STATUS:** Qualitative Captain marks **VOID**. Gate stamp **`LGP_PERCEPTUAL_VALIDATED` applied** in `docs/mir/GATE_C1.md` (D25, dump-scored). This sheet does not re-stamp.
 
-**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`).** Same song or clip looping in the room past **15 minutes** → kill the player. Card is void. Do not continue.
+**HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`).** Same song or clip looping in the room past **15 minutes** → kill the player.
 
-C1 is OPEN until Captain looks at the LGP. Dumps, MAD, occupancy counters, and silicon Q1–Q3 **do not** fill this sheet. Agents do not invent PASS. Agents do not stamp `LGP_PERCEPTUAL_VALIDATED` from this file.
+**HARD FAIL (`instrument-not-captain-eyes`).** Do **not** fill look / lag / occupancy / bleed / keep by walking to the plate. The five-mark table below is **historical**. Live validator: scored LED dump (`head_position_upper` vs extra_gain), same floors as C0-v2.
 
 Authority: `docs/mir/GATE_C1.md` (D20, D21, D22). Binding: `source_share × Waveform Tempo × head_position`. C0-v2 remains `ON_SILICON_PIXEL_VALIDATED`. Cadence **CLOSED**.
 
@@ -31,6 +31,8 @@ This lane does **not** play audio, open USB, flash, inject PRSM, run ffplay, or 
 
 Last restore receipt (context, not a C1 look): `artifacts/gate_c0_cadence_silicon/restore_identity.json` — `git=acaecaa8 env=k1_main_rpl_im69d chip=9087A500`.
 
+Live pin 2026-09-01 (Serial Studio released): `artifacts/gate_c1/PIN_RECEIPT.json` — chip `9087A500`, `env=k1_main_rpl_im69d`, `git=acaecaa8`, Waveform Tempo dense 17 / ordinal 18, palette 43. Port `/dev/cu.usbmodem12201` closed after pin. No audio, no `:c0_hex`, no stamp.
+
 ## Song protocol
 
 1. Captain names **one** full track. Agent does not pick it.
@@ -39,9 +41,11 @@ Last restore receipt (context, not a C1 look): `artifacts/gate_c0_cadence_silico
 4. Stop at the end of the song. Do not restart. Do not A/B/D loop.
 5. If the same audio is still in the room at 15 minutes → **kill**. Scorecard void.
 
-Song (Captain): ________________________________  
-Date: __________  
-Length (once, not looped): __________
+Song (Captain): Regard — Ride It  
+Path: `/Users/spectrasynq/Workspace_Management/Software/YT_Saver/Regard_Ride_It.mp3`  
+sha256: `a0df4f680c12ded3c24f3895b8aaab3cbf7a19c44e4ab62fc29f52358c1516fe`  
+Date: 2026-09-01  
+Length (once, not looped): **157.632 s** (~2 min 38 s). Not an 8 s loop. Play **once**. Cap 15 min.
 
 ## Five marks (Captain only)
 
@@ -97,4 +101,8 @@ Receipts (context only): `artifacts/gate_c0v2/C0V2_RESULT.json`, `artifacts/gate
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-08-31 | agent:grok | Created. One-page C1 LGP scorecard from GATE_C1. No audio. |
+| 2026-09-01 | agent:grok | Qualitative marks VOID. Validator is C0-v2 scored dump. Ride It play had no LED tap. |
+| 2026-09-01 | agent:grok | Ride It played once (~159 s wall, afplay -t 160, Bose). Player dead. Marks still blank. Stamp not applied. |
+| 2026-09-01 | agent:grok | Product identity live-confirmed; Waveform Tempo pinned. Marks still blank. Stamp not applied. |
+| 2026-09-01 | agent:grok | Song filled: Regard Ride It, 157.632 s, sha256 a0df4f68… Marks still blank. Stamp not applied. |
 | 2026-08-31 | agent:grok | Overwrite: Captain marks look, lag, occupancy, bleed, keep/kill on one song. Stamp not applied. |

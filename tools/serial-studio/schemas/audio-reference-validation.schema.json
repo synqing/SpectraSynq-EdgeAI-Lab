@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectrasynq.local/schemas/audio-reference-validation.v1.schema.json",
+  "title": "K1 host Audio Reference quantitative receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "tool",
+    "integrity_status",
+    "authority",
+    "time_authority",
+    "score",
+    "reason_codes",
+    "claims"
+  ],
+  "properties": {
+    "schema": {"const": "spectrasynq.audio-reference-validation.v1"},
+    "tool": {
+      "type": "object",
+      "required": ["id", "version"],
+      "properties": {
+        "id": {"const": "spectrasynq.audio-reference-validate"},
+        "version": {"type": "string", "minLength": 1}
+      }
+    },
+    "integrity_status": {"enum": ["VALID", "INVALID"]},
+    "authority": {"const": "HOST_AUDIO_REFERENCE"},
+    "time_authority": {"const": "HOST_AUDIO_REFERENCE_TIME"},
+    "score": {
+      "type": "object",
+      "required": ["status", "profile_id", "profile_sha256", "checks"],
+      "properties": {
+        "status": {"enum": ["NOT_SCORED", "PASS", "FAIL", "INVALID"]},
+        "profile_id": {"type": ["string", "null"]},
+        "profile_sha256": {
+          "oneOf": [
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            {"type": "null"}
+          ]
+        },
+        "checks": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "reason_codes": {"type": "array", "items": {"type": "string"}},
+    "claims": {
+      "type": "object",
+      "required": [
+        "host_audio_reference_measured",
+        "k1_capture_pipeline_validated",
+        "acoustic_delivery_validated",
+        "device_time_alignment_validated",
+        "product_verdict"
+      ],
+      "properties": {
+        "host_audio_reference_measured": {"type": "boolean"},
+        "k1_capture_pipeline_validated": {"const": false},
+        "acoustic_delivery_validated": {"const": false},
+        "device_time_alignment_validated": {"const": false},
+        "product_verdict": {"const": false}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"integrity_status": {"const": "VALID"}}},
+      "then": {
+        "required": [
+          "capture",
+          "reference",
+          "transform_policy",
+          "timing",
+          "alignment",
+          "drift",
+          "non_claims"
+        ],
+        "properties": {
+          "reason_codes": {"maxItems": 0},
+          "transform_policy": {
+            "type": "object",
+            "required": [
+              "format_inferred",
+              "normalisation_applied",
+              "dc_removed",
+              "dither_applied",
+              "clipping_applied",
+              "malformed_rows_skipped"
+            ],
+            "properties": {
+              "format_inferred": {"const": false},
+              "normalisation_applied": {"const": false},
+              "dc_removed": {"const": false},
+              "dither_applied": {"const": false},
+              "clipping_applied": {"const": false},
+              "malformed_rows_skipped": {"const": 0}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "score": {
+            "type": "object",
+            "properties": {"status": {"const": "INVALID"}}
+          },
+          "reason_codes": {"minItems": 1}
+        }
+      }
+    }
+  ]
+}

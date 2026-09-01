@@ -1,0 +1,30 @@
+{
+  "schema": "spectrasynq.serial-studio.workspace-manifest.v1",
+  "project_title": "K1 Dual UART Observability v2",
+  "webview_base_url": "http://127.0.0.1:8765/",
+  "groups": [
+    {"slug": "mission_control", "title": "K1 Mission Control", "widget": "webview", "url": "?view=mission-control"},
+    {"slug": "bench_bpm", "title": "Bench BPM", "widget": "multiplot", "source_id": 0, "fields": ["bpm"]},
+    {"slug": "main_bpm", "title": "Main BPM", "widget": "multiplot", "source_id": 1, "fields": ["bpm"]},
+    {"slug": "bench_normalised", "title": "Bench energy and novelty", "widget": "multiplot", "source_id": 0, "fields": ["energy", "novelty"]},
+    {"slug": "main_normalised", "title": "Main energy and novelty", "widget": "multiplot", "source_id": 1, "fields": ["energy", "novelty"]},
+    {"slug": "bench_peak", "title": "Bench peak envelope", "widget": "multiplot", "source_id": 0, "fields": ["peak_scaled"]},
+    {"slug": "main_peak", "title": "Main peak envelope", "widget": "multiplot", "source_id": 1, "fields": ["peak_scaled"]},
+    {"slug": "bench_agc", "title": "Bench AGC gain", "widget": "multiplot", "source_id": 0, "fields": ["agc_gain"]},
+    {"slug": "main_agc", "title": "Main AGC gain", "widget": "multiplot", "source_id": 1, "fields": ["agc_gain"]},
+    {"slug": "bench_events", "title": "Bench events and states", "widget": "painter", "source_id": 0, "fields": ["beat", "onset", "bass_onset", "silence", "lock", "record_kind", "update_mask", "host_parse_seq", "event_tid"]},
+    {"slug": "main_events", "title": "Main events and states", "widget": "painter", "source_id": 1, "fields": ["beat", "onset", "bass_onset", "silence", "lock", "record_kind", "update_mask", "host_parse_seq", "event_tid"]},
+    {"slug": "timing", "title": "Timing and transport", "widget": "webview", "url": "?view=timing"},
+    {"slug": "health", "title": "System health", "widget": "webview", "url": "?view=health"},
+    {"slug": "bench_raw", "title": "Bench decoded forensics", "widget": "datagrid", "source_id": 0, "fields": "all"},
+    {"slug": "main_raw", "title": "Main decoded forensics", "widget": "datagrid", "source_id": 1, "fields": "all"}
+  ],
+  "workspaces": [
+    {"id": 5000, "title": "Mission Control", "groups": ["mission_control"]},
+    {"id": 5001, "title": "Rhythm & Events", "groups": ["bench_bpm", "main_bpm", "bench_events", "main_events"]},
+    {"id": 5002, "title": "Audio Dynamics", "groups": ["bench_normalised", "main_normalised", "bench_peak", "main_peak", "bench_agc", "main_agc"]},
+    {"id": 5003, "title": "Timing & Transport", "groups": ["timing"]},
+    {"id": 5004, "title": "System Health", "groups": ["health"]},
+    {"id": 5005, "title": "Raw / Forensics", "groups": ["bench_raw", "main_raw"]}
+  ]
+}

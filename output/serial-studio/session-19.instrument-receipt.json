@@ -1,0 +1,553 @@
+{
+  "schema": "spectrasynq.serial-studio.instrument-receipt.v1",
+  "status": "INVALID",
+  "reasons": [
+    "embedded project differs from the canonical project"
+  ],
+  "capture_profile": "PASSIVE_DUAL",
+  "session": {
+    "session_id": 19,
+    "project_title": "K1 Dual UART Observability",
+    "started_at": "2026-08-31T23:05:18",
+    "ended_at": "2026-09-01T01:35:52",
+    "target_session_open_at_snapshot": false,
+    "recording_active_at_snapshot": false,
+    "open_session_ids_at_snapshot": []
+  },
+  "serial_studio": {
+    "writer_version": "4.0.3",
+    "project_path": "/Users/spectrasynq/Documents/Serial Studio/Projects/K1 Dual UART Observability.ssproj",
+    "project_sha256": "58b6097ea9f30043d772032646d8cb1c1f350a1b8cd0b25388868f9426778a80",
+    "embedded_project_json_sha256": "fa39d070ec1375ab86dcd43fa010c099a5ebc0b729df429513085524a4260e4c",
+    "project_drift": true,
+    "parser_path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/parsers/k1_observe_v1_2.js",
+    "parser_sha256": "929c3a9fc6ac92b48cdcbca98cfa975bfabfff39bd9faec4639570a98b50c5c6",
+    "catalogue_path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/schemas/telemetry-catalogue.v1.json",
+    "catalogue_sha256": "5f8dbf79165b069433a84571815e6a0374ad0e88c9b67f5fc0ecb35f18a2c8f3",
+    "sources": [
+      {
+        "source_id": 0,
+        "title": "K1 Bench B489A500",
+        "device": null,
+        "usb_serial": "B4:3A:45:A5:89:B4"
+      },
+      {
+        "source_id": 1,
+        "title": "K1 Main RPL 9087A500",
+        "device": null,
+        "usb_serial": "B4:3A:45:A5:87:90"
+      }
+    ],
+    "plugins": {
+      "status": "NOT_INSTRUMENTED",
+      "items": []
+    }
+  },
+  "snapshot": {
+    "path": "/private/tmp/k1-ss-historian-final.fA4FTI/session-19.sqlite",
+    "sha256": "254cc9f8a74f9d6392c77388d01fac89344f55ab6c9a6d6cbb0c6a06030681e9",
+    "bytes": 1118089216,
+    "sqlite_integrity_check": "ok"
+  },
+  "counts": {
+    "readings_by_source": [
+      {
+        "source_id": 0,
+        "source_title": "K1 Bench B489A500",
+        "reading_rows": 4343615
+      },
+      {
+        "source_id": 1,
+        "source_title": "K1 Main RPL 9087A500",
+        "reading_rows": 3639276
+      }
+    ],
+    "raw_by_source": [
+      {
+        "source_id": 0,
+        "raw_rows": 1072659,
+        "raw_bytes": 17856477,
+        "first_timestamp_ns": 25,
+        "last_timestamp_ns": 9034141324500
+      },
+      {
+        "source_id": 1,
+        "raw_rows": 537377,
+        "raw_bytes": 17886465,
+        "first_timestamp_ns": 0,
+        "last_timestamp_ns": 9034140214417
+      }
+    ]
+  },
+  "counter_bounds": {
+    "device_time": [
+      {
+        "source_id": 0,
+        "source_title": "K1 Bench B489A500",
+        "first": 0.0,
+        "first_timestamp_ns": 0,
+        "last": 9033693.0,
+        "last_timestamp_ns": 9034141324500,
+        "reading_rows": 117395,
+        "regressions": 0
+      },
+      {
+        "source_id": 1,
+        "source_title": "K1 Main RPL 9087A500",
+        "first": 0.0,
+        "first_timestamp_ns": 62863250,
+        "last": 9035150.0,
+        "last_timestamp_ns": 9034140214417,
+        "reading_rows": 117396,
+        "regressions": 0
+      }
+    ],
+    "host_parse_sequence": [
+      {
+        "source_id": 0,
+        "source_title": "K1 Bench B489A500",
+        "first": 0.0,
+        "first_timestamp_ns": 0,
+        "last": 117394.0,
+        "last_timestamp_ns": 9034141324500,
+        "reading_rows": 117395,
+        "regressions": 0
+      },
+      {
+        "source_id": 1,
+        "source_title": "K1 Main RPL 9087A500",
+        "first": 0.0,
+        "first_timestamp_ns": 62863250,
+        "last": 117395.0,
+        "last_timestamp_ns": 9034140214417,
+        "reading_rows": 117396,
+        "regressions": 0
+      }
+    ]
+  },
+  "freshness": [
+    {
+      "source_id": 0,
+      "status": "MEASURED",
+      "counts": [
+        {
+          "metric": "agc_gain",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "bass_onset",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "bass_onset",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "beat",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "beat",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "bpm",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "confidence",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "confidence",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "device_ms",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "energy",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "event_tid",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "frame_ms",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 4,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "led_fps",
+          "record_kind": 4,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "lightshow",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "lock",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "novelty",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "onset",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "onset",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "orbit_x",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "orbit_x",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "orbit_y",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "orbit_y",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "peak_scaled",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "phase",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "phase",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 4,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "silence",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "silence",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "ssl",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "system_fps",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 1,
+          "fresh_frames": 8987
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 2,
+          "fresh_frames": 36136
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 4,
+          "fresh_frames": 36136
+        }
+      ]
+    },
+    {
+      "source_id": 1,
+      "status": "MEASURED",
+      "counts": [
+        {
+          "metric": "agc_gain",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "bass_onset",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "bass_onset",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "beat",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "beat",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "bpm",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "confidence",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "confidence",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "device_ms",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "energy",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "event_tid",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "frame_ms",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 4,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "led_fps",
+          "record_kind": 4,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "lightshow",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "lock",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "novelty",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "onset",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "onset",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "orbit_x",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "orbit_x",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "orbit_y",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "orbit_y",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "peak_scaled",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "phase",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "phase",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 4,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "silence",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "silence",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "ssl",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "system_fps",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 1,
+          "fresh_frames": 8990
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 2,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 3,
+          "fresh_frames": 36135
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 4,
+          "fresh_frames": 36135
+        }
+      ]
+    }
+  ],
+  "verdict_boundary": "This receipt scores capture integrity only, not product behaviour."
+}

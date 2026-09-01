@@ -1,0 +1,64 @@
+{
+  "schema": "spectrasynq.ui.optical-measurement.v2",
+  "tier": "T0",
+  "surface_id": "k1.serial-studio.observability.v2.1",
+  "still_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-mission-control-1440x900.png",
+  "still_sha256": "ae9906c6bc69c07723420efe12799e9a832b95b26964650634e726a4b7b3dc3f",
+  "stills": [
+    {"surface": "mission-control", "viewport": "1440x900", "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-mission-control-1440x900.png", "sha256": "ae9906c6bc69c07723420efe12799e9a832b95b26964650634e726a4b7b3dc3f", "overflow": false},
+    {"surface": "mission-control", "viewport": "1180x720", "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-mission-control-1180x720.png", "sha256": "0140fe74c6d63c02b9d160090126e854605097bf4759c09d8506681d747ec4db", "overflow": false},
+    {"surface": "audio-reference", "viewport": "1440x900", "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-audio-reference-1440x900.png", "sha256": "1fc9347f853510d74cd2bf1d0a54ddb55238ee440b91077c4d8d7518c0b8078e", "overflow": false},
+    {"surface": "audio-reference", "viewport": "1180x720", "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-audio-reference-1180x720.png", "sha256": "a6b172e180dfc80a013d57a55953dcafac0f0d8adf42085c8d803b50ecb47f93", "overflow": false},
+    {"surface": "ap-validation", "viewport": "1440x900", "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-ap-validation-1440x900.png", "sha256": "2d6cffafc9eeade3b66c8c34ab52a17e78b9b0e96b8297593c425162c65bc0f9", "overflow": false},
+    {"surface": "ap-validation", "viewport": "1180x720", "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-ap-validation-1180x720.png", "sha256": "71a8cdae830b674a88c1d20eb2c7582d2d0092f70203b53e734c22ca0ae87bb2", "overflow": false}
+  ],
+  "source_paths_sha256": {
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/webview/bridge.py": "811679e298783f9fa4ab86542b261646fbbdcc153e9b27f0015fa59aa4051150",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/webview/app.js": "b7758b7efce6b6294c786a906be0264bf682bd9f1395a130ef07e2f95ae39d2c",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/webview/index.html": "075de6f714dba88f790400b3c7b0acf7ce6fbd0b4e8fa07e575b8b75e0857023",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/webview/styles.css": "84db366c55f4882a247b6364f297020933575add5052910a637996aad5081728",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/webview/font-assets.json": "d65ad58018b2c4d69d71f111335304b3b6a00fa4e57666783073b0d74708425f",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/fixtures/healthy.json": "64ee921fdcd60ba88286cb2a0d6ff036c3b46c710be87ba6d9744bec56835e95",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/fixtures/audio-reference-live-unverified.json": "242444e5636c78ee3abed9bcb659e2a1987923c15c303c63bad6e08416a3f0ea",
+    "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/fixtures/audio-reference-receipt-pass.json": "0246e9b6dcf8f27b3aec05b1fe004b2cca7bfc8bff677201b20de3b01ac4e258"
+  },
+  "roles": [
+    {"role": "tempo_hero", "token": ".tempo strong", "face": "Berkeley Mono Regular", "nominal_size_px": 62, "line_height_px": 50.84, "ink_height_px": 45, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/tempo_hero.png", "crop_sha256": "9fca36e1cd6849faf146a29d1d51877e31039845cf58646c514dfe71728c0a79", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/tempo_hero.png"},
+    {"role": "mission_title", "token": ".title", "face": "Countach Regular", "nominal_size_px": 28, "line_height_px": 28, "ink_height_px": 21, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/mission_title.png", "crop_sha256": "05f5801d5355affec225af68f3b2259815c8686de5096da78ec35d5a07dfa501", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/mission_title.png"},
+    {"role": "metric_value", "token": ".metric .n", "face": "Berkeley Mono Regular", "nominal_size_px": 18, "line_height_px": 21, "ink_height_px": 15, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/metric_value.png", "crop_sha256": "6647b3e96bfa56d4734f8c1bd8abc7793f1c23cb92576e1953fc3b6ddb0fa27b", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/metric_value.png"},
+    {"role": "device_role", "token": ".role", "face": "Countach Regular", "nominal_size_px": 18, "line_height_px": 18, "ink_height_px": 14, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/device_role.png", "crop_sha256": "4ff2e96e9389407b55c58f3f4be4ad0e5a1aa254e9eb1368bfad218fe6fd737a", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/device_role.png"},
+    {"role": "detail_title", "token": ".detail-head > span:first-child", "face": "Countach Regular", "nominal_size_px": 18, "line_height_px": 18, "ink_height_px": 14, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_title.png", "crop_sha256": "ffba219b3cf961179fb53dda09ff99a3db123a24373cef6d8d14f58d50925b64", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_title.png"},
+    {"role": "instrument_status", "token": ".status", "face": "Berkeley Mono Regular", "nominal_size_px": 12, "line_height_px": 14, "ink_height_px": 11, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/instrument_status.png", "crop_sha256": "ea9fcce6c6f0049f11a4a2253cc84c05266aa82ac348d498be2446c47e8d8ca7", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/instrument_status.png"},
+    {"role": "detail_value", "token": ".detail-row", "face": "Berkeley Mono Regular", "nominal_size_px": 11, "line_height_px": 14, "ink_height_px": 10, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_value.png", "crop_sha256": "bec150a13149d24d67c3fe22c1a827561aa3a0b75544d4dcf531d269f2e11c93", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_value.png"},
+    {"role": "mission_kicker", "token": ".kicker", "face": "Countach Bold Italic", "nominal_size_px": 12, "line_height_px": 12, "ink_height_px": 9, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/mission_kicker.png", "crop_sha256": "90dd6e16ff51de45d70a0afae0d4d2697011f5d4a9df09fe1b8c3bdc249eb240", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/mission_kicker.png"},
+    {"role": "delta_title", "token": ".delta-title", "face": "Countach Bold Italic", "nominal_size_px": 11, "line_height_px": 11, "ink_height_px": 8, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/delta_title.png", "crop_sha256": "00babbadd42712f3a6c1c819cdfea05c84001a9ac43e466de4b9ec4f56ac1542", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/delta_title.png"},
+    {"role": "detail_label", "token": ".detail-row", "face": "Berkeley Mono Regular", "nominal_size_px": 11, "line_height_px": 14, "ink_height_px": 8, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_label.png", "crop_sha256": "53fb5fbe702cc787b91378688672d8ddd2dae13c147cad457426d9966e950b5a", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_label.png"},
+    {"role": "project_build", "token": ".build", "face": "Berkeley Mono Regular", "nominal_size_px": 10, "line_height_px": 12, "ink_height_px": 7, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/project_build.png", "crop_sha256": "972ad82db5bc12389f86289bc60e06b9f2a15ce26d9001cf436ac6e24ceaf4c9", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/project_build.png"},
+    {"role": "instrument_eyebrow", "token": ".eyebrow", "face": "Berkeley Mono Regular", "nominal_size_px": 9, "line_height_px": 11, "ink_height_px": 7, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/instrument_eyebrow.png", "crop_sha256": "a270dd29140bbba4a9f989d1983990ade91f16b29c94fe098e21c6fb4bdbb3a9", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/instrument_eyebrow.png"},
+    {"role": "footer_note", "token": ".footer", "face": "Berkeley Mono Regular", "nominal_size_px": 9, "line_height_px": 11, "ink_height_px": 7, "measure_method": "dominant_background_delta_24_bbox", "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/footer_note.png", "crop_sha256": "fd40f8277a0622f5621e7214a907d75ff378a546e8556c4398d0489f248ed09e", "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/footer_note.png"}
+  ],
+  "ladder_sorted_optical_desc": [
+    "tempo_hero:45",
+    "mission_title:21",
+    "metric_value:15",
+    "device_role:14",
+    "detail_title:14",
+    "instrument_status:11",
+    "detail_value:10",
+    "mission_kicker:9",
+    "delta_title:8",
+    "detail_label:8",
+    "project_build:7",
+    "instrument_eyebrow:7",
+    "footer_note:7"
+  ],
+  "p0_inversions": [],
+  "p0_exception": null,
+  "instrument_cells": 6,
+  "fonts_verified": {
+    "countach_regular": true,
+    "countach_bold_italic": true,
+    "berkeley_mono_regular": true
+  },
+  "verdict": "PASS"
+}

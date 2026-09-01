@@ -1,0 +1,9 @@
+{
+  "schema": "spectrasynq.serial-studio.event-raster-fixture.v1",
+  "description": "A held-high Beat value arrives on an AP frame whose update_mask does not include Beat.",
+  "frames": [
+    {"host_parse_seq": 1, "record_kind": 1, "update_mask": 917519, "beat": 1, "expected_marks": 1},
+    {"host_parse_seq": 2, "record_kind": 3, "update_mask": 1708032, "beat": 1, "expected_marks": 0}
+  ],
+  "expected_total_marks": 1
+}

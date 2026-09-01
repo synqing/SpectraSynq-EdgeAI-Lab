@@ -1,0 +1,49 @@
+{
+  "schema": "spectrasynq.ui.optical-measurement.v1",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "screenshot": "output/playwright/k1-mission-control-final-1440x900.png",
+      "horizontal_overflow_observed": false,
+      "vertical_overflow_observed": false
+    },
+    {
+      "width": 1180,
+      "height": 720,
+      "screenshot": "output/playwright/k1-mission-control-final-1180x720.png",
+      "horizontal_overflow_observed": false,
+      "vertical_overflow_observed": false
+    }
+  ],
+  "structure": {
+    "instrument_cells": 5,
+    "device_comparison_cards": 2,
+    "delta_cells": 6,
+    "primary_plot_window_seconds": 20
+  },
+  "font_verification": {
+    "mechanism": "bridge startup SHA-256 verification before serving",
+    "countach_regular": true,
+    "countach_bold_italic": true,
+    "berkeley_mono_regular": true
+  },
+  "red_team": [
+    {
+      "case": "api_up_main_rx_dead",
+      "evidence": "output/playwright/k1-redteam-api-up-main-rx-dead-1440x900.png",
+      "result": "PASS: API remains UP while Main is explicitly NO_DATA with no fabricated age or values."
+    },
+    {
+      "case": "held_high_event",
+      "evidence": "tools/serial-studio/fixtures/held-event.json",
+      "result": "PASS: Painter mark count is gated by Beat's update_mask bit; held-high duplicate produces zero marks."
+    },
+    {
+      "case": "missing_metrics",
+      "evidence": "output/playwright/k1-redteam-missing-metrics-1440x900.png",
+      "result": "PASS: missing BPM, dynamics, FPS, session identity and ages render as em dashes, not numeric zero."
+    }
+  ],
+  "pixel_claim": "The two named screenshots are the rendered optical evidence. No device-behaviour claim is attached to their fixture values."
+}

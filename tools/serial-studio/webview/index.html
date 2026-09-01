@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>K1 Mission Control</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<main class="shell">
+  <header class="topline">
+    <div class="identity">
+      <span class="kicker" id="mode-kicker">LIVE OBSERVABILITY</span>
+      <h1 class="title" id="surface-title">K1 MISSION CONTROL</h1>
+      <span class="build">PROJECT V2 · READ-ONLY</span>
+    </div>
+    <div class="clock"><strong id="session">SESSION —</strong><br><span id="clock">—</span></div>
+  </header>
+
+  <section class="instrument" aria-label="Instrument health">
+    <div><span class="eyebrow">INSTRUMENT</span><span class="status"><i class="dot" id="policy-dot"></i><span id="policy">STARTING</span></span></div>
+    <div><span class="eyebrow">SERIAL STUDIO API</span><span class="status"><i class="dot" id="api-dot"></i><span id="api-state">STARTING</span></span></div>
+    <div><span class="eyebrow">HISTORIAN</span><span class="status"><i class="dot" id="historian-dot"></i><span id="historian-state">UNKNOWN</span></span></div>
+    <div><span class="eyebrow">AUDIO REF</span><span class="status"><i class="dot" id="audio-ref-dot"></i><span id="audio-ref-state">NOT INSTRUMENTED</span></span></div>
+    <div><span class="eyebrow">RAW BYTE RATE</span><span class="status" id="raw-rate">NOT INSTRUMENTED</span></div>
+    <div><span class="eyebrow">PORT AUTHORITY</span><span class="status">SERIAL STUDIO <span class="value-note">RX ONLY</span></span></div>
+  </section>
+
+  <section class="compare" id="mission-control" aria-label="Device comparison">
+    <article class="device bench" id="source-0"><div class="empty">BENCH SOURCE NOT OBSERVED</div></article>
+    <article class="device main" id="source-1"><div class="empty">MAIN SOURCE NOT OBSERVED</div></article>
+  </section>
+
+  <section class="detail-panel hidden" id="detail-panel" aria-live="polite">
+    <div class="detail-head"><span id="detail-title">TIMING &amp; TRANSPORT</span><span>RAW AGES · NO INVENTED THRESHOLDS</span></div>
+    <div class="detail-grid" id="detail-grid"></div>
+  </section>
+
+  <section class="delta" id="delta">
+    <div class="delta-title">CROSS-DEVICE DELTA</div>
+    <div class="d"><span>BPM</span><b id="delta-bpm">—</b></div>
+    <div class="d"><span>CONFIDENCE</span><b id="delta-confidence">—</b></div>
+    <div class="d"><span>PEAK</span><b id="delta-peak">—</b></div>
+    <div class="d"><span>SYS FPS</span><b id="delta-system_fps">—</b></div>
+    <div class="d"><span>LED FPS</span><b id="delta-led_fps">—</b></div>
+  </section>
+
+  <footer class="footer"><span>HELD VALUES SHOW SOURCE RECORD + AGE · FRESHNESS ≠ LAST KNOWN VALUE</span><span class="warning">NO PRODUCT ALARM THRESHOLDS LOADED</span></footer>
+</main>
+<template id="device-template">
+  <div class="device-head"><div><span class="role"></span> <span class="serial"></span></div><span class="rx"></span></div>
+  <div class="hero"><div class="tempo"><strong></strong><span class="tempo-meta"></span></div><div class="lockbox"><span class="lock"></span><span class="confidence"></span></div></div>
+  <div class="metrics">
+    <div class="metric" data-metric="peak_scaled"><span class="n"></span><span class="label">PEAK</span><div class="bar"><i></i></div></div>
+    <div class="metric" data-metric="energy"><span class="n"></span><span class="label">ENERGY</span><div class="bar"><i></i></div></div>
+    <div class="metric" data-metric="system_fps"><span class="n"></span><span class="label">SYS FPS</span></div>
+    <div class="metric" data-metric="led_fps"><span class="n"></span><span class="label">LED FPS</span></div>
+  </div>
+  <div class="trace"><div class="trace-head"><span>PEAK ENVELOPE · 20 S</span><span>DISPLAY RANGE 0–2 · NOT AN ACCEPTANCE LIMIT</span></div><svg viewBox="0 0 620 110" preserveAspectRatio="none" aria-label="Recent peak envelope"><path class="gridline" d="M0 28H620M0 55H620M0 82H620"></path><path class="area"></path><path class="line"></path></svg></div>
+</template>
+</body>
+</html>

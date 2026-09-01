@@ -1,0 +1,301 @@
+[
+  {
+    "role": "delta_title",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/delta_title.png",
+    "crop_sha256": "00babbadd42712f3a6c1c819cdfea05c84001a9ac43e466de4b9ec4f56ac1542",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/delta_title.png",
+    "annotated_crop_sha256": "d81a99ef21bc417ec88bc79e8f81a651774a3e31773b360453a920794b85727b",
+    "crop_width_px": 98,
+    "crop_height_px": 11,
+    "dominant_background_rgb": [
+      13,
+      18,
+      22
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 1,
+      "right": 97,
+      "bottom": 8
+    },
+    "ink_width_px": 98,
+    "ink_height_px": 8,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "detail_label",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_label.png",
+    "crop_sha256": "53fb5fbe702cc787b91378688672d8ddd2dae13c147cad457426d9966e950b5a",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_label.png",
+    "annotated_crop_sha256": "f1bca9221639d17e303a1db19e8463fd0ee5a983675a9650767844f5646d4b26",
+    "crop_width_px": 87,
+    "crop_height_px": 14,
+    "dominant_background_rgb": [
+      13,
+      18,
+      23
+    ],
+    "ink_bbox": {
+      "left": 1,
+      "top": 3,
+      "right": 86,
+      "bottom": 10
+    },
+    "ink_width_px": 86,
+    "ink_height_px": 8,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "detail_title",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_title.png",
+    "crop_sha256": "ffba219b3cf961179fb53dda09ff99a3db123a24373cef6d8d14f58d50925b64",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_title.png",
+    "annotated_crop_sha256": "89ecb2cd654e3609d295483bb1edceaffaa64db9f8b63712b022f3f6cb52a7b8",
+    "crop_width_px": 119,
+    "crop_height_px": 18,
+    "dominant_background_rgb": [
+      13,
+      18,
+      23
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 0,
+      "right": 117,
+      "bottom": 13
+    },
+    "ink_width_px": 118,
+    "ink_height_px": 14,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "detail_value",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_value.png",
+    "crop_sha256": "bec150a13149d24d67c3fe22c1a827561aa3a0b75544d4dcf531d269f2e11c93",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_value.png",
+    "annotated_crop_sha256": "9e32fec3e718fe05432ed0500c3afbdfd90df8d2dfa9148428bb78ccb81924f9",
+    "crop_width_px": 101,
+    "crop_height_px": 14,
+    "dominant_background_rgb": [
+      13,
+      18,
+      23
+    ],
+    "ink_bbox": {
+      "left": 1,
+      "top": 3,
+      "right": 100,
+      "bottom": 12
+    },
+    "ink_width_px": 100,
+    "ink_height_px": 10,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "device_role",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/device_role.png",
+    "crop_sha256": "4ff2e96e9389407b55c58f3f4be4ad0e5a1aa254e9eb1368bfad218fe6fd737a",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/device_role.png",
+    "annotated_crop_sha256": "3f2fe60bf49af4066186a99bade0a9a86d35e6aa0fb8a5e912009d9ab11bd569",
+    "crop_width_px": 44,
+    "crop_height_px": 18,
+    "dominant_background_rgb": [
+      13,
+      18,
+      23
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 0,
+      "right": 42,
+      "bottom": 13
+    },
+    "ink_width_px": 43,
+    "ink_height_px": 14,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "footer_note",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/footer_note.png",
+    "crop_sha256": "fd40f8277a0622f5621e7214a907d75ff378a546e8556c4398d0489f248ed09e",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/footer_note.png",
+    "annotated_crop_sha256": "cef45a2bb093dfcfcced84edff09b882eb8cce2334c501fd8d8b7e907fc8f3b6",
+    "crop_width_px": 372,
+    "crop_height_px": 11,
+    "dominant_background_rgb": [
+      6,
+      8,
+      10
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 2,
+      "right": 371,
+      "bottom": 8
+    },
+    "ink_width_px": 372,
+    "ink_height_px": 7,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "instrument_eyebrow",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/instrument_eyebrow.png",
+    "crop_sha256": "a270dd29140bbba4a9f989d1983990ade91f16b29c94fe098e21c6fb4bdbb3a9",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/instrument_eyebrow.png",
+    "annotated_crop_sha256": "1c5647c6126d05d2fd924eecccacfbf12dceba217f27e5906e4c221da49107da",
+    "crop_width_px": 66,
+    "crop_height_px": 11,
+    "dominant_background_rgb": [
+      12,
+      18,
+      22
+    ],
+    "ink_bbox": {
+      "left": 1,
+      "top": 2,
+      "right": 64,
+      "bottom": 8
+    },
+    "ink_width_px": 64,
+    "ink_height_px": 7,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "instrument_status",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/instrument_status.png",
+    "crop_sha256": "ea9fcce6c6f0049f11a4a2253cc84c05266aa82ac348d498be2446c47e8d8ca7",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/instrument_status.png",
+    "annotated_crop_sha256": "2c972292740ddd44a1394da656743ec03519d77f983650667ce17a0389fdd4dc",
+    "crop_width_px": 169,
+    "crop_height_px": 14,
+    "dominant_background_rgb": [
+      12,
+      18,
+      22
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 1,
+      "right": 168,
+      "bottom": 11
+    },
+    "ink_width_px": 169,
+    "ink_height_px": 11,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "metric_value",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/metric_value.png",
+    "crop_sha256": "6647b3e96bfa56d4734f8c1bd8abc7793f1c23cb92576e1953fc3b6ddb0fa27b",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/metric_value.png",
+    "annotated_crop_sha256": "e89da5c5bdfed6438322ad722af41872e90e0032db930f4ba6edcead2c103955",
+    "crop_width_px": 93,
+    "crop_height_px": 21,
+    "dominant_background_rgb": [
+      13,
+      18,
+      23
+    ],
+    "ink_bbox": {
+      "left": 1,
+      "top": 3,
+      "right": 92,
+      "bottom": 17
+    },
+    "ink_width_px": 92,
+    "ink_height_px": 15,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "mission_kicker",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/mission_kicker.png",
+    "crop_sha256": "90dd6e16ff51de45d70a0afae0d4d2697011f5d4a9df09fe1b8c3bdc249eb240",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/mission_kicker.png",
+    "annotated_crop_sha256": "9bbd20152ec8ce6596ab7a0774a08a85f49409ba2b1979870644469d559b0aa8",
+    "crop_width_px": 173,
+    "crop_height_px": 12,
+    "dominant_background_rgb": [
+      6,
+      8,
+      10
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 1,
+      "right": 172,
+      "bottom": 9
+    },
+    "ink_width_px": 173,
+    "ink_height_px": 9,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "mission_title",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/mission_title.png",
+    "crop_sha256": "05f5801d5355affec225af68f3b2259815c8686de5096da78ec35d5a07dfa501",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/mission_title.png",
+    "annotated_crop_sha256": "3ce5f8fc873ee4a504b45472ce3f7b0ebdff984b897991c9148cb1b028d2a150",
+    "crop_width_px": 216,
+    "crop_height_px": 28,
+    "dominant_background_rgb": [
+      6,
+      8,
+      10
+    ],
+    "ink_bbox": {
+      "left": 0,
+      "top": 1,
+      "right": 214,
+      "bottom": 21
+    },
+    "ink_width_px": 215,
+    "ink_height_px": 21,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "project_build",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/project_build.png",
+    "crop_sha256": "972ad82db5bc12389f86289bc60e06b9f2a15ce26d9001cf436ac6e24ceaf4c9",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/project_build.png",
+    "annotated_crop_sha256": "e8ab1fa2b7c79a24026f05fffbcca1341ce60513bdc7bfc1dc815b64b8d28e57",
+    "crop_width_px": 149,
+    "crop_height_px": 12,
+    "dominant_background_rgb": [
+      6,
+      8,
+      10
+    ],
+    "ink_bbox": {
+      "left": 1,
+      "top": 3,
+      "right": 147,
+      "bottom": 9
+    },
+    "ink_width_px": 147,
+    "ink_height_px": 7,
+    "measure_method": "dominant_background_delta_24_bbox"
+  },
+  {
+    "role": "tempo_hero",
+    "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/tempo_hero.png",
+    "crop_sha256": "9fca36e1cd6849faf146a29d1d51877e31039845cf58646c514dfe71728c0a79",
+    "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/tempo_hero.png",
+    "annotated_crop_sha256": "2ff962e00eeb5c308254247fc1406b1cbfaa3c6ef433db8c3f590b5bdce64281",
+    "crop_width_px": 99,
+    "crop_height_px": 74,
+    "dominant_background_rgb": [
+      13,
+      18,
+      23
+    ],
+    "ink_bbox": {
+      "left": 6,
+      "top": 15,
+      "right": 98,
+      "bottom": 59
+    },
+    "ink_width_px": 93,
+    "ink_height_px": 45,
+    "measure_method": "dominant_background_delta_24_bbox"
+  }
+]

@@ -22,8 +22,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from edgeai.dataset import LOUD_RMS, SILENCE_RMS
-
-SOURCES = ("vocals", "drums", "bass", "other")
+from edgeai.mir.source_power import SOURCES, frame_mean_square
 
 
 def _mono(pcm: NDArray) -> NDArray[np.float32]:
@@ -31,18 +30,6 @@ def _mono(pcm: NDArray) -> NDArray[np.float32]:
     if y.ndim == 2:
         y = y.mean(axis=-1)
     return y.reshape(-1)
-
-
-def frame_mean_square(pcm: NDArray, hop: int = 512) -> NDArray[np.float64]:
-    """Hop power. No numerical floor — silence must stay silence for share."""
-    y = _mono(pcm).astype(np.float64)
-    if y.size < hop:
-        if y.size == 0:
-            return np.zeros(1, dtype=np.float64)
-        return np.array([float(np.mean(y * y))], dtype=np.float64)
-    n = int(y.size // hop)
-    frames = y[: n * hop].reshape(n, hop)
-    return np.mean(frames * frames, axis=1)
 
 
 def frame_rms(pcm: NDArray, sr: int, hop: int = 512) -> tuple[NDArray[np.float32], NDArray[np.float32]]:

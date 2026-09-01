@@ -1,5 +1,5 @@
 ---
-abstract: "D1–D22. Cadence CLOSED; gate_c0_cadence_silicon.py RETIRED (dies; no --resume). D22 HOST OPEN: Demucs teacher probe + Titan PRE-SILICON docs. C1 OPEN."
+abstract: "D1–D26. Cadence CLOSED. D22 HOST OPEN. D25 C1 LGP_PERCEPTUAL_VALIDATED dump-scored. D26 Demucs HOST blitz: local SHA, isolated env, network tripwire, stems remain authority. I/O unfrozen."
 ---
 
 # Decisions
@@ -166,6 +166,76 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 **Rejected:** Reopening cadence cells; 8 s holdout loops; 40 agents sharing one USB port; 40 agents editing the same file; sibling worktrees; treating C1 as dump-scored; Demucs/MERT on Titan; treating D20 retire as a freeze of Demucs HOST probe or Titan prep docs.
 **Revisit:** C1 LGP stamp still needs a look. Student I/O freeze still after C1. Parallel writers must keep **one file per SSA**.
 
+## D23 — SSA receipt wave is not ship
+
+**Chosen:** **HARD FAIL `SSA_RECEIPT_WAVE_IS_NOT_SHIP`.** D22 stays: HOST lanes OPEN, cadence CLOSED, C1 OPEN. What D22 does **not** mean: a wave of explore/docs SSAs whose deliverable is `docs/agent/lanes/Lxx_*.md`. `DONE_WHEN` is a command the orchestrator re-runs that can go red. Keep widgets Captain named. Own children. Do not interpret context-mode-ops as a 40-agent census of this lab.
+**Why:** 2026-08-31 session launched 147 children (40+40+40+24 + 3). Captain: nothing for the lamps. Wave 1–2 were the same census twice. 3D plot was replaced with bars. A Codex `find $HOME` ran ~80 min. Completions ≠ show.
+**Rejected:** Banning all parallel SSAs; treating Lxx harvest as Gate-C progress; swapping named dashboard widgets for “clearer” ones; leaving background processes for Captain to notice.
+**Revisit:** never as a completion definition. Independent HOST tasks with one writer and a red-capable command remain D22-legal.
+
+## D24 — Serial Studio Pro is the universal observability sidecar
+
+**Chosen:** Every applicable SpectraSynq hardware/firmware evaluation, test, calibration, optimisation, and evidence workflow integrates Serial Studio Pro as the passive live-observation, Historian, replay, and forensic sidecar. The default project is write-free and application-enforced with `observeOnly:true`. v1 remains frozen for replay; generated v2 provides Mission Control, Rhythm & Events, Audio Dynamics, Timing & Transport, System Health, and Raw / Forensics. Mission Control is one dominant read-only Web View; diagnostic sophistication increases only through intentional drill-down. The dashboard never owns a statistical or perceptual verdict. Interactive command/reply, flash, and calibration runners still take one exclusive identity-bound endpoint after Serial Studio releases it; their transcripts rejoin the same evidence bundle. Local Countach and Berkeley Mono assets may be hash-verified and served to the Web View without copying or redistributing the binaries.
+
+**Applicability boundary:** Serial Studio may accompany applicable workflows as a passive sidecar; it must never become a prerequisite for a workflow that does not need it, and it must never regain command or transport authority.
+
+**Why:** The existing parser and Historian were useful, but v1 mixed incompatible scales, states and events, presentation derivatives, duplicate polling, dead datasets, fake workspaces, and a command shuttle. A universal sidecar creates reusable live and replay evidence without turning observability into transport authority or forcing every instrument into Serial Studio.
+
+**Rejected:** Serial Studio as optional dashboard decoration; sharing one USB-CDC with an authoritative command runner; treating a screenshot or last-known value as evidence; invented alarm thresholds; reopening the retired Cadence runner. A future decision that genuinely needs cadence receives a new named capture/scoring contract and exclusive transport lease. It does not reopen D20's cells.
+
+**Revisit:** When firmware supplies authoritative build/boot identity, `device_us`, `frame_seq`, health counters, renderer telemetry, or a separate telemetry endpoint, extend the append-only catalogue and admit the corresponding workspace only after parser fixtures, observer-effect proof, and evidence contracts pass.
+
+## D25 — C1 closed by scored dump; qualitative look VOID
+
+**Chosen:** Stamp **`LGP_PERCEPTUAL_VALIDATED`**. Unlock is the C0-v2 scored LED dump (Q1 Spearman 0.832 / Q2 Δ 0.690 9/9 / Q3 Δ 0.585 9/9, `lag_corrected: false`), offline-rescored 2026-09-01 from `artifacts/gate_c0v2/dumps` with no USB and no audio. Captain 2026-09-01: the pixel test **proxies** the LGP/eyes run. The five-mark scorecard is VOID. Agent does not pull Captain into plate inspection (`instrument-not-captain-eyes`). Student I/O stays **UNFROZEN** (SELECTION_GATE still open).
+**Why:** A room play of Ride It with no LED tap wasted Captain time. Product `im69d` rejects `:rtrace_*`. The dump that answers the binding already existed. D20/D22 “needs a look” is superseded.
+**Rejected:** Captain as LGP validator; stamping from an uninstrumented play; treating this stamp as an I/O freeze; reopening cadence; flashing probe to re-do C0-v2.
+**Revisit:** never as an eyes-on gate. A later optical instrument (camera through the plate) would be a new named gate, not a reopening of C1.
+
+## D26 — Demucs HOST blitz (amended)
+
+**Chosen:** Execute the HOST Demucs teacher probe **with amendments**. MUSDB stems remain authority where stems exist. Demucs exists only to emit **DEMUCS_TEACHER_SCHEMA_V1** four-way share on **unstemmed HOST** audio. Checkpoint is the local file SHA256 `d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd` only. **No hub. No fetch. No `Separator(repo=None)`.** Isolated temporary probe environment — **do not mutate `pyproject.toml` / `uv.lock` during the blitz.** Network tripwire: any connect raises `DEMUCS_NETWORK_FORBIDDEN` before a packet leaves. J1.5 inspects the safetensors header **before** install. J3 measures approximation quality vs stem oracle on a **frozen MUSDB-5**, not the tautology that stems beat Demucs. J4 Ride It output is `HOST_RESEARCH_WITNESS_ONLY` / `commercial_training_lineage: false`. J5 keeps Titan/no-GO refuse **after** the useful path works. Fail-closed `LOCAL_CHECKPOINT_INCOMPLETE` is a **legal PASS of the probe** (stems remain authority). Student I/O stays unfrozen. Not Titan. Not a product net.
+**Why:** Captain 2026-09-01 approved the HOST blitz with these amendments. Env vars alone are not egress proof. Mutating the project extra before the checkpoint instantiates is premature. `stems_beat_demucs` alone is not science.
+**Rejected:** `uv add demucs` into the canonical env this blitz; torch.hub; synthesizing missing `config.json`; 150-track Demucs bake-off; SDR as pass; Ride It into a training corpus; 40 SSA receipt wave; putting Demucs on Titan.
+**Revisit:** Promote `demucs` to a project extra only after a HOST probe PASS and a later named decision. Counsel for any shipping student.
+
+## D27 — Optional host Audio Reference / Stimulus Witness
+
+**Chosen:** Add `HOST_AUDIO_REFERENCE` as a first-class but optional evidence
+lane. The baseline `PASSIVE_DUAL_UART` profile remains sources 0/1 only. The
+separately generated `PASSIVE_DUAL_UART_AUDIO_REF` profile may add Serial Studio
+Pro Audio source 2 only from an exact, hash-bound Pro-saved source projection.
+It is capture-only: playback remains externally owned and Serial Studio remains
+`observeOnly:true`. A missing device, rate, format, or channel identity must
+fail closed rather than retargeting capture to a default microphone. The current
+Audio profile is `BLOCKED_UNBOUND` because no virtual loopback input and no
+authoritative saved Source C binding are present on this host.
+
+The quantitative receipt compares strict Serial Studio Audio CSV against a
+known reference file without row skipping, DC removal, channel normalisation,
+dither, clipping, peak rescaling, or sample-format inference. A structurally
+valid measurement is `NOT_SCORED` until a named scoring profile and its SHA-256
+are bound. `HOST_AUDIO_REFERENCE_TIME` is host acquisition time, not K1 device
+time. The receipt explicitly cannot validate acoustic delivery, the K1
+microphone/PDM/PCM path, device-time alignment, or a product verdict.
+
+**Why:** A captured reference waveform can prove whether the host stimulus
+contained a transient and can support later offline tempo/onset/energy
+comparisons. It cannot prove what the speaker emitted or what K1 captured. The
+authority split creates useful forensic evidence without laundering host audio
+into device truth.
+
+**Rejected:** Reusing `csv2wav.py` as a scorer; adding host samples to K1 parser
+slots; treating Source C as mandatory for all sessions; Audio playback from the
+observe-only project; a missing saved device falling back to the MacBook
+microphone; AP PASS from visually similar curves; device latency deltas without
+an explicit clock map.
+
+**Revisit:** Promote `PASSIVE_DUAL_UART_AUDIO_REF` only after a named loopback
+input exists, Pro saves the exact source binding, the fail-closed source patch is
+built into an identified Pro binary, callback/drop and sample-rate side effects
+are characterised, and passive HIL proves capture identity and zero DUT egress.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -193,4 +263,9 @@ GHA 33319114336: AdaptiveAvgPool2d `smoke.onnx` produced C99 (RAM 262,414 B, Fla
 | 2026-08-31 | agent:grok | D20: Captain closed cadence; C1 OPEN; no 8 s loop. |
 | 2026-08-31 | agent:grok | D21: SAME_SONG_LOOP_MAX_15MIN HARD FAIL. Agent must die. |
 | 2026-08-31 | agent:grok | D22: unblock all HOST lanes for parallel SSA. Cadence stays closed. |
+| 2026-09-01 | agent:grok | D23: SSA receipt wave is not ship. D22 OPEN ≠ Lxx.md census. |
+| 2026-09-01 | agent:codex | D24: Serial Studio Pro universal passive observability sidecar and generated v2. |
+| 2026-09-01 | agent:grok | D25: LGP_PERCEPTUAL_VALIDATED from scored dump; qualitative look VOID; I/O unfrozen. |
+| 2026-09-01 | agent:grok | D26: Demucs HOST blitz amended — isolated env, network tripwire, J1.5 inspect, MUSDB-5 quality, research-only Ride It. |
+| 2026-09-01 | agent:codex | D27: optional host Audio Reference lane, strict scorer, and fail-closed Source C identity. |
 | 2026-08-31 | agent:grok | D20: `gate_c0_cadence_silicon.py` mechanically RETIRED (dies before argparse; `--resume` is not an escape). D22: Demucs HOST teacher probe + Titan PRE-SILICON prep docs remain OPEN. |

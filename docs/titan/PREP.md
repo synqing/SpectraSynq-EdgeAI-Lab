@@ -2,6 +2,8 @@
 abstract: "PRE-SILICON Titan prep. Sequence is BSP NPU example, then golden tensor, then WAV frontend, PDM last. Points at TITAN_BRINGUP.md and COMPILE_RECEIPT.md. No board latency. Teachers stay off U55. RUHMI C99 is not a board clock."
 ---
 
+Arrival-day mechanical sequence (board on desk): **[ARRIVAL_RUNBOOK.md](ARRIVAL_RUNBOOK.md)**.
+
 # Titan PRE-SILICON prep
 
 **HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.

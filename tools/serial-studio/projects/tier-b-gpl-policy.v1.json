@@ -1,0 +1,122 @@
+{
+  "schema": "spectrasynq.serial-studio.tier-b-host-policy.v1",
+  "recorded_utc": "2026-08-31T19:47:06Z",
+  "status": "PASS_GPL_POLICY_BOUNDARY",
+  "overall_tier_b": "OPEN_PRO_RUNTIME",
+  "source": {
+    "repository": "/Users/spectrasynq/Serial-Studio",
+    "branch": "feat/observe-only-project-policy",
+    "commit": "b47031d13b9226687e7b3c93d68d74921e40e058"
+  },
+  "binary": {
+    "edition": "GPLv3",
+    "version": "4.0.3",
+    "path": "/Users/spectrasynq/Serial-Studio/build-observe-only/app/Serial-Studio-GPL3.app/Contents/MacOS/Serial-Studio-GPL3",
+    "sha256": "7dc93ed6e2c6a00a5e35a6835267d6e809d370d86cef417828880d035c0fd35b",
+    "installed": false
+  },
+  "project": {
+    "path": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
+    "canonical_sha256": "62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d",
+    "runtime_export_sha256": "aaeff707076a77c8d483cee96df4feb8777cdb147220f06103e42d612e9fede8",
+    "repeat_load_export_sha256": "aaeff707076a77c8d483cee96df4feb8777cdb147220f06103e42d612e9fede8",
+    "canonical_sha_after_probes": "62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d",
+    "observe_only": true,
+    "group_count": 15,
+    "dataset_count": 76,
+    "action_count": 0
+  },
+  "isolation": {
+    "test_instance": true,
+    "settings_identity_isolated_before_crash_tracker": true,
+    "tcp_listener": "127.0.0.1:17777",
+    "grpc_listener": "127.0.0.1:18888",
+    "non_loopback_sockets": 0,
+    "serial_device_descriptors": 0,
+    "automatic_updates": false,
+    "inherited_api_write_consent_removed": true,
+    "project_autosave_refused": true,
+    "explicit_project_save_refused": "OPERATION_FAILED:Failed to save project",
+    "installed_pro_ports_7777_8888_untouched": true
+  },
+  "mission_control": {
+    "workspace_id": 5000,
+    "validation": "PASS",
+    "widget_count": 1,
+    "widget": {
+      "widget_type": 16,
+      "widget_type_slug": "webview",
+      "group_id": 1000,
+      "relative_index": 0
+    }
+  },
+  "webview_assets": {
+    "fixture_html": "PASS",
+    "binding": "127.0.0.1 only",
+    "countach_regular": "PASS:5e7745254b6019bbde867c245956d7f0773ac3fd7eae6a149f6023b3e75b4504",
+    "countach_bold_italic": "PASS:3d73ae0009ae4c299addee70610bc921fc2203c4164b29958d69a20d6cc3ee34",
+    "berkeley_mono_regular": "PASS:9ec90775ec47d2142036f3907f299bac38c9ba0fd7e14148696bcda4b419cada",
+    "font_binaries_redistributed": false
+  },
+  "read_paths": {
+    "tcp_project_status": "PASS",
+    "tcp_project_export": "PASS",
+    "tcp_workspace_validation": "PASS",
+    "tcp_io_status": "PASS",
+    "tcp_latest_frame_no_data": "PASS",
+    "tcp_dashboard": "PASS",
+    "grpc_list_commands": "PASS:256",
+    "grpc_project_status": "PASS",
+    "grpc_io_status": "PASS"
+  },
+  "write_refusals": {
+    "sentinel": "TIER_B_MUST_NOT_EGRESS",
+    "tcp_io_write_data": "EXECUTION_ERROR:OBSERVE_ONLY_PROJECT",
+    "tcp_raw_envelope": "EXECUTION_ERROR:OBSERVE_ONLY_PROJECT",
+    "grpc_execute_command": "EXECUTION_ERROR:OBSERVE_ONLY_PROJECT",
+    "grpc_write_raw_data": "OBSERVE_ONLY_PROJECT:OBSERVE_ONLY_PROJECT",
+    "malicious_project_unit_test": "PASS:14 surfaces, zero transport callbacks"
+  },
+  "streaming": {
+    "grpc_frames": "DEADLINE_EXCEEDED_WITH_ZERO_MESSAGES",
+    "grpc_raw": "DEADLINE_EXCEEDED_WITH_ZERO_MESSAGES"
+  },
+  "validation_tests": {
+    "serial_studio_focused_ctest": "PASS:7/7",
+    "serial_studio_static_policy_pytest": "PASS:9/9",
+    "edgeai_full_pytest_at_capture": "PASS",
+    "project_generator": "PASS",
+    "semantic_linter": "PASS",
+    "canon_passive_linter": "PASS_WITH_CHANGE_DRIVEN_TRANSFORMS_WARNING"
+  },
+  "post_reconciliation_revalidation": {
+    "date": "2026-09-01",
+    "serial_studio_edgeai_slice": "PASS:23/23",
+    "edgeai_full_pytest_current": "FAIL_UNRELATED_DEMUCS_LANE",
+    "current_failure": "tests/test_demucs_local_loader.py::test_loader_source_never_constructs_separator_or_uses_repo_none",
+    "serial_studio_promotion_impact": "NONE; the complete Serial Studio test slice, project generation, semantic lint, passive canon lint, manifest check, and receipt JSON checks pass."
+  },
+  "edition_boundary": {
+    "canonical_sources": 2,
+    "gpl_runtime_sources": 1,
+    "whole_workspace_validation": "EXPECTED_GPL_INCOMPLETE",
+    "orphaned_count": 4,
+    "issues": [
+      "workspace[5001].widgetRef[2]: Pro Painter group 1900",
+      "workspace[5001].widgetRef[3]: Pro Painter group 2000",
+      "workspace[5005].widgetRef[0]: Main-source Data Grid group 2300",
+      "workspace[5005].widgetRef[1]: Main-source Data Grid group 2400"
+    ]
+  },
+  "quarantined_attempt": {
+    "status": "INVALID_NOT_COUNTED",
+    "failure": "The first GPL runtime attempt contacted the update feed and autosaved its GPL-reduced project over the canonical file.",
+    "recovery": "The process was stopped, updater and persistence were blocked for test instances, and the hermetic generator restored canonical SHA 62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d before the counted probes."
+  },
+  "open": [
+    "Build the same source commit as Serial Studio Pro.",
+    "Repeat all six workspace checks with two sources and zero orphaned references.",
+    "Install and hash the promoted Pro binary.",
+    "Run Tier C passive HIL with independent zero host-to-DUT byte evidence."
+  ]
+}

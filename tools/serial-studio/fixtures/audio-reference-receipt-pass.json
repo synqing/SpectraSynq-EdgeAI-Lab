@@ -1,0 +1,72 @@
+{
+  "schema": "spectrasynq.serial-studio.mission-control.v2",
+  "mode": "fixture",
+  "sampled_at_unix_ms": 1788172800000,
+  "bridge": {"api_state": "UP", "last_error": null},
+  "instrument": {
+    "dashboard": {"running": true},
+    "io": {"isConnected": true, "readOnly": true, "readWrite": false},
+    "historian": {"state": "NOT_RECORDING", "session_id": 201},
+    "raw_bytes_per_second": null
+  },
+  "sources": [],
+  "audio_reference": {
+    "capability_state": "SUPPORTED",
+    "required_for_session": true,
+    "mode": "replay",
+    "state": "REPLAY",
+    "reason_codes": [],
+    "age_ms": null,
+    "fresh_in_last_sample": null,
+    "threshold_profile": null,
+    "capture": {
+      "source_id": 2,
+      "title": "Host Audio Reference",
+      "sequence": null,
+      "binding_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expected_device_id": {
+        "inputDeviceName": "BlackHole 2ch",
+        "sampleRateValue": 48000,
+        "formatName": "Signed 16-bit",
+        "channelCount": 2
+      },
+      "runtime_device_id": null,
+      "level_dbfs": null,
+      "clip_count": 0,
+      "drop_count": 0
+    },
+    "provenance_state": "verified",
+    "validation_receipt": {
+      "receipt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "integrity_status": "VALID",
+      "score_status": "PASS",
+      "profile_id": "fixture-only-v1",
+      "profile_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "capture_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "reference_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "time_authority": "HOST_AUDIO_REFERENCE_TIME",
+      "claims": {
+        "host_audio_reference_measured": true,
+        "k1_capture_pipeline_validated": false,
+        "acoustic_delivery_validated": false,
+        "device_time_alignment_validated": false,
+        "product_verdict": false
+      }
+    },
+    "non_claim": "HOST REFERENCE · NOT DEVICE INPUT"
+  },
+  "ap_validation": {
+    "state": "BLOCKED",
+    "reason_codes": [
+      "AP_SCORER_RECEIPT_MISSING",
+      "CLOCK_MAP_MISSING",
+      "BENCH_AP_MISSING",
+      "MAIN_AP_MISSING"
+    ],
+    "receipt": null
+  },
+  "non_claims": [
+    "Fixture receipt is layout-test data, not product evidence.",
+    "PASS applies only to the named host capture scoring profile."
+  ]
+}

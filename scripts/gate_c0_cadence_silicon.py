@@ -24,6 +24,18 @@ CADENCE_RETIRED_MESSAGE = (
     "Do not run more silicon cells. Use existing cadence receipts."
 )
 
+
+def refuse_if_cadence_closed() -> None:
+    """Die before numpy/torch/serial_studio, argparse, USB, flash, or Bose."""
+    raise SystemExit(CADENCE_RETIRED_MESSAGE)
+
+
+# Script execution must print the banner even when torch/edgeai is missing.
+# Import-time refuse is only for __main__; importing this module in tests
+# still loads numpy. The execution test runs this file as a process.
+if __name__ == "__main__":
+    refuse_if_cadence_closed()
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -478,10 +490,6 @@ def pick_delay_test_rate(rate_rows: list[dict]) -> float:
 
 def write_contract(out: Path, payload: dict) -> None:
     write_json(out / "SEMANTIC_TRANSPORT_CONTRACT.json", payload)
-
-
-def refuse_if_cadence_closed() -> None:
-    raise SystemExit(CADENCE_RETIRED_MESSAGE)
 
 
 def main() -> int:

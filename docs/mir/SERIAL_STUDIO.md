@@ -1,8 +1,15 @@
 ---
-abstract: "Serial Studio is K1 observe/record only. Cadence runner RETIRED (D20) so SS is never cadence transport. Exclusive USB-CDC still binds. Shuttle demoted (D19). Do not open SS for command/reply."
+abstract: "Serial Studio is the D24 universal passive observability sidecar. The live v1 project is frozen for replay; the separately named v2 follows K1_SERIAL_STUDIO_CANON. Cadence remains CLOSED and its runner RETIRED."
 ---
 
 # Serial Studio × EdgeAI-Lab
+
+> **Current authority (D24, 2026-09-01):** `docs/K1_SERIAL_STUDIO_CANON/` and
+> `docs/serial-studio/ADR-001-observability-sidecar.md` govern new work. The live
+> v1 project and its 3D/FFT/LED layout are frozen replay history; they are not the
+> v2 information architecture. Do not overwrite v1. The separately named v2 is
+> generated at
+> `tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj`.
 
 **HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue.
 
@@ -43,7 +50,13 @@ Guard in source: `refuse_if_serial_studio_owns_usb` / `holder_is_serial_studio` 
 
 Dashboard is awareness. Live Historian SHA is `LIVE_DB_FINGERPRINT` only. Gate identity is a closed SQLite backup snapshot. Parser may not invent `firmware_sha` / `frame_seq` / `AP_us`.
 
-## Dashboard wiring (2026-08-31)
+## Frozen v1 dashboard wiring (historical replay only, 2026-08-31)
+
+This section records the v1 repair and remains load-bearing for old sessions.
+Its “keep the widget” instruction means preserve the v1 artefact; it does not
+require v2 to reproduce an instrument that does not answer a current engineering
+question. V2 has no FFT until sampling cadence is proven and no 3D or transient
+event lamps on Mission Control. Its workspaces are defined by the D24 canon.
 
 The UART is not the bug. The live `.ssproj` was plotting **all 21 parser slots plus clocks/bitmasks on one Y axis** (update_mask ~2e6), so BPM/conf/peak vanished. LED panel was bound to `unused_slot_17`. 3D plots 2/3 read parser indices 21–26 that do not exist. “New FFT Plot” was an LED+FFT dataset on slot 27 (empty). There is **no audio FFT on the wire** — FFT is KissFFT of `peak_scaled` (envelope), 133 Hz, 256 samples.
 
@@ -53,8 +66,10 @@ Backup: `K1 Dual UART Observability.bak-1788185916.ssproj`.
 Now:
 - Multiplot: BPM, conf, lock, beat, onset, bass, silence, AGC, peak, energy, novelty only.
 - LED: lock / beat / onset / bass / silence (`ledHigh=0.5`).
-- 3D-1 Bench: peak × energy × novelty. 3D-2 Main: same. 3D-3 Bench: BPM × conf × peak.
+- 3D plots restored as a tempo-phase orbit (not bars). Parser v1.2 appends `phase` (slot 22, on the wire) plus `orbit_x`/`orbit_y` (slots 23–24, `peak_scaled * cos/sin(2π phase)`). 3D-1 Bench X/Y=orbit Z=energy; 3D-2 Main same; 3D-3 Bench X/Y=orbit Z=conf. Dataset tags `widget: x|y|z`. Interpolation on, auto-center on.
+- **Keep the widget.** Do not swap plot3d for barpanel because the first bind was a scribble. New parser slots must also exist as `graph: true` on the Bench/Main multiplot or Plot3D uniqueIds keep the old channel (Peak). After `project.loadJson`, call `project.activate`. Scar: `docs/agent/SESSION_SCAR_2026-08-31_SSA_SWARM.md`.
 - Envelope FFT: `peak_scaled` index 9, `fft=true`, `led=false`.
+- Web View: `K1 Live Web View` → `http://127.0.0.1:8765/` (read-only bridge of `dashboard.getData`). Dual Bench/Main: BPM, lock/beat/onset/bass/silence, peak/energy/novelty. Start `tools/serial-studio/webview/bridge.py`. No UART writes.
 
 ## What this is not
 
@@ -62,17 +77,48 @@ Not C0-v2 (already `ON_SILICON_PIXEL_VALIDATED`). Not C1. Not a firmware bug. No
 
 Programme (load-bearing): **C0-v2 PASS → cadence CLOSED (runner retired) → transport contract frozen → C1 LGP.** Serial Studio is not on that path.
 
+## V2 promotion status
+
+- Project-config safety: **PROVEN** by generated v2, semantic lint, zero configured writes, and the Mission Control structural invariant.
+- Application-source safety: **PROVEN** at Serial Studio commit `b47031d13b9226687e7b3c93d68d74921e40e058`.
+- Bounded GPL runtime policy: **PASS**. The identified GPL binary served TCP/gRPC reads and refused command/raw writes with `OBSERVE_ONLY_PROJECT`; test instances were loopback-only, network/update-free, serial-FD-free, and project-write-free.
+- Full Pro and installed-binary runtime: **OPEN**. GPL removes the second source and leaves four expected Pro-edition workspace refs unresolved, so it cannot prove the complete instrument.
+- Session 19: **INVALID / diagnostic fixture forever**. Its real two-source bytes do not overcome embedded-project drift.
+- Tier C passive HIL: **OPEN**. No current device RX, Historian, or zero-host-TX claim is made here.
+
+## Optional Audio Reference v2.1
+
+D27 adds a host Audio Reference / Stimulus Witness without changing the base
+two-UART project. The default profile remains `PASSIVE_DUAL_UART`. The separate
+`PASSIVE_DUAL_UART_AUDIO_REF` profile can add Serial Studio Pro Audio source 2
+only from an exact saved binding. It is currently `BLOCKED_UNBOUND`: this host
+has no admitted virtual loopback input and no frozen Source C binding.
+
+`tools/serial-studio/audio_reference_validate.py` compares strict Audio CSV to
+a known WAV without normalisation, DC removal, dither, repair or format
+inference. `HOST_AUDIO_REFERENCE_TIME` is not K1 device time. Even a profile-
+scored PASS validates only the named host-capture contract; it does not prove
+the K1 microphone/PDM/PCM path or acoustic delivery. See
+`docs/serial-studio/ADR-002-host-audio-reference.md`.
+
+The bounded runtime receipt is `tools/serial-studio/projects/tier-b-gpl-policy.v1.json`.
+
 ## Ship path
 
-1. Already on disk: D19 observe/record; D20 runner dies before USB; D22 exclusive USB still binds; shuttle FAIL parked; this stamp OBSERVE/RECORD.
-2. Remaining: leave Serial Studio parked. Do not repair the shuttle. Do not run `gate_c0_cadence_silicon.py`. C1 is Captain’s one full song, not an SS command session.
-3. Who: agents observe/record only. Captain only for C1 look, or for a named physical Main-only USB reset (`K1-MAIN-RPL-USB-RESET-RX-GO`) if logging RX is wanted later.
-4. Shipped for this contract when this file stamps OBSERVE/RECORD and no agent treats SS as cadence transport. C1 shipped stamp is `LGP_PERCEPTUAL_VALIDATED` in `docs/mir/GATE_C1.md` — separate gate.
+1. Build commit `b47031d13b9226687e7b3c93d68d74921e40e058` as Serial Studio Pro and bind tag, configuration, source commit, and binary SHA-256.
+2. Repeat Tier B on that Pro binary: two sources, all six workspaces, zero dangling refs, Mission Control one-Web-View invariant, local fonts, deterministic reload, and every TCP/gRPC/raw egress refusal.
+3. Install and re-hash that exact Pro binary, then run Tier C passive HIL with identity-qualified Bench/Main ingress, parser and Historian progression, an independent zero host-to-DUT byte witness, clean session close, closed snapshot, and embedded-project equality.
+4. Only after those receipts pass, stamp `K1_SERIAL_STUDIO_OBSERVABILITY_V2=PASS` and enable it in applicable workflows as a passive sidecar. It must never become a prerequisite or regain command/transport authority.
+5. Separately, install and characterise a loopback input, freeze its Pro-saved Source C binding, build the fail-closed Audio identity patch into an identified Pro binary, and validate host Audio capture before admitting `PASSIVE_DUAL_UART_AUDIO_REF`.
 
 ---
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-09-01 | Codex | Bound Tier A and GPL Tier B policy proof; left Pro, installed-binary, and passive-HIL promotion explicitly open. |
+| 2026-09-01 | Codex | Marked v1 dashboard wiring as frozen replay history; D24 canon now governs separately named v2. |
+| 2026-09-01 | agent:grok | Keep-the-widget; Plot3D needs multiplot-subscribed slots. |
+| 2026-08-31 | agent:grok | 3D restored: tempo-phase orbit from v1.2 parser slots 22–24. Bars gone. |
 | 2026-08-31 | agent:grok | Exclusive-port rule permanent; USB RX recovery off cadence path. |
 | 2026-08-31 | agent:grok | D19: instrument not transport; cadence pyserial; shuttle demoted. |
 | 2026-08-31 | agent:grok | Contract: SS acquisition, receipts authority, GATE vs OBSERVE. |

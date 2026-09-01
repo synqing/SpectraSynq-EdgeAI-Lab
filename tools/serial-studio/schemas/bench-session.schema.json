@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectrasynq.local/schemas/k1-bench-session-v1.json",
+  "title": "K1 bench session manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "session", "targets", "rig", "stimulus", "instrument", "non_perturbation", "artifacts"],
+  "properties": {
+    "schema": {"const": "k1.bench-session.v1"},
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["session_id", "purpose", "capture_profile_id", "started_utc", "status"],
+      "properties": {
+        "session_id": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "gate_id": {"type": ["string", "null"]},
+        "capture_profile_id": {"enum": ["PASSIVE_PRODUCT", "PASSIVE_DUAL", "EXCLUSIVE_PROBE", "EXCLUSIVE_CALIBRATION", "REPLAY_FORENSICS"]},
+        "scoring_profile_id": {"type": ["string", "null"]},
+        "started_utc": {"type": "string", "format": "date-time"},
+        "ended_utc": {"type": ["string", "null"], "format": "date-time"},
+        "operator": {"type": "string"},
+        "status": {"enum": ["planned", "capturing", "archived", "quarantined"]},
+        "quarantine_reasons": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "chip_id", "usb_serial", "hardware_revision", "firmware", "audio_route", "led_route"],
+        "properties": {
+          "role": {"type": "string", "minLength": 1},
+          "chip_id": {"type": "string", "pattern": "^[0-9A-Fa-f]{8,}$"},
+          "usb_serial": {"type": "string", "minLength": 1},
+          "observed_port": {"type": ["string", "null"], "description": "Advisory only; never identity authority."},
+          "hardware_revision": {"type": "string", "minLength": 1},
+          "firmware": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["git", "environment", "epoch", "image_sha256"],
+            "properties": {
+              "git": {"type": "string", "minLength": 7},
+              "environment": {"type": "string", "minLength": 1},
+              "epoch": {"type": "string", "minLength": 1},
+              "version": {"type": ["string", "null"]},
+              "image_sha256": {"$ref": "#/$defs/sha256"},
+              "pre_identity_receipt": {"type": ["string", "null"]},
+              "post_identity_receipt": {"type": ["string", "null"]}
+            }
+          },
+          "audio_route": {"type": "object", "required": ["mic_model", "capsule_id", "physical_position", "sample_rate_hz"], "additionalProperties": true},
+          "led_route": {"type": "object", "required": ["protocol", "primary_count", "secondary_count"], "additionalProperties": true},
+          "calibration": {"type": "object", "additionalProperties": true},
+          "power": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "rig": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["host_id", "room_id", "placement_id"]
+    },
+    "stimulus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "same_song_cumulative_seconds", "same_song_cap_seconds"],
+      "properties": {
+        "class": {"enum": ["real_music", "quiet", "recovery", "synthetic", "none"]},
+        "corpus_reference_id": {"type": ["string", "null"]},
+        "file_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "title": {"type": ["string", "null"]},
+        "licence": {"type": ["string", "null"]},
+        "segment_start_seconds": {"type": ["number", "null"], "minimum": 0},
+        "segment_duration_seconds": {"type": ["number", "null"], "minimum": 0},
+        "same_song_cumulative_seconds": {"type": "number", "minimum": 0, "maximum": 900},
+        "same_song_cap_seconds": {"const": 900}
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["serial_studio_version", "project_sha256", "parser_schema", "parser_sha256", "catalogue_sha256", "source_bindings", "serial_studio_device_tx_budget_bytes"],
+      "properties": {
+        "serial_studio_version": {"type": "string"},
+        "project_sha256": {"$ref": "#/$defs/sha256"},
+        "parser_schema": {"type": "string"},
+        "parser_sha256": {"$ref": "#/$defs/sha256"},
+        "catalogue_sha256": {"$ref": "#/$defs/sha256"},
+        "source_bindings": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["source_id", "role", "usb_serial"], "additionalProperties": true}},
+        "serial_studio_device_tx_budget_bytes": {"const": 0},
+        "historian_db": {"type": ["string", "null"]},
+        "historian_session_id": {"type": ["integer", "null"]}
+      }
+    },
+    "non_perturbation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "serial_studio_tx_commands_per_second", "serial_studio_tx_bytes_per_second"],
+      "properties": {
+        "status": {"enum": ["uncharacterised", "pass", "fail", "not_required"]},
+        "comparison_id": {"type": ["string", "null"]},
+        "threshold_set_id": {"type": ["string", "null"]},
+        "threshold_set_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "serial_studio_tx_commands_per_second": {"const": 0},
+        "serial_studio_tx_bytes_per_second": {"const": 0},
+        "measured_effects": {"type": "object"}
+      }
+    },
+    "segments": {"type": "array", "items": {"type": "object", "additionalProperties": true}},
+    "artifacts": {"type": "object", "additionalProperties": {"type": ["string", "null"]}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

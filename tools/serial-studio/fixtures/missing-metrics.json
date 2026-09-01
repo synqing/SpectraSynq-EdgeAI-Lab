@@ -1,0 +1,18 @@
+{
+  "schema": "spectrasynq.serial-studio.mission-control.v2",
+  "mode": "fixture",
+  "sampled_at_unix_ms": 1788172800000,
+  "bridge": {"api_state": "UP", "last_error": null},
+  "instrument": {
+    "dashboard": {"running": true, "fps": 60, "timeRange": 20},
+    "io": {"isConnected": true, "readOnly": true, "readWrite": false, "writeRefusal": "OBSERVE_ONLY_PROJECT"},
+    "historian": {"state": "NOT_RECORDING", "export_enabled": false, "session_id": null, "row_count": null},
+    "raw_bytes_per_second": null,
+    "raw_bytes_note": "NOT INSTRUMENTED BY THE CURRENT READ API"
+  },
+  "sources": [
+    {"source_id": 0, "title": "K1 Bench B489A500", "rx": {"state": "HAS_DATA_UNCLASSIFIED", "has_data": true, "age_ms": 31, "sequence": 2, "threshold_profile": null}, "metrics": {}},
+    {"source_id": 1, "title": "K1 Main RPL 9087A500", "rx": {"state": "HAS_DATA_UNCLASSIFIED", "has_data": true, "age_ms": 35, "sequence": 2, "threshold_profile": null}, "metrics": {}}
+  ],
+  "non_claims": ["Fixture values are layout-test data, not device evidence.", "Missing metrics must remain visibly missing and must never become numeric zero."]
+}

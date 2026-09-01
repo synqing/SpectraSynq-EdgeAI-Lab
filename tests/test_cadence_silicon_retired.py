@@ -14,6 +14,8 @@ def test_cadence_runner_source_is_retired() -> None:
     src = SCRIPT.read_text(encoding="utf-8")
     assert "RETIRED: D20 CADENCE CLOSED" in src
     assert "refuse_if_cadence_closed" in src
+    assert src.find("def refuse_if_cadence_closed") < src.find("import numpy")
+    assert src.find("if __name__ == \"__main__\":") < src.find("import numpy")
     assert src.find("refuse_if_cadence_closed()") < src.find("ap.parse_args()")
 
 

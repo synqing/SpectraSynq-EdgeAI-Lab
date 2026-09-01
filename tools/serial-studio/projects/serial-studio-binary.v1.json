@@ -1,0 +1,58 @@
+{
+  "schema": "spectrasynq.serial-studio.binary-identity.v1",
+  "status": "TIER_A_BINARY_IDENTIFIED",
+  "edition": "GPLv3",
+  "application_version": "4.0.3",
+  "upstream_tag": "v4.0.3",
+  "upstream_tag_commit": "639daafb2fe7d324c3b2d5583d2514c8c470676f",
+  "source_branch": "feat/observe-only-project-policy",
+  "source_commit": "b47031d13b9226687e7b3c93d68d74921e40e058",
+  "binary_path": "/Users/spectrasynq/Serial-Studio/build-observe-only/app/Serial-Studio-GPL3.app/Contents/MacOS/Serial-Studio-GPL3",
+  "binary_sha256": "7dc93ed6e2c6a00a5e35a6835267d6e809d370d86cef417828880d035c0fd35b",
+  "binary_format": "Mach-O 64-bit executable arm64",
+  "code_signature": "adhoc linker-signed",
+  "build_configuration": {
+    "generator": "Ninja",
+    "build_type": "Release",
+    "production_optimisation": true,
+    "hardening": true,
+    "lto": true,
+    "build_gpl3": true,
+    "build_commercial": false,
+    "grpc": true,
+    "webengine": true,
+    "in_app_tests": true,
+    "mimalloc": false,
+    "system_zlib": true,
+    "system_expat": true
+  },
+  "dependencies": {
+    "qt": "6.11.1",
+    "grpc": "1.83.1",
+    "protobuf": "36.0"
+  },
+  "tier_a_checks": {
+    "application_link": "PASS",
+    "version_command": "PASS",
+    "headless_selftest": "PASS: 1 suite, 4 checks, 0 failures",
+    "headless_v2_load_smoke": "PASS: clean exit",
+    "focused_qt_tests": "PASS: 7 executables",
+    "malicious_all_write_surfaces": "PASS: 14 surfaces, zero transport callbacks",
+    "isolated_test_instance": "PASS: unique settings identity, loopback-only services, updater disabled, inherited write consent removed, project persistence refused"
+  },
+  "installed": false,
+  "runtime_validated": false,
+  "tier_b_host_policy_probe": {
+    "status": "PASS_GPL_POLICY_BOUNDARY",
+    "receipt": "tools/serial-studio/projects/tier-b-gpl-policy.v1.json",
+    "tcp_reads": "PASS",
+    "grpc_reads": "PASS",
+    "tcp_command_write": "OBSERVE_ONLY_PROJECT",
+    "tcp_raw_write": "OBSERVE_ONLY_PROJECT",
+    "grpc_command_write": "OBSERVE_ONLY_PROJECT",
+    "grpc_raw_write": "OBSERVE_ONLY_PROJECT",
+    "empty_streams": "DEADLINE_EXCEEDED",
+    "canonical_project_unchanged": true
+  },
+  "runtime_validation_open_reason": "The built GPL policy binary passed isolated Tier B read/refusal checks, but it is not installed and GPL strips the second source plus Pro Painter/Data Grid bindings. Full six-workspace runtime validation requires a Pro build carrying source commit b47031d13b9226687e7b3c93d68d74921e40e058."
+}

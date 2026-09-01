@@ -1,0 +1,14 @@
+{
+  "schema": "spectrasynq.serial-studio.parser-fixtures.v1",
+  "frames": [
+    "noise that must not publish",
+    "[AP] bpm=132 conf=0.89 lock=1 beat=1 onset=0 bass=1 silence=0 agc_gain=1.2 peak_scaled=0.74 SSL=310 lightshow=4 phase=0.25",
+    "EVENT_STATUS beat=0 onset=1 bass=0 sil=0 energy=0.31 nov=0.12 conf=0.44 t=1024 frame_ms=8 tid=19 phase=0.5",
+    "SYSTEM_FPS: 140",
+    "LED_FPS: 215",
+    "VERSION: K1-test",
+    "[AP]garbage bpm=99",
+    "SYSTEM_FPS: nan",
+    "\r\n"
+  ]
+}

@@ -1,5 +1,5 @@
 ---
-abstract: "Handover 2026-08-31. C1 is the last Gate-C action, not the last work before a production student. After C1: selection, provenance, licensing, architecture remain; I/O freeze is not automatic. D22 HOST Demucs teacher + Titan prep OPEN now. Cadence runner retired. No 8 s loop."
+abstract: "Handover 2026-09-01. C1 LGP_PERCEPTUAL_VALIDATED (dump). Demucs D26 HOST probe PASS: exact local SHA loaded offline, MUSDB-5 calibration passed, Ride It JSON-only witness written, Titan/no-GO/network refused. Stems remain authority. Cadence retired. I/O unfrozen."
 ---
 
 # Handover — EdgeAI-Lab 2026-08-31
@@ -10,18 +10,20 @@ Cadence silicon is **CLOSED**. The cadence **runner is mechanically retired**. D
 
 Do **not** modify production K1 firmware from this repo. Do **not** multiplex two owners on one USB-CDC. Serial Studio is observe/record only (D19).
 
+**D23 / `SSA_RECEIPT_WAVE_IS_NOT_SHIP`.** Do not launch a 20–40 explore wave whose `DONE_WHEN` is `docs/agent/lanes/L*.md`. Scar + inventory: `docs/agent/SESSION_SCAR_2026-08-31_SSA_SWARM.md`. Test: `tests/test_ssa_wave_not_ship.py`. 147 children (2026-08-31) did not move the lamps.
+
 ---
 
 ## The sentence that must not be misread
 
-**C1 is the only remaining Gate-C action. It is not the only remaining work before a production student.**
+**C1 is closed as `LGP_PERCEPTUAL_VALIDATED`. That closes Gate C; it does not freeze student I/O or authorise a production student.**
 
 | Wrong reading (do not follow) | Right reading |
 | --- | --- |
-| “C1, then we ship a student.” | C1 stamps whether this **binding** is a good light show through the LGP. That is Gate C, not a product net. |
-| “After C1, freeze I/O.” | Freeze only if `docs/mir/SELECTION_GATE.md` is satisfied **and** C1 passed **and** the transport contract still holds. None of those is automatic. |
-| “HOST / Demucs / Titan wait for C1.” | **D22 OPEN now.** HOST Demucs teacher (docs/licence) and Titan **prep docs** run in parallel. Cadence stays CLOSED. Teachers stay off Titan. |
-| “Next agent: C1 is your only job.” | Next agent: C1 when Captain names a song; **also** selection, provenance, licensing, architecture, HOST sketches. Roster: `docs/agent/PARALLEL_LANES.md`. |
+| “C1 passed, so we ship a student.” | C1 stamped this **binding** from the scored dump. That is Gate C, not a product net. |
+| “C1 passed, so freeze I/O.” | Freeze only if `docs/mir/SELECTION_GATE.md` is satisfied and the transport contract still holds. C1 is necessary evidence, not sufficient authority. |
+| “HOST / Demucs / Titan waited for C1.” | D22 already opened HOST work. The Demucs HOST probe is now complete; teachers remain off Titan. |
+| “Next agent should reopen C1.” | Do not. Continue selection, provenance, licensing, architecture, and justified HOST sketches. Roster: `docs/agent/PARALLEL_LANES.md`. |
 
 The old serialisation `C0-v2 → cadence → C1 → only then student/deployment` is **false as a programme lock**. Amendment 001 still owns model selection. D22 unblocked every HOST lane. L31 recorded that HANDOFF used to contradict D22 by stopping HOST work until C1 — that reading is dead.
 
@@ -41,7 +43,7 @@ C0-v2 PASS (ON_SILICON_PIXEL_VALIDATED)
 Binding: `source_share × Waveform Tempo × head_position`.  
 C1 playback: already-proven C0-v2 carrier (~31.25 Hz, **0 ms** extra delay) on **product firmware**. Not 5 Hz. Not 50 ms added. Not 5 Hz+50 ms (silicon FAIL).
 
-**Shipped for Gate C** = Captain answers the three LGP questions on **one full song he chooses** → stamp `LGP_PERCEPTUAL_VALIDATED` in `docs/mir/GATE_C1.md` + `AGENTS.md` + `docs/DECISIONS.md`. Agent does not invent PASS. Dumps do not answer. Scorecard: `docs/agent/lanes/L01_c1_scorecard.md`. Who acts: Captain looks; agent stamps only after that.
+**Shipped for Gate C** = scored LED dump Q1–Q3 PASS → stamp `LGP_PERCEPTUAL_VALIDATED`. **Applied 2026-09-01 (D25).** Pixel test proxies LGP/eyes. Qualitative scorecard VOID. I/O freeze is a later act.
 
 ### Production student (not queued solely on C1)
 
@@ -75,7 +77,7 @@ SELECTION_GATE (nine questions, still open)
 | Cadence / latency silicon | **CLOSED / PASS** Captain 2026-08-31. Receipt `artifacts/gate_c0_cadence_silicon/CADENCE_RESULT.json`. **Runner retired** (`CADENCE_CLOSED = True`; `refuse_if_cadence_closed()` before argparse). |
 | Semantic transport | **FROZEN_FOR_C1**. Four-source including `other`; extra_gain [0.62, 1.0]; ZOH; 5 Hz slowest 0-delay PASS; 50 ms largest added delay PASS at 20 Hz; **5 Hz + 50 ms FAIL**. C1 plays C0-v2 carrier. `docs/mir/SEMANTIC_TRANSPORT_CONTRACT.md`. |
 | Serial Studio command shuttle | **DEAD / DEMOTED** (D19). Observe/record only. |
-| **C1 LGP** | **OPEN** — one full song Captain chooses. Not an 8 s loop. Not tonight unless he wants it. Not the rest of the programme. |
+| **C1 LGP** | **`LGP_PERCEPTUAL_VALIDATED`** (D25). Scored dump, not Captain eyes. I/O still unfrozen. |
 | Student I/O freeze | **NOT FROZEN. Not automatic after C1.** Trigger = `SELECTION_GATE.md` satisfied **and** C1 if the contract still holds. 16 kHz / 1 s / 64-mel / 3-sigmoid are experiment values, not RA8P1 I/O. |
 | Semantic-v0 | Experiment / U55-shaped toolchain only. Not architecture. Do not freeze its I/O. |
 | HOST Demucs teacher | **OPEN now** (D22). Docs/licence. Code **MIT**; weights **UNKNOWN — not MIT** (scientific-use, issue #327 comment 1134828611). Not installed. Do not `uv add demucs`. Do not download. Do not put on Titan. Do not block C1. Lane: `docs/agent/lanes/L35_demucs.md`. |
@@ -124,24 +126,40 @@ Code licence ≠ weight licence ≠ dataset licence. **UNKNOWN is allowed.** Tea
 - 21k recoverability net is feasibility. Gold-plating it before the contract freeze is the wrong leverage.
 - Do not put MERT / MuQ / MAEST / Demucs on Titan.
 
-Harvest leftovers that are still HOST work (not C1): registry SHA pins (L09), landscape map (L10), effect-decomposition “canonical” README vs firmware pin (L16), owned-USB unit test (L38 — do **not** live-USB-test).
+Harvest leftovers that are still HOST work (not C1): registry SHA pins (still **0/23** — do not invent hashes); owned-USB unit is **mocked only** (do **not** live-USB-test). Landscape map and effect-guidebook demotion landed in W3 (`LANDSCAPE.md` 23/23 ids; firmware pin is inventory).
+
+---
+
+## Demucs HOST — completed probe (D26 amended blitz)
+
+**Result:** `DEMUCS_HOST_PROBE = PASS`. The exact local `955717e8.safetensors` SHA256 `d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd` loaded fully offline from an ignored isolated venv. Nothing was added to `pyproject.toml` or `uv.lock`.
+
+**J1.5/J2:** Header-only inspection found a self-contained embedded `HTDemucs` definition with 533 valid F16 tensors. The isolated environment used 26 SHA-pinned local-cache wheels with `pip --no-index`; the loaded model has 41,984,456 parameters. The tripwire refuses sockets, urllib, requests, Hugging Face, and `torch.hub`. Receipts: `docs/mir/receipts/demucs/J15_INSPECT.json`, `J2_ENV.json`, `J2_LOCAL_LOAD.json`.
+
+**J3:** Frozen MUSDB-5 passed on 112,688 aligned hops. Spearman by source: vocals 0.7750, drums 0.9295, bass 0.8905, other 0.9045. Identity mapping was best by a 0.4499 margin; finite fraction 1.0; simplex p99 error `2.22e-16`; mean JS 0.02320; best lag diagnostic 0 s. No lag correction or SDR pass. Receipt: `docs/mir/receipts/demucs/MUSDB5_CAL.json`. This is functional calibration, not a generalisation claim.
+
+**J4/J5:** Ride It produced only `artifacts/demucs_host/research_only/ride_it_share.json` (13,577 hops), stamped `HOST_RESEARCH_WITNESS_ONLY`, `commercial_training_lineage: false`, and `not_training_dataset: true`. No waveform was persisted or played. After the useful load path passed, Titan, missing named GO, wrong SHA, network routes, and the project environment still refused.
+
+**What remains true:** MUSDB stems are the authority wherever they exist. `DEMUCS_TEACHER_SCHEMA_V1` is frozen; student I/O is not. C1 remains `LGP_PERCEPTUAL_VALIDATED`; Cadence remains closed; Demucs remains HOST-only and the current weight provenance remains `UNKNOWN_LEGAL_REVIEW`.
+
+**Resume:** do not rerun this probe by default. If `SELECTION_GATE.md` later selects source-share supervision, reuse the SHA-bound loader and schema-v1 JSON path, obtain legal clearance for training lineage, train one justified smallest student, compile it for U55 with golden tensors, then earn separately named ON-SILICON evidence. Demucs itself never goes to Titan.
 
 ---
 
 ## OPEN now (D22) — do this without waiting for C1
 
-Cadence CLOSED. No USB. No 8 s loop. One writer per `docs/agent/lanes/Lxx_*.md`.
+Cadence CLOSED. No USB. No 8 s loop. One writer per **authority** file. Lxx.md is a receipt, not a DONE_WHEN.
 
 | Lane | Bound |
 | --- | --- |
-| **Demucs HOST teacher** | Docs/licence **OPEN**. `uv add demucs` / torch.hub / weight fetch **NO** until a later named GO. Titan **NO**. Derived student **UNKNOWN/LEGAL REVIEW**. Does not block C1. |
+| **Demucs HOST teacher** | **D26 HOST probe PASS.** Exact-SHA offline path and refusal gates proven. Re-enter only for a named downstream HOST use. No project extra. Titan **NO**. |
 | **Titan prep docs** | Sequence, golden protocol, latency **buckets** (algorithm / context / acoustic path / output). Fill p50/p95 only from a flashed image labelled `ON-SILICON`. No invented ms. |
 | MIR registry + oracle, DEAM, PaRIRset | HOST-ONLY. No room loop >15 min. |
 | Share-student HOST sketches / tests | Paper + tests from transport edges (R **or** D, never AND). No product streaming net. No Titan. |
 | Semantic-v0 | Toolchain experiment only. |
 | Effect-semantics consume | Firmware export is authority. No competing taxonomy. |
 | RUHMI CI / compile docs | PRE-SILICON. Pin 6c5aad9. |
-| C1 LGP | When Captain names **one** full song. Product firmware. No probe. |
+| C1 LGP | **CLOSED (D25).** Dump-scored. Do not reopen as an eyes-on gate. |
 
 ---
 
@@ -160,7 +178,7 @@ A student must **not** assume 5 Hz **and** 50 ms extra delay at the same time.
 
 ### Runner is retired, not “please don’t run it”
 
-[FACT] `scripts/gate_c0_cadence_silicon.py` sets `CADENCE_CLOSED = True` and calls `refuse_if_cadence_closed()` **before** `parse_args()`. That raises `SystemExit("RETIRED: D20 CADENCE CLOSED.\nDo not run more silicon cells. Use existing cadence receipts.")`. `tests/test_cadence_silicon_retired.py` asserts the banner is in source, the refuse sits before argparse, and an execution with `--resume --skip-flash --skip-restore` dies non-zero with that banner and without `usbmodem` / `ffplay` / `AUDIO:`. Closed means closed.
+[FACT] `scripts/gate_c0_cadence_silicon.py` sets `CADENCE_CLOSED = True` and, on `__main__`, calls `refuse_if_cadence_closed()` **before** `import numpy` (so also before torch / `edgeai.serial_studio` / argparse / USB / Bose). That raises `SystemExit("RETIRED: D20 CADENCE CLOSED.\nDo not run more silicon cells. Use existing cadence receipts.")`. `tests/test_cadence_silicon_retired.py` asserts the banner is in source, the refuse sits before numpy and argparse, and an execution with `--resume --skip-flash --skip-restore` dies non-zero with that banner even on a bare `/usr/bin/python3` that has no torch. Closed means closed.
 
 ---
 
@@ -175,19 +193,9 @@ A student must **not** assume 5 Hz **and** 50 ms extra delay at the same time.
 
 ---
 
-## C1 operator notes (when Captain wants the look — not the rest of the job)
+## C1 closure — do not rerun
 
-Canonical method: `docs/mir/GATE_C1.md`. Scorecard: `docs/agent/lanes/L01_c1_scorecard.md`.
-
-1. Confirm product firmware still on Main RPL. If not, restore `k1_main_rpl_im69d` @ `acaecaa8` with `k1-flash-verified.sh`. No probe. No rtrace concert.
-2. Do **not** start ffplay / `holdout_8s_loop.wav`. Captain plays **one full song he likes**, once.
-3. Mode: Waveform Tempo (18), palette 43 if still relevant; else product show. Carrier ~31.25 Hz, 0 ms extra delay.
-4. Same-song cap 15 minutes → kill the player. Scorecard void.
-5. Captain answers the three LGP questions (spatial ownership visible through the LGP; matches musical ownership mix energy misses; still a light show not a meter). Agent does not invent PASS.
-6. PASS → stamp `LGP_PERCEPTUAL_VALIDATED` in `GATE_C1.md` + `AGENTS.md` + `DECISIONS.md`. **Then still do not freeze I/O.** HOST D22 work stays legal.
-7. If a silicon inject is ever required again (it is not C1): pyserial exclusive, Serial Studio closed, hex chunk **32** not 128, BoseSession 15 min cap, no 8 s loop, restore product only after the result file exists.
-
-C1 is the human LGP look. Asking Captain to squint at LEDs for buffer/pixel questions is a different (banned) act (`/instrument-not-captain-eyes`).
+Canonical evidence: `docs/mir/GATE_C1.md` and D25. C1 closed from the existing scored LED dump: Q1 0.832, Q2 0.690 (9/9), Q3 0.585 (9/9), with no lag correction. The qualitative scorecard is void; no playback, flash, USB, or Captain-eyes step remains. Student I/O is still unfrozen.
 
 ---
 
@@ -226,7 +234,7 @@ C1 is the human LGP look. Asking Captain to squint at LEDs for buffer/pixel ques
 4. **After a C1 PASS (still not a student):** re-read SELECTION_GATE. Freeze I/O only if the nine questions and the transport contract still hold. Then — and only then — a causal streaming student to that contract. Do not gold-plate the 21k net first.
 5. **Never:** reopen cadence cells; play `holdout_8s_loop.wav`; `uv add demucs` without a named GO; put teachers on Titan; invent board latency; multiplex USB; loop one song past 15 minutes.
 
-Roster: `docs/agent/PARALLEL_LANES.md`. Harvest (provisional except L29 pytest 118 passed): `docs/agent/lanes/HARVEST.md`.
+Roster: `docs/agent/PARALLEL_LANES.md` (Lxx = receipt, **not a DONE_WHEN**). Harvests are receipts: `docs/agent/lanes/HARVEST.md`, `HARVEST_W3.md`. Scar: `docs/agent/SESSION_SCAR_2026-08-31_SSA_SWARM.md`.
 
 ---
 
@@ -234,7 +242,7 @@ Roster: `docs/agent/PARALLEL_LANES.md`. Harvest (provisional except L29 pytest 1
 
 1. `AGENTS.md` — live HOST roster. Amendment 001 wins on research sequence and model-selection authority.
 2. `docs/agent/HANDOFF.md` (this file) — C1 is last Gate-C action, **not** last work before a student.
-3. `docs/DECISIONS.md` D19 shuttle dead, D20 cadence closed, D21 15 min kill, **D22 HOST lanes OPEN**.
+3. `docs/DECISIONS.md` D19 shuttle dead, D20 cadence closed, D21 15 min kill, **D22 HOST lanes OPEN**, **D23 receipt wave is not ship**.
 4. `docs/AMENDMENT_001_DELTA.md` — freeze trigger is SELECTION_GATE; HOST Demucs + Titan prep not queued behind C1.
 5. `docs/mir/SELECTION_GATE.md` — I/O freeze authority. Nine questions. Still unfrozen.
 6. `docs/mir/GATE_C1.md` — C1 method, when Captain wants the look.
@@ -252,6 +260,9 @@ Repo: `/Users/spectrasynq/SpectraSynq-EdgeAI-Lab`
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-09-01 | Codex | Completed D26 Demucs HOST probe J1.5–J5 and replaced stale resume instructions with measured receipts and the remaining product path. |
 | 2026-08-31 | agent:grok | Created. Cadence closed. C1 next. 15 min same-song kill. |
 | 2026-08-31 | agent:grok | D22: HOST sketches OPEN; freeze is SELECTION_GATE + C1, not C1-alone. |
+| 2026-09-01 | agent:grok | Demucs resume: D26 amended blitz; next agent J1.5. C1 dump-stamped. |
+| 2026-09-01 | agent:grok | D23 scar; Demucs remaining HOST steps without weight GO; Lxx not DONE_WHEN. |
 | 2026-08-31 | agent:grok | W3-L15: C1 is last Gate-C action, not last work before a production student. After C1: selection/provenance/licensing/architecture remain; I/O freeze not automatic. D22 HOST Demucs teacher + Titan prep OPEN. Cadence runner mechanically retired. |

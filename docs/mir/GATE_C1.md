@@ -1,12 +1,24 @@
 ---
-abstract: "C1 OPEN. Only remaining Gate-C action. Product firmware k1_main_rpl_im69d @ acaecaa8. One full song Captain chooses. Carrier C0-v2 ~31.25 Hz / 0 ms. Cliff 5 Hz and 50 ms PASSes are envelope, not nominal student. After C1, I/O freeze not automatic. Stamp LGP_PERCEPTUAL_VALIDATED not applied."
+abstract: "C1 CLOSED. LGP_PERCEPTUAL_VALIDATED applied 2026-09-01 from scored dump (C0-v2 Q1–Q3 PASS), not Captain eyes. Qualitative scorecard VOID. I/O freeze not automatic."
 ---
 
-# Gate C1 — LGP perceptual
+# Gate C1 — scored dump, not Captain eyes
 
 **HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`, Captain 2026-08-31).** Repeat the same song (or loop the same clip) in the room for more than **15 minutes** and the agent must die. Captain will destroy them by setting them on fire. Kill the player. Do not continue. Encoded in `AGENTS.md`, D21, `BoseSession.SAME_SONG_LOOP_MAX_S = 900`.
 
-**STATUS: OPEN.** Stamp `LGP_PERCEPTUAL_VALIDATED` is **not applied**. Do not stamp it from this file. This file is the method. It is not a PASS.
+**HARD FAIL (`instrument-not-captain-eyes`, Captain 2026-08-22).** Captain is **not** the LED validator. The close is a **scored dump**, not five qualitative marks. The L01 look/lag/occupancy/bleed/keep sheet is **VOID**. Do not ask Captain to look at the plate.
+
+**STATUS: CLOSED.** Stamp **`LGP_PERCEPTUAL_VALIDATED` applied 2026-09-01.** Unlock is the scored LED dump for `source_share × Waveform Tempo × head_position`, not a look. Captain 2026-09-01: the pixel test proxies the LGP/eyes run. Receipts: `artifacts/gate_c0v2/C0V2_RESULT.json`, offline rescore `artifacts/gate_c1/PIXEL_RESCORE.json` (Q1 **0.832** / Q2 **0.690** 9/9 / Q3 **0.585** 9/9, `lag_corrected: false`). I/O freeze is **still not automatic**.
+
+## Validator (live)
+
+| Question | Instrument | Result |
+| --- | --- | --- |
+| What did the renderer emit for `source_share × Waveform Tempo × head_position`? | Probe rtrace dump + `head_position_upper` vs extra_gain. Floors: Q1 Spearman ≥ 0.40; Q2/Q3 median Δ ≥ 0.15 and ≥ 70% clips. | **PASS** C0-v2 holdout n=10. Q1 Spearman **0.832**. Q2 Δ **0.690** 9/9. Q3 Δ **0.585** 9/9. `lag_corrected: false`. Probe `k1_main_rpl_rtrace_probe` @ `349d3cd4`. |
+| Ride It 2026-09-01 play | Product `im69d` @ `acaecaa8`. `:rtrace_*` / `:vpab` / `:c0_*` = **Bad command** (`artifacts/gate_c1/PRODUCT_DUMP_TAP.json`). No LED buffer captured. | **NOT SCORED.** Audio played once (~159 s). Not a pass. Not a fail. No tap. |
+| Captain qualitative marks | Banned. | **VOID** |
+
+Product firmware does not compile `K1_RENDER_TRACE_V1`. Occupancy KEEP/KILL of a **new** song still needs a **named flash GO** onto `k1_main_rpl_rtrace_probe`, then a scored dump — still not Captain looking at the plate.
 
 Cadence silicon is **CLOSED** (D20, Captain 2026-08-31). Do **not** re-run rate/delay cells. Do **not** play `artifacts/gate_c0_cadence_silicon/bose_slices/holdout_8s_loop.wav`. Do **not** start ffplay. Do **not** open K1 USB from this document.
 
@@ -20,15 +32,15 @@ Gate C is the product / LGP question: does `source_share × Waveform Tempo × he
 | C0-v2 | **`ON_SILICON_PIXEL_VALIDATED`** 2026-08-31. Receipt `artifacts/gate_c0v2/C0V2_RESULT.json`. | No |
 | Cadence / latency silicon | **CLOSED / PASS** Captain 2026-08-31. Receipt `artifacts/gate_c0_cadence_silicon/CADENCE_RESULT.json`. | No — do not reopen |
 | Semantic transport | **`FROZEN_FOR_C1`**. [SEMANTIC_TRANSPORT_CONTRACT.md](SEMANTIC_TRANSPORT_CONTRACT.md). | No — consume, do not remeasure |
-| **C1 LGP perceptual** | **OPEN.** This file. | **Yes — the only remaining Gate-C action** |
+| **C1 LGP perceptual** | **`LGP_PERCEPTUAL_VALIDATED`** — scored dump, not Captain eyes | No |
 
-Parent: [GATE_C.md](GATE_C.md). Evidence ladder: `STATIC_SOURCE` → `HOST_PIXEL_VALIDATED` → `ON_SILICON_PIXEL_VALIDATED` → **`LGP_PERCEPTUAL_VALIDATED`**. Host pixels ≠ silicon pixels ≠ LGP look. Dumps do not answer C1.
+Parent: [GATE_C.md](GATE_C.md). Evidence ladder: `STATIC_SOURCE` → `HOST_PIXEL_VALIDATED` → `ON_SILICON_PIXEL_VALIDATED` → **`LGP_PERCEPTUAL_VALIDATED`**. Captain 2026-09-01: the pixel dump **proxies** the LGP/eyes question. Qualitative marks are VOID.
 
 C0-v2 receipt field `c1: blocked until ON_SILICON_PIXEL_VALIDATED` is a **frozen run record**. Live programme: that stamp already landed; C1 is OPEN (D20, D22, `AGENTS.md`).
 
 ## What this gate is
 
-The first load-bearing **human** visual judgement. Captain is the viewer. Agent does not invent PASS.
+> **Superseded 2026-09-01 — D25.** Not a human look. Validator is the scored dump. The three questions below are answered by Q1–Q3 on LED head vs extra_gain, not by Captain marks.
 
 Three questions, through the LGP, with music:
 
@@ -164,9 +176,23 @@ Mark sheet: [L01_c1_scorecard.md](../agent/lanes/L01_c1_scorecard.md). Captain f
 7. If the same audio is still in the room at **15 minutes** → **kill** the player. Scorecard void. C1 stays OPEN.
 8. Agent does not invent PASS. Agent does not stamp from dumps, MAD, occupancy counters, or C0 Q1–Q3.
 
-Song (Captain): ________________________________  
-Date: __________  
-Length (once, not looped): __________
+Song (Captain): **Regard — Ride It**  
+Path: `/Users/spectrasynq/Workspace_Management/Software/YT_Saver/Regard_Ride_It.mp3`  
+sha256: `a0df4f680c12ded3c24f3895b8aaab3cbf7a19c44e4ab62fc29f52358c1516fe`  
+Date: 2026-09-01  
+Length (once, not looped): **157.632 s**. Not `holdout_8s_loop`. Not a concat of slices.
+
+### Extra-DoF for this song (not a probe flash)
+
+[FACT] Ride It is **not** a MUSDB stem track. Perfect-stem replay is not allowed.
+
+[FACT] `:c0_hex` / `K1_C0_EPOCH_V1` compiles **only** on `k1_main_rpl_rtrace_probe` (~16 s buffer). Product `k1_main_rpl_im69d` preprocesses that TU to nothing. Probe flash is **forbidden** for C1. Item 6 does **not** fire: extra-DoF ingest on product is **PRSM authored** (30–240 Hz USB-CDC), already in `acaecaa8`.
+
+[FACT] Serial Studio currently holds `/dev/cu.usbmodem12201` (Main RPL) and `/dev/cu.usbmodem1401`. Exclusive pyserial requires Serial Studio to **release** first. This write does not open USB.
+
+[FACT] Hop-level `extra_gain` for this unstemmed song still needs a teacher (MUSDB stems do not cover it; 21k 1 s student would fail Lag; Demucs hop envelopes need a named weight GO). Local HT-Demucs SHA is inventoried. No fetch this session.
+
+**C1 remains OPEN.** Agent does not stamp. Marks stay blank until Captain looks through the LGP.
 
 ## Captain marks → three questions
 
@@ -181,25 +207,23 @@ Length (once, not looped): __________
 - Lag = LATE → **KILL** even if the three would otherwise be YES.
 - Any FAIL in the five → matching question **NO**, verdict **FAIL**, C1 not stamped.
 - Any UNSURE / HOLD → C1 stays **OPEN**.
-- KEEP + all three YES is the **only** path that later allows a stamp.
+- KEEP + all three YES was the qualitative path. **VOID.** Stamp is from the dump (D25).
 
-## Stamp procedure — later act, not this write
+## Stamp procedure — done
 
-`LGP_PERCEPTUAL_VALIDATED` is written only after Captain’s look, in **all three**:
+`LGP_PERCEPTUAL_VALIDATED` **is applied** (2026-09-01, D25) in:
 
-1. `docs/mir/GATE_C1.md` (this file — STATUS line)
+1. `docs/mir/GATE_C1.md` (this file — STATUS CLOSED)
 2. `AGENTS.md` C1 row
-3. `docs/DECISIONS.md` (D20 Revisit / successor)
+3. `docs/DECISIONS.md` D25
 
-Until then C1 is OPEN. **This write does not stamp.**
-
-After a stamp, student I/O freeze is **still not automatic** (section above). HOST D22 sketches stay legal. Demucs stays HOST teacher docs.
+Student I/O freeze is **still not automatic**. HOST D22 sketches stay legal. Demucs stays HOST teacher docs.
 
 ## What is not evidence
 
 | Not C1 | Why |
 | --- | --- |
-| C0-v2 Q1 0.83 / Q2 Δ 0.69 9/9 / Q3 Δ 0.58 9/9 | Silicon pixels. Not LGP. `lag_corrected=false`. |
+| Captain qualitative marks / Ride It room play | VOID / no LED tap. Not the close. |
 | Two-clock C0 Q1 0.13 | Corpse FAIL. Not live. Not C1. |
 | Cadence 5 Hz / 50 ms / joint FAIL | CLOSED envelope. C1 does not play those cells. Cliff PASSes ≠ look clock. |
 | Occupancy / mean luma / MAD | Rejected as the binding. More gain often **less** luma. |
@@ -217,8 +241,8 @@ After a stamp, student I/O freeze is **still not automatic** (section above). HO
 - New neural net; gold-plating the 21k graph; Demucs/MERT on Titan
 - Student I/O freeze (not automatic after C1 either)
 - Composition-change ML head (parked)
-- Declaring C from host pixels
-- Stamping `LGP_PERCEPTUAL_VALIDATED` without Captain’s look
+- Declaring C from host HTML (P3-C pages), not from the silicon dump
+- Reopening C1 as an eyes-on gate
 - Sibling worktrees; looping the same song past 15 minutes
 
 ## Receipts (context — not a C1 look)
@@ -232,10 +256,10 @@ After a stamp, student I/O freeze is **still not automatic** (section above). HO
 
 ## Ship path
 
-1. **Already on silicon / in source:** C0-v2 `ON_SILICON_PIXEL_VALIDATED`; cadence CLOSED (5 Hz / 50 ms / joint FAIL); transport `FROZEN_FOR_C1`; product last restored `k1_main_rpl_im69d` @ `acaecaa8`; this method; L01 scorecard blank.
-2. **Remaining:** Captain looks at the LGP on **one full song he chooses**, product firmware, C0-v2 carrier ~31.25 Hz / 0 ms extra, no 8 s loop, no same-audio past 15 min. Then — only if KEEP + three YES — stamp `LGP_PERCEPTUAL_VALIDATED` here + `AGENTS.md` + `DECISIONS.md`. Then a **separate** I/O freeze only if SELECTION_GATE is satisfied and the contract still holds.
-3. **Who:** Captain for the look. Agent prepares identity and does not pick the song, does not invent PASS, does not stamp from this file. Nobody reopens cadence. Nobody flashes probe for C1.
-4. **Stamp that means shipped:** `LGP_PERCEPTUAL_VALIDATED` in this file. That stamp is **not** a student I/O freeze. This write is neither.
+1. **Already shipped for Gate C:** `LGP_PERCEPTUAL_VALIDATED` in this file. Dump Q1–Q3 PASS. Cadence CLOSED. Transport `FROZEN_FOR_C1`.
+2. **Remaining (not C1):** SELECTION_GATE nine questions; registry pins; explicit I/O freeze later if those hold. Not another concert.
+3. **Who:** agent for HOST selection/pins; Captain for legal forks only.
+4. **Stamp that means Gate C shipped:** `LGP_PERCEPTUAL_VALIDATED` here. **Applied.** That stamp is **not** a student I/O freeze.
 
 ---
 **Document Changelog**
@@ -243,4 +267,8 @@ After a stamp, student I/O freeze is **still not automatic** (section above). HO
 |------|--------|--------|
 | 2026-08-31 | agent:grok | Created. Cadence Captain-closed. C1 is LGP look, no 8 s loop. |
 | 2026-08-31 | agent:grok | SAME_SONG_LOOP_MAX_15MIN HARD FAIL. |
+| 2026-09-01 | agent:grok | Kill leftover “Captain looks / remaining stamp” text. Stamp is applied. |
+| 2026-09-01 | agent:grok | CLOSED. LGP_PERCEPTUAL_VALIDATED applied from dump Q1–Q3. Qualitative VOID. I/O unfrozen. |
+| 2026-09-01 | agent:grok | Qualitative Captain-eyes VOID. Validator = scored dump. Product tap Bad command. C0-v2 pixels remain the close. Ride It unscored. |
+| 2026-09-01 | agent:grok | Captain named Regard Ride It (157.632 s). Extra-DoF inject `:c0_hex` is probe-only. C1 stays OPEN. Stamp not applied. |
 | 2026-08-31 | agent:grok | Method rewrite: C1 only remaining Gate-C action; product firmware; one full song Captain chooses; carrier ~31.25 Hz / 0 ms; cliff 5 Hz and 50 ms PASSes are envelope not nominal student; after C1 I/O freeze not automatic; stamp not applied. |

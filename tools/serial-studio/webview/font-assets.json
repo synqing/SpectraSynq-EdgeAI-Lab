@@ -1,0 +1,35 @@
+{
+  "schema": "spectrasynq.serial-studio.local-font-assets.v1",
+  "policy": "local-user-assets-only",
+  "redistribution_permitted": false,
+  "assets": [
+    {
+      "route": "/assets/fonts/countach-regular.otf",
+      "family": "Countach",
+      "style": "normal",
+      "weight": 400,
+      "path": "/Users/spectrasynq/Library/Fonts/Countach-Regular.otf",
+      "sha256": "5e7745254b6019bbde867c245956d7f0773ac3fd7eae6a149f6023b3e75b4504",
+      "mime": "font/otf"
+    },
+    {
+      "route": "/assets/fonts/countach-bold-italic.otf",
+      "family": "Countach",
+      "style": "italic",
+      "weight": 700,
+      "path": "/Users/spectrasynq/Library/Fonts/Countach-BoldItalic.otf",
+      "sha256": "3d73ae0009ae4c299addee70610bc921fc2203c4164b29958d69a20d6cc3ee34",
+      "mime": "font/otf"
+    },
+    {
+      "route": "/assets/fonts/berkeley-mono-regular.ttf",
+      "family": "Berkeley Mono",
+      "style": "normal",
+      "weight": 400,
+      "path": "/Users/spectrasynq/Library/Fonts/BerkeleyMono-Regular.ttf",
+      "sha256": "9ec90775ec47d2142036f3907f299bac38c9ba0fd7e14148696bcda4b419cada",
+      "mime": "font/ttf",
+      "licence_note": "User-supplied Berkeley Mono Trial file; never copied into the repository or evidence bundles."
+    }
+  ]
+}

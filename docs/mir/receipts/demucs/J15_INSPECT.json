@@ -1,0 +1,84 @@
+{
+  "actual_sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd",
+  "audio_channels": 2,
+  "checkpoint_id": "955717e8",
+  "checkpoint_path": "/Users/spectrasynq/.cache/huggingface/hub/models--adefossez--HTDemucs/snapshots/bf35a81b663819a8255c8fefee17f9d812b786b5/955717e8.safetensors",
+  "checks": {
+    "class_match": true,
+    "companion_references_checkpoint": true,
+    "model_definition_in_metadata": true,
+    "size_match": true,
+    "source_set_valid": true,
+    "tensor_index_valid": true
+  },
+  "companions": {
+    "config_json_absent": true,
+    "htdemucs_yaml_present": true,
+    "htdemucs_yaml_references_checkpoint": true,
+    "htdemucs_yaml_sha256": "239c445d0b14454d541ad8bd9bb271c9e536d267e8a4625208744cbb2e7bb66c",
+    "snapshot_entries": [
+      {
+        "is_symlink": true,
+        "name": "955717e8.safetensors",
+        "resolved_size": 84025440,
+        "symlink_target": "../../blobs/d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd"
+      },
+      {
+        "is_symlink": true,
+        "name": "htdemucs.yaml",
+        "resolved_size": 21,
+        "symlink_target": "../../blobs/0d5f2089fa3e1a0335d93de070f6802598cd4a4d"
+      }
+    ]
+  },
+  "config_synthesised": false,
+  "errors": [],
+  "expected_sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd",
+  "expected_size": 84025440,
+  "file_size": 84025440,
+  "job": "J1.5",
+  "label": "HOST-ONLY",
+  "model_args": [],
+  "model_class": "demucs.htdemucs.HTDemucs",
+  "model_definition_source": "SAFETENSORS_METADATA",
+  "model_source_order": [
+    "drums",
+    "bass",
+    "other",
+    "vocals"
+  ],
+  "network_attempted": false,
+  "package_installed": false,
+  "safetensors_header_bytes": 56520,
+  "samplerate": 44100,
+  "segment": {
+    "_type": "fraction",
+    "denominator": 5,
+    "numerator": 39
+  },
+  "sha256_match": true,
+  "sha256_stream_chunk_bytes": 1048576,
+  "size_match": true,
+  "structurally_plausible": true,
+  "student_io_frozen": false,
+  "teacher_schema": "DEMUCS_TEACHER_SCHEMA_V1",
+  "teacher_source_mapping": {
+    "bass": 1,
+    "drums": 0,
+    "other": 2,
+    "vocals": 3
+  },
+  "tensor_index": {
+    "dtype_counts": {
+      "F16": 533
+    },
+    "errors": [],
+    "offsets_and_shapes_valid": true,
+    "tensor_count": 533,
+    "tensor_key_sha256": "25ad8e823816348fba5e7d20faf73c0b797d63c0df47c395c501b47509e26419"
+  },
+  "tensor_load": false,
+  "tensor_payload_bytes": 83968912,
+  "titan": false,
+  "verdict": "STRUCTURALLY_PLAUSIBLE_FOR_OFFLINE_LOAD_PROBE"
+}

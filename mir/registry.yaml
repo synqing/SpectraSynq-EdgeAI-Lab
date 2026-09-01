@@ -1,7 +1,7 @@
 # SpectraSynq MIR asset registry — Amendment 001
 # Licensing fields are independent. UNKNOWN is allowed. Not legal advice.
 schema_version: 1
-updated: 2026-08-31
+updated: 2026-09-01
 # commercial_training_lineage: false means never mix this audio/weights into a
 # shipping SpectraSynq student. Research oracles may still be used as HOST-ONLY
 # perfect-information tests. UNKNOWN is allowed.
@@ -10,6 +10,13 @@ updated: 2026-08-31
 #   cadence silicon CLOSED (Captain; docs/mir/GATE_C0_CADENCE.md)
 #   C1 OPEN (docs/mir/GATE_C1.md)
 # Two-clock C0 corpse remains FAIL (artifacts/gate_c0/). Do not invent SHAs.
+# Pins (2026-09-01): HOST-ONLY measured. 0 invented.
+#   content_sha256 = sha256 of a file on this host. git_sha = verified git short.
+#   uv_lock_hash = wheel hash copied from uv.lock (not a hash of uv.lock).
+#   Entries without those keys stay unpinned / UNKNOWN. Empty hash fields omitted.
+# Firmware Atlas pin verified 2026-09-01 via SpectraSynq_K1_Firmware
+#   `git cat-file -t` / `rev-parse --short=8`: git_sha 36466cd5
+#   full 36466cd56c90b9cafa571bc5029b5d38bc0543bb (not this lab HEAD).
 entries:
 
   - id: librosa
@@ -36,7 +43,10 @@ entries:
     attribution: required (copyright notice)
     redistribution: per ISC
     status: executed
-    spectrasynq: "Baseline conventional MIR in the host oracle. Do not replace with NPU."
+    uv_lock_hash: "librosa==1.0.0 py3-none-any.whl sha256:5910a6c0e1b2e494b92758c1615a7acbd0515a2315e138927ba2982f2af88857"
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "Baseline conventional MIR in the host oracle. Do not replace with NPU. uv.lock py3.12 resolves 1.0.0 (also lists 0.11.0 for py<3.12; not pinned)."
 
   - id: mir_eval
     kind: library
@@ -62,7 +72,10 @@ entries:
     attribution: required
     redistribution: per licence
     status: researched
-    spectrasynq: "Use for MIR correctness. Never as a proxy for visual utility."
+    uv_lock_hash: "mir_eval==0.8.2 py3-none-any.whl sha256:114cda33d8e17408c170598e0b36ed0d71ff4a2fee8eaf9e165b58ecf1c87170"
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "Use for MIR correctness. Never as a proxy for visual utility. Wheel hash copied from uv.lock."
 
   - id: mirdata
     kind: library
@@ -498,7 +511,10 @@ entries:
     attribution: required
     redistribution: weights unclear
     status: researched
-    spectrasynq: "HOST teacher only, not Titan. Not executed here (weights not installed). Teacher use does not clear derived student weights. Do not treat PyPI MIT as a weights grant."
+    content_sha256: "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd"
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "HOST teacher only, not Titan. Not executed here. Local HF cache 955717e8.safetensors sha256 measured 2026-09-01 (matches expected d9fa1413…). Teacher use does not clear derived student weights. Do not treat PyPI MIT as a weights grant. Do not uv add demucs."
 
   - id: banquet
     kind: model
@@ -552,7 +568,10 @@ entries:
     attribution: n/a
     redistribution: no
     status: executed
-    spectrasynq: "Toolchain witness only. Not architecture authority. Re-enter iff selection gate picks source-activity with a real teacher."
+    content_sha256: "c5d5e8e72c6ea0acd157568b98194664ac85dbc2aded4c4b3799c45805c0dc5f"
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "Toolchain witness only. Not architecture authority. Re-enter iff selection gate picks source-activity with a real teacher. content_sha256 is artifacts/golden/index.json (HOST-ONLY, 2026-09-01). Checkpoint experiments/semantic_v0_synth/semantic_v0_best.pt also hashed: f1b88297af9890a67551012d83581046708cd9e1803eda66e99459a82d65fb79."
 
   - id: parirset
     kind: dataset
@@ -634,3 +653,35 @@ entries:
     redistribution: UNKNOWN
     status: researched
     spectrasynq: "Optional glue so we do not depend on Demucs itself. Teacher signal is activity envelopes, not SDR."
+
+  - id: share-student-feasibility
+    kind: model
+    name: Share student (four-source recoverability)
+    version: "0.1.0 experiment"
+    group: SpectraSynq EdgeAI Lab
+    source: artifacts/share_student/share_student_best.pt
+    publication: n/a
+    task: mixture → four-source share (vocals/drums/bass/other)
+    inputs: log-mel 64×100 @ 16 kHz 1 s (this experiment; I/O UNFROZEN)
+    outputs: four non-negative powers then simplex share
+    temporal_resolution: 1 s pooled window (not a freeze)
+    context: 1.0 s
+    architecture: causal depthwise-separable CNN + AdaptiveAvgPool2d((1,1))
+    params: 20788
+    deployment: potential_embedded_student
+    code_licence: proprietary research (this repo)
+    weight_licence: proprietary experiment; trained on MUSDB18 educational/NC
+    dataset_licence: MUSDB18 educational/NC
+    research_use: yes
+    commercial_use: no
+    teacher_use: no (it is a student candidate)
+    derived_weight_status: n/a
+    attribution: n/a
+    redistribution: no
+    status: executed
+    commercial_training_lineage: false
+    content_sha256: "6e3c4799146a6dc3dcbe8cf4d5058b79a146a0a63b581cb7a530c327b7f9c19b"
+    git_sha: "b95d3298"
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "HOST recoverability PASS. I/O unfrozen. Not architecture authority. content_sha256 is artifacts/share_student/share_student_best.pt. receipt.json sha256 00a08aefedbdc0278b05ed84f2029c7b7de422986eee1b3583e003961beb2ebf (same bytes as experiments/share_student/receipt.json). git_sha is this lab commit recorded in the receipt, verified via git cat-file. C1 does not freeze 16 kHz / 1 s / 64-mel."

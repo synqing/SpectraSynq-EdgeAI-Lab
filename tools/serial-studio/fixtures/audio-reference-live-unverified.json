@@ -1,0 +1,49 @@
+{
+  "schema": "spectrasynq.serial-studio.mission-control.v2",
+  "mode": "fixture",
+  "sampled_at_unix_ms": 1788172800000,
+  "bridge": {"api_state": "UP", "last_error": null},
+  "instrument": {
+    "dashboard": {"running": true},
+    "io": {"isConnected": true, "readOnly": true, "readWrite": false},
+    "historian": {"state": "RECORDING", "session_id": 201},
+    "raw_bytes_per_second": null
+  },
+  "sources": [],
+  "audio_reference": {
+    "capability_state": "SUPPORTED",
+    "required_for_session": true,
+    "mode": "live",
+    "state": "LIVE_UNVERIFIED",
+    "reason_codes": [
+      "FRESHNESS_THRESHOLD_PROFILE_MISSING",
+      "AUDIO_SOURCE_RUNTIME_IDENTITY_NOT_EXPOSED"
+    ],
+    "age_ms": 18,
+    "fresh_in_last_sample": true,
+    "threshold_profile": null,
+    "capture": {
+      "source_id": 2,
+      "title": "Host Audio Reference",
+      "sequence": 48201,
+      "binding_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expected_device_id": {
+        "inputDeviceName": "BlackHole 2ch",
+        "sampleRateValue": 48000,
+        "formatName": "Signed 16-bit",
+        "channelCount": 2
+      },
+      "runtime_device_id": null,
+      "level_dbfs": null,
+      "clip_count": null,
+      "drop_count": null
+    },
+    "provenance_state": "partial",
+    "validation_receipt": null,
+    "non_claim": "HOST REFERENCE · NOT DEVICE INPUT"
+  },
+  "non_claims": [
+    "Fixture values are layout-test data, not device evidence.",
+    "Audio Reference host time is not K1 device time."
+  ]
+}

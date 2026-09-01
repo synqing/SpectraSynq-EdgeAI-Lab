@@ -1,8 +1,15 @@
 ---
-abstract: "HOST contract: Serial Studio Pro 4 dashboard JSON for LED panel, FFT, 3D plot, multiplot. No yAxis/zAxis keys. 3D axes are dataset.widget x|y|z. K1 Dual UART example. No USB."
+abstract: "HOST reference for Serial Studio Pro 4 widget JSON. D24 v2 uses only widgets justified by an engineering question; v1 bindings remain frozen replay history. No USB."
 ---
 
 # Serial Studio Pro 4 widget JSON contract
+
+> **Scope after D24:** this is a widget-format reference and a record of the
+> frozen v1 binding, not the v2 dashboard specification. The current v2 project
+> is governed by `docs/K1_SERIAL_STUDIO_CANON/` and
+> `docs/serial-studio/ADR-001-observability-sidecar.md`. Preserve Captain-named
+> v1 widgets for replay; add FFT, 3D, or LED widgets to v2 only when the canon's
+> evidence and engineering-question gates are satisfied.
 
 HOST-ONLY. Cadence CLOSED. Serial Studio observe/record. This file is a field map, not a USB or `:7777` procedure.
 
@@ -223,15 +230,15 @@ Lorenz + EM Wave Simulator match this. EM Wave also sets `xAxis` on 3D datasets 
 
 ## K1 Dual UART (`examples/K1 Dual UART/K1-Dual-Observability.ssproj`)
 
-Parser `k1_ap_parser.js` publishes 21 0-based slots → dataset `index` 1…21 (BPM…update_mask). Schema comment: 1–15 device, 16–17 clocks, 18 host_parse_seq, 19 event_tid, 20 record_kind, 21 update_mask.
+Parser `k1_ap_parser.js` publishes 24 0-based slots → dataset `index` 1…24 (BPM…orbit_y). Schema v1.2 append-only: 1–15 device, 16–17 clocks, 18 host_parse_seq, 19 event_tid, 20 record_kind, 21 update_mask, 22 phase, 23 orbit_x, 24 orbit_y.
 
 | Group `title` | `widget` | `sourceId` | Binding |
 | --- | --- | --- | --- |
 | K1 Bench B489A500 | `multiplot` | omitted → 0 | `graph: true` on telemetry; `fftSamplingRate` 133 |
 | K1 Main RPL 9087A500 | `multiplot` | `1` | same layout |
-| 3D Plot | `plot3d` | 0 | datasets `widget` x/y/z, `index` 18/19/20 = host_parse_seq / tid / record_kind — **not** spatial XYZ |
-| 3D Plot (2) | `plot3d` | 0 | `index` 21/22/23 |
-| 3D Plot (3) | `plot3d` | 0 | `index` 24/25/26 — **past** parser length |
+| Bench orbit (energy) | `plot3d` | 0 | `widget` x/y/z → orbit_x(23) / orbit_y(24) / energy(11) |
+| Main orbit (energy) | `plot3d` | 1 | same indices on Main |
+| Bench orbit (conf) | `plot3d` | 0 | `widget` x/y/z → orbit_x(23) / orbit_y(24) / conf(2) |
 | Data Grid | `datagrid` | 0 | `datasets: []` |
 | Multiple Plot | `multiplot` | 0 | one dataset `"New FFT Plot"`: `fft: true`, `led: true`, `waterfall: true`, `graph: true`, `index`: 27 — **unwired** |
 
@@ -252,4 +259,6 @@ LED: `led: true` on Bench `unused_slot_17` (`index` 0) and on `"New FFT Plot"`. 
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-09-01 | Codex | Scoped this file to widget syntax and frozen v1 replay; D24 canon governs v2 composition. |
+| 2026-08-31 | agent:grok | 3D groups bind orbit_x/orbit_y + energy/conf. Parser v1.2 24 slots. |
 | 2026-08-31 | agent:grok | Created: Pro 4 LED/FFT/3D/multiplot JSON bind from Serial Studio source + K1 Dual UART. |

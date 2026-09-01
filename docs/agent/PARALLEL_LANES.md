@@ -1,12 +1,14 @@
 ---
-abstract: "D22 parallel SSA roster. 40 disjoint HOST lanes. Cadence CLOSED. No USB. No 8 s loop. One writer per Lxx file."
+abstract: "D22 parallel SSA roster. Lxx.md is a receipt, not a DONE_WHEN. Cadence CLOSED. No USB. No 8 s loop. D23 SSA_RECEIPT_WAVE_IS_NOT_SHIP."
 ---
 
 # Parallel lanes — 2026-08-31
 
 **HARD FAIL (`SAME_SONG_LOOP_MAX_15MIN`).** Same song/clip looped >15 min → agent must die.
 
-Cadence silicon **CLOSED**. No ffplay. No `/dev/cu.usbmodem*`. No `k1-flash`. No sibling worktrees. **One writer per `docs/agent/lanes/Lxx_*.md`.**
+Cadence silicon **CLOSED**. No ffplay. No `/dev/cu.usbmodem*`. No `k1-flash`. No sibling worktrees.
+
+**D23:** `docs/agent/lanes/Lxx_*.md` is a **receipt**, **not a DONE_WHEN**. A wave whose only writes are those files is `SSA_RECEIPT_WAVE_IS_NOT_SHIP`. Do the authority file or the test instead. One writer per **authority** file. Scar: `docs/agent/SESSION_SCAR_2026-08-31_SSA_SWARM.md`.
 
 | ID | Lane | Write only |
 | --- | --- | --- |
@@ -57,4 +59,5 @@ Return contract only: STATUS, CLAIM, EVIDENCE path, COMMAND, METHOD_RISK, NEXT.
 **Document Changelog**
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-09-01 | agent:grok | Lxx is receipt, not a DONE_WHEN. D23. |
 | 2026-08-31 | agent:grok | Created. D22 40-lane roster. |

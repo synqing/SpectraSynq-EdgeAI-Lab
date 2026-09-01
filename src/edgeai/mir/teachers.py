@@ -8,17 +8,22 @@ We want envelopes, not a leaderboard. Optional backends:
 Demucs is a HOST teacher probe, not architecture:
 - Refuse Titan / U55 / PDM. SPECTRASYNQ_TITAN set → not allowed.
 - Refuse auto-download. No torch.hub, no dl.fbaipublicfiles.com, no
-  demucs.api.Separator(repo=None). Named weight GO + local repo first.
+  demucs.api.Separator with repo=None. Named weight GO + local repo first.
+  SPECTRASYNQ_DEMUCS_NAMED_GO and SPECTRASYNQ_DEMUCS_LOCAL are not a
+  licence to construct a separator this session.
 - ImportError → None. demucs is not a pyproject extra.
 """
 
 from __future__ import annotations
 
 import os
-from typing import Protocol
+from pathlib import Path
+from typing import Mapping, Protocol
 
 import numpy as np
 from numpy.typing import NDArray
+
+from edgeai.mir.source_oracle import SOURCES, frame_mean_square, source_oracle
 
 
 class Separator(Protocol):
@@ -78,6 +83,51 @@ def envelope_vs_mixture(
     return out
 
 
+def share_from_stems(
+    stems: Mapping[str, NDArray],
+    sr: int,
+    hop: int = 512,
+) -> dict[str, NDArray[np.float32]]:
+    """Four-way hop share (vocals/drums/bass/other). Wraps source_oracle.
+
+    Missing stem → zeros. Silence → zeros, not 1/4. HOST-ONLY.
+    """
+    oracle = source_oracle(stems, sr=sr, hop=hop)
+    return {name: oracle[f"{name}_share"] for name in SOURCES}
+
+
+def envelopes_from_stems(
+    stems: Mapping[str, NDArray],
+    sr: int,
+    hop: int = 512,
+) -> dict[str, object]:
+    """Hop mean-square powers + four-way share including other.
+
+    Caller MUST discard stem waveforms after this returns. Teacher signal
+    is envelopes, not PCM. Same four names as source_oracle. HOST-ONLY.
+    """
+    oracle = source_oracle(stems, sr=sr, hop=hop)
+    n = int(oracle["times"].size)
+    power: dict[str, NDArray[np.float32]] = {}
+    for name in SOURCES:
+        if name in stems:
+            p = np.asarray(frame_mean_square(stems[name], hop), dtype=np.float32)
+        else:
+            p = np.zeros(n, dtype=np.float32)
+        if p.size >= n:
+            p = p[:n]
+        else:
+            pad = np.zeros(n, dtype=np.float32)
+            pad[: p.size] = p
+            p = pad
+        power[name] = p
+    return {
+        "times": oracle["times"],
+        "power": power,
+        "share": {name: oracle[f"{name}_share"] for name in SOURCES},
+    }
+
+
 def demucs_host_allowed() -> bool:
     """True only when demucs.api imports and SPECTRASYNQ_TITAN is unset.
 
@@ -97,8 +147,10 @@ def try_demucs() -> Separator | None:
 
     Does not construct demucs.api.Separator. Does not download weights.
     SPECTRASYNQ_TITAN → None even if the package is present.
+    SPECTRASYNQ_DEMUCS_NAMED_GO + local path still do not construct
+    a separator this session.
     """
-    # Refuse Titan before import, Separator, or any hub fetch.
+    # Refuse Titan before import, separator construction, or any hub fetch.
     if "SPECTRASYNQ_TITAN" in os.environ:
         return None
     try:
@@ -117,12 +169,26 @@ def try_demucs() -> Separator | None:
             # Refuse Titan on every call, not only at handle creation.
             if not demucs_host_allowed():
                 raise RuntimeError("Demucs HOST: refuse Titan")
-            # Refuse auto-download. Do not call Separator unless import
-            # succeeded — it has — and never with repo=None (torch.hub /
-            # dl.fbaipublicfiles.com). Named weight GO + local repo first.
+            # Never construct demucs.api.Separator this session — not with
+            # repo=None, and not with named GO + SPECTRASYNQ_DEMUCS_LOCAL.
             raise RuntimeError(
-                "Demucs HOST: refuse auto-download. Do not call "
-                "demucs.api.Separator without a named weight GO and a local repo."
+                "Demucs HOST: not constructing Separator this session. "
+                "Refuse auto-download. Named weight GO + local repo first."
             )
 
     return DemucsSep()
+
+
+def local_htdemucs_checkpoint() -> Path | None:
+    """Path from SPECTRASYNQ_DEMUCS_LOCAL if that file exists, else None.
+
+    Existence only. Does not load tensors. Does not construct a separator.
+    Inventory is not a named GO.
+    """
+    raw = os.environ.get("SPECTRASYNQ_DEMUCS_LOCAL", "").strip()
+    if not raw:
+        return None
+    path = Path(raw).expanduser()
+    if path.is_file():
+        return path
+    return None

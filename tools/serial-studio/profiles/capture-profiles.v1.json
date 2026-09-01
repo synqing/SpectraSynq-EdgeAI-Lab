@@ -1,0 +1,99 @@
+{
+  "schema": "spectrasynq.serial-studio.capture-profiles.v1",
+  "profiles": {
+    "PASSIVE_DUAL_UART": {
+      "status": "HOST_SOURCE_VALIDATED",
+      "project": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
+      "source_roles": {
+        "0": "K1_BENCH_UART",
+        "1": "K1_MAIN_UART"
+      },
+      "required_source_ids": [0, 1],
+      "audio_reference": "OPTIONAL_EXTERNAL_OR_ABSENT",
+      "required_bundle_roles": ["historian_snapshot", "instrument_receipt"],
+      "optional_bundle_roles": ["scoring_profile"],
+      "forbidden_bundle_roles": ["exclusive_probe_receipt", "calibration_receipt"],
+      "dut_tx_owner": "NONE",
+      "serial_studio_observe_only": true
+    },
+    "PASSIVE_DUAL_UART_AUDIO_REF": {
+      "status": "BLOCKED_UNBOUND",
+      "project": null,
+      "source_roles": {
+        "0": "K1_BENCH_UART",
+        "1": "K1_MAIN_UART",
+        "2": "HOST_AUDIO_REFERENCE_CAPTURE"
+      },
+      "required_source_ids": [0, 1, 2],
+      "audio_reference": "REQUIRED_SERIAL_STUDIO_AUDIO_CAPTURE",
+      "required_bundle_roles": [
+        "historian_snapshot",
+        "instrument_receipt",
+        "audio_source_binding",
+        "audio_reference_validation"
+      ],
+      "optional_bundle_roles": ["scoring_profile", "audio_reference_clock_map"],
+      "forbidden_bundle_roles": ["exclusive_probe_receipt", "calibration_receipt"],
+      "audio_source_contract": {
+        "bus_type": 3,
+        "edition": "PRO",
+        "binding": "EXACT_SAVED_DEVICE_ID_REQUIRED",
+        "normalization": false,
+        "sample_rate_hz": "EXACT_FROM_SAVED_BINDING",
+        "sample_format": "EXACT_FROM_SAVED_BINDING",
+        "channel_count": "EXACT_FROM_SAVED_BINDING",
+        "time_authority": "HOST_AUDIO_REFERENCE_TIME"
+      },
+      "dut_tx_owner": "NONE",
+      "playback_owner": "EXTERNAL_NOT_SERIAL_STUDIO",
+      "serial_studio_observe_only": true,
+      "blockers": [
+        "AUDIO_SOURCE_BINDING_MISSING",
+        "VIRTUAL_LOOPBACK_INPUT_NOT_PRESENT",
+        "PRO_RUNTIME_NOT_VALIDATED"
+      ]
+    },
+    "EXCLUSIVE_PROBE": {
+      "status": "CONTRACT_DEFINED",
+      "project": null,
+      "source_roles": {},
+      "required_source_ids": [],
+      "audio_reference": "OPTIONAL_EXTERNAL_OR_ABSENT",
+      "required_bundle_roles": ["exclusive_probe_receipt"],
+      "optional_bundle_roles": ["scoring_profile", "host_audio_reference_manifest"],
+      "forbidden_bundle_roles": ["historian_snapshot", "instrument_receipt"],
+      "dut_tx_owner": "EXCLUSIVE_IDENTITY_BOUND_RUNNER",
+      "serial_studio_observe_only": null
+    },
+    "EXCLUSIVE_CALIBRATION": {
+      "status": "CONTRACT_DEFINED",
+      "project": null,
+      "source_roles": {},
+      "required_source_ids": [],
+      "audio_reference": "OPTIONAL_EXTERNAL_OR_ABSENT",
+      "required_bundle_roles": ["calibration_receipt"],
+      "optional_bundle_roles": ["scoring_profile", "host_audio_reference_manifest"],
+      "forbidden_bundle_roles": ["historian_snapshot", "instrument_receipt"],
+      "dut_tx_owner": "EXCLUSIVE_IDENTITY_BOUND_CALIBRATION_RUNNER",
+      "serial_studio_observe_only": null
+    },
+    "REPLAY_FORENSICS": {
+      "status": "CONTRACT_DEFINED",
+      "project": null,
+      "source_roles": {},
+      "required_source_ids": [],
+      "audio_reference": "OPTIONAL_EXTERNAL_OR_ABSENT",
+      "required_bundle_roles": ["primary_evidence_receipt"],
+      "optional_bundle_roles": [
+        "historian_snapshot",
+        "instrument_receipt",
+        "host_audio_reference_manifest",
+        "audio_reference_validation",
+        "scoring_profile"
+      ],
+      "forbidden_bundle_roles": [],
+      "dut_tx_owner": "NONE",
+      "serial_studio_observe_only": null
+    }
+  }
+}

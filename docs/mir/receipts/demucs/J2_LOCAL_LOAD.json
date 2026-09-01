@@ -1,0 +1,38 @@
+{
+  "audio_channels": 2,
+  "checkpoint_path": "/Users/spectrasynq/.cache/huggingface/hub/models--adefossez--HTDemucs/snapshots/bf35a81b663819a8255c8fefee17f9d812b786b5/955717e8.safetensors",
+  "checkpoint_sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd",
+  "demucs_version": "4.1.0",
+  "job": "J2",
+  "label": "HOST-ONLY",
+  "mapping_valid": true,
+  "model_class": "demucs.htdemucs.HTDemucs",
+  "model_constructed": true,
+  "model_eval": false,
+  "model_source_order": [
+    "drums",
+    "bass",
+    "other",
+    "vocals"
+  ],
+  "named_go": "D26_HOST_BLITZ_2026-09-01",
+  "network_fetch": false,
+  "network_guard": "ACTIVE_DURING_IMPORT_AND_LOAD",
+  "parameter_count": 41984456,
+  "repo_none": false,
+  "safetensors_version": "0.7.0",
+  "samplerate": 44100,
+  "separator_constructed": false,
+  "state_tensor_count": 533,
+  "student_io_frozen": false,
+  "teacher_source_mapping": {
+    "bass": 1,
+    "drums": 0,
+    "other": 2,
+    "vocals": 3
+  },
+  "titan": false,
+  "torch_version": "2.2.2",
+  "verdict": "LOCAL_CHECKPOINT_LOAD_PASS",
+  "waveform_persisted": false
+}

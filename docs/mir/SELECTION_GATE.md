@@ -1,5 +1,5 @@
 ---
-abstract: "C0-v2 ON_SILICON_PIXEL_VALIDATED 2026-08-31. Two-clock C0 FAIL corpse. Cadence CLOSED (5 Hz 0.414 / 20 Hz+50 ms 0.402 edges, not student target). C1 OPEN. I/O unfrozen until nine criteria + C1; freeze not automatic. D22 HOST sketches OPEN. Not Titan."
+abstract: "C0-v2 ON_SILICON_PIXEL_VALIDATED 2026-08-31. Two-clock C0 FAIL corpse. Cadence CLOSED (5 Hz 0.414 / 20 Hz+50 ms 0.402 edges, not student target). C1 OPEN. I/O UNFROZEN; freeze not automatic; C1 does not freeze. Unblock map 2026-09-01: freeze_ready no on all nine. D22 HOST sketches OPEN. Not Titan."
 ---
 
 # Student-model selection gate
@@ -134,6 +134,24 @@ A descriptor has no visual utility in the abstract. Gate A is information, Gate 
 
 Consume firmware `effect-semantics.json` with `source_firmware_sha` **and** `atlas_artifact_sha256` (the registry can move while firmware SHA stays put). See `docs/mir/EFFECT_SEMANTICS_CONSUME.md`.
 
+## Unblock map 2026-09-01
+
+HOST provenance + a paper streaming-shape sketch. **I/O remains UNFROZEN. C1 does not freeze.** Freeze is **not** automatic. No `LGP_PERCEPTUAL_VALIDATED`. No 16 kHz / 1 s / 64-mel lock. Pins in `mir/registry.yaml` are HOST-ONLY measured (0 invented). Cadence cells stay CLOSED.
+
+| # | Question | Live state | HOST work that unblocks | Still needs Captain / counsel / board | freeze_ready? |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Which descriptors | Not frozen. Shortlist exists. Live binding is `source_share × Waveform Tempo × head_position`. | Keep HOST traces. Do not freeze Student-v0 I/O. | Captain: which descriptors the lights actually need. | no |
+| 2 | Temporal rate / context | Not frozen. Cadence CLOSED: 5 Hz @ 0 ms PASS, 20 Hz + 50 ms PASS, joint 5 Hz + 50 ms FAIL. Edges, not a hop. | HOST R XOR D emit-envelope sketch (`src/edgeai/mir/stream_sketch.py`). Never AND the cliffs. | Captain after C1: explicit I/O freeze only if the contract still holds. | no |
+| 3 | Real-audio incremental vs DSP | DEAM human arousal vs energy r=0.37. Share vs mix PASS (Gate A). | More descriptor-vs-DSP HOST traces on real audio. No 8 s room loop. | Not a freeze. | no |
+| 4 | Oracle / teacher quality | Essentia DEAM head ≠ human 2 Hz. Demucs HOST probe OPEN; weights UNKNOWN / LEGAL REVIEW. | Docs + local HF cache pin. Do not `uv add demucs`. | Counsel: teacher use does not clear derived student weights. | no |
+| 5 | CLEAN / STUDIO behaviour | MUSDB18 STEMS executed as research/NC. `commercial_training_lineage: false`. | HOST evaluation on STEMS stays research. | Counsel / board: commercial-safe corpus. | no |
+| 6 | Live / venue-domain robustness | PaRIRset: onset delayed ~100 ms, not killed. CrowdioSet not ingested. | Delay-aware HOST rescoring. Keep held-out venues. | Captain / counsel: crowd-file licences before ingest. | no |
+| 7 | Licensing / provenance | Registry now has HOST-ONLY measured pins on hashed bytes / uv.lock wheels. Rest stay UNKNOWN. | Pin only what was hashed. Do not invent SHAs. | Counsel: commercial_training_lineage and teacher→student clearance. | no |
+| 8 | Visual utility | Gate A PASS. Gate B HOST PASS. C0-v2 `ON_SILICON_PIXEL_VALIDATED`. **C1 OPEN.** | No agent LGP stamp. Dumps do not answer C1. | Captain: one full song he chooses. C1 does not freeze. | no |
+| 9 | U55 compressibility | PRE-SILICON C99 for `ad01_int8.tflite` + `smoke.onnx`. Not this 21k share net. Not ON-SILICON. | Golden tensors + RUHMI compile receipts. | Board: no invented Titan / PDM numbers. | no |
+
+`freeze_ready?` is **no** on every row. A later freeze is a separate written act after the nine criteria **and** C1, and only if the transport still holds.
+
 ---
 **Document Changelog**
 | Date | Author | Change |
@@ -151,3 +169,4 @@ Consume firmware `effect-semantics.json` with `source_firmware_sha` **and** `atl
 | 2026-08-31 | agent:edgeai | Feasibility PASS; Gate C next; halt hop-level student. |
 | 2026-08-31 | agent:edgeai | C0 FAIL INVALID_TEMPORAL_EXECUTION; C0-v2 successor. |
 | 2026-08-31 | agent:grok | Live programme: C0-v2 ON_SILICON_PIXEL_VALIDATED; two-clock C0 labelled FAIL corpse; cadence CLOSED; C1 OPEN; I/O unfrozen until nine criteria + C1 (freeze not automatic); D22 HOST sketches OPEN; cliff PASSes are edges not student target; deleted “C0 FAIL / C0-v2 next / C1 blocked” and “wait until Gate C measures cadence.” |
+| 2026-09-01 | agent:edgeai | Unblock map: nine questions, freeze_ready no; I/O remains UNFROZEN; C1 does not freeze. |
