@@ -6,7 +6,10 @@ const view = new URLSearchParams(location.search).get("view") || "mission-contro
 
 const byId = id => document.getElementById(id);
 const text = (node, value) => { if (node) node.textContent = value; };
-const metric = (source, name) => source?.metrics?.[name] || null;
+const metric = (source, name) => {
+  const item = source?.metrics?.[name];
+  return item?.instrumented === true ? item : null;
+};
 const number = value => value === null || value === undefined || value === "" ? null : Number.isFinite(Number(value)) ? Number(value) : null;
 const shown = (value, digits = 0) => number(value) === null ? "—" : Number(value).toFixed(digits);
 const age = value => number(value) === null ? "AGE —" : `${Math.round(Number(value))} ms`;
@@ -42,23 +45,17 @@ function metricMarkup(node, item, digits, range) {
 function pushHistory(source, item) {
   const key = String(source.source_id);
   const history = histories.get(key) || [];
-  const value = number(item?.value);
-  const now = performance.now();
-  if (value !== null && (!history.length || history.at(-1).value !== value || now - history.at(-1).time > 700)) {
-    history.push({time: now, value});
-  }
-  while (history.length && now - history[0].time > 20000) history.shift();
+  K1History.appendFreshMetric(history, item, Date.now(), 20000);
   histories.set(key, history);
   return history;
 }
 
-function drawHistory(article, history) {
+function drawHistory(article, history, now = Date.now()) {
   const line = article.querySelector(".line");
   const area = article.querySelector(".area");
   if (!line || !area || !history.length) return;
-  const newest = history.at(-1).time;
   const points = history.map(item => {
-    const x = 620 - Math.min(620, (newest - item.time) / 20000 * 620);
+    const x = 620 - Math.min(620, (now - item.time) / 20000 * 620);
     const y = 110 - Math.max(0, Math.min(1, item.value / 2)) * 100;
     return [x, y];
   });

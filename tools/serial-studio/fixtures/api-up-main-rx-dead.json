@@ -16,7 +16,7 @@
       "source_id": 0,
       "title": "K1 Bench B489A500",
       "rx": {"state": "HAS_DATA_UNCLASSIFIED", "has_data": true, "age_ms": 22, "sequence": 48231, "threshold_profile": null},
-      "metrics": {"bpm": {"value": 128, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 22}, "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 22}}
+      "metrics": {"bpm": {"value": 128, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 22}, "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 22}}
     },
     {
       "source_id": 1,

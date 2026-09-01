@@ -17,14 +17,14 @@
       "title": "K1 Bench B489A500",
       "rx": {"state": "HAS_DATA_UNCLASSIFIED", "has_data": true, "age_ms": 18, "sequence": 48201, "threshold_profile": null},
       "metrics": {
-        "bpm": {"value": 132, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 18},
-        "confidence": {"value": 0.89, "unit": "ratio", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 18},
-        "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 18},
-        "peak_scaled": {"value": 0.74, "unit": "relative", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 18},
-        "energy": {"value": 0.31, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "age_ms": 410},
-        "novelty": {"value": 0.12, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "age_ms": 410},
-        "system_fps": {"value": 140, "unit": "Hz", "record_kind": 3, "fresh_in_last_frame": false, "age_ms": 710},
-        "led_fps": {"value": 215, "unit": "Hz", "record_kind": 4, "fresh_in_last_frame": false, "age_ms": 710}
+        "bpm": {"value": 132, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 18},
+        "confidence": {"value": 0.89, "unit": "ratio", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 18},
+        "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 18},
+        "peak_scaled": {"value": 0.74, "unit": "relative", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "fresh_generation": 48201, "observed_at_unix_ms": 1788172799982, "age_ms": 18},
+        "energy": {"value": 0.31, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 410},
+        "novelty": {"value": 0.12, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 410},
+        "system_fps": {"value": 140, "unit": "Hz", "record_kind": 3, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 710},
+        "led_fps": {"value": 215, "unit": "Hz", "record_kind": 4, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 710}
       }
     },
     {
@@ -32,14 +32,14 @@
       "title": "K1 Main RPL 9087A500",
       "rx": {"state": "HAS_DATA_UNCLASSIFIED", "has_data": true, "age_ms": 21, "sequence": 47982, "threshold_profile": null},
       "metrics": {
-        "bpm": {"value": 132, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 21},
-        "confidence": {"value": 0.86, "unit": "ratio", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 21},
-        "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 21},
-        "peak_scaled": {"value": 0.43, "unit": "relative", "record_kind": 1, "fresh_in_last_frame": true, "age_ms": 21},
-        "energy": {"value": 0.27, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "age_ms": 395},
-        "novelty": {"value": 0.16, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "age_ms": 395},
-        "system_fps": {"value": 138, "unit": "Hz", "record_kind": 3, "fresh_in_last_frame": false, "age_ms": 695},
-        "led_fps": {"value": 150, "unit": "Hz", "record_kind": 4, "fresh_in_last_frame": false, "age_ms": 695}
+        "bpm": {"value": 132, "unit": "BPM", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 21},
+        "confidence": {"value": 0.86, "unit": "ratio", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 21},
+        "lock": {"value": 1, "unit": "bool", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "age_ms": 21},
+        "peak_scaled": {"value": 0.43, "unit": "relative", "record_kind": 1, "fresh_in_last_frame": true, "instrumented": true, "fresh_generation": 47982, "observed_at_unix_ms": 1788172799979, "age_ms": 21},
+        "energy": {"value": 0.27, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 395},
+        "novelty": {"value": 0.16, "unit": "ratio", "record_kind": 2, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 395},
+        "system_fps": {"value": 138, "unit": "Hz", "record_kind": 3, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 695},
+        "led_fps": {"value": 150, "unit": "Hz", "record_kind": 4, "fresh_in_last_frame": false, "instrumented": true, "age_ms": 695}
       }
     }
   ],

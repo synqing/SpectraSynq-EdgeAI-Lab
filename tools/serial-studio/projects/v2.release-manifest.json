@@ -9,27 +9,32 @@
   },
   "component_identity": {
     "webview_application": {
-      "aggregate_sha256": "f182d3a0b253cf0ad1f6f26d4eb174d6813b4bde8eaf930b638dfa5cf5b4d677",
+      "aggregate_sha256": "e55fe915342ee82b2e699579add73df297cc5698ea3c03bef1b2f371b254aa34",
       "files": [
         {
           "path": "tools/serial-studio/webview/bridge.py",
-          "sha256": "302d2aeaf06265d890fdc7e33998808fe23d06770cd8cbcd4affc049cf4852f6",
-          "bytes": 14259
+          "sha256": "a9310b182a5642edf59ea6542ebdc79773ff4827b9a5eacbbef0a2851af11581",
+          "bytes": 28399
         },
         {
           "path": "tools/serial-studio/webview/index.html",
-          "sha256": "96f8e86984ddb591bd8b073b0828c60220d8fed4dadf3080fee42fb1c623a8ac",
-          "bytes": 4034
+          "sha256": "80c39500c83f2e56c505f6b9f4b185109d5ffcd128b59a845fa3d2fb5af70791",
+          "bytes": 4260
         },
         {
           "path": "tools/serial-studio/webview/styles.css",
-          "sha256": "1f90dcd93cecaca3e29e67f0121770d5ef6677a6f6f306a09070ecf7280871fd",
-          "bytes": 6672
+          "sha256": "84db366c55f4882a247b6364f297020933575add5052910a637996aad5081728",
+          "bytes": 6778
         },
         {
           "path": "tools/serial-studio/webview/app.js",
-          "sha256": "3cd53a5366e0385e02da90c1c0477ee6b4a7c019feeb420061532b706ba0f9fc",
-          "bytes": 9262
+          "sha256": "e98b4bf30cbb7abb21718d8643a156ebc74a4c344f66dda80dd1d7dfd9dffa29",
+          "bytes": 14604
+        },
+        {
+          "path": "tools/serial-studio/webview/history.js",
+          "sha256": "78877045fd59492ed29627b7ee779085968c3a2126744ea550bf99b3df54b3a3",
+          "bytes": 1062
         }
       ]
     },
@@ -100,12 +105,12 @@
       "runtime_validation_open_reason": "The built GPL policy binary passed isolated Tier B read/refusal checks, but it is not installed and GPL strips the second source plus Pro Painter/Data Grid bindings. Full six-workspace runtime validation requires a Pro build carrying source commit b47031d13b9226687e7b3c93d68d74921e40e058."
     }
   },
-  "edgeai_source_tree_sha256": "cf04f5f2865001d39a7c3de211aeb3b856fb76d41c34534d6c3ae1d14e96e26a",
+  "edgeai_source_tree_sha256": "64962852a20678dab7ea363b3c2c43c7b22e4a3c2ca4f23bb85703e091423bbb",
   "edgeai_files": [
     {
       "path": "src/edgeai/serial_studio.py",
-      "sha256": "c7ff494b206414f67d06b62d751a6e09e07dafd17047cd49ac5352f956467da3",
-      "bytes": 8825
+      "sha256": "7d154de5617a642b7f6bf5a819447a74103b1240ac8cc1b93f2b13c1da03cd92",
+      "bytes": 11619
     },
     {
       "path": "src/edgeai/serial_studio_parser.py",
@@ -124,13 +129,13 @@
     },
     {
       "path": "tools/serial-studio/historian.py",
-      "sha256": "71ffd97584fc5be306c1446affd9c592cd056e1e08167186060842911fd315d9",
-      "bytes": 14379
+      "sha256": "8a53e2f332b1282762f00bae4c92dc2ac8f9a1d6536517a3e51d47a6994c30ca",
+      "bytes": 15346
     },
     {
       "path": "tools/serial-studio/validate_bundle.py",
-      "sha256": "8eb5d6a3d71e0216a5e23ab6d7b7c5d4f2e022428e5e2887d0f4277f6c147302",
-      "bytes": 4174
+      "sha256": "71a2cec691d2aec5b3dc623688c4268430279e5d3b68741f745bbac81b1f4464",
+      "bytes": 8587
     },
     {
       "path": "tools/serial-studio/parsers/k1_observe_v1_2.js",
@@ -189,23 +194,28 @@
     },
     {
       "path": "tools/serial-studio/webview/bridge.py",
-      "sha256": "302d2aeaf06265d890fdc7e33998808fe23d06770cd8cbcd4affc049cf4852f6",
-      "bytes": 14259
+      "sha256": "a9310b182a5642edf59ea6542ebdc79773ff4827b9a5eacbbef0a2851af11581",
+      "bytes": 28399
     },
     {
       "path": "tools/serial-studio/webview/index.html",
-      "sha256": "96f8e86984ddb591bd8b073b0828c60220d8fed4dadf3080fee42fb1c623a8ac",
-      "bytes": 4034
+      "sha256": "80c39500c83f2e56c505f6b9f4b185109d5ffcd128b59a845fa3d2fb5af70791",
+      "bytes": 4260
     },
     {
       "path": "tools/serial-studio/webview/styles.css",
-      "sha256": "1f90dcd93cecaca3e29e67f0121770d5ef6677a6f6f306a09070ecf7280871fd",
-      "bytes": 6672
+      "sha256": "84db366c55f4882a247b6364f297020933575add5052910a637996aad5081728",
+      "bytes": 6778
     },
     {
       "path": "tools/serial-studio/webview/app.js",
-      "sha256": "3cd53a5366e0385e02da90c1c0477ee6b4a7c019feeb420061532b706ba0f9fc",
-      "bytes": 9262
+      "sha256": "e98b4bf30cbb7abb21718d8643a156ebc74a4c344f66dda80dd1d7dfd9dffa29",
+      "bytes": 14604
+    },
+    {
+      "path": "tools/serial-studio/webview/history.js",
+      "sha256": "78877045fd59492ed29627b7ee779085968c3a2126744ea550bf99b3df54b3a3",
+      "bytes": 1062
     },
     {
       "path": "tools/serial-studio/webview/font-assets.json",
@@ -221,7 +231,7 @@
   "serial_studio_policy": {
     "repository": "/Users/spectrasynq/Serial-Studio",
     "branch": "feat/observe-only-project-policy",
-    "source_commit": "b47031d13b9226687e7b3c93d68d74921e40e058",
+    "source_commit": "a92501cb7035b12f5f8fb4796a339e52b54f8601",
     "source_tree_sha256": "5c1325cba4a723f3a905be508d9ebf3dda626c53090d582e6f4db0b138358719",
     "files": [
       {

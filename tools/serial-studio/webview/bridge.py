@@ -40,6 +40,7 @@ STATIC_ROUTES = {
     "/live": "index.html",
     "/index.html": "index.html",
     "/app.js": "app.js",
+    "/history.js": "history.js",
     "/styles.css": "styles.css",
 }
 METRICS = {
@@ -297,6 +298,7 @@ class LiveSampler(threading.Thread):
         slow: dict[str, Any] = {}
         while not self.stop_event.is_set():
             now = time.monotonic()
+            wall_now_ms = int(time.time() * 1000)
             if now >= next_slow:
                 slow = {
                     "dashboard": client.dashboard_status(),
@@ -318,6 +320,7 @@ class LiveSampler(threading.Thread):
                     source,
                     source_configs.get(str(source.get("sourceId")), {}),
                     now,
+                    wall_now_ms,
                 )
                 for source in uart_sources
             ]
@@ -443,6 +446,7 @@ class LiveSampler(threading.Thread):
         source: dict[str, Any],
         source_config: dict[str, Any],
         now: float,
+        wall_now_ms: int | None = None,
     ) -> dict[str, Any]:
         source_id = str(source.get("sourceId"))
         frame = client.latest_frame(source_id)
@@ -457,6 +461,11 @@ class LiveSampler(threading.Thread):
             record_kind = _number_at(values, 20, None)
             frame_age_ms = frame.get("ageMs") if isinstance(frame.get("ageMs"), (int, float)) else 0
             observed_at = now - max(0.0, float(frame_age_ms)) / 1000.0
+            observed_at_unix_ms = (
+                int(wall_now_ms - max(0.0, float(frame_age_ms)))
+                if wall_now_ms is not None
+                else None
+            )
             for slot, (name, unit) in METRICS.items():
                 value = _number_at(values, slot, None)
                 if value is not None:
@@ -467,6 +476,11 @@ class LiveSampler(threading.Thread):
                     previous["fresh_in_last_frame"] = bool(int(mask) & (1 << (slot - 1)))
                     if previous["fresh_in_last_frame"]:
                         previous["observed_at"] = observed_at
+                        previous["observed_at_unix_ms"] = observed_at_unix_ms
+                        previous["fresh_generation"] = int(
+                            previous.get("fresh_generation", 0)
+                        ) + 1
+                        previous["updated_on_sequence"] = sequence
             state["_meta"] = {"sequence": sequence}
 
         metrics: dict[str, Any] = {}
@@ -475,6 +489,7 @@ class LiveSampler(threading.Thread):
                 continue
             exported = {key: value for key, value in metric.items() if key != "observed_at"}
             observed_at = metric.get("observed_at")
+            exported["instrumented"] = isinstance(observed_at, (int, float))
             exported["age_ms"] = (
                 round(max(0.0, now - observed_at) * 1000)
                 if isinstance(observed_at, (int, float))

@@ -23,6 +23,7 @@ WEBVIEW_FILES = [
     "tools/serial-studio/webview/index.html",
     "tools/serial-studio/webview/styles.css",
     "tools/serial-studio/webview/app.js",
+    "tools/serial-studio/webview/history.js",
 ]
 
 EDGE_FILES = [
@@ -47,6 +48,7 @@ EDGE_FILES = [
     "tools/serial-studio/webview/index.html",
     "tools/serial-studio/webview/styles.css",
     "tools/serial-studio/webview/app.js",
+    "tools/serial-studio/webview/history.js",
     "tools/serial-studio/webview/font-assets.json",
 ]
 

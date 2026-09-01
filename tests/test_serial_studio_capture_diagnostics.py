@@ -75,6 +75,8 @@ def test_diagnostics_use_update_mask_and_valid_uptime(tmp_path: Path) -> None:
     source = result["sources"][0]
     assert source["valid_uptime_s"] == 60
     assert source["metrics"]["onset"]["fresh_updates"] == 2
-    assert source["metrics"]["onset"]["high_fresh_updates"] == 1
-    assert source["metrics"]["onset"]["high_fraction"] == 0.5
-    assert source["metrics"]["onset"]["high_updates_per_valid_minute"] == 1.0
+    assert source["metrics"]["onset"]["high_observations"] == 1
+    assert source["metrics"]["onset"]["high_observation_fraction"] == 0.5
+    assert source["metrics"]["onset"]["high_observations_per_valid_minute"] == 1.0
+    assert source["metrics"]["onset"]["rate_label"] == "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
+    assert "not physical event counts" in result["telemetry_boundary"]

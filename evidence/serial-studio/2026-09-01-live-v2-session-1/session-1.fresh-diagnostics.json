@@ -31,9 +31,10 @@
           "minimum": 0.0,
           "mean": 0.08786610878661087,
           "maximum": 1.0,
-          "high_fresh_updates": 21,
-          "high_fraction": 0.08786610878661087,
-          "high_updates_per_valid_minute": 5.3285657875513515
+          "high_observations": 21,
+          "high_observation_fraction": 0.08786610878661087,
+          "high_observations_per_valid_minute": 5.3285657875513515,
+          "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
         },
         "onset": {
           "semantics": "event",
@@ -41,9 +42,10 @@
           "minimum": 0.0,
           "mean": 0.4100418410041841,
           "maximum": 1.0,
-          "high_fresh_updates": 98,
-          "high_fraction": 0.4100418410041841,
-          "high_updates_per_valid_minute": 24.866640341906308
+          "high_observations": 98,
+          "high_observation_fraction": 0.4100418410041841,
+          "high_observations_per_valid_minute": 24.866640341906308,
+          "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
         },
         "bass_onset": {
           "semantics": "event",
@@ -51,9 +53,10 @@
           "minimum": 0.0,
           "mean": 0.2594142259414226,
           "maximum": 1.0,
-          "high_fresh_updates": 62,
-          "high_fraction": 0.2594142259414226,
-          "high_updates_per_valid_minute": 15.731956134675418
+          "high_observations": 62,
+          "high_observation_fraction": 0.2594142259414226,
+          "high_observations_per_valid_minute": 15.731956134675418,
+          "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
         },
         "peak_envelope": {
           "semantics": "value",
@@ -90,9 +93,10 @@
           "minimum": 0.0,
           "mean": 0.025,
           "maximum": 1.0,
-          "high_fresh_updates": 6,
-          "high_fraction": 0.025,
-          "high_updates_per_valid_minute": 1.5168304171814855
+          "high_observations": 6,
+          "high_observation_fraction": 0.025,
+          "high_observations_per_valid_minute": 1.5168304171814855,
+          "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
         },
         "onset": {
           "semantics": "event",
@@ -100,9 +104,10 @@
           "minimum": 0.0,
           "mean": 0.35564853556485354,
           "maximum": 1.0,
-          "high_fresh_updates": 85,
-          "high_fraction": 0.35564853556485354,
-          "high_updates_per_valid_minute": 21.488430910071045
+          "high_observations": 85,
+          "high_observation_fraction": 0.35564853556485354,
+          "high_observations_per_valid_minute": 21.488430910071045,
+          "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
         },
         "bass_onset": {
           "semantics": "event",
@@ -110,9 +115,10 @@
           "minimum": 0.0,
           "mean": 0.3891213389121339,
           "maximum": 1.0,
-          "high_fresh_updates": 93,
-          "high_fraction": 0.3891213389121339,
-          "high_updates_per_valid_minute": 23.510871466313027
+          "high_observations": 93,
+          "high_observation_fraction": 0.3891213389121339,
+          "high_observations_per_valid_minute": 23.510871466313027,
+          "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT"
         },
         "peak_envelope": {
           "semantics": "value",
@@ -124,5 +130,6 @@
       }
     }
   ],
-  "verdict_boundary": "Freshness-normalised observer diagnostics only; no controlled shared stimulus, acoustic equivalence, clock map, or algorithm verdict is claimed."
+  "verdict_boundary": "Freshness-normalised observer diagnostics only; no controlled shared stimulus, acoustic equivalence, clock map, or algorithm verdict is claimed.",
+  "telemetry_boundary": "Event-like fields are sampled AP status observations. High observations and high observations per valid minute are not physical event counts."
 }

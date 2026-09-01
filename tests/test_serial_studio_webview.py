@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 import sqlite3
+import subprocess
 import sys
 import threading
 from pathlib import Path
@@ -53,6 +54,7 @@ def test_bridge_is_get_only_same_origin_and_cached() -> None:
         assert headers["Cache-Control"] == "no-store"
         assert "script-src 'self'" in headers["Content-Security-Policy"]
         assert _request(port, "GET", "/live")[0] == 200
+        assert _request(port, "GET", "/history.js")[0] == 200
         assert _request(port, "POST", "/api/v1/snapshot")[0] == 405
         assert _request(port, "GET", "/api/v1/snapshot", host="attacker.invalid")[0] == 403
     finally:
@@ -80,6 +82,24 @@ def test_browser_code_contains_no_upstream_command_surface() -> None:
     assert "OBSERVE-ONLY ENFORCED" not in app
     assert "STOCK PRO / NOT PATCHED" in app
     assert "TX WITNESS · ZERO BYTES" in app
+
+
+def test_browser_history_appends_only_fresh_generations() -> None:
+    history_module = ROOT / "tools/serial-studio/webview/history.js"
+    script = f"""
+const history = require({json.dumps(str(history_module))});
+const points = [];
+const fresh = {{value: 0.7, fresh_generation: 1, observed_at_unix_ms: 1000}};
+history.appendFreshMetric(points, fresh, 1000, 20000);
+history.appendFreshMetric(points, fresh, 1700, 20000);
+history.appendFreshMetric(points, fresh, 2400, 20000);
+history.appendFreshMetric(points, {{...fresh, fresh_generation: 2, observed_at_unix_ms: 2500}}, 2500, 20000);
+if (points.length !== 2) throw new Error(`expected 2 points, got ${{points.length}}`);
+if (points[0].time !== 1000 || points[1].time !== 2500) throw new Error("observation time was not preserved");
+history.appendFreshMetric(points, {{...fresh, fresh_generation: 2, observed_at_unix_ms: 2500}}, 22501, 20000);
+if (points.length !== 0) throw new Error("held metric incorrectly kept stale history alive");
+"""
+    subprocess.run(["node", "-e", script], check=True)
 
 
 def test_empty_snapshot_keeps_project_app_and_witness_authorities_separate() -> None:
@@ -171,6 +191,37 @@ def test_live_audio_source_is_not_decoded_as_k1_telemetry() -> None:
     assert result["capture"]["level_dbfs"] is None
     assert "metrics" not in result
     assert "FRESHNESS_THRESHOLD_PROFILE_MISSING" in result["reason_codes"]
+
+
+class _FakeTelemetryClient:
+    def __init__(self) -> None:
+        self.frame = {"hasData": True, "ageMs": 25, "sequence": 1, "values": [0.0] * 24}
+
+    def latest_frame(self, source_id: str) -> dict[str, object]:
+        assert source_id == "0"
+        return self.frame
+
+
+def test_optional_zero_is_not_instrumented_without_fresh_provenance() -> None:
+    client = _FakeTelemetryClient()
+    sampler = bridge.LiveSampler(bridge.SnapshotCache({}), 7777, 0.25)
+    client.frame["values"][8] = 0.7  # type: ignore[index]
+    client.frame["values"][20] = 1 << 8  # type: ignore[index]
+    first = sampler._sample_source(  # type: ignore[arg-type]
+        client, {"sourceId": 0}, {}, 10.0, 100_000
+    )
+    assert first["metrics"]["peak_scaled"]["instrumented"] is True
+    assert first["metrics"]["peak_scaled"]["fresh_generation"] == 1
+    assert first["metrics"]["peak_scaled"]["observed_at_unix_ms"] == 99_975
+    assert first["metrics"]["device_ms"]["value"] == 0.0
+    assert first["metrics"]["device_ms"]["instrumented"] is False
+    assert first["metrics"]["device_ms"]["age_ms"] is None
+
+    client.frame = {**client.frame, "sequence": 2}
+    second = sampler._sample_source(  # type: ignore[arg-type]
+        client, {"sourceId": 0}, {}, 11.0, 101_000
+    )
+    assert second["metrics"]["peak_scaled"]["fresh_generation"] == 2
 
 
 def test_historian_ingress_sampler_measures_per_source_rates(tmp_path: Path) -> None:

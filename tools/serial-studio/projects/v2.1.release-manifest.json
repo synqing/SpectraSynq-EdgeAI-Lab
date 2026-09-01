@@ -100,7 +100,7 @@
     ]
   },
   "host_components": {
-    "aggregate_sha256": "07e17e9d6362c6ad4db59647aebcbdbf10a7d396ecfa54055566f275d014b6ee",
+    "aggregate_sha256": "b9ba3046b915901ec617c1cadfc6e99ed655cad987d2a73be411e4f3cb79b8d9",
     "files": [
       {
         "path": "tools/serial-studio/audio_reference_validate.py",
@@ -119,8 +119,8 @@
       },
       {
         "path": "tools/serial-studio/capture_diagnostics.py",
-        "sha256": "b61e1fd2c85740d0192438d45527047c22ad91d313eeeb372836fd0a09a13298",
-        "bytes": 5806
+        "sha256": "196f387ea23e80b9600743d35b0b7623d39b0007d248a85c9c1457f05983adac",
+        "bytes": 6121
       },
       {
         "path": "tools/serial-studio/generate_audio_profile.py",
@@ -134,8 +134,8 @@
       },
       {
         "path": "tools/serial-studio/release_manifest_v2_1.py",
-        "sha256": "49590b3cb99b441e6bfc2b903f8701532670345f90f171452b2eb74d8fcb14a5",
-        "bytes": 10553
+        "sha256": "1e5bc49594e846142d42615ee89630073b3b16738828b6b20e5575816f3bc99b",
+        "bytes": 10702
       },
       {
         "path": "tools/serial-studio/projects/official-pro-audio-preflight.v1.json",
@@ -149,8 +149,8 @@
       },
       {
         "path": "tools/serial-studio/zero_tx_witness.py",
-        "sha256": "90d373081b1c363a73200ef15e05c29a4b8e549208118930057ade1e10967a31",
-        "bytes": 7640
+        "sha256": "e19d17d7756807fb381968cf3f50bf783e86bc8d7e5e70a2eb96c09f05470b28",
+        "bytes": 13263
       },
       {
         "path": "tools/serial-studio/profiles/capture-profiles.v1.json",
@@ -189,13 +189,13 @@
       },
       {
         "path": "tools/serial-studio/webview/bridge.py",
-        "sha256": "3d1fa644c1b0da2fa101412304ec4623881c0932a135d5f4d807b001b79a21bb",
-        "bytes": 27683
+        "sha256": "a9310b182a5642edf59ea6542ebdc79773ff4827b9a5eacbbef0a2851af11581",
+        "bytes": 28399
       },
       {
         "path": "tools/serial-studio/webview/index.html",
-        "sha256": "40a62443aa15382c43b071ec16d5bf48d8540e26b86d80f164e527766c47fb72",
-        "bytes": 4216
+        "sha256": "80c39500c83f2e56c505f6b9f4b185109d5ffcd128b59a845fa3d2fb5af70791",
+        "bytes": 4260
       },
       {
         "path": "tools/serial-studio/webview/styles.css",
@@ -204,8 +204,13 @@
       },
       {
         "path": "tools/serial-studio/webview/app.js",
-        "sha256": "b7ccc9790b1da51e0c923cf56383382a9e75212e86338a2e742507bc67658161",
-        "bytes": 14799
+        "sha256": "e98b4bf30cbb7abb21718d8643a156ebc74a4c344f66dda80dd1d7dfd9dffa29",
+        "bytes": 14604
+      },
+      {
+        "path": "tools/serial-studio/webview/history.js",
+        "sha256": "78877045fd59492ed29627b7ee779085968c3a2126744ea550bf99b3df54b3a3",
+        "bytes": 1062
       },
       {
         "path": "tools/serial-studio/webview/font-assets.json",
@@ -244,26 +249,31 @@
       },
       {
         "path": "tests/test_serial_studio_capture_diagnostics.py",
-        "sha256": "28d1fab0d1571e7cf0cf51c550b50242df35a91c38b862e6bc82c206d8733a12",
-        "bytes": 3148
+        "sha256": "427f5bc5ee39025d125c354d445af6b6d6460cfe72287aba852b635a47351068",
+        "bytes": 3332
       },
       {
         "path": "tests/test_serial_studio_webview.py",
-        "sha256": "34b2333735dd52533b3717ef434ca68b863d2624d871cb9f44f6b01cff775237",
-        "bytes": 8572
+        "sha256": "63941fd30aa9cf3f2011011d7c52a3cb77d45acede64b4fcdbe71ffe711bea12",
+        "bytes": 11040
       },
       {
         "path": "tests/test_serial_studio_zero_tx_witness.py",
-        "sha256": "ccccc219d59509076fdcede1c61e0ba5a07d1b42b7eded3de545f1b4c7876a06",
-        "bytes": 2255
+        "sha256": "3fb9331142a6475571ce6b764a39612f7dd32d6dab5bba381d9362ac00dc2a3d",
+        "bytes": 4281
       },
       {
         "path": "docs/serial-studio/ADR-002-host-audio-reference.md",
         "sha256": "8fe26108b902f472e8543ecd4b2ece6040f40b5e746567d791d6a06fd32fc4d9",
         "bytes": 6256
+      },
+      {
+        "path": "docs/serial-studio/ADR-003-ap-status-telemetry.md",
+        "sha256": "ac3eb8c6ba3843b15706d961a3373fe45646f25411cd08b0c3b50363ff24a74f",
+        "bytes": 2249
       }
     ],
-    "webview_aggregate_sha256": "4e3cf63f26fb6f055e858b5b2510c1be38a2659465e714872d3d2b98c65cf71f"
+    "webview_aggregate_sha256": "e55fe915342ee82b2e699579add73df297cc5698ea3c03bef1b2f371b254aa34"
   },
   "optional_patched_pro_hardening": {
     "repository": "/Users/spectrasynq/Serial-Studio",

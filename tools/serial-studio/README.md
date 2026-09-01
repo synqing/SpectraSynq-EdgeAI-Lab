@@ -15,6 +15,8 @@ This folder is the generated, hardware-free authority for the v2 Serial Studio i
 - `audio_reference_validate.py` strictly compares a Serial Studio Audio CSV with a known WAV without normalisation, DC removal, dither, repair, or dependency installation.
 - `capture_audio_source_binding.py` freezes an exact Pro-saved Audio Source C; `generate_audio_profile.py` and `lint_audio_profile.py` generate/lint the separate optional profile without mutating base v2.
 - `official_pro_audio_preflight.py` interrogates the official Pro 4.0.3 runtime through a fixed getter-only API allow-list and fails closed on exact BlackHole/rate/format/binding drift. It never configures Audio or touches a DUT.
+- `capture_diagnostics.py` reports fresh status observations. Event-like high values are explicitly not counted as physical events.
+- `zero_tx_witness.py` traces the exact running Pro process, fails on UART writes or descriptor lifecycle churn, and requires both Historian sources to advance during the same bounded window.
 - `profiles/capture-profiles.v1.json` makes Serial Studio and Audio Reference requirements conditional rather than universal.
 - `fixtures/historian/session-19-project-drift.instrument-receipt.json` permanently preserves a real invalid capture where substantial two-source data could not overcome project-identity drift.
 
@@ -67,6 +69,25 @@ Historian progression, zero host-to-DUT bytes, and clean close/snapshot
 behaviour.
 
 No command here opens USB, flashes firmware, plays audio, or launches Serial Studio.
+
+## Bounded steady-state UART data-TX witness
+
+Run only after the official Pro runtime already holds both exact UARTs and an
+open Historian session is advancing:
+
+```sh
+sudo /opt/homebrew/bin/python3 tools/serial-studio/zero_tx_witness.py \
+  --pid <serial-studio-pid> \
+  --device /dev/cu.usbmodem1401 \
+  --device /dev/cu.usbmodem12201 \
+  --historian-db "$HOME/Documents/Serial Studio/Session Databases/K1 Dual UART Observability v2/K1 Dual UART Observability v2.db" \
+  --duration-seconds 60 \
+  --output evidence/serial-studio/<run>/steady-state-uart-data-tx.json
+```
+
+A PASS claim is exactly `STEADY_STATE_UART_DATA_TX=ZERO_BYTES`. It is not a
+claim about connect-time DTR/RTS, termios, CDC control requests, or other line
+state effects.
 
 ## Optional Audio Reference profile
 

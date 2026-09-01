@@ -95,11 +95,12 @@ def summarise(snapshot: Path, session_id: int) -> dict[str, Any]:
                 if semantics in {"event", "state"}:
                     entry.update(
                         {
-                            "high_fresh_updates": assertions,
-                            "high_fraction": assertions / fresh if fresh else None,
-                            "high_updates_per_valid_minute": (
+                            "high_observations": assertions,
+                            "high_observation_fraction": assertions / fresh if fresh else None,
+                            "high_observations_per_valid_minute": (
                                 assertions / (duration_s / 60) if duration_s > 0 else None
                             ),
+                            "rate_label": "HIGH OBSERVATIONS/MIN - NOT EVENT COUNT",
                         }
                     )
                 metrics[field_id] = entry
@@ -122,6 +123,10 @@ def summarise(snapshot: Path, session_id: int) -> dict[str, Any]:
         "verdict_boundary": (
             "Freshness-normalised observer diagnostics only; no controlled shared stimulus, "
             "acoustic equivalence, clock map, or algorithm verdict is claimed."
+        ),
+        "telemetry_boundary": (
+            "Event-like fields are sampled AP status observations. High observations and "
+            "high observations per valid minute are not physical event counts."
         ),
     }
 

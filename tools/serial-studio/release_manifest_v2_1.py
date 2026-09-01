@@ -41,6 +41,7 @@ EDGE_FILES = [
     "tools/serial-studio/webview/index.html",
     "tools/serial-studio/webview/styles.css",
     "tools/serial-studio/webview/app.js",
+    "tools/serial-studio/webview/history.js",
     "tools/serial-studio/webview/font-assets.json",
     "tools/serial-studio/fixtures/audio-reference-live-unverified.json",
     "tools/serial-studio/fixtures/audio-reference-receipt-pass.json",
@@ -52,6 +53,7 @@ EDGE_FILES = [
     "tests/test_serial_studio_webview.py",
     "tests/test_serial_studio_zero_tx_witness.py",
     "docs/serial-studio/ADR-002-host-audio-reference.md",
+    "docs/serial-studio/ADR-003-ap-status-telemetry.md",
 ]
 
 WEBVIEW_FILES = [
@@ -59,6 +61,7 @@ WEBVIEW_FILES = [
     "tools/serial-studio/webview/index.html",
     "tools/serial-studio/webview/styles.css",
     "tools/serial-studio/webview/app.js",
+    "tools/serial-studio/webview/history.js",
 ]
 
 AUDIO_POLICY_FILES = [
