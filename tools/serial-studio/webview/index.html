@@ -20,12 +20,12 @@
   </header>
 
   <section class="instrument" aria-label="Instrument health">
-    <div><span class="eyebrow">INSTRUMENT</span><span class="status"><i class="dot" id="policy-dot"></i><span id="policy">STARTING</span></span></div>
+    <div><span class="eyebrow">PROJECT POLICY</span><span class="status"><i class="dot" id="policy-dot"></i><span id="policy">STARTING</span></span></div>
     <div><span class="eyebrow">SERIAL STUDIO API</span><span class="status"><i class="dot" id="api-dot"></i><span id="api-state">STARTING</span></span></div>
     <div><span class="eyebrow">HISTORIAN</span><span class="status"><i class="dot" id="historian-dot"></i><span id="historian-state">UNKNOWN</span></span></div>
     <div><span class="eyebrow">AUDIO REF</span><span class="status"><i class="dot" id="audio-ref-dot"></i><span id="audio-ref-state">NOT INSTRUMENTED</span></span></div>
     <div><span class="eyebrow">RAW BYTE RATE</span><span class="status" id="raw-rate">NOT INSTRUMENTED</span></div>
-    <div><span class="eyebrow">PORT AUTHORITY</span><span class="status">SERIAL STUDIO <span class="value-note">RX ONLY</span></span></div>
+    <div><span class="eyebrow">APP EGRESS GUARD</span><span class="status" id="app-egress-guard">STOCK PRO / NOT PATCHED</span></div>
   </section>
 
   <section class="compare" id="mission-control" aria-label="Device comparison">
@@ -47,7 +47,7 @@
     <div class="d"><span>LED FPS</span><b id="delta-led_fps">—</b></div>
   </section>
 
-  <footer class="footer"><span>HELD VALUES SHOW SOURCE RECORD + AGE · FRESHNESS ≠ LAST KNOWN VALUE</span><span class="warning">NO PRODUCT ALARM THRESHOLDS LOADED</span></footer>
+  <footer class="footer"><span>HELD VALUES SHOW SOURCE RECORD + AGE · FRESHNESS ≠ LAST KNOWN VALUE</span><span class="warning" id="tx-witness">TX WITNESS REQUIRED · PENDING</span></footer>
 </main>
 <template id="device-template">
   <div class="device-head"><div><span class="role"></span> <span class="serial"></span></div><span class="rx"></span></div>

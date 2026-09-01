@@ -72,7 +72,7 @@ function renderSource(article, source, role) {
   article.replaceChildren(template.content.cloneNode(true));
   article.classList.toggle("no-data", source.rx?.has_data === false);
   text(article.querySelector(".role"), role);
-  const identity = String(source.title || "").split(" ").at(-1) || String(source.source_id);
+  const identity = source.identity || String(source.title || "").split(" ").at(-1) || String(source.source_id);
   text(article.querySelector(".serial"), identity);
   const rx = article.querySelector(".rx");
   rx.replaceChildren(document.createTextNode("RX "));
@@ -196,9 +196,13 @@ function render(snapshot) {
   const apiUp = snapshot.bridge?.api_state === "UP";
   text(byId("api-state"), snapshot.bridge?.api_state || "UNKNOWN");
   setDot("api-dot", apiUp);
-  const readOnly = snapshot.instrument?.io?.readOnly === true && snapshot.instrument?.io?.readWrite === false;
-  text(byId("policy"), readOnly ? "OBSERVE-ONLY ENFORCED" : "POLICY NOT CONFIRMED");
-  setDot("policy-dot", readOnly ? true : apiUp ? null : false);
+  const policy = snapshot.instrument?.policy || {};
+  const projectObserveOnly = policy.project_policy === "OBSERVE_ONLY";
+  text(byId("policy"), projectObserveOnly ? "OBSERVE-ONLY" : "POLICY NOT CONFIRMED");
+  setDot("policy-dot", projectObserveOnly ? null : apiUp ? null : false);
+  text(byId("app-egress-guard"), policy.app_egress_guard === "STOCK_PRO_NOT_PATCHED" ? "STOCK PRO / NOT PATCHED" : (policy.app_egress_guard || "UNKNOWN"));
+  const witness = policy.tx_witness || "REQUIRED_PENDING";
+  text(byId("tx-witness"), witness === "ZERO_BYTES" ? "TX WITNESS · ZERO BYTES" : witness === "FAIL" ? "TX WITNESS · FAIL · QUARANTINE" : "TX WITNESS REQUIRED · PENDING");
   const historian = snapshot.instrument?.historian || {};
   text(byId("historian-state"), historian.state || "UNKNOWN");
   setDot("historian-dot", historian.state === "RECORDING" ? true : historian.state === "NOT_RECORDING" ? false : null);

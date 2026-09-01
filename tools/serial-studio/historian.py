@@ -226,6 +226,7 @@ def build_receipt(
     *,
     session_id: int,
     project_path: Path,
+    source_project_path: Path | None = None,
     parser_path: Path,
     catalogue_path: Path,
     capture_profile: str,
@@ -233,6 +234,11 @@ def build_receipt(
 ) -> dict[str, Any]:
     project_text = project_path.read_text(encoding="utf-8")
     project = json.loads(project_text)
+    source_project_text = (
+        source_project_path.read_text(encoding="utf-8")
+        if source_project_path is not None
+        else None
+    )
     parser_sha = sha256_file(parser_path)
     catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
 
@@ -300,6 +306,17 @@ def build_receipt(
             "writer_version": project.get("writerVersion"),
             "project_path": str(project_path.resolve()),
             "project_sha256": sha256_file(project_path),
+            "runtime_project_path": str(project_path.resolve()),
+            "runtime_project_sha256": sha256_file(project_path),
+            "source_project_path": (
+                str(source_project_path.resolve()) if source_project_path else None
+            ),
+            "source_project_sha256": (
+                sha256_file(source_project_path) if source_project_path else None
+            ),
+            "runtime_projection_differs_from_source": (
+                source_project_text is not None and source_project_text != project_text
+            ),
             "embedded_project_json_sha256": sha256_text(embedded_text) if embedded_text else None,
             "project_drift": embedded_project != project,
             "parser_path": str(parser_path.resolve()),
@@ -332,6 +349,11 @@ def main() -> int:
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--session-id", type=int, required=True)
     parser.add_argument("--project", type=Path, required=True)
+    parser.add_argument(
+        "--source-project",
+        type=Path,
+        help="Optional authored source contract used to load the runtime project",
+    )
     parser.add_argument("--parser", type=Path, required=True)
     parser.add_argument("--catalogue", type=Path, required=True)
     parser.add_argument("--capture-profile", required=True)
@@ -345,6 +367,7 @@ def main() -> int:
         args.snapshot,
         session_id=args.session_id,
         project_path=args.project,
+        source_project_path=args.source_project,
         parser_path=args.parser,
         catalogue_path=args.catalogue,
         capture_profile=args.capture_profile,

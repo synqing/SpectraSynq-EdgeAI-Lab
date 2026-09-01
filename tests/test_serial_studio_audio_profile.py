@@ -169,4 +169,11 @@ def test_capture_profiles_keep_audio_optional_and_unbound() -> None:
     assert audio["status"] == "BLOCKED_UNBOUND"
     assert audio["required_source_ids"] == [0, 1, 2]
     assert audio["audio_source_contract"]["normalization"] is False
+    assert audio["audio_source_contract"]["edition"] == "OFFICIAL_PRO"
+    assert audio["audio_source_contract"]["input_device_name"] == "BlackHole 2ch"
+    assert audio["audio_source_contract"]["sample_rate_hz"] == 48000
+    assert audio["application_egress_guard"] == "STOCK_PRO_NOT_PATCHED"
+    assert audio["independent_tx_witness"] == "REQUIRED_ZERO_BYTES"
+    assert audio["patched_pro_hardening"] == "OPTIONAL_NOT_CRITICAL_PATH"
+    assert "PRO_RUNTIME_NOT_VALIDATED" not in audio["blockers"]
     assert audio["playback_owner"] == "EXTERNAL_NOT_SERIAL_STUDIO"

@@ -16,20 +16,23 @@ REPO = HERE.parents[1]
 SERIAL_STUDIO_REPO = Path("/Users/spectrasynq/Serial-Studio")
 DEFAULT_OUTPUT = HERE / "projects/v2.1.release-manifest.json"
 BINARY_IDENTITY = HERE / "projects/serial-studio-binary.v1.json"
-AR0_RUNTIME_RECEIPT = HERE / "projects/ar0-runtime-promotion.v1.json"
+OFFICIAL_PRO_PREFLIGHT = HERE / "projects/official-pro-audio-preflight.v1.json"
+OPTICAL_MEASUREMENT = REPO / "_scratch/serial_studio_v2_1_20260901/MEASURED.json"
 
 EDGE_FILES = [
     "tools/serial-studio/audio_reference_validate.py",
+    "tools/serial-studio/official_pro_audio_preflight.py",
     "tools/serial-studio/capture_audio_source_binding.py",
     "tools/serial-studio/generate_audio_profile.py",
     "tools/serial-studio/lint_audio_profile.py",
     "tools/serial-studio/release_manifest_v2_1.py",
-    "tools/serial-studio/projects/ar0-runtime-promotion.v1.json",
+    "tools/serial-studio/projects/official-pro-audio-preflight.v1.json",
     "tools/serial-studio/validate_bundle.py",
     "tools/serial-studio/profiles/capture-profiles.v1.json",
     "tools/serial-studio/schemas/audio-reference-validation.schema.json",
     "tools/serial-studio/schemas/audio-reference-scoring-profile.schema.json",
     "tools/serial-studio/schemas/audio-source-binding.schema.json",
+    "tools/serial-studio/schemas/official-pro-audio-preflight.schema.json",
     "tools/serial-studio/schemas/bench-session.v2.schema.json",
     "tools/serial-studio/schemas/evidence-bundle.v2.schema.json",
     "tools/serial-studio/webview/bridge.py",
@@ -40,6 +43,7 @@ EDGE_FILES = [
     "tools/serial-studio/fixtures/audio-reference-live-unverified.json",
     "tools/serial-studio/fixtures/audio-reference-receipt-pass.json",
     "tests/test_audio_reference_validate.py",
+    "tests/test_serial_studio_official_pro_preflight.py",
     "tests/test_serial_studio_audio_profile.py",
     "tests/test_serial_studio_bundle.py",
     "tests/test_serial_studio_webview.py",
@@ -115,11 +119,12 @@ def generate() -> dict[str, Any]:
     profile_catalogue = HERE / "profiles/capture-profiles.v1.json"
     profile = json.loads(profile_catalogue.read_text(encoding="utf-8"))["profiles"]
     fonts = json.loads((HERE / "webview/font-assets.json").read_text(encoding="utf-8"))
-    ar0_runtime = json.loads(AR0_RUNTIME_RECEIPT.read_text(encoding="utf-8"))
+    official_pro = json.loads(OFFICIAL_PRO_PREFLIGHT.read_text(encoding="utf-8"))
+    optical = json.loads(OPTICAL_MEASUREMENT.read_text(encoding="utf-8"))
     dirty = git_value("status", "--porcelain", "--", *AUDIO_POLICY_FILES)
     return {
         "schema": "spectrasynq.serial-studio.v2.1-release-manifest.v1",
-        "status": "HOST_CONTRACT_VALIDATED_AUDIO_RUNTIME_BLOCKED",
+        "status": "HOST_CONTRACT_VALIDATED_OFFICIAL_PRO_IDENTITY_PASS_AUDIO_BINDING_BLOCKED",
         "base_project": {
             "path": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
             "sha256": sha256_file(
@@ -144,7 +149,7 @@ def generate() -> dict[str, Any]:
             "files": edge_files,
             "webview_aggregate_sha256": tree_sha(webview_files),
         },
-        "application_audio_binding_policy": {
+        "optional_patched_pro_hardening": {
             "repository": str(SERIAL_STUDIO_REPO),
             "branch": git_value("branch", "--show-current"),
             "base_commit": git_value("rev-parse", "HEAD"),
@@ -153,16 +158,30 @@ def generate() -> dict[str, Any]:
             "source_tree_sha256": tree_sha(audio_policy_files),
             "files": audio_policy_files,
             "source_guard": "AUDIO_SAVED_BINDING_POLICY=PASS",
-            "identified_pro_binary_contains_patch": False,
+            "critical_path": False,
+            "identified_official_pro_binary_contains_patch": False,
         },
-        "runtime_promotion": {
-            "receipt_path": "tools/serial-studio/projects/ar0-runtime-promotion.v1.json",
-            "receipt_sha256": sha256_file(AR0_RUNTIME_RECEIPT),
-            "gate": ar0_runtime["gate"],
-            "status": ar0_runtime["status"],
-            "reason_codes": ar0_runtime["reason_codes"],
+        "official_pro_runtime": {
+            "receipt_path": "tools/serial-studio/projects/official-pro-audio-preflight.v1.json",
+            "receipt_sha256": sha256_file(OFFICIAL_PRO_PREFLIGHT),
+            "runtime_identity": official_pro["runtime_identity"],
+            "application_policy": official_pro["application_policy"],
+            "audio_binding_preflight": official_pro["audio_binding_preflight"],
+            "overall_status": official_pro["overall_status"],
         },
-        "prior_gpl_binary": binary_identity(),
+        "optical_validation": {
+            "measurement_path": "_scratch/serial_studio_v2_1_20260901/MEASURED.json",
+            "measurement_sha256": sha256_file(OPTICAL_MEASUREMENT),
+            "tier": optical["tier"],
+            "verdict": optical["verdict"],
+            "stills": optical["stills"],
+            "fonts_verified": optical["fonts_verified"],
+            "p0_inversions": optical["p0_inversions"],
+        },
+        "optional_prior_gpl_policy_proof": {
+            "critical_path": False,
+            **binary_identity(),
+        },
         "local_fonts": {
             "policy": fonts["policy"],
             "redistribution_permitted": fonts["redistribution_permitted"],
@@ -181,16 +200,20 @@ def generate() -> dict[str, Any]:
                 "status": "BLOCKED_UNBOUND",
                 "optional": True,
                 "requires_pro": True,
-                "runtime_validated": False,
+                "official_pro_runtime_identity_validated": True,
+                "audio_binding_validated": False,
+                "app_egress_guard": "STOCK_PRO_NOT_PATCHED",
+                "independent_tx_witness": "REQUIRED_PENDING",
             },
         },
         "non_claims": [
             "No Audio Source C project was generated without an exact Pro-saved binding.",
             "No loopback input is admitted or claimed present by this manifest.",
-            "The fail-closed Audio identity patch is not in an identified Pro binary.",
+            "The official Pro runtime identity and read-only Audio API surface are validated; Source C is not yet bound.",
+            "The fail-closed application patch is optional hardening and is not in the official Pro binary.",
             "No audio playback, USB, firmware, live capture or HIL was performed.",
             "Host Audio Reference does not validate acoustic delivery or the K1 microphone/PDM/PCM path.",
-            "The prior optical receipt does not formally validate the changed six-cell Mission Control geometry."
+            "The optical receipt validates layout and typography, not device, Audio, or product behaviour."
         ],
     }
 

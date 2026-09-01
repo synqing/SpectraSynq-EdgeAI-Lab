@@ -1,6 +1,6 @@
 {
   "schema": "spectrasynq.serial-studio.v2.1-release-manifest.v1",
-  "status": "HOST_CONTRACT_VALIDATED_AUDIO_RUNTIME_BLOCKED",
+  "status": "HOST_CONTRACT_VALIDATED_OFFICIAL_PRO_IDENTITY_PASS_AUDIO_BINDING_BLOCKED",
   "base_project": {
     "path": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
     "sha256": "62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d",
@@ -8,7 +8,7 @@
   },
   "profiles": {
     "catalogue_path": "tools/serial-studio/profiles/capture-profiles.v1.json",
-    "catalogue_sha256": "36434a909033fd76001988773605cfba9a2917ad6d2d6ac6ed26517277d936f2",
+    "catalogue_sha256": "a456591b38ff92f5ee5e32563d2329c61f47ff1f5e9c16c4b3ca8e279b9d38ec",
     "passive_dual_uart": {
       "status": "HOST_SOURCE_VALIDATED",
       "project": "tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
@@ -65,21 +65,27 @@
       ],
       "audio_source_contract": {
         "bus_type": 3,
-        "edition": "PRO",
+        "edition": "OFFICIAL_PRO",
+        "runtime_version": "4.0.3",
+        "input_device_name": "BlackHole 2ch",
         "binding": "EXACT_SAVED_DEVICE_ID_REQUIRED",
+        "external_preflight": "FAIL_CLOSED_BEFORE_CONNECT",
         "normalization": false,
-        "sample_rate_hz": "EXACT_FROM_SAVED_BINDING",
-        "sample_format": "EXACT_FROM_SAVED_BINDING",
-        "channel_count": "EXACT_FROM_SAVED_BINDING",
+        "sample_rate_hz": 48000,
+        "sample_format": "Float 32-bit",
+        "channel_count": 2,
         "time_authority": "HOST_AUDIO_REFERENCE_TIME"
       },
       "dut_tx_owner": "NONE",
       "playback_owner": "EXTERNAL_NOT_SERIAL_STUDIO",
       "serial_studio_observe_only": true,
+      "application_egress_guard": "STOCK_PRO_NOT_PATCHED",
+      "independent_tx_witness": "REQUIRED_ZERO_BYTES",
+      "patched_pro_hardening": "OPTIONAL_NOT_CRITICAL_PATH",
       "blockers": [
         "AUDIO_SOURCE_BINDING_MISSING",
         "VIRTUAL_LOOPBACK_INPUT_NOT_PRESENT",
-        "PRO_RUNTIME_NOT_VALIDATED"
+        "INDEPENDENT_TX_WITNESS_PENDING"
       ]
     }
   },
@@ -90,16 +96,21 @@
     "reason_codes": [
       "AUDIO_SOURCE_BINDING_MISSING",
       "VIRTUAL_LOOPBACK_INPUT_NOT_PRESENT",
-      "PRO_RUNTIME_NOT_VALIDATED"
+      "INDEPENDENT_TX_WITNESS_PENDING"
     ]
   },
   "host_components": {
-    "aggregate_sha256": "e16df42dfd48ee579f2e54ef7cd4abe052bdb26bfcf45be6806ef004d5802c8e",
+    "aggregate_sha256": "3870d19669129499979551820e08a9a4182e68f956de8921d8cbd75ea0ffb3e6",
     "files": [
       {
         "path": "tools/serial-studio/audio_reference_validate.py",
         "sha256": "f051f25a7b41d8f7f297d4ee9518682c3e552c8b358b103244883999a7b67a2b",
         "bytes": 34096
+      },
+      {
+        "path": "tools/serial-studio/official_pro_audio_preflight.py",
+        "sha256": "a80df2bccebacb453873396f2d45fde2b9e1038a6a3f1b4a55030c0755e47430",
+        "bytes": 14312
       },
       {
         "path": "tools/serial-studio/capture_audio_source_binding.py",
@@ -118,13 +129,13 @@
       },
       {
         "path": "tools/serial-studio/release_manifest_v2_1.py",
-        "sha256": "4302c9ea46f80c4b592637b44b16a8e5bae15134b544612c7bbd5c5aacacd4dd",
-        "bytes": 8922
+        "sha256": "05670a3ce8a7e680fa413ea88cbdcc46bca006784d9d04297c03e5a8e6432b2e",
+        "bytes": 10351
       },
       {
-        "path": "tools/serial-studio/projects/ar0-runtime-promotion.v1.json",
-        "sha256": "07dab296f7dea60d47ef0c78ab6c4b5479c377018b733f8697444806db34277d",
-        "bytes": 3349
+        "path": "tools/serial-studio/projects/official-pro-audio-preflight.v1.json",
+        "sha256": "6eb62dc0c0ffe73da00e63530b7acc1c21dbc20219fda9109ee494d81fe81633",
+        "bytes": 2294
       },
       {
         "path": "tools/serial-studio/validate_bundle.py",
@@ -133,8 +144,8 @@
       },
       {
         "path": "tools/serial-studio/profiles/capture-profiles.v1.json",
-        "sha256": "36434a909033fd76001988773605cfba9a2917ad6d2d6ac6ed26517277d936f2",
-        "bytes": 3708
+        "sha256": "a456591b38ff92f5ee5e32563d2329c61f47ff1f5e9c16c4b3ca8e279b9d38ec",
+        "bytes": 3981
       },
       {
         "path": "tools/serial-studio/schemas/audio-reference-validation.schema.json",
@@ -152,6 +163,11 @@
         "bytes": 2415
       },
       {
+        "path": "tools/serial-studio/schemas/official-pro-audio-preflight.schema.json",
+        "sha256": "8d6488175ed77aa11e9ab380dbf2a46f4bf9fe03c98aa083aab9f6bf41a50f91",
+        "bytes": 2465
+      },
+      {
         "path": "tools/serial-studio/schemas/bench-session.v2.schema.json",
         "sha256": "bf04fcea4193f9382260ca14729247dec1eb561d8419f3fdb2f18adc92cca65a",
         "bytes": 4037
@@ -163,13 +179,13 @@
       },
       {
         "path": "tools/serial-studio/webview/bridge.py",
-        "sha256": "811679e298783f9fa4ab86542b261646fbbdcc153e9b27f0015fa59aa4051150",
-        "bytes": 21144
+        "sha256": "1fe7a726a6ee5cf179655869620383de7f09963c88afac0003e6f62062bf8ac1",
+        "bytes": 22147
       },
       {
         "path": "tools/serial-studio/webview/index.html",
-        "sha256": "075de6f714dba88f790400b3c7b0acf7ce6fbd0b4e8fa07e575b8b75e0857023",
-        "bytes": 4204
+        "sha256": "158cd64a51931f28d69310d24affa7e9fb5d2cfe978fc2ed968c42bda03e0e24",
+        "bytes": 4214
       },
       {
         "path": "tools/serial-studio/webview/styles.css",
@@ -178,8 +194,8 @@
       },
       {
         "path": "tools/serial-studio/webview/app.js",
-        "sha256": "b7758b7efce6b6294c786a906be0264bf682bd9f1395a130ef07e2f95ae39d2c",
-        "bytes": 13488
+        "sha256": "204d3b2c54caa9b4554946f90c078574e12ac09c8dab68df72761085bbc7a3ae",
+        "bytes": 13921
       },
       {
         "path": "tools/serial-studio/webview/font-assets.json",
@@ -188,13 +204,13 @@
       },
       {
         "path": "tools/serial-studio/fixtures/audio-reference-live-unverified.json",
-        "sha256": "242444e5636c78ee3abed9bcb659e2a1987923c15c303c63bad6e08416a3f0ea",
-        "bytes": 1532
+        "sha256": "7d2e9280fc5d200a9f8c490e6b53c3ee5ee3d8047f6afde0f508293e124aa745",
+        "bytes": 1661
       },
       {
         "path": "tools/serial-studio/fixtures/audio-reference-receipt-pass.json",
-        "sha256": "0246e9b6dcf8f27b3aec05b1fe004b2cca7bfc8bff677201b20de3b01ac4e258",
-        "bytes": 2429
+        "sha256": "ad9e451ede61dbd32344734ec9abd03480fc7a409c731f220a2b2f2ff7af3dfd",
+        "bytes": 2552
       },
       {
         "path": "tests/test_audio_reference_validate.py",
@@ -202,9 +218,14 @@
         "bytes": 9434
       },
       {
+        "path": "tests/test_serial_studio_official_pro_preflight.py",
+        "sha256": "1dde1d6c3e1b17d8ecab1b2d59a72646f81cae08f3386ae02cc7a547e49dd46e",
+        "bytes": 5751
+      },
+      {
         "path": "tests/test_serial_studio_audio_profile.py",
-        "sha256": "86052bddf1b219266024c946c4c1d382e61dc7bc1a54107038657862508fbf9f",
-        "bytes": 6247
+        "sha256": "0980573ee949db3551f16aed42ec06d04b4acfb62678f948b68330010aaffc82",
+        "bytes": 6747
       },
       {
         "path": "tests/test_serial_studio_bundle.py",
@@ -213,18 +234,18 @@
       },
       {
         "path": "tests/test_serial_studio_webview.py",
-        "sha256": "c9977be6b79c22298ad65cf10238933c853fc485837acdc3f6265c78c92962e1",
-        "bytes": 6091
+        "sha256": "9be2a6a88725cfe83177d814b31224b2d0936269a30d07311029cd2542e604c6",
+        "bytes": 6547
       },
       {
         "path": "docs/serial-studio/ADR-002-host-audio-reference.md",
-        "sha256": "6201a3cfe49bdac23bdc87f1c4479feb79b8fcde9d90592624522d5270a0865c",
-        "bytes": 5093
+        "sha256": "8fe26108b902f472e8543ecd4b2ece6040f40b5e746567d791d6a06fd32fc4d9",
+        "bytes": 6256
       }
     ],
-    "webview_aggregate_sha256": "1fb15ba24419e157b013f2b5ec01e5291049a05cd724fce04b20e93411168015"
+    "webview_aggregate_sha256": "f6068a6c1d2c2262a0ee0c81b49daf926ddf2e79f4fc7c2ff921ea7ed37700c2"
   },
-  "application_audio_binding_policy": {
+  "optional_patched_pro_hardening": {
     "repository": "/Users/spectrasynq/Serial-Studio",
     "branch": "feat/observe-only-project-policy",
     "base_commit": "a92501cb7035b12f5f8fb4796a339e52b54f8601",
@@ -249,20 +270,130 @@
       }
     ],
     "source_guard": "AUDIO_SAVED_BINDING_POLICY=PASS",
-    "identified_pro_binary_contains_patch": false
+    "critical_path": false,
+    "identified_official_pro_binary_contains_patch": false
   },
-  "runtime_promotion": {
-    "receipt_path": "tools/serial-studio/projects/ar0-runtime-promotion.v1.json",
-    "receipt_sha256": "07dab296f7dea60d47ef0c78ab6c4b5479c377018b733f8697444806db34277d",
-    "gate": "AR0_BINARY_IDENTITY",
-    "status": "BLOCKED_EXTERNAL",
-    "reason_codes": [
-      "COMMERCIAL_BUILD_CREDENTIAL_NOT_PRESENT",
-      "BLACKHOLE_ROOT_INSTALL_REQUIRES_INTERACTIVE_ADMIN",
-      "OFFICIAL_PRO_PROCESS_ACTIVE_USER_STATE_PRESERVED"
-    ]
+  "official_pro_runtime": {
+    "receipt_path": "tools/serial-studio/projects/official-pro-audio-preflight.v1.json",
+    "receipt_sha256": "6eb62dc0c0ffe73da00e63530b7acc1c21dbc20219fda9109ee494d81fe81633",
+    "runtime_identity": {
+      "bundle": "/Applications/Serial Studio Pro.app",
+      "version": "4.0.3",
+      "build_version": "4.0.3",
+      "bundle_identifier": "org.alexspataru.serial-studio",
+      "binary_path": "/Applications/Serial Studio Pro.app/Contents/MacOS/Serial-Studio-Pro",
+      "binary_sha256": "edde7a73992aa51e002a8ec4180b1199910c8ce54e30ce6ced90f191da2b444a",
+      "status": "PASS",
+      "reason_codes": [],
+      "edition": "OFFICIAL_PRO"
+    },
+    "application_policy": {
+      "project_policy": "OBSERVE_ONLY",
+      "app_egress_guard": "STOCK_PRO_NOT_PATCHED",
+      "external_fail_closed_preflight": "ENFORCED_BY_THIS_TOOL",
+      "tx_witness": "REQUIRED_PENDING",
+      "patched_pro_hardening": "OPTIONAL_NOT_CRITICAL_PATH"
+    },
+    "audio_binding_preflight": {
+      "status": "BLOCKED",
+      "reason_codes": [
+        "AUDIO_SOURCE_BINDING_MISSING",
+        "CHANNEL_COUNT_UNPROVEN",
+        "EXPECTED_INPUT_DEVICE_ABSENT",
+        "EXPECTED_SAMPLE_RATE_NOT_SELECTED"
+      ],
+      "expected": {
+        "input_device_name": "BlackHole 2ch",
+        "sample_rate_hz": 48000,
+        "input_format": "Float 32-bit",
+        "channel_count": 2,
+        "normalization": false
+      },
+      "observed": {
+        "input_devices": [
+          "MacBook Pro Microphone",
+          "EiP Microphone"
+        ],
+        "input_device_name": "MacBook Pro Microphone",
+        "input_device_index": 0,
+        "sample_rates": [
+          "44100",
+          "48000",
+          "88200",
+          "96000"
+        ],
+        "sample_rate_hz": 44100,
+        "sample_rate_index": 0,
+        "input_formats": [
+          "Float 32-bit"
+        ],
+        "input_format": "Float 32-bit",
+        "input_format_index": 0,
+        "input_channel_config_index": 0,
+        "channel_count": null,
+        "normalization": null
+      }
+    },
+    "overall_status": "BLOCKED"
   },
-  "prior_gpl_binary": {
+  "optical_validation": {
+    "measurement_path": "_scratch/serial_studio_v2_1_20260901/MEASURED.json",
+    "measurement_sha256": "addd18913c67f0f887e3096fa223ecb9d88720da4e6ab468dd20c3adbc488e02",
+    "tier": "T0",
+    "verdict": "PASS",
+    "stills": [
+      {
+        "surface": "mission-control",
+        "viewport": "1440x900",
+        "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-mission-control-1440x900.png",
+        "sha256": "50b6ac9273fc22a5383349f1ca589917662cf5f415ffdc36e5a2a304cf32f12c",
+        "overflow": false
+      },
+      {
+        "surface": "mission-control",
+        "viewport": "1180x720",
+        "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-mission-control-1180x720.png",
+        "sha256": "00b83d5ece24de61d2629deccc48038a817f5eec554d573c3073394a58583b28",
+        "overflow": false
+      },
+      {
+        "surface": "audio-reference",
+        "viewport": "1440x900",
+        "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-audio-reference-1440x900.png",
+        "sha256": "b254b590c55ffdf39c39726ea2872ab1806b45b747c01af32b808129996f34eb",
+        "overflow": false
+      },
+      {
+        "surface": "audio-reference",
+        "viewport": "1180x720",
+        "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-audio-reference-1180x720.png",
+        "sha256": "5cd01918666f7317b8bb98da4b8c398ce796cbb288765e02d91598d1b8547415",
+        "overflow": false
+      },
+      {
+        "surface": "ap-validation",
+        "viewport": "1440x900",
+        "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-ap-validation-1440x900.png",
+        "sha256": "84a48c3a7dd16c1d2746f7b4af634943b30b9867ac138879e5be9ff62a45f630",
+        "overflow": false
+      },
+      {
+        "surface": "ap-validation",
+        "viewport": "1180x720",
+        "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/output/playwright/k1-v2-1-ap-validation-1180x720.png",
+        "sha256": "10d4bfc7596a802e707e95aa4246bb0b979740b2d00702ce11ff55735417b061",
+        "overflow": false
+      }
+    ],
+    "fonts_verified": {
+      "countach_regular": true,
+      "countach_bold_italic": true,
+      "berkeley_mono_regular": true
+    },
+    "p0_inversions": []
+  },
+  "optional_prior_gpl_policy_proof": {
+    "critical_path": false,
     "schema": "spectrasynq.serial-studio.binary-identity.v1",
     "status": "TIER_A_BINARY_IDENTIFIED",
     "edition": "GPLv3",
@@ -338,15 +469,19 @@
       "status": "BLOCKED_UNBOUND",
       "optional": true,
       "requires_pro": true,
-      "runtime_validated": false
+      "official_pro_runtime_identity_validated": true,
+      "audio_binding_validated": false,
+      "app_egress_guard": "STOCK_PRO_NOT_PATCHED",
+      "independent_tx_witness": "REQUIRED_PENDING"
     }
   },
   "non_claims": [
     "No Audio Source C project was generated without an exact Pro-saved binding.",
     "No loopback input is admitted or claimed present by this manifest.",
-    "The fail-closed Audio identity patch is not in an identified Pro binary.",
+    "The official Pro runtime identity and read-only Audio API surface are validated; Source C is not yet bound.",
+    "The fail-closed application patch is optional hardening and is not in the official Pro binary.",
     "No audio playback, USB, firmware, live capture or HIL was performed.",
     "Host Audio Reference does not validate acoustic delivery or the K1 microphone/PDM/PCM path.",
-    "The prior optical receipt does not formally validate the changed six-cell Mission Control geometry."
+    "The optical receipt validates layout and typography, not device, Audio, or product behaviour."
   ]
 }

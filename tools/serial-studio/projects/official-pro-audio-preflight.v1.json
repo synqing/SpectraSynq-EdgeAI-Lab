@@ -1,0 +1,69 @@
+{
+  "schema": "spectrasynq.serial-studio.official-pro-audio-preflight.v1",
+  "observed_at_utc": "2026-09-01T00:22:28Z",
+  "runtime_identity": {
+    "bundle": "/Applications/Serial Studio Pro.app",
+    "version": "4.0.3",
+    "build_version": "4.0.3",
+    "bundle_identifier": "org.alexspataru.serial-studio",
+    "binary_path": "/Applications/Serial Studio Pro.app/Contents/MacOS/Serial-Studio-Pro",
+    "binary_sha256": "edde7a73992aa51e002a8ec4180b1199910c8ce54e30ce6ced90f191da2b444a",
+    "status": "PASS",
+    "reason_codes": [],
+    "edition": "OFFICIAL_PRO"
+  },
+  "application_policy": {
+    "project_policy": "OBSERVE_ONLY",
+    "app_egress_guard": "STOCK_PRO_NOT_PATCHED",
+    "external_fail_closed_preflight": "ENFORCED_BY_THIS_TOOL",
+    "tx_witness": "REQUIRED_PENDING",
+    "patched_pro_hardening": "OPTIONAL_NOT_CRITICAL_PATH"
+  },
+  "audio_binding_preflight": {
+    "status": "BLOCKED",
+    "reason_codes": [
+      "AUDIO_SOURCE_BINDING_MISSING",
+      "CHANNEL_COUNT_UNPROVEN",
+      "EXPECTED_INPUT_DEVICE_ABSENT",
+      "EXPECTED_SAMPLE_RATE_NOT_SELECTED"
+    ],
+    "expected": {
+      "input_device_name": "BlackHole 2ch",
+      "sample_rate_hz": 48000,
+      "input_format": "Float 32-bit",
+      "channel_count": 2,
+      "normalization": false
+    },
+    "observed": {
+      "input_devices": [
+        "MacBook Pro Microphone",
+        "EiP Microphone"
+      ],
+      "input_device_name": "MacBook Pro Microphone",
+      "input_device_index": 0,
+      "sample_rates": [
+        "44100",
+        "48000",
+        "88200",
+        "96000"
+      ],
+      "sample_rate_hz": 44100,
+      "sample_rate_index": 0,
+      "input_formats": [
+        "Float 32-bit"
+      ],
+      "input_format": "Float 32-bit",
+      "input_format_index": 0,
+      "input_channel_config_index": 0,
+      "channel_count": null,
+      "normalization": null
+    }
+  },
+  "overall_status": "BLOCKED",
+  "non_claims": [
+    "This receipt does not claim that stock Pro contains the observe-only application patch.",
+    "This receipt does not prove zero DUT egress; an independent TX witness is required.",
+    "This receipt does not validate K1 microphone capture, acoustic delivery, or device time.",
+    "No Audio setter, I/O lifecycle command, DUT command, or serial-port operation is used."
+  ]
+}

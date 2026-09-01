@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import socket
+import time
 from dataclasses import dataclass
 from typing import Any
 
@@ -19,6 +20,7 @@ DEFAULT_PORT = 7777
 _READ_COMMANDS = frozenset(
     {
         "project.source.list",
+        "project.source.getConfig",
         "dashboard.getStatus",
         "dashboard.getData",
         "io.getStatus",
@@ -119,6 +121,11 @@ class SerialStudioReadClient:
     def dashboard_status(self) -> dict[str, Any]:
         return self._mapping_request("dashboard.getStatus")
 
+    def source_config(self, source_id: str) -> dict[str, Any]:
+        return self._mapping_request(
+            "project.source.getConfig", {"sourceId": _source_param(source_id)}
+        )
+
     def dashboard_data(self) -> dict[str, Any]:
         return self._mapping_request("dashboard.getData")
 
@@ -168,7 +175,7 @@ class SerialStudioReadClient:
         payload = json.dumps(request, separators=(",", ":")).encode("utf-8") + b"\n"
         try:
             self._socket.sendall(payload)
-            response = json.loads(self._readline().decode("utf-8"))
+            response = self._read_matching_response(request["id"])
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
             self.close()
             raise SerialStudioError(f"Serial Studio API request failed: {error}") from error
@@ -184,6 +191,44 @@ class SerialStudioReadClient:
                 f"Serial Studio API rejected {method}: {response.get('error', 'unknown error')}"
             )
         return response.get("result", {})
+
+    def _read_matching_response(self, request_id: str) -> dict[str, Any]:
+        """Demultiplex one command response from unsolicited stream messages.
+
+        Serial Studio pushes parsed frames, raw data, and lifecycle events to
+        every connected API client. Those messages may arrive between a command
+        write and its response, so treating the next line as the response makes
+        a live long-lived client fail as soon as telemetry is flowing.
+        """
+
+        if self._socket is None:
+            raise SerialStudioError("Serial Studio API socket was not established")
+        deadline = time.monotonic() + self.timeout_s
+        try:
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError("timed out waiting for command response")
+                self._socket.settimeout(remaining)
+                message = json.loads(self._readline().decode("utf-8"))
+                if not isinstance(message, dict):
+                    raise SerialStudioError(
+                        "Serial Studio API returned a non-object response"
+                    )
+                if _is_push_message(message):
+                    continue
+                if message.get("type") != "response":
+                    raise SerialStudioError(
+                        "Serial Studio API returned an unexpected message type"
+                    )
+                if message.get("id") != request_id:
+                    raise SerialStudioError(
+                        "Serial Studio API response id did not match the request"
+                    )
+                return message
+        finally:
+            if self._socket is not None:
+                self._socket.settimeout(self.timeout_s)
 
     def _readline(self) -> bytes:
         if self._reader is None:
@@ -245,6 +290,12 @@ def _source_param(source_id: str | int) -> str | int:
     if isinstance(source_id, str) and source_id.isdecimal():
         return int(source_id)
     return source_id
+
+
+def _is_push_message(message: dict[str, Any]) -> bool:
+    """Recognise the three documented Serial Studio server-push shapes."""
+
+    return any(key in message for key in ("frames", "data", "event"))
 
 
 def refuse_if_serial_studio_owns_usb(holder: str | None, device: str) -> None:

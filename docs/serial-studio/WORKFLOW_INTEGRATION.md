@@ -56,6 +56,12 @@ Bundle the run manifest, rig, identities, raw bytes, closed SQLite snapshot, pro
 
 `OBSERVE_HEALTH_POLLED` is not admitted. Its command set, rate, response cadence, egress ledger, and observer effect must first be qualified against a named threshold set. Until then, missing passive health telemetry displays `NOT INSTRUMENTED`.
 
+`PASSIVE_DUAL_UART_AUDIO_REF` uses the official Pro runtime. Its application
+boundary is declared as `STOCK_PRO_NOT_PATCHED`; the project remains
+observe-only, the external preflight refuses identity/configuration drift, and
+an independent witness must prove zero host-to-K1 bytes. The custom patched Pro
+build is optional hardening, not a Source C prerequisite.
+
 The versioned v2 session and evidence-bundle contracts make instrumentation
 conditional on the capture profile. An exclusive probe/calibration bundle does
 not require Serial Studio evidence; passive UART profiles do. Audio Reference is

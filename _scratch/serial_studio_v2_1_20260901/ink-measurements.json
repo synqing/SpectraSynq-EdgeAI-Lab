@@ -27,7 +27,7 @@
     "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/detail_label.png",
     "crop_sha256": "53fb5fbe702cc787b91378688672d8ddd2dae13c147cad457426d9966e950b5a",
     "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/detail_label.png",
-    "annotated_crop_sha256": "f1bca9221639d17e303a1db19e8463fd0ee5a983675a9650767844f5646d4b26",
+    "annotated_crop_sha256": "ed21c92685369bdb6e2e0afc09f15f7f363bdb99a319a1d3cb923f803578759e",
     "crop_width_px": 87,
     "crop_height_px": 14,
     "dominant_background_rgb": [
@@ -140,10 +140,10 @@
   {
     "role": "instrument_eyebrow",
     "crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/crops/instrument_eyebrow.png",
-    "crop_sha256": "a270dd29140bbba4a9f989d1983990ade91f16b29c94fe098e21c6fb4bdbb3a9",
+    "crop_sha256": "4a1d96088cee5e4f91d60e255392bfdc10f675571bd9d464aae22e8466b313cc",
     "annotated_crop_png": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/_scratch/serial_studio_v2_1_20260901/annotated/instrument_eyebrow.png",
-    "annotated_crop_sha256": "1c5647c6126d05d2fd924eecccacfbf12dceba217f27e5906e4c221da49107da",
-    "crop_width_px": 66,
+    "annotated_crop_sha256": "70f527bb0e589281333330843166de21fff6c7d3c319565a4ff67075f630e38c",
+    "crop_width_px": 93,
     "crop_height_px": 11,
     "dominant_background_rgb": [
       12,
@@ -153,10 +153,10 @@
     "ink_bbox": {
       "left": 1,
       "top": 2,
-      "right": 64,
+      "right": 90,
       "bottom": 8
     },
-    "ink_width_px": 64,
+    "ink_width_px": 90,
     "ink_height_px": 7,
     "measure_method": "dominant_background_delta_24_bbox"
   },

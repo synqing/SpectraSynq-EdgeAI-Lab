@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectrasynq.com/schemas/official-pro-audio-preflight.v1.json",
+  "title": "Official Serial Studio Pro Audio preflight receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "observed_at_utc",
+    "runtime_identity",
+    "application_policy",
+    "audio_binding_preflight",
+    "overall_status",
+    "non_claims"
+  ],
+  "properties": {
+    "schema": {"const": "spectrasynq.serial-studio.official-pro-audio-preflight.v1"},
+    "observed_at_utc": {"type": "string", "format": "date-time"},
+    "runtime_identity": {
+      "type": "object",
+      "required": ["bundle", "version", "binary_path", "binary_sha256", "status", "edition"],
+      "properties": {
+        "bundle": {"type": "string"},
+        "version": {"const": "4.0.3"},
+        "build_version": {"type": "string"},
+        "bundle_identifier": {"type": "string"},
+        "binary_path": {"type": "string"},
+        "binary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "status": {"enum": ["PASS", "BLOCKED"]},
+        "reason_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "edition": {"const": "OFFICIAL_PRO"}
+      },
+      "additionalProperties": false
+    },
+    "application_policy": {
+      "type": "object",
+      "required": ["project_policy", "app_egress_guard", "external_fail_closed_preflight", "tx_witness", "patched_pro_hardening"],
+      "properties": {
+        "project_policy": {"const": "OBSERVE_ONLY"},
+        "app_egress_guard": {"const": "STOCK_PRO_NOT_PATCHED"},
+        "external_fail_closed_preflight": {"const": "ENFORCED_BY_THIS_TOOL"},
+        "tx_witness": {"enum": ["REQUIRED_PENDING", "ZERO_BYTES", "FAIL"]},
+        "patched_pro_hardening": {"const": "OPTIONAL_NOT_CRITICAL_PATH"}
+      },
+      "additionalProperties": false
+    },
+    "audio_binding_preflight": {
+      "type": "object",
+      "required": ["status", "reason_codes", "expected", "observed"],
+      "properties": {
+        "status": {"enum": ["PASS", "BLOCKED"]},
+        "reason_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "expected": {"type": "object"},
+        "observed": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "overall_status": {"enum": ["PASS", "BLOCKED"]},
+    "non_claims": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  }
+}

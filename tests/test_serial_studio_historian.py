@@ -96,6 +96,7 @@ def _receipt(tmp_path: Path, *, open_session: bool = False) -> dict:
         snapshot,
         session_id=1,
         project_path=project_path,
+        source_project_path=project_path,
         parser_path=ROOT / "tools/serial-studio/parsers/k1_observe_v1_2.js",
         catalogue_path=ROOT / "tools/serial-studio/schemas/telemetry-catalogue.v1.json",
         capture_profile="PASSIVE_DUAL",
@@ -110,6 +111,11 @@ def test_closed_complete_snapshot_is_valid(tmp_path: Path) -> None:
     assert {row["source_id"] for row in receipt["counts"]["raw_by_source"]} == {0, 1}
     assert all(row["raw_bytes"] > 0 for row in receipt["counts"]["raw_by_source"])
     assert all(row["status"] == "MEASURED" for row in receipt["freshness"])
+    assert receipt["serial_studio"]["runtime_projection_differs_from_source"] is False
+    assert (
+        receipt["serial_studio"]["source_project_sha256"]
+        == receipt["serial_studio"]["runtime_project_sha256"]
+    )
 
 
 def test_open_session_fails_closed(tmp_path: Path) -> None:

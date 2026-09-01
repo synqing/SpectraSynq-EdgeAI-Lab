@@ -21,7 +21,7 @@ from edgeai.serial_studio import (
 
 
 def _start_server(
-    responder: Callable[[dict], dict], seen: list[dict]
+    responder: Callable[[dict], dict | list[dict]], seen: list[dict]
 ) -> tuple[int, threading.Thread]:
     port_box: list[int] = []
 
@@ -44,7 +44,9 @@ def _start_server(
                     request = json.loads(line)
                     seen.append(request)
                     response = responder(request)
-                    connection.sendall(json.dumps(response).encode() + b"\n")
+                    responses = response if isinstance(response, list) else [response]
+                    for item in responses:
+                        connection.sendall(json.dumps(item).encode() + b"\n")
         finally:
             connection.close()
             server.close()
@@ -76,6 +78,10 @@ def test_client_only_emits_read_allowlisted_commands() -> None:
                 {"sourceId": 1, "title": "K1 Main 9087A500"},
             ]
         },
+        "project.source.getConfig": {
+            "sourceId": 0,
+            "connection": {"deviceId": {"serial": "B4:3A:45:A5:89:B4"}},
+        },
         "dashboard.getStatus": {"active": True},
         "dashboard.getData": {"groups": []},
         "io.getStatus": {"connected": True},
@@ -88,6 +94,7 @@ def test_client_only_emits_read_allowlisted_commands() -> None:
 
     with SerialStudioReadClient(port=port, timeout_s=1) as client:
         assert len(client.list_sources()) == 2
+        assert client.source_config("0")["connection"]["deviceId"]["serial"].endswith("89:B4")
         assert client.dashboard_status()["active"] is True
         assert client.dashboard_data() == {"groups": []}
         snapshot = client.source_rx_snapshot("1", "Main")
@@ -98,6 +105,7 @@ def test_client_only_emits_read_allowlisted_commands() -> None:
     commands = [request["command"] for request in seen]
     assert commands == [
         "project.source.list",
+        "project.source.getConfig",
         "dashboard.getStatus",
         "dashboard.getData",
         "io.getStatus",
@@ -112,6 +120,24 @@ def test_private_request_rejects_a_write_before_connecting() -> None:
     client = SerialStudioReadClient(port=1)
     with pytest.raises(SerialStudioError, match="not read-allow-listed"):
         client._request("io.writeData", {"data": "forbidden"})
+
+
+def test_client_demultiplexes_server_push_before_command_response() -> None:
+    seen: list[dict] = []
+
+    def respond(request: dict) -> list[dict]:
+        return [
+            {"frames": [{"data": {"sequence": 42}}]},
+            {"data": "W0FQXQ=="},
+            {"event": "connected"},
+            _success(request, {"active": True}),
+        ]
+
+    port, thread = _start_server(respond, seen)
+    with SerialStudioReadClient(port=port, timeout_s=1) as client:
+        assert client.dashboard_status() == {"active": True}
+    thread.join(timeout=1)
+    assert [item["command"] for item in seen] == ["dashboard.getStatus"]
 
 
 def test_client_rejects_non_loopback_api_host() -> None:

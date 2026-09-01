@@ -113,6 +113,11 @@ def empty_snapshot(mode: str) -> dict[str, Any]:
         "sampled_at_unix_ms": int(time.time() * 1000),
         "bridge": {"api_state": "STARTING", "last_error": None},
         "instrument": {
+            "policy": {
+                "project_policy": "OBSERVE_ONLY",
+                "app_egress_guard": "STOCK_PRO_NOT_PATCHED",
+                "tx_witness": "REQUIRED_PENDING",
+            },
             "dashboard": {"state": "UNKNOWN"},
             "historian": {"state": "UNKNOWN", "session_id": None, "row_count": None},
             "raw_bytes_per_second": None,
@@ -184,6 +189,10 @@ class LiveSampler(threading.Thread):
 
     def _sample_loop(self, client: SerialStudioReadClient) -> None:
         sources = client.list_sources()
+        source_configs = {
+            str(source.get("sourceId")): client.source_config(str(source.get("sourceId")))
+            for source in sources
+        }
         next_slow = 0.0
         slow: dict[str, Any] = {}
         while not self.stop_event.is_set():
@@ -202,7 +211,15 @@ class LiveSampler(threading.Thread):
                 if source.get("busType") == 3 or str(source.get("sourceId")) == "2"
             ]
             uart_sources = [source for source in sources if source not in audio_sources]
-            source_rows = [self._sample_source(client, source, now) for source in uart_sources]
+            source_rows = [
+                self._sample_source(
+                    client,
+                    source,
+                    source_configs.get(str(source.get("sourceId")), {}),
+                    now,
+                )
+                for source in uart_sources
+            ]
             historian = slow.get("historian", {})
             snapshot = empty_snapshot("live")
             snapshot["bridge"] = {"api_state": "UP", "last_error": None}
@@ -299,7 +316,11 @@ class LiveSampler(threading.Thread):
         }
 
     def _sample_source(
-        self, client: SerialStudioReadClient, source: dict[str, Any], now: float
+        self,
+        client: SerialStudioReadClient,
+        source: dict[str, Any],
+        source_config: dict[str, Any],
+        now: float,
     ) -> dict[str, Any]:
         source_id = str(source.get("sourceId"))
         frame = client.latest_frame(source_id)
@@ -340,9 +361,14 @@ class LiveSampler(threading.Thread):
             metrics[name] = exported
 
         has_data = bool(frame.get("hasData"))
+        connection = source_config.get("connection")
+        device_id = connection.get("deviceId") if isinstance(connection, dict) else None
+        serial = device_id.get("serial") if isinstance(device_id, dict) else None
         return {
             "source_id": source.get("sourceId"),
             "title": source.get("title", f"Source {source_id}"),
+            "identity": serial or source.get("title", f"Source {source_id}"),
+            "device_id": device_id if isinstance(device_id, dict) else None,
             "rx": {
                 "state": "HAS_DATA_UNCLASSIFIED" if has_data else "NO_DATA",
                 "has_data": has_data,

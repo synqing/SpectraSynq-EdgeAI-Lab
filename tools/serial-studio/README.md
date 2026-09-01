@@ -14,6 +14,7 @@ This folder is the generated, hardware-free authority for the v2 Serial Studio i
 - `release_manifest.py` binds the project, bridge, evidence tooling, and Serial Studio observe-only source patch.
 - `audio_reference_validate.py` strictly compares a Serial Studio Audio CSV with a known WAV without normalisation, DC removal, dither, repair, or dependency installation.
 - `capture_audio_source_binding.py` freezes an exact Pro-saved Audio Source C; `generate_audio_profile.py` and `lint_audio_profile.py` generate/lint the separate optional profile without mutating base v2.
+- `official_pro_audio_preflight.py` interrogates the official Pro 4.0.3 runtime through a fixed getter-only API allow-list and fails closed on exact BlackHole/rate/format/binding drift. It never configures Audio or touches a DUT.
 - `profiles/capture-profiles.v1.json` makes Serial Studio and Audio Reference requirements conditional rather than universal.
 - `fixtures/historian/session-19-project-drift.instrument-receipt.json` permanently preserves a real invalid capture where substantial two-source data could not overcome project-identity drift.
 
@@ -49,15 +50,21 @@ The release manifest identifies the `.ssproj`, aggregate Web View application,
 font-assets manifest, parser, semantic linter, observe-only policy source, and
 the built Serial Studio binary once Tier A creates its identity receipt.
 
-`projects/tier-b-gpl-policy.v1.json` records the isolated GPL runtime proof. It
-proves the central observe-only refusal and Mission Control contract, but not
-the Pro-only second source, Painters, Data Grids, Historian, or installed-binary
-identity. Those remain explicit promotion gates rather than being inferred from
-GPL behaviour.
+`projects/tier-b-gpl-policy.v1.json` records an isolated GPL runtime proof of
+the local application-level observe-only implementation. It is optional
+defence-in-depth evidence, not a prerequisite for the official Pro Source C
+path.
 
 ## Promotion boundary
 
-The generated v2 project must not replace v1. Tier A identified a GPL binary and the bounded Tier B probe proved Mission Control plus central TCP/gRPC read/refusal behaviour. Promotion still requires the same source commit in a Pro build, all six workspaces with two sources and zero orphaned references, installed-binary identity, then Tier C passive HIL proving both source identities, raw ingress, Historian progression, independent zero host-to-DUT bytes, and clean close/snapshot behaviour.
+The generated v2 project must not replace v1. Source C uses the identified
+official Pro 4.0.3 runtime, an external exact-identity preflight, an
+observe-only project with no write surfaces, and an independent zero-TX
+witness. A custom patched Pro build is optional hardening and is not on the
+critical path. Promotion requires exact Source C binding, deterministic Audio
+qualification, then passive three-source HIL proving identities, ingress,
+Historian progression, zero host-to-DUT bytes, and clean close/snapshot
+behaviour.
 
 No command here opens USB, flashes firmware, plays audio, or launches Serial Studio.
 

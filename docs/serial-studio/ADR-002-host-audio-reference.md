@@ -76,10 +76,27 @@ The implementation may request a nominal device sample-rate change, and a
 complete queue-drop witness is not yet proven. These facts block timing and
 capture-integrity authority until characterised.
 
-The application source now resolves named saved Audio identity values before it
-mutates the selected capture configuration. Missing stable values fail rather
-than falling back to saved indices/defaults. This is source-enforced intent;
-runtime enforcement remains open until an identified Pro build contains it.
+The critical path uses the official licensed Serial Studio Pro 4.0.3 runtime.
+`official_pro_audio_preflight.py` queries only the running Pro API's fixed
+read-only Audio getter allow-list. It resolves the exact device name before
+recording the current index, compares selected rate and format by value, and
+requires a hash-bound Pro-saved Source C projection for normalisation and
+channel identity. Missing, duplicate, drifted, or unprovable identity fails
+closed before Connect.
+
+The stock Pro runtime does not contain the local application-level observe-only
+patch. That patch remains useful defence-in-depth and vendor/build hardening,
+but it is not a prerequisite for Source C qualification. Runtime evidence must
+state the boundary explicitly:
+
+```text
+PROJECT POLICY     OBSERVE-ONLY
+APP EGRESS GUARD   STOCK PRO / NOT PATCHED
+TX WITNESS         ARMED | ZERO BYTES | FAIL
+```
+
+Any observed host-to-K1 byte quarantines the session. A project configuration,
+healthy API, or open port cannot substitute for the independent TX witness.
 
 ## Mission Control and drill-down
 
@@ -99,12 +116,21 @@ calibration, scoring, command or verdict operation.
 
 ## Promotion path
 
-1. Install/name a virtual loopback input and record its routing/calibration.
-2. Save source 2 in the identified Pro binary and freeze the exact binding.
-3. Generate/lint the separate v2.1 project; prove base v2 bytes are unchanged.
-4. Build the fail-closed Audio identity patch into a hashed Pro binary.
-5. Prove source 2 identity, sample format/rate/channels, ingress and persistence.
-6. Characterise sample-rate mutation, host timestamp uncertainty and queue drops.
-7. Close CSV/reference/receipt/clock-map artefacts and validate their hashes.
-8. Only then change the profile from `BLOCKED_UNBOUND` to an admitted runtime
+1. Captain installs `BlackHole 2ch` with administrator authority and restarts
+   macOS when convenient.
+2. Run the getter-only official-Pro preflight and resolve the exact device name,
+   current index, 48 kHz rate, Float 32-bit format, and two-channel contract.
+3. Save source 2 in that exact official Pro runtime and freeze the binding.
+4. Generate/lint the separate v2.1 project; prove base v2 bytes are unchanged.
+5. Qualify Source C alone with deterministic signals and the strict validator;
+   no K1 is required for this gate.
+6. Arm the independent UART TX witness, then run passive three-source HIL. Any
+   outbound byte quarantines the session.
+7. Characterise sample-rate mutation, host timestamp uncertainty and queue drops.
+8. Close CSV/reference/receipt/clock-map artefacts and validate their hashes.
+9. Only then change the profile from `BLOCKED_UNBOUND` to an admitted runtime
    state. This does not promote the K1 capture pipeline.
+
+Building a custom patched Pro binary is an optional later hardening lane. It
+requires separate commercial/vendor and Qt build authority and does not block
+steps 1–9.

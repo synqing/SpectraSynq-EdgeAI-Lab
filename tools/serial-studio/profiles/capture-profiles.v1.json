@@ -36,21 +36,27 @@
       "forbidden_bundle_roles": ["exclusive_probe_receipt", "calibration_receipt"],
       "audio_source_contract": {
         "bus_type": 3,
-        "edition": "PRO",
+        "edition": "OFFICIAL_PRO",
+        "runtime_version": "4.0.3",
+        "input_device_name": "BlackHole 2ch",
         "binding": "EXACT_SAVED_DEVICE_ID_REQUIRED",
+        "external_preflight": "FAIL_CLOSED_BEFORE_CONNECT",
         "normalization": false,
-        "sample_rate_hz": "EXACT_FROM_SAVED_BINDING",
-        "sample_format": "EXACT_FROM_SAVED_BINDING",
-        "channel_count": "EXACT_FROM_SAVED_BINDING",
+        "sample_rate_hz": 48000,
+        "sample_format": "Float 32-bit",
+        "channel_count": 2,
         "time_authority": "HOST_AUDIO_REFERENCE_TIME"
       },
       "dut_tx_owner": "NONE",
       "playback_owner": "EXTERNAL_NOT_SERIAL_STUDIO",
       "serial_studio_observe_only": true,
+      "application_egress_guard": "STOCK_PRO_NOT_PATCHED",
+      "independent_tx_witness": "REQUIRED_ZERO_BYTES",
+      "patched_pro_hardening": "OPTIONAL_NOT_CRITICAL_PATH",
       "blockers": [
         "AUDIO_SOURCE_BINDING_MISSING",
         "VIRTUAL_LOOPBACK_INPUT_NOT_PRESENT",
-        "PRO_RUNTIME_NOT_VALIDATED"
+        "INDEPENDENT_TX_WITNESS_PENDING"
       ]
     },
     "EXCLUSIVE_PROBE": {

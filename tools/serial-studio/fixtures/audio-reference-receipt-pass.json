@@ -4,6 +4,7 @@
   "sampled_at_unix_ms": 1788172800000,
   "bridge": {"api_state": "UP", "last_error": null},
   "instrument": {
+    "policy": {"project_policy": "OBSERVE_ONLY", "app_egress_guard": "STOCK_PRO_NOT_PATCHED", "tx_witness": "ZERO_BYTES"},
     "dashboard": {"running": true},
     "io": {"isConnected": true, "readOnly": true, "readWrite": false},
     "historian": {"state": "NOT_RECORDING", "session_id": 201},

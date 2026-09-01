@@ -1,0 +1,313 @@
+{
+  "schema": "spectrasynq.serial-studio.instrument-receipt.v1",
+  "status": "INVALID",
+  "reasons": [
+    "embedded project differs from the canonical project"
+  ],
+  "capture_profile": "PASSIVE_DUAL_UART",
+  "session": {
+    "session_id": 1,
+    "project_title": "K1 Dual UART Observability v2",
+    "started_at": "2026-09-01T08:35:57",
+    "ended_at": "2026-09-01T08:39:54",
+    "target_session_open_at_snapshot": false,
+    "recording_active_at_snapshot": false,
+    "open_session_ids_at_snapshot": []
+  },
+  "serial_studio": {
+    "writer_version": "4.0.3",
+    "project_path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/projects/K1-Dual-UART-Observability-v2.ssproj",
+    "project_sha256": "62615b6942583d0f633b1cf0e88a0d81cb870495f6199d2012dd483ca468166d",
+    "embedded_project_json_sha256": "385482ce0cf8bd1da0038bd422259976feaf91ad88fc7f610372fbb97bc878f0",
+    "project_drift": true,
+    "parser_path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/parsers/k1_observe_v1_2.js",
+    "parser_sha256": "929c3a9fc6ac92b48cdcbca98cfa975bfabfff39bd9faec4639570a98b50c5c6",
+    "catalogue_path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/tools/serial-studio/schemas/telemetry-catalogue.v1.json",
+    "catalogue_sha256": "5f8dbf79165b069433a84571815e6a0374ad0e88c9b67f5fc0ecb35f18a2c8f3",
+    "sources": [
+      {
+        "source_id": 0,
+        "title": "K1 Bench B489A500",
+        "device": null,
+        "usb_serial": "B4:3A:45:A5:89:B4"
+      },
+      {
+        "source_id": 1,
+        "title": "K1 Main RPL 9087A500",
+        "device": null,
+        "usb_serial": "B4:3A:45:A5:87:90"
+      }
+    ],
+    "plugins": {
+      "status": "NOT_INSTRUMENTED",
+      "items": []
+    }
+  },
+  "snapshot": {
+    "path": "/Users/spectrasynq/SpectraSynq-EdgeAI-Lab/evidence/serial-studio/2026-09-01-live-v2-session-1/session-1.frozen.sqlite",
+    "sha256": "35fec5964e3cd42ce1ff78ddeb7d54ab647b71f1da68653da82f3e7c295e7faf",
+    "bytes": 1875968,
+    "sqlite_integrity_check": "ok"
+  },
+  "counts": {
+    "readings_by_source": [
+      {
+        "source_id": 0,
+        "source_title": "K1 Bench B489A500",
+        "reading_rows": 9120
+      },
+      {
+        "source_id": 1,
+        "source_title": "K1 Main RPL 9087A500",
+        "reading_rows": 9158
+      }
+    ],
+    "raw_by_source": [
+      {
+        "source_id": 0,
+        "raw_rows": 1493,
+        "raw_bytes": 127625,
+        "first_timestamp_ns": 2,
+        "last_timestamp_ns": 236461376334
+      },
+      {
+        "source_id": 1,
+        "raw_rows": 1402,
+        "raw_bytes": 129865,
+        "first_timestamp_ns": 0,
+        "last_timestamp_ns": 237337012709
+      }
+    ]
+  },
+  "counter_bounds": {
+    "device_time": [
+      {
+        "source_id": 0,
+        "source_title": "K1 Bench B489A500",
+        "first": 0.0,
+        "first_timestamp_ns": 0,
+        "last": 0.0,
+        "last_timestamp_ns": 237466793750,
+        "reading_rows": 240,
+        "regressions": 0
+      },
+      {
+        "source_id": 1,
+        "source_title": "K1 Main RPL 9087A500",
+        "first": 0.0,
+        "first_timestamp_ns": 14797709,
+        "last": 0.0,
+        "last_timestamp_ns": 237337012709,
+        "reading_rows": 241,
+        "regressions": 0
+      }
+    ],
+    "host_parse_sequence": [
+      {
+        "source_id": 0,
+        "source_title": "K1 Bench B489A500",
+        "first": 0.0,
+        "first_timestamp_ns": 0,
+        "last": 239.0,
+        "last_timestamp_ns": 237466793750,
+        "reading_rows": 480,
+        "regressions": 0
+      },
+      {
+        "source_id": 1,
+        "source_title": "K1 Main RPL 9087A500",
+        "first": 0.0,
+        "first_timestamp_ns": 14797709,
+        "last": 240.0,
+        "last_timestamp_ns": 237337012709,
+        "reading_rows": 482,
+        "regressions": 0
+      }
+    ]
+  },
+  "freshness": [
+    {
+      "source_id": 0,
+      "status": "MEASURED",
+      "counts": [
+        {
+          "metric": "agc_gain",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "bass_onset",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "beat",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "bpm",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "confidence",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "lightshow",
+          "record_kind": 1,
+          "fresh_frames": 238
+        },
+        {
+          "metric": "lock",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "onset",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "orbit_x",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "orbit_y",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "peak_scaled",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "phase",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "silence",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "ssl",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 1,
+          "fresh_frames": 239
+        }
+      ]
+    },
+    {
+      "source_id": 1,
+      "status": "MEASURED",
+      "counts": [
+        {
+          "metric": "agc_gain",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "bass_onset",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "beat",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "bpm",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "confidence",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "host_parse_seq",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "lightshow",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "lock",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "onset",
+          "record_kind": 1,
+          "fresh_frames": 239
+        },
+        {
+          "metric": "orbit_x",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "orbit_y",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "peak_scaled",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "phase",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "record_kind",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "silence",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "ssl",
+          "record_kind": 1,
+          "fresh_frames": 240
+        },
+        {
+          "metric": "update_mask",
+          "record_kind": 1,
+          "fresh_frames": 240
+        }
+      ]
+    }
+  ],
+  "verdict_boundary": "This receipt scores capture integrity only, not product behaviour."
+}

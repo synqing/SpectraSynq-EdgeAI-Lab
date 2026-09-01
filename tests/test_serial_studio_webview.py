@@ -76,6 +76,18 @@ def test_browser_code_contains_no_upstream_command_surface() -> None:
     assert 'view === "audio-reference"' in app
     assert 'view === "ap-validation"' in app
     assert "HOST REFERENCE · NOT DEVICE INPUT" in app
+    assert "OBSERVE-ONLY ENFORCED" not in app
+    assert "STOCK PRO / NOT PATCHED" in app
+    assert "TX WITNESS · ZERO BYTES" in app
+
+
+def test_empty_snapshot_keeps_project_app_and_witness_authorities_separate() -> None:
+    policy = bridge.empty_snapshot("live")["instrument"]["policy"]
+    assert policy == {
+        "project_policy": "OBSERVE_ONLY",
+        "app_egress_guard": "STOCK_PRO_NOT_PATCHED",
+        "tx_witness": "REQUIRED_PENDING",
+    }
 
 
 def test_audio_binding_and_validation_receipt_are_hash_checked(tmp_path: Path) -> None:
