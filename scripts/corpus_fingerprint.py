@@ -32,6 +32,31 @@ TIME_DP = 3          # 1 ms
 SCHEMA = "spectrasynq.symbolic_fingerprint.v1"
 
 
+def provenance(track_dir: Path) -> dict:
+    """Slakh's OWN identity keys. UUID and lmd_midi_dir name the source Lakh MIDI
+    file, so the known MIDI-duplication bug shows up directly as a repeated UUID
+    under different Track IDs. This is stronger than a content hash because it is
+    the dataset's own provenance, and it is cross-checked against the content
+    hash rather than trusted alone."""
+    import yaml
+
+    f = track_dir / "metadata.yaml"
+    if not f.is_file():
+        return {}
+    md = yaml.safe_load(f.read_text()) or {}
+    stems = md.get("stems") or {}
+    return {
+        "uuid": md.get("UUID"),
+        "lmd_midi_dir": md.get("lmd_midi_dir"),
+        "n_stems": len(stems),
+        "programs_rendered": sorted({int(v["program_num"]) for v in stems.values()
+                                     if not v.get("is_drum") and v.get("program_num") is not None}),
+        "inst_classes": sorted({str(v.get("inst_class")) for v in stems.values()
+                                if v.get("inst_class")}),
+        "has_drum_stem": any(v.get("is_drum") for v in stems.values()),
+    }
+
+
 def fingerprint(mid_path: Path) -> dict:
     import pretty_midi
 
@@ -66,12 +91,23 @@ def main() -> int:
     rows, by_fp = [], {}
     for d in sorted(p for p in args.corpus.rglob("*") if p.is_dir() and (p / args.midi_name).is_file()):
         fp = fingerprint(d / args.midi_name)
+        prov = provenance(d)
         split = next((s for s in ("train", "validation", "test") if s in d.parts), None)
-        row = {"track_id": d.name, "official_split": split, **fp}
+        row = {"track_id": d.name, "official_split": split, **prov, **fp}
         rows.append(row)
         by_fp.setdefault(fp["fingerprint_sha256"], []).append(d.name)
 
     dupes = {k: v for k, v in by_fp.items() if len(v) > 1}
+    by_uuid = {}
+    for r in rows:
+        if r.get("uuid"):
+            by_uuid.setdefault(r["uuid"], []).append(r["track_id"])
+    uuid_dupes = {k: v for k, v in by_uuid.items() if len(v) > 1}
+    disagree = []
+    for u, ids in by_uuid.items():
+        fps = {next(r["fingerprint_sha256"] for r in rows if r["track_id"] == t) for t in ids}
+        if len(fps) > 1:
+            disagree.append({"uuid": u, "track_ids": ids, "distinct_fingerprints": len(fps)})
     payload = {
         "schema": SCHEMA, "label": args.label,
         "canonicalisation": {
@@ -86,14 +122,24 @@ def main() -> int:
                        "differing by more than 1 ms in any note boundary hash differently."),
         "n_songs": len(rows),
         "n_distinct_fingerprints": len(by_fp),
+        "n_distinct_uuids": len(by_uuid),
         "duplicate_fingerprint_groups": dupes,
+        "duplicate_uuid_groups": uuid_dupes,
+        "uuid_and_fingerprint_disagreements": disagree,
+        "cross_check_note": ("UUID/lmd_midi_dir is Slakh's own provenance key for the source Lakh "
+                             "MIDI file; the content hash is computed independently. Agreement is "
+                             "evidence both are sound. Any disagreement is a finding, not something "
+                             "to resolve silently."),
         "songs": rows,
         "analysis_run": False, "model_scored": False, "representation_run": False,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2) + "\n")
     print(json.dumps({"label": args.label, "n_songs": len(rows),
-                      "n_distinct": len(by_fp), "duplicate_groups": len(dupes)}, indent=2))
+                      "n_distinct_fingerprints": len(by_fp), "n_distinct_uuids": len(by_uuid),
+                      "duplicate_fingerprint_groups": len(dupes),
+                      "duplicate_uuid_groups": len(uuid_dupes),
+                      "uuid_fingerprint_disagreements": len(disagree)}, indent=2))
     print(f"-> {args.out}")
     return 0
 

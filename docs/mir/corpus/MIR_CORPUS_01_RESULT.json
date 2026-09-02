@@ -3,11 +3,9 @@
   "job": "MIR-CORPUS-01",
   "label": "DATA PROCUREMENT AND CORPUS GOVERNANCE. Not a research experiment. No representation run, no model scored, no hypothesis tested, no J3 outcome produced.",
   "date": "2026-09-02",
-  "outcome": "ACQUISITION_BLOCKED_INSUFFICIENT_STORAGE",
+  "outcome": "STORAGE_RESOLVED_ACQUISITION_IN_PROGRESS",
   "stopped_before_download": true,
-
   "WHY_IT_STOPPED": "the brief instructs that the disk report is informational UNLESS storage is plainly insufficient. It is plainly insufficient in both available locations, by a wide margin, so no download was started.",
-
   "ARCHIVE_VERIFIED_AGAINST_THE_PRIMARY_SOURCE": {
     "method": "queried the Zenodo REST API directly (https://zenodo.org/api/records/7708270) rather than relying on the brief's cited figures, which carried chatgpt.com source markers",
     "record_title": "Slakh2100-16k",
@@ -22,17 +20,25 @@
     "every_figure_in_the_brief_confirmed": true,
     "network_reachable_from_the_device": "yes - HTTP 200 from Zenodo"
   },
-
   "ARCHIVE_CONTENT_INSPECTED_WITHOUT_FULL_DOWNLOAD": {
     "method": "ranged GET of the first 25 MB and a partial tar listing. 24 MB transferred. This was done to size the EXTRACTION requirement accurately rather than guess it.",
-    "top_level_layout": ["slakh2100_redux_16k/train/", "slakh2100_redux_16k/validation/", "slakh2100_redux_16k/test/", "slakh2100_redux_16k/README"],
+    "top_level_layout": [
+      "slakh2100_redux_16k/train/",
+      "slakh2100_redux_16k/validation/",
+      "slakh2100_redux_16k/test/",
+      "slakh2100_redux_16k/README"
+    ],
     "official_splits_present_in_the_archive": true,
     "implication_for_the_brief": "the official train/validation/test assignment is carried by the directory structure, so PRESERVE THE OFFICIAL SPLITS needs no reconstruction - it is read directly",
-    "per_track_contents_observed": ["stems/*.flac", "MIDI/*.mid", "all_src.mid", "metadata.yaml"],
+    "per_track_contents_observed": [
+      "stems/*.flac",
+      "MIDI/*.mid",
+      "all_src.mid",
+      "metadata.yaml"
+    ],
     "audio_codec": "FLAC",
     "why_that_matters": "FLAC is already compressed, so gzip achieves almost nothing on the bulk of the archive. Extracted size is therefore approximately equal to archive size, NOT smaller."
   },
-
   "STORAGE_REPORT": {
     "requirement": {
       "archive": "45.35 GiB",
@@ -42,14 +48,22 @@
       "stream_extract_alternative": "~45 GiB peak, but it makes archive hash verification impossible and is therefore NOT brief-compliant"
     },
     "available": {
-      "users_mac_connected_folders": {"free": "29 GB = 27.0 GiB", "volume_size": "1.9 TB",
-                                      "sufficient_for_archive_alone": false,
-                                      "short_by": "~18 GiB for the archive, ~64 GiB for the compliant path"},
-      "cloud_container": {"free": "21 GB = 19.6 GiB",
-                          "sufficient_for_archive_alone": false,
-                          "short_by": "~26 GiB for the archive, ~71 GiB for the compliant path",
-                          "additional_objection": "this container is EPHEMERAL and is reclaimed when the session ends, so a 45 GiB download here would be discarded even if it fitted"},
-      "device_session_vm": {"free": "1.1 GiB", "relevant": false}
+      "users_mac_connected_folders": {
+        "free": "29 GB = 27.0 GiB",
+        "volume_size": "1.9 TB",
+        "sufficient_for_archive_alone": false,
+        "short_by": "~18 GiB for the archive, ~64 GiB for the compliant path"
+      },
+      "cloud_container": {
+        "free": "21 GB = 19.6 GiB",
+        "sufficient_for_archive_alone": false,
+        "short_by": "~26 GiB for the archive, ~71 GiB for the compliant path",
+        "additional_objection": "this container is EPHEMERAL and is reclaimed when the session ends, so a 45 GiB download here would be discarded even if it fitted"
+      },
+      "device_session_vm": {
+        "free": "1.1 GiB",
+        "relevant": false
+      }
     },
     "verdict": "PLAINLY INSUFFICIENT in every available location. The 1.9 TB volume on the Mac has only 29 GB free.",
     "what_would_unblock_it": [
@@ -60,7 +74,6 @@
     ],
     "recommended": "the Mac, or storage attached to it. The corpus is a durable research asset and the cloud container is not a place to keep one."
   },
-
   "PREPARATORY_WORK_COMPLETED_WHILE_BLOCKED": {
     "what": "the consumed-content side of the freshness check, which needs only material already held",
     "artefact": "docs/mir/corpus/CONSUMED_BABYSLAKH_FINGERPRINTS.json",
@@ -72,13 +85,18 @@
       "record": "(onset_s, offset_s, midi_pitch, program, is_drum)",
       "time_resolution_s": 0.001,
       "velocity_excluded": "velocity can differ between renders of the same music",
-      "ignored": ["tempo map", "track names", "controllers", "file path", "file mtime"],
+      "ignored": [
+        "tempo map",
+        "track names",
+        "controllers",
+        "file path",
+        "file mtime"
+      ],
       "hash": "SHA-256 of the deterministically sorted canonical serialisation"
     },
     "stated_limitation": "EXACT-content hash. It catches duplication, not similarity. Two renders differing by more than 1 ms in any note boundary hash differently. If the PM wants near-duplicate detection, that is a different tool and a separate decision.",
     "expected_self_test_when_the_corpus_arrives": "BabySlakh is documented as a subset of Slakh2100, so these 20 fingerprints SHOULD match 20 Slakh2100 songs. If they do not, the fingerprint canonicalisation is wrong and must be fixed before any exclusion is trusted."
   },
-
   "NOT_DONE_AND_WHY": {
     "corpus_not_downloaded": "storage plainly insufficient - the brief's own stop condition",
     "corpus_not_indexed": "requires the corpus",
@@ -91,16 +109,19 @@
     "no_chord_label_derivation": "correct per the brief - not part of this procurement",
     "pad_semantic_corpus_not_built": "correct per the brief - recorded as a future requirement only"
   },
-
   "SEMANTIC_SUITABILITY_RECORDED_IN_ADVANCE": {
-    "STRONG_DIRECT": ["aligned audio-MIDI work", "source/instrument ownership",
-                      "source-conditioned observability", "orchestration/instrument-activity studies",
-                      "pitch/register studies", "symbolic harmonic-state studies",
-                      "low-register tonal-state validation"],
+    "STRONG_DIRECT": [
+      "aligned audio-MIDI work",
+      "source/instrument ownership",
+      "source-conditioned observability",
+      "orchestration/instrument-activity studies",
+      "pitch/register studies",
+      "symbolic harmonic-state studies",
+      "low-register tonal-state validation"
+    ],
     "SYMBOLIC_DERIVED_ONLY": "chord/root/tonal-centre labels derived from MIDI may be created later but must be labelled SYMBOLIC_DERIVED. They are not automatically perceptual ground truth.",
     "PAD_HARMONIC_MEANING_GROUND_TRUTH": "NOT_COVERED - Slakh does not settle whether a listener perceives a timbre-evolving but note-stable synth pad as undergoing meaningful harmonic change. That is the F1 target-semantic question and needs a separate fresh perceptual or controlled corpus."
   },
-
   "FUTURE_PAD_SEMANTIC_CORPUS_REQUIREMENT_RECORDED_NOT_BUILT": {
     "must_independently_manipulate": [
       "pitch/harmony fixed + timbre evolving",
@@ -112,13 +133,87 @@
     "target_must_come_from": "perceptual judgement or another independently defensible definition of musical change, NOT merely MIDI note occupancy",
     "status": "THIS IS NEW EVIDENCE. Not created in MIR-CORPUS-01."
   },
-
   "STATUS_FLAGS": {
-    "analysis_run": false, "model_scored": false, "representation_run": false,
-    "hypothesis_tested": false, "j3_outcome_produced": false,
-    "audio_committed": false, "feature_caches_committed": false,
+    "analysis_run": false,
+    "model_scored": false,
+    "representation_run": false,
+    "hypothesis_tested": false,
+    "j3_outcome_produced": false,
+    "audio_committed": false,
+    "feature_caches_committed": false,
     "babyslakh_substituted": false,
     "bytes_downloaded": "24 MB - a ranged prefix read to determine the archive layout and codec. The corpus itself was not downloaded.",
     "any_receipt_mutated": false
+  },
+  "UPDATE_02": {
+    "date": "2026-09-02",
+    "trigger": "the Captain connected an external drive and freed space on the boot volume",
+    "STORAGE_NO_LONGER_THE_BLOCKER": {
+      "external_drive": {
+        "path": "/Volumes/Disk Storage",
+        "free": "775 GB of 932 GB",
+        "fuse_write_throughput_measured": "21.7 MB/s",
+        "headroom_vs_the_91_GiB_peak_requirement": "~8x"
+      },
+      "mac_boot_volume_after_the_clear_out": "108 GB free (was 29 GB)",
+      "chosen_destination": "/Volumes/Disk Storage/SpectraSynq-Corpora/slakh2100_16k",
+      "why_the_external": "the Captain's instruction, and it keeps ~91 GiB of transient archive and extraction off the boot volume"
+    },
+    "THE_NEW_BLOCKER_IS_TRANSFER_NOT_STORAGE": {
+      "measured_throughput_to_zenodo": {
+        "device_sustained": "~0.15 to 0.9 MiB/s",
+        "device_8_parallel_small_ranges": "0.87 MiB/s aggregate - the device link is the cap, not Zenodo",
+        "container_sequential_whole_file": "1.05 MiB/s",
+        "container_short_ranged_burst": "10 to 12.7 MiB/s",
+        "container_sustained_chunked_8_way": "2.6 MiB/s"
+      },
+      "finding": "Zenodo throttles whole-file and large-range transfers but serves SHORT ranges fast on first request. The burst figures were burst, not sustained - an ordered 128 MB chunked fetcher settled at 2.6 MiB/s, then stopped entirely.",
+      "RATE_LIMIT_TRIPPED": {
+        "evidence": "response headers carry x-ratelimit-limit: 133, x-ratelimit-remaining, x-ratelimit-reset and retry-after: 60. After the throughput probing, both endpoints began returning HTTP 206 with a zero-byte body at 0 B/s.",
+        "cause": "the analyst's own throughput probing - repeated parallel ranged requests in quick succession",
+        "disclosed_because": "it is the reason the first two download attempts stalled, and it is an operational fact worth carrying forward: Zenodo is a free public research host and must not be hammered",
+        "remedy_applied": "all probing and both download jobs stopped; a single-connection, long-backoff, resumable fetcher armed with a 600 s cooldown before it starts"
+      },
+      "realistic_eta": "roughly 15 hours at ~0.9 MiB/s if the link holds, and the fetcher is resumable across interruptions and survives this session"
+    },
+    "WHAT_IS_RUNNING_NOW": {
+      "job": "/Volumes/Disk Storage/SpectraSynq-Corpora/slakh2100_16k/fetch.sh",
+      "design": "ONE connection, curl -C - resume, --retry 5 --retry-delay 60, --speed-limit 2048 --speed-time 180, 120 s gap between attempts, up to 400 attempts, then md5 verification against 66a2301ed7b4d5f4f6d3383474e546c6",
+      "survives_this_session": true,
+      "safe_to_rerun": "yes - it resumes from whatever is already on disk",
+      "progress_log": "fetch.log in the same directory",
+      "container_job_abandoned": "the container's speed advantage evaporated once Zenodo settled, and the container is ephemeral. Once the archive is on the drive, extracting the metadata locally at 21.7 MB/s takes about 35 minutes."
+    },
+    "GOVERNANCE_TOOLING_BUILT_AND_SELF_TESTED": {
+      "scripts/corpus_fingerprint.py": "extended - it now also captures Slakh's OWN provenance keys",
+      "scripts/corpus_manifest.py": "new - builds the full corpus authority manifest",
+      "THE_IMPROVEMENT_THAT_MATTERS": {
+        "discovery": "every Slakh metadata.yaml carries UUID and lmd_midi_dir, naming the source Lakh MIDI Dataset file. BabySlakh carries them too.",
+        "why_it_matters": "that is the dataset's OWN identity key, and the known MIDI-duplication bug shows up directly as one UUID under several Track IDs. It is a stronger duplicate detector than a content hash.",
+        "how_it_is_used": "three keys, cross-checked rather than trusted individually - Track ID (insufficient alone, as the brief states), UUID/lmd_midi_dir (dataset provenance), and the independent symbolic content fingerprint. Any disagreement between the two independent keys is REPORTED as a finding, never silently resolved."
+      },
+      "consumed_set_re_fingerprinted": {
+        "n_songs": 20,
+        "distinct_fingerprints": 20,
+        "distinct_uuids": 20,
+        "duplicate_groups": 0,
+        "uuid_fingerprint_disagreements": 0
+      },
+      "self_test_performed": "corpus_manifest.py was run against the consumed BabySlakh tree using the consumed fingerprint record as its exclusion source. All 20 tracks were correctly classified EXCLUDED_CONSUMED_OR_DUPLICATE, which exercises the exclusion path end to end before the real corpus arrives.",
+      "time_to_produce_the_manifest_once_the_archive_lands": "about 35 minutes of extraction plus a few minutes of indexing"
+    },
+    "STILL_NOT_DONE": [
+      "corpus not yet downloaded - in progress",
+      "archive md5 not yet verified - the running job verifies it on completion",
+      "index, exclusion, duplicate groups, pool assignment, family counts and the authority manifest all await the corpus"
+    ],
+    "LITTER_LEFT_ON_THE_EXTERNAL_DRIVE": {
+      "files": [
+        ".probe.done (9.8 MB)",
+        ".ddtest.done (419 MB)"
+      ],
+      "why": "throughput probes. This session cannot delete files on the device, so they were renamed rather than removed.",
+      "action": "delete them at your convenience; they are in the same directory as the download"
+    }
   }
 }
