@@ -1,0 +1,431 @@
+{
+  "schema": "spectrasynq.symbolic_fingerprint.v1",
+  "label": "CONSUMED - BabySlakh 16k, the 20 tracks used by J3A through J3R",
+  "canonicalisation": {
+    "record": "(onset_s, offset_s, midi_pitch, program, is_drum)",
+    "time_resolution_s": 0.001,
+    "velocity_excluded": true,
+    "ignored": [
+      "tempo map",
+      "track names",
+      "controllers",
+      "file path",
+      "file mtime"
+    ],
+    "sort": "lexicographic over the record tuple",
+    "hash": "SHA-256 of the newline-joined canonical serialisation"
+  },
+  "limitation": "EXACT-content hash. It catches duplication, not similarity. Two renders differing by more than 1 ms in any note boundary hash differently.",
+  "n_songs": 20,
+  "n_distinct_fingerprints": 20,
+  "duplicate_fingerprint_groups": {},
+  "songs": [
+    {
+      "track_id": "Track00001",
+      "official_split": null,
+      "fingerprint_sha256": "7dfb9d5bed4be843cb8182a95046b60ea6dfd57e9023cd7a84f51456c5f454ba",
+      "n_notes": 3135,
+      "n_instruments": 11,
+      "programs": [
+        1,
+        17,
+        22,
+        26,
+        30,
+        33,
+        52,
+        103
+      ],
+      "has_drums": true,
+      "duration_s": 236.486
+    },
+    {
+      "track_id": "Track00002",
+      "official_split": null,
+      "fingerprint_sha256": "ccc0c5a3eb501c8a388fa009102daf8104c36ba50224cfaa778686a001236ccf",
+      "n_notes": 4609,
+      "n_instruments": 12,
+      "programs": [
+        7,
+        10,
+        28,
+        34,
+        50,
+        52,
+        55,
+        61,
+        81,
+        88,
+        115
+      ],
+      "has_drums": true,
+      "duration_s": 183.523
+    },
+    {
+      "track_id": "Track00003",
+      "official_split": null,
+      "fingerprint_sha256": "7b980d3ed8f59bd40c3212621dd63aa7f2000ec6ed19fa7bdea71b7ea64ab8fa",
+      "n_notes": 8072,
+      "n_instruments": 9,
+      "programs": [
+        1,
+        25,
+        26,
+        27,
+        29,
+        34,
+        110
+      ],
+      "has_drums": true,
+      "duration_s": 213.113
+    },
+    {
+      "track_id": "Track00004",
+      "official_split": null,
+      "fingerprint_sha256": "b99370b1dd55896ba5590ddb370c2700b1b1c032e004a8ec95cd5a3d558ff4cd",
+      "n_notes": 4070,
+      "n_instruments": 9,
+      "programs": [
+        0,
+        6,
+        18,
+        28,
+        33,
+        50,
+        52,
+        90
+      ],
+      "has_drums": true,
+      "duration_s": 225.38
+    },
+    {
+      "track_id": "Track00005",
+      "official_split": null,
+      "fingerprint_sha256": "722ca41f260f354abff172272cd01947207e4604ba68e6680d39d381c3f19f44",
+      "n_notes": 9596,
+      "n_instruments": 14,
+      "programs": [
+        0,
+        5,
+        9,
+        25,
+        29,
+        33,
+        50,
+        64,
+        73,
+        75,
+        99
+      ],
+      "has_drums": true,
+      "duration_s": 242.13
+    },
+    {
+      "track_id": "Track00006",
+      "official_split": null,
+      "fingerprint_sha256": "18885e420981f832de89f653e5b18599a4007f39ac0e5bc0ef9255f135f072c2",
+      "n_notes": 2841,
+      "n_instruments": 15,
+      "programs": [
+        4,
+        11,
+        26,
+        27,
+        29,
+        35,
+        48,
+        56,
+        57,
+        59,
+        60,
+        65,
+        73
+      ],
+      "has_drums": true,
+      "duration_s": 239.155
+    },
+    {
+      "track_id": "Track00007",
+      "official_split": null,
+      "fingerprint_sha256": "440fc4c8f7252d836e063706aaaa8603ca5be5aff66470bf131bad9456fe2caf",
+      "n_notes": 5686,
+      "n_instruments": 10,
+      "programs": [
+        1,
+        4,
+        26,
+        27,
+        33,
+        52,
+        64,
+        73
+      ],
+      "has_drums": true,
+      "duration_s": 241.861
+    },
+    {
+      "track_id": "Track00008",
+      "official_split": null,
+      "fingerprint_sha256": "f84d9ebb581809fde158cccce622596c47d2ab4970e2abd87172b1065c434c4f",
+      "n_notes": 6424,
+      "n_instruments": 7,
+      "programs": [
+        0,
+        5,
+        27,
+        35,
+        49,
+        91
+      ],
+      "has_drums": true,
+      "duration_s": 254.33
+    },
+    {
+      "track_id": "Track00009",
+      "official_split": null,
+      "fingerprint_sha256": "4525848093ee5aae2270316462ce821a29180f4586c653d4d6d2aae3e290ec82",
+      "n_notes": 2876,
+      "n_instruments": 13,
+      "programs": [
+        1,
+        9,
+        10,
+        28,
+        33,
+        49,
+        52,
+        68,
+        115
+      ],
+      "has_drums": true,
+      "duration_s": 154.667
+    },
+    {
+      "track_id": "Track00010",
+      "official_split": null,
+      "fingerprint_sha256": "62964de9585d92142847a63bfbbb20a5d5befe69bf5c57e74f4eeeb35d3528f6",
+      "n_notes": 3637,
+      "n_instruments": 7,
+      "programs": [
+        3,
+        25,
+        33,
+        94
+      ],
+      "has_drums": true,
+      "duration_s": 176.887
+    },
+    {
+      "track_id": "Track00011",
+      "official_split": null,
+      "fingerprint_sha256": "f72661255a5129d26f7bee628f054084fc6aaab98c0f38660462a6da0fcc9bc7",
+      "n_notes": 8364,
+      "n_instruments": 9,
+      "programs": [
+        1,
+        25,
+        27,
+        29,
+        33,
+        65
+      ],
+      "has_drums": true,
+      "duration_s": 192.772
+    },
+    {
+      "track_id": "Track00012",
+      "official_split": null,
+      "fingerprint_sha256": "8134afa2bc949a9ae76faf1bcae8272d330cca5b7937c574d1b70ab5d04443c5",
+      "n_notes": 10135,
+      "n_instruments": 12,
+      "programs": [
+        3,
+        4,
+        15,
+        28,
+        34,
+        46,
+        49,
+        51,
+        52
+      ],
+      "has_drums": true,
+      "duration_s": 302.608
+    },
+    {
+      "track_id": "Track00013",
+      "official_split": null,
+      "fingerprint_sha256": "50c4c4ecc847b900312a606af13d327aebb339cfc46287925a0d894f21244a6e",
+      "n_notes": 7094,
+      "n_instruments": 9,
+      "programs": [
+        4,
+        16,
+        25,
+        32,
+        36,
+        63,
+        73,
+        81
+      ],
+      "has_drums": true,
+      "duration_s": 214.37
+    },
+    {
+      "track_id": "Track00014",
+      "official_split": null,
+      "fingerprint_sha256": "ced714d5649aefa14990a79b94387a7005b4f9faa8a4441322d751eaa4c7a1d8",
+      "n_notes": 7037,
+      "n_instruments": 12,
+      "programs": [
+        0,
+        3,
+        5,
+        18,
+        22,
+        25,
+        33,
+        50,
+        52,
+        56,
+        61
+      ],
+      "has_drums": true,
+      "duration_s": 269.178
+    },
+    {
+      "track_id": "Track00015",
+      "official_split": null,
+      "fingerprint_sha256": "8f7ecc0c377effb217ed19a2029b2736d7b44425c3f0fa81d8d7d564911403a3",
+      "n_notes": 3206,
+      "n_instruments": 7,
+      "programs": [
+        0,
+        1,
+        29,
+        35,
+        49,
+        54
+      ],
+      "has_drums": true,
+      "duration_s": 241.885
+    },
+    {
+      "track_id": "Track00016",
+      "official_split": null,
+      "fingerprint_sha256": "0502c8abb923a32d28cdba732f9e72f0e03bebb8c843c0d2977e356d03c4de4c",
+      "n_notes": 5170,
+      "n_instruments": 16,
+      "programs": [
+        0,
+        5,
+        14,
+        26,
+        29,
+        33,
+        46,
+        47,
+        48,
+        49,
+        61,
+        68,
+        73,
+        125
+      ],
+      "has_drums": true,
+      "duration_s": 195.208
+    },
+    {
+      "track_id": "Track00017",
+      "official_split": null,
+      "fingerprint_sha256": "10f7fc86ea09d15e9321ee137711d1e3323ba10e322b0128918783cd71ea7ca7",
+      "n_notes": 5529,
+      "n_instruments": 11,
+      "programs": [
+        3,
+        25,
+        26,
+        30,
+        39,
+        50,
+        53,
+        88
+      ],
+      "has_drums": true,
+      "duration_s": 308.022
+    },
+    {
+      "track_id": "Track00018",
+      "official_split": null,
+      "fingerprint_sha256": "3e80051cd7a0a1745b2d1e129cdd45ee7133ebf60976fb1a244bc4c0d721ef87",
+      "n_notes": 4648,
+      "n_instruments": 18,
+      "programs": [
+        0,
+        1,
+        16,
+        19,
+        24,
+        29,
+        32,
+        33,
+        48,
+        50,
+        52,
+        81,
+        91,
+        99
+      ],
+      "has_drums": true,
+      "duration_s": 291.745
+    },
+    {
+      "track_id": "Track00019",
+      "official_split": null,
+      "fingerprint_sha256": "03617c2e660c11ed2ba9c7b3272fe3d3924085baf4ce39af873e7be30d699ade",
+      "n_notes": 6797,
+      "n_instruments": 15,
+      "programs": [
+        0,
+        4,
+        11,
+        27,
+        29,
+        33,
+        50,
+        51,
+        52,
+        68,
+        73,
+        81,
+        88,
+        119
+      ],
+      "has_drums": true,
+      "duration_s": 223.944
+    },
+    {
+      "track_id": "Track00020",
+      "official_split": null,
+      "fingerprint_sha256": "094d7a53c8f69156565c3bef61e1340e74cd69a95c67ac264e9f0eb6e0d423f6",
+      "n_notes": 5048,
+      "n_instruments": 10,
+      "programs": [
+        0,
+        4,
+        11,
+        27,
+        33,
+        48,
+        50,
+        52,
+        88
+      ],
+      "has_drums": true,
+      "duration_s": 342.0
+    }
+  ],
+  "analysis_run": false,
+  "model_scored": false,
+  "representation_run": false
+}
