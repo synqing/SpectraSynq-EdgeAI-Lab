@@ -1,0 +1,1081 @@
+{
+  "schema": "spectrasynq.nnls_restraint_result.v1",
+  "job": "J3O",
+  "git_head": "UNKNOWN",
+  "label": "RESOLVED NNLS RESTRAINT PROBE. HOST analysis against an EXTERNAL GPL research dependency. Nothing promotable. No product lineage.",
+  "preregistration": "docs/mir/receipts/nnls_probe/J3O_PREREGISTRATION.json",
+  "pinned_provenance": {
+    "algorithm": "NNLS Chroma (Matthias Mauch), Vamp plugin",
+    "repository_url": "https://github.com/c4dm/nnls-chroma",
+    "commit_sha": "4c5f214a75cb354f8d8c933e161377c5b4d83713",
+    "commit_date": "2020-04-22T14:21:25+01:00",
+    "commit_subject": "Update library URI so it's not document-local",
+    "licence": "GPL v2 (plugin reports copyright \"GPL\")",
+    "plugin_identity_reported_by_the_binary": {
+      "apiVersion": 2,
+      "pluginVersion": 5,
+      "identifier": "nnls-chroma",
+      "name": "NNLS Chroma",
+      "maker": "Matthias Mauch"
+    },
+    "built_artefact": "nnls-chroma.so",
+    "built_artefact_sha256": "8a8ba2ee629c9e3c29f7cbd541595d6d97b338c89ab5f40bdc74b7f3ea526d08",
+    "built_artefact_linkage": "statically linked against libvamp-sdk.a, so the measured binary is self-contained",
+    "vamp_plugin_sdk_repository": "https://github.com/vamp-plugins/vamp-plugin-sdk",
+    "vamp_plugin_sdk_commit": "44c2487763eb248a933e9eff9169cfadee375009",
+    "vamp_plugin_sdk_build_note": "configured with --disable-programs; the command-line host was not needed and libsndfile is absent in the container",
+    "build_dependency_added": "libboost-dev (boost/tokenizer.hpp), header-only, build-time only",
+    "python_host": "vamp 1.1.0 / vampyhost, built in place at /tmp/vampsrc/vamp-1.1.0 and used via sys.path (NOT installed into the project environment, and NOT added to any SpectraSynq dependency manifest)",
+    "invocation": "vamp.collect(y, 16000, 'nnls-chroma:nnls-chroma', output=..., parameters=..., block_size=B, step_size=512)",
+    "plugin_source_unmodified": true
+  },
+  "external_dependency_scope": {
+    "status": "EXTERNAL HOST RESEARCH DEPENDENCY",
+    "do_not": [
+      "copy this GPL implementation, or any derivative of it, into SpectraSynq product code",
+      "treat any positive result here as product-lineage clearance",
+      "treat any positive result here as a compute or feasibility claim for M85"
+    ],
+    "what_a_positive_result_would_licence": "one thing only - authorisation to ask whether the MECHANISM (harmonic-dictionary attribution of overtone energy) is worth an independent, cleanly-licensed SpectraSynq implementation. That is a separate decision the PM makes, not an outcome of this job."
+  },
+  "canonical_parameter_set": {
+    "useNNLS": "the single variable under test - 1.0 for ARM N, 0.0 for ARM F",
+    "rollon": 0.0,
+    "tuningmode": 0.0,
+    "whitening": 1.0,
+    "s": 0.7,
+    "chromanormalize": 0.0,
+    "note": "every value other than useNNLS is the plugin's own published default, verified by reading them back from the loaded binary. No parameter was tuned by us."
+  },
+  "analysis_block_decision": {
+    "chosen_primary_block_size_samples": 2048,
+    "step_size_samples": 512,
+    "this_follows_the_brief": true,
+    "why_2048_is_the_right_choice": [
+      "2048 samples at 16 kHz is EXACTLY the existing host_chroma12 window (n_fft 2048, hop 512). The NNLS front end therefore sees the same time-frequency support as the SpectraSynq STFT it is being compared against, so the contrast with C3 is a single-variable change of PROJECTION METHOD and is not confounded by window length.",
+      "2048 samples = 4 hops, which is strictly less than the movement lag of 8 hops. The two states compared by tv_movement therefore share NO window content, so the movement metric is not mechanically attenuated.",
+      "measured: it is not materially worse than larger blocks (see the disclosed diagnostic below)."
+    ],
+    "PRIOR_ANALYST_RECOMMENDATION_WITHDRAWN": {
+      "what_I_previously_proposed": "block 4096 as primary, on the argument that a 2048-sample block at 16 kHz cannot resolve three bins per semitone below roughly MIDI 68 (linear FFT bin spacing 7.81 Hz exceeds one third of a semitone below about 394 Hz), and that this would forfeit exactly the low-register resolution J3N proved valuable.",
+      "why_it_is_withdrawn": "the argument makes a testable prediction - that block 2048 should transcribe the bass materially worse than block 4096 - and measurement does not support it. On real audio the two are effectively tied, including in the bass. The theoretical resolution loss is real but the plugin interpolates the log-frequency axis from the linear spectrum with a cosine kernel and the NNLS dictionary is tolerant of the resulting smear, so the note attribution survives.",
+      "status": "my earlier reasoning was wrong and is corrected by measurement. The brief's block 2048 stands unamended."
+    },
+    "DISCLOSED_SELECTION_DIAGNOSTIC": {
+      "what_was_measured": "mean per-frame cosine agreement between the plugin's 84-bin semitone spectrum folded to 12 pitch classes and the MIDI pitch-class mass target, on the first 30 s of 7 stems drawn from 5 tracks, with useNNLS=1 only",
+      "when": "BEFORE this pre-registration was written and before any outcome metric was computed",
+      "is_this_an_outcome_metric": false,
+      "was_any_arm_contrast_seen": false,
+      "why_it_is_disclosed": "the block size has to be fixed before scoring, and fixing it on evidence rather than assertion means the evidence was gathered first. The metric used is not one of the pre-registered outcome metrics and no FRONTEND_ONLY vs NNLS_NOTES comparison was computed.",
+      "results_pitch_class_cosine": {
+        "Track00001:S02 piano_keys": {
+          "2048": 0.7421,
+          "4096": 0.7321,
+          "16384": 0.6047
+        },
+        "Track00001:S03 bass": {
+          "2048": 0.5893,
+          "4096": 0.6089,
+          "16384": 0.383
+        },
+        "Track00002:S01 bass": {
+          "2048": 0.6346,
+          "4096": 0.6008,
+          "16384": 0.2322
+        },
+        "Track00002:S02 synth_lead_pad": {
+          "2048": 0.8619,
+          "4096": 0.8214,
+          "16384": 0.4551
+        },
+        "Track00004:S00 synth_lead_pad": {
+          "2048": 0.8256,
+          "4096": 0.8455,
+          "16384": 0.5201
+        },
+        "Track00005:S03 reed_pipe": {
+          "2048": 0.4905,
+          "4096": 0.6405,
+          "16384": 0.3233
+        },
+        "Track00006:S09 reed_pipe": {
+          "2048": 0.7346,
+          "4096": 0.7259,
+          "16384": 0.7279
+        }
+      },
+      "means": {
+        "2048": 0.6969,
+        "4096": 0.7107,
+        "16384": 0.4423
+      },
+      "reading": "2048 and 4096 differ by 0.014 on n=7, far inside the established 0.10 materiality scale and not separable at this sample size. The plugin's own preferred block of 16384 is clearly worse here, which is expected: 16384 samples is 1024 ms at 16 kHz, and the plugin's defaults were designed for 44.1 kHz where that block is 372 ms.",
+      "block_16384_would_also_have_been_wrong_for_a_movement_probe": "16384 samples = 32 hops, so two states 8 hops apart would share 75 percent of their window content and movement would be mechanically suppressed - a false-positive risk for a restraint probe.",
+      "REPORTED_NOT_GATED": true
+    }
+  },
+  "alignment_rule": {
+    "the_problem": "the plugin timestamps each feature at its BLOCK START. host_chroma12 uses a TRAILING CAUSAL window: host frame i covers samples [(i+1)*512 - 2048, (i+1)*512).",
+    "the_rule": "host_frame_index = plugin_frame_index + (B/512 - 1), which is +3 at block 2048",
+    "derivation": "plugin frame j covers [j*512, j*512 + B), ending at j*512 + B. Host frame i ends at (i+1)*512. Setting the window ENDS equal gives (i+1)*512 = j*512 + B, hence i = j + B/512 - 1. This is an exact integer shift; no interpolation, no resampling, no data fitting.",
+    "leading_frames": "the first (B/512 - 1) = 3 host frames have no corresponding plugin frame and are excluded by the validity mask. They are not zero-filled.",
+    "verification_performed": "a synthetic note onset at a known sample index appears at the predicted plugin frame at blocks 2048, 4096 and 16384, and both arms produce identical timing.",
+    "DISCLOSED_EMPIRICAL_SCAN": {
+      "what": "an integer shift sweep 0..8 maximising pitch-class cosine against the MIDI target on 5 stems",
+      "result_best_shift_per_stem": [
+        1,
+        2,
+        2,
+        2,
+        0
+      ],
+      "spread_over_shifts_0_to_3_on_the_worst_case": 0.005,
+      "decision": "the DETERMINISTIC GEOMETRIC RULE (+3) is pre-registered, NOT the empirical optimum. The empirical optimum is data-selected on the scoring corpus and the difference is immaterial (0.005 cosine). Fitting the alignment to the corpus would be exactly the kind of quiet tuning this programme forbids.",
+      "why_the_empirical_optimum_sits_1_to_2_frames_earlier": "the MIDI target is a rectangular duration-occupancy measure and the whitened spectrum has its own onset and decay behaviour, so the cosine optimum blends onset alignment with sustain overlap. This is the same rectangular-oracle effect J3I characterised and it is not evidence against the geometric rule.",
+      "REPORTED_NOT_GATED": true
+    }
+  },
+  "arms": {
+    "design_note": "the contrast the brief asks for exists INSIDE the published implementation and does not require us to hand-roll anything. Both arms run the identical front end - log-frequency spectrum at 3 bins per semitone, tuning, spectral whitening - and diverge at exactly one branch in NNLSChroma.cpp (line 359, 'if (m_useNNLS == 0)').",
+    "ARM_F_FRONTEND_ONLY": {
+      "useNNLS": 0.0,
+      "what_the_published_code_does": "maps the whitened tuned log-frequency spectrum to 84 semitone bins by a triangular-weighted sum over the 3 bins per semitone. Linear energy mapping. NO transcription, NO dictionary, NO non-negative least squares.",
+      "what_it_isolates": "the value of the RESOLVED, TUNED, WHITENED front end on its own - the J3N hypothesis, now measured in a second independent implementation"
+    },
+    "ARM_N_NNLS_NOTES": {
+      "useNNLS": 1.0,
+      "what_the_published_code_does": "solves a non-negative least squares problem against a dictionary of harmonic note templates (geometric partial amplitude series, s = 0.7) over the significant semitone positions, yielding 84 approximate note activations.",
+      "what_it_isolates": "the value of harmonic-dictionary ATTRIBUTION on top of that front end - the J3O hypothesis"
+    },
+    "single_variable_changed": "useNNLS. Nothing else. Same binary, same parameters, same block, same step, same alignment, same fold, same normalisation, same movement metric."
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "controls": {
+    "n_stems_scored": 84,
+    "one_binary_both_arms_sha256": "8a8ba2ee629c9e3c29f7cbd541595d6d97b338c89ab5f40bdc74b7f3ea526d08",
+    "single_variable_useNNLS_only": true,
+    "block_size": 2048,
+    "step_size": 512,
+    "alignment_shift_frames": 3,
+    "alignment_is_integer_no_interpolation": true,
+    "no_arm_is_constant": true,
+    "all_blocking_pass": true
+  },
+  "permanent_fixtures": {
+    "F1_pure_sine_midi60": {
+      "C3_ROOT_SALIENCE": {
+        "mass_on_true_pitch_classes": 0.4544,
+        "largest_false_pitch_class_mass": 0.1523,
+        "argmax_pc": 0,
+        "median_movement": 1e-05
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "mass_on_true_pitch_classes": 0.2513,
+        "largest_false_pitch_class_mass": 0.1905,
+        "argmax_pc": 0,
+        "median_movement": 0.00978
+      },
+      "NNLS_NOTES": {
+        "mass_on_true_pitch_classes": 0.2108,
+        "largest_false_pitch_class_mass": 0.2078,
+        "argmax_pc": 0,
+        "median_movement": 0.01051
+      }
+    },
+    "F2_harmonic_note_midi60": {
+      "C3_ROOT_SALIENCE": {
+        "mass_on_true_pitch_classes": 0.4487,
+        "largest_false_pitch_class_mass": 0.1323,
+        "argmax_pc": 0,
+        "median_movement": 0.0
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "mass_on_true_pitch_classes": 0.4388,
+        "largest_false_pitch_class_mass": 0.2096,
+        "argmax_pc": 0,
+        "median_movement": 0.00552
+      },
+      "NNLS_NOTES": {
+        "mass_on_true_pitch_classes": 0.5828,
+        "largest_false_pitch_class_mass": 0.1214,
+        "argmax_pc": 0,
+        "median_movement": 0.00477
+      }
+    },
+    "F3_two_note_fifth_60_67": {
+      "C3_ROOT_SALIENCE": {
+        "mass_on_true_pitch_classes": 0.571,
+        "largest_false_pitch_class_mass": 0.0758,
+        "argmax_pc": 0,
+        "median_movement": 0.02261
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "mass_on_true_pitch_classes": 0.5824,
+        "largest_false_pitch_class_mass": 0.1702,
+        "argmax_pc": 7,
+        "median_movement": 0.01098
+      },
+      "NNLS_NOTES": {
+        "mass_on_true_pitch_classes": 0.6111,
+        "largest_false_pitch_class_mass": 0.1773,
+        "argmax_pc": 0,
+        "median_movement": 0.01256
+      }
+    },
+    "F4_major_triad_60_64_67": {
+      "C3_ROOT_SALIENCE": {
+        "mass_on_true_pitch_classes": 0.5982,
+        "largest_false_pitch_class_mass": 0.0743,
+        "argmax_pc": 0,
+        "median_movement": 0.01703
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "mass_on_true_pitch_classes": 0.6248,
+        "largest_false_pitch_class_mass": 0.1318,
+        "argmax_pc": 7,
+        "median_movement": 0.02641
+      },
+      "NNLS_NOTES": {
+        "mass_on_true_pitch_classes": 0.7007,
+        "largest_false_pitch_class_mass": 0.1243,
+        "argmax_pc": 7,
+        "median_movement": 0.0317
+      }
+    },
+    "F5_constant_pitch_brightness_sweep": {
+      "C3_ROOT_SALIENCE": {
+        "mass_on_true_pitch_classes": 0.3933,
+        "largest_false_pitch_class_mass": 0.162,
+        "argmax_pc": 0,
+        "median_movement": 0.01301
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "mass_on_true_pitch_classes": 0.3756,
+        "largest_false_pitch_class_mass": 0.204,
+        "argmax_pc": 0,
+        "median_movement": 0.02968
+      },
+      "NNLS_NOTES": {
+        "mass_on_true_pitch_classes": 0.4944,
+        "largest_false_pitch_class_mass": 0.1405,
+        "argmax_pc": 0,
+        "median_movement": 0.03013
+      }
+    },
+    "_CAVEAT": {
+      "status": "these fixtures were RUN BEFORE this pre-registration was written, during toolchain validation. Their results are therefore not blind and they are DIAGNOSTIC ONLY - no outcome depends on them.",
+      "what_was_seen": "on the synthetic 1/h harmonic stacks the plugin's semitone spectrum places only 0.22 to 0.42 of its mass on the correct note, and MIDI 84 fails outright (0.075 to 0.103).",
+      "diagnosis_established_before_pre_registration": "this is block-invariant (tested 4096, 8192, 16384, 32768) AND sample-rate-invariant (tested 16000, 22050 and 44100 Hz, the plugin's design rate), so it is NOT a rate or window mismatch. On real audio with known per-stem MIDI the same configuration achieves pitch-class cosine 0.62 to 0.89. The conclusion is that a mathematically exact 1/h harmonic stack is a PATHOLOGICAL input for a spectrally-whitened NNLS with a fixed geometric dictionary at s = 0.7 - the running-mean-and-standard-deviation whitening has no spectral irregularity to key on, and the perfectly regular stack matches many dictionary atoms almost equally.",
+      "how_it_must_be_read": "the fixtures are reported exactly as briefed, and they MUST NOT be read as a plugin failure or as evidence about real-audio behaviour. The corpus probe is the evidence."
+    }
+  },
+  "family_metrics": {
+    "P0_CURRENT": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5997,
+        "spearman": 0.7002,
+        "event_recall_consumer_time": 0.7796,
+        "event_recall_event_tolerant": 0.8862,
+        "false_movement_in_stable_periods": 0.0029,
+        "selectivity_margin": 0.8833,
+        "median_raw_movement_level": 0.12587
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.2923,
+        "spearman": 0.5966,
+        "event_recall_consumer_time": 0.4532,
+        "event_recall_event_tolerant": 0.6541,
+        "false_movement_in_stable_periods": 0.0177,
+        "selectivity_margin": 0.6364,
+        "median_raw_movement_level": 0.2759
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5469,
+        "spearman": 0.7008,
+        "event_recall_consumer_time": 0.8053,
+        "event_recall_event_tolerant": 0.896,
+        "false_movement_in_stable_periods": 0.0067,
+        "selectivity_margin": 0.8893,
+        "median_raw_movement_level": 0.15328
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.153,
+        "spearman": 0.4559,
+        "event_recall_consumer_time": 0.2815,
+        "event_recall_event_tolerant": 0.6429,
+        "false_movement_in_stable_periods": 0.0305,
+        "selectivity_margin": 0.6124,
+        "median_raw_movement_level": 0.2423
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1027,
+        "spearman": 0.3336,
+        "event_recall_consumer_time": 0.3829,
+        "event_recall_event_tolerant": 0.5139,
+        "false_movement_in_stable_periods": 0.0312,
+        "selectivity_margin": 0.4827,
+        "median_raw_movement_level": 0.14896
+      }
+    },
+    "C3_ROOT_SALIENCE": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5539,
+        "spearman": 0.6853,
+        "event_recall_consumer_time": 0.7591,
+        "event_recall_event_tolerant": 0.8935,
+        "false_movement_in_stable_periods": 0.0034,
+        "selectivity_margin": 0.8901,
+        "median_raw_movement_level": 0.0938
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.1598,
+        "spearman": 0.54,
+        "event_recall_consumer_time": 0.4607,
+        "event_recall_event_tolerant": 0.6284,
+        "false_movement_in_stable_periods": 0.0158,
+        "selectivity_margin": 0.6126,
+        "median_raw_movement_level": 0.17259
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5264,
+        "spearman": 0.6877,
+        "event_recall_consumer_time": 0.7966,
+        "event_recall_event_tolerant": 0.8957,
+        "false_movement_in_stable_periods": 0.0071,
+        "selectivity_margin": 0.8886,
+        "median_raw_movement_level": 0.1016
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1466,
+        "spearman": 0.4554,
+        "event_recall_consumer_time": 0.2704,
+        "event_recall_event_tolerant": 0.6505,
+        "false_movement_in_stable_periods": 0.0289,
+        "selectivity_margin": 0.6216,
+        "median_raw_movement_level": 0.168
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1212,
+        "spearman": 0.3173,
+        "event_recall_consumer_time": 0.3869,
+        "event_recall_event_tolerant": 0.5474,
+        "false_movement_in_stable_periods": 0.0288,
+        "selectivity_margin": 0.5186,
+        "median_raw_movement_level": 0.10116
+      }
+    },
+    "FB_LOG_CHROMA": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.7537,
+        "spearman": 0.7666,
+        "event_recall_consumer_time": 0.8682,
+        "event_recall_event_tolerant": 0.9271,
+        "false_movement_in_stable_periods": 0.0014,
+        "selectivity_margin": 0.9257,
+        "median_raw_movement_level": 0.17206
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": -0.0807,
+        "spearman": 0.4946,
+        "event_recall_consumer_time": 0.5166,
+        "event_recall_event_tolerant": 0.6269,
+        "false_movement_in_stable_periods": 0.0168,
+        "selectivity_margin": 0.6101,
+        "median_raw_movement_level": 0.28556
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5963,
+        "spearman": 0.7157,
+        "event_recall_consumer_time": 0.8104,
+        "event_recall_event_tolerant": 0.893,
+        "false_movement_in_stable_periods": 0.0048,
+        "selectivity_margin": 0.8882,
+        "median_raw_movement_level": 0.16168
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1726,
+        "spearman": 0.4728,
+        "event_recall_consumer_time": 0.2806,
+        "event_recall_event_tolerant": 0.6276,
+        "false_movement_in_stable_periods": 0.0305,
+        "selectivity_margin": 0.5971,
+        "median_raw_movement_level": 0.2151
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.0385,
+        "spearman": 0.2788,
+        "event_recall_consumer_time": 0.3555,
+        "event_recall_event_tolerant": 0.5068,
+        "false_movement_in_stable_periods": 0.0339,
+        "selectivity_margin": 0.4729,
+        "median_raw_movement_level": 0.21794
+      }
+    },
+    "NNLS_FRONTEND_ONLY": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.6456,
+        "spearman": 0.7073,
+        "event_recall_consumer_time": 0.7971,
+        "event_recall_event_tolerant": 0.9343,
+        "false_movement_in_stable_periods": 0.0062,
+        "selectivity_margin": 0.9281,
+        "median_raw_movement_level": 0.17067
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": -0.1015,
+        "spearman": 0.1153,
+        "event_recall_consumer_time": 0.3021,
+        "event_recall_event_tolerant": 0.7598,
+        "false_movement_in_stable_periods": 0.037,
+        "selectivity_margin": 0.7228,
+        "median_raw_movement_level": 0.22706
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5118,
+        "spearman": 0.6062,
+        "event_recall_consumer_time": 0.7841,
+        "event_recall_event_tolerant": 0.9126,
+        "false_movement_in_stable_periods": 0.0083,
+        "selectivity_margin": 0.9043,
+        "median_raw_movement_level": 0.18359
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.0895,
+        "spearman": 0.3429,
+        "event_recall_consumer_time": 0.2857,
+        "event_recall_event_tolerant": 0.699,
+        "false_movement_in_stable_periods": 0.0228,
+        "selectivity_margin": 0.6762,
+        "median_raw_movement_level": 0.25702
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.0681,
+        "spearman": 0.2612,
+        "event_recall_consumer_time": 0.3538,
+        "event_recall_event_tolerant": 0.5765,
+        "false_movement_in_stable_periods": 0.034,
+        "selectivity_margin": 0.5425,
+        "median_raw_movement_level": 0.17114
+      }
+    },
+    "NNLS_NOTES": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.6222,
+        "spearman": 0.6992,
+        "event_recall_consumer_time": 0.7937,
+        "event_recall_event_tolerant": 0.9341,
+        "false_movement_in_stable_periods": 0.0032,
+        "selectivity_margin": 0.9309,
+        "median_raw_movement_level": 0.21857
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": -0.1458,
+        "spearman": 0.1463,
+        "event_recall_consumer_time": 0.3127,
+        "event_recall_event_tolerant": 0.7704,
+        "false_movement_in_stable_periods": 0.0351,
+        "selectivity_margin": 0.7353,
+        "median_raw_movement_level": 0.2658
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5135,
+        "spearman": 0.6006,
+        "event_recall_consumer_time": 0.7745,
+        "event_recall_event_tolerant": 0.9097,
+        "false_movement_in_stable_periods": 0.0068,
+        "selectivity_margin": 0.9029,
+        "median_raw_movement_level": 0.21561
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.0839,
+        "spearman": 0.3388,
+        "event_recall_consumer_time": 0.2653,
+        "event_recall_event_tolerant": 0.6539,
+        "false_movement_in_stable_periods": 0.0247,
+        "selectivity_margin": 0.6292,
+        "median_raw_movement_level": 0.29336
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.0614,
+        "spearman": 0.2437,
+        "event_recall_consumer_time": 0.3538,
+        "event_recall_event_tolerant": 0.588,
+        "false_movement_in_stable_periods": 0.0345,
+        "selectivity_margin": 0.5535,
+        "median_raw_movement_level": 0.209
+      }
+    },
+    "NNLS_PUBLISHED_CHROMA": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.7132,
+        "spearman": 0.7265,
+        "event_recall_consumer_time": 0.8141,
+        "event_recall_event_tolerant": 0.9154,
+        "false_movement_in_stable_periods": 0.0021,
+        "selectivity_margin": 0.9133,
+        "median_raw_movement_level": 0.17052
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": -0.1452,
+        "spearman": 0.001,
+        "event_recall_consumer_time": 0.2795,
+        "event_recall_event_tolerant": 0.7039,
+        "false_movement_in_stable_periods": 0.043,
+        "selectivity_margin": 0.6609,
+        "median_raw_movement_level": 0.29113
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5601,
+        "spearman": 0.6316,
+        "event_recall_consumer_time": 0.7889,
+        "event_recall_event_tolerant": 0.9045,
+        "false_movement_in_stable_periods": 0.007,
+        "selectivity_margin": 0.8975,
+        "median_raw_movement_level": 0.18615
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.115,
+        "spearman": 0.3752,
+        "event_recall_consumer_time": 0.3019,
+        "event_recall_event_tolerant": 0.6488,
+        "false_movement_in_stable_periods": 0.0214,
+        "selectivity_margin": 0.6274,
+        "median_raw_movement_level": 0.34286
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.0928,
+        "spearman": 0.3219,
+        "event_recall_consumer_time": 0.3697,
+        "event_recall_event_tolerant": 0.5558,
+        "false_movement_in_stable_periods": 0.0324,
+        "selectivity_margin": 0.5234,
+        "median_raw_movement_level": 0.1913
+      }
+    }
+  },
+  "primary_family_decision": {
+    "NNLS_FRONTEND_ONLY:synth_lead_pad": {
+      "recall_drop_vs_C3": -0.0291,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": -0.0052,
+      "reduces_false_movement": false,
+      "credited": false
+    },
+    "NNLS_FRONTEND_ONLY:reed_pipe": {
+      "recall_drop_vs_C3": -0.0485,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": 0.0061,
+      "reduces_false_movement": true,
+      "credited": true
+    },
+    "NNLS_NOTES:synth_lead_pad": {
+      "recall_drop_vs_C3": -0.0406,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": -0.0057,
+      "reduces_false_movement": false,
+      "credited": false
+    },
+    "NNLS_NOTES:reed_pipe": {
+      "recall_drop_vs_C3": -0.0034,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": 0.0042,
+      "reduces_false_movement": true,
+      "credited": true
+    },
+    "NNLS_PUBLISHED_CHROMA:synth_lead_pad": {
+      "recall_drop_vs_C3": -0.0084,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": -0.0036,
+      "reduces_false_movement": false,
+      "credited": false
+    },
+    "NNLS_PUBLISHED_CHROMA:reed_pipe": {
+      "recall_drop_vs_C3": 0.0017,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": 0.0075,
+      "reduces_false_movement": true,
+      "credited": true
+    }
+  },
+  "recall_guard": {
+    "rule": "an arm may only be credited with reducing false movement in a family if its EVENT-TOLERANT recall in that family is not more than 0.02 below C3_ROOT_SALIENCE in that family",
+    "threshold": 0.02,
+    "credited_arm_family_pairs": [
+      "NNLS_FRONTEND_ONLY:reed_pipe",
+      "NNLS_NOTES:reed_pipe"
+    ]
+  },
+  "low_register_preservation_table": {
+    "family": "bass",
+    "arms_in_order": [
+      "C3_ROOT_SALIENCE",
+      "FB_LOG_CHROMA",
+      "NNLS_FRONTEND_ONLY",
+      "NNLS_NOTES"
+    ],
+    "values": {
+      "C3_ROOT_SALIENCE": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5539,
+        "spearman": 0.6853,
+        "event_recall_consumer_time": 0.7591,
+        "event_recall_event_tolerant": 0.8935,
+        "false_movement_in_stable_periods": 0.0034,
+        "selectivity_margin": 0.8901,
+        "median_raw_movement_level": 0.0938
+      },
+      "FB_LOG_CHROMA": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.7537,
+        "spearman": 0.7666,
+        "event_recall_consumer_time": 0.8682,
+        "event_recall_event_tolerant": 0.9271,
+        "false_movement_in_stable_periods": 0.0014,
+        "selectivity_margin": 0.9257,
+        "median_raw_movement_level": 0.17206
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.6456,
+        "spearman": 0.7073,
+        "event_recall_consumer_time": 0.7971,
+        "event_recall_event_tolerant": 0.9343,
+        "false_movement_in_stable_periods": 0.0062,
+        "selectivity_margin": 0.9281,
+        "median_raw_movement_level": 0.17067
+      },
+      "NNLS_NOTES": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.6222,
+        "spearman": 0.6992,
+        "event_recall_consumer_time": 0.7937,
+        "event_recall_event_tolerant": 0.9341,
+        "false_movement_in_stable_periods": 0.0032,
+        "selectivity_margin": 0.9309,
+        "median_raw_movement_level": 0.21857
+      }
+    },
+    "J3N_reference": {
+      "C3_r2": 0.5539,
+      "FB_LOG_r2": 0.7537,
+      "CRP_r2": 0.8255,
+      "C3_recall_tol": 0.8935,
+      "FB_LOG_recall_tol": 0.9271,
+      "CRP_recall_tol": 0.9208,
+      "C3_false": 0.0034,
+      "FB_LOG_false": 0.0014,
+      "CRP_false": 0.0014
+    },
+    "NOT_A_BLOCKING_CRITERION": true
+  },
+  "reliability_diagnostic": {
+    "what_was_asked_for": "the NNLS fit residual, as a reported reliability diagnostic",
+    "finding": "NOT FAITHFULLY OBSERVABLE through the published plugin",
+    "evidence": "the residual norm is computed at NNLSChroma.cpp line 386 (declaration) and line 399 (the nnls() call writes it into rnorm), and is then NEVER READ. None of the plugin's six outputs (logfreqspec, tunedlogfreqspec, semitonespectrum, chroma, basschroma, bothchroma) carries it.",
+    "declared_outcome": "NNLS_RELIABILITY_NOT_OBSERVED",
+    "no_proxy_will_be_manufactured": true,
+    "why_not_reconstructed_externally": "the residual is ||D*x - b||, and while b (tunedlogfreqspec) and x (semitonespectrum) are both exposed, the dictionary D is internal. Reimplementing D from the source would be a reconstruction of our own, not the published quantity, and getting it subtly wrong would produce a confident-looking number that means nothing.",
+    "available_follow_up_if_the_PM_WANTS_IT": "exposing rnorm would be a one-line addition to the GPL research host plus one extra Vamp output. That is a separate authorisation and has NOT been done.",
+    "observed_outcome": "NNLS_RELIABILITY_NOT_OBSERVED"
+  },
+  "chance_floor_diagnostic_REPORTED_NOT_GATED": {
+    "receipt": "docs/mir/receipts/nnls_probe/J3O_NULL_DIAGNOSTIC.json",
+    "label": "REPORTED DIAGNOSTIC. Chance floor of the event-tolerant recall metric. NOT GATED - no J3O outcome depends on this.",
+    "method": "per stem, circularly shift the candidate movement series by a random offset in [200, 2000] hops, destroying temporal correspondence with the oracle while preserving the series' own distribution and autocorrelation; recompute the identical metric. 20 permutations, seed 20260902.",
+    "why": "event-tolerant recall matches an oracle event if ANY of 5 frames (+/- 2 hops) is in the candidate's top 20 percent by within-stem rank. That has a high chance floor, so absolute recall figures in weak families must not be read as 'this fraction of events was recovered'. The floor is identical across arms, so ARM COMPARISONS remain valid.",
+    "by_family": {
+      "bass": {
+        "P0_CURRENT": {
+          "observed_event_tolerant_recall": 0.8862,
+          "null_recall_mean": 0.3381,
+          "null_recall_p95": 0.401,
+          "recall_above_null_mean": 0.5481,
+          "observed_false_movement": 0.0029,
+          "null_false_movement_mean": 0.0526,
+          "false_movement_below_null_mean": 0.0497
+        },
+        "C3_ROOT_SALIENCE": {
+          "observed_event_tolerant_recall": 0.8935,
+          "null_recall_mean": 0.345,
+          "null_recall_p95": 0.3861,
+          "recall_above_null_mean": 0.5485,
+          "observed_false_movement": 0.0034,
+          "null_false_movement_mean": 0.0528,
+          "false_movement_below_null_mean": 0.0494
+        },
+        "FB_LOG_CHROMA": {
+          "observed_event_tolerant_recall": 0.9271,
+          "null_recall_mean": 0.3226,
+          "null_recall_p95": 0.3865,
+          "recall_above_null_mean": 0.6045,
+          "observed_false_movement": 0.0014,
+          "null_false_movement_mean": 0.0501,
+          "false_movement_below_null_mean": 0.0486
+        },
+        "NNLS_FRONTEND_ONLY": {
+          "observed_event_tolerant_recall": 0.9343,
+          "null_recall_mean": 0.3608,
+          "null_recall_p95": 0.4217,
+          "recall_above_null_mean": 0.5734,
+          "observed_false_movement": 0.0062,
+          "null_false_movement_mean": 0.0511,
+          "false_movement_below_null_mean": 0.0449
+        },
+        "NNLS_NOTES": {
+          "observed_event_tolerant_recall": 0.9341,
+          "null_recall_mean": 0.3754,
+          "null_recall_p95": 0.444,
+          "recall_above_null_mean": 0.5587,
+          "observed_false_movement": 0.0032,
+          "null_false_movement_mean": 0.0515,
+          "false_movement_below_null_mean": 0.0483
+        },
+        "NNLS_PUBLISHED_CHROMA": {
+          "observed_event_tolerant_recall": 0.9154,
+          "null_recall_mean": 0.3286,
+          "null_recall_p95": 0.3922,
+          "recall_above_null_mean": 0.5868,
+          "observed_false_movement": 0.0021,
+          "null_false_movement_mean": 0.0548,
+          "false_movement_below_null_mean": 0.0527
+        }
+      },
+      "chromatic_percussion": {
+        "P0_CURRENT": {
+          "observed_event_tolerant_recall": 0.6541,
+          "null_recall_mean": 0.3041,
+          "null_recall_p95": 0.4201,
+          "recall_above_null_mean": 0.35,
+          "observed_false_movement": 0.0177,
+          "null_false_movement_mean": 0.0487,
+          "false_movement_below_null_mean": 0.031
+        },
+        "C3_ROOT_SALIENCE": {
+          "observed_event_tolerant_recall": 0.6284,
+          "null_recall_mean": 0.3269,
+          "null_recall_p95": 0.4403,
+          "recall_above_null_mean": 0.3015,
+          "observed_false_movement": 0.0158,
+          "null_false_movement_mean": 0.05,
+          "false_movement_below_null_mean": 0.0343
+        },
+        "FB_LOG_CHROMA": {
+          "observed_event_tolerant_recall": 0.6269,
+          "null_recall_mean": 0.3409,
+          "null_recall_p95": 0.4438,
+          "recall_above_null_mean": 0.286,
+          "observed_false_movement": 0.0168,
+          "null_false_movement_mean": 0.0489,
+          "false_movement_below_null_mean": 0.0321
+        },
+        "NNLS_FRONTEND_ONLY": {
+          "observed_event_tolerant_recall": 0.7598,
+          "null_recall_mean": 0.4572,
+          "null_recall_p95": 0.5613,
+          "recall_above_null_mean": 0.3026,
+          "observed_false_movement": 0.037,
+          "null_false_movement_mean": 0.0476,
+          "false_movement_below_null_mean": 0.0107
+        },
+        "NNLS_NOTES": {
+          "observed_event_tolerant_recall": 0.7704,
+          "null_recall_mean": 0.4412,
+          "null_recall_p95": 0.5365,
+          "recall_above_null_mean": 0.3292,
+          "observed_false_movement": 0.0351,
+          "null_false_movement_mean": 0.0491,
+          "false_movement_below_null_mean": 0.0139
+        },
+        "NNLS_PUBLISHED_CHROMA": {
+          "observed_event_tolerant_recall": 0.7039,
+          "null_recall_mean": 0.4699,
+          "null_recall_p95": 0.6045,
+          "recall_above_null_mean": 0.234,
+          "observed_false_movement": 0.043,
+          "null_false_movement_mean": 0.0491,
+          "false_movement_below_null_mean": 0.0061
+        }
+      },
+      "piano_keys": {
+        "P0_CURRENT": {
+          "observed_event_tolerant_recall": 0.896,
+          "null_recall_mean": 0.3053,
+          "null_recall_p95": 0.3428,
+          "recall_above_null_mean": 0.5906,
+          "observed_false_movement": 0.0067,
+          "null_false_movement_mean": 0.0521,
+          "false_movement_below_null_mean": 0.0454
+        },
+        "C3_ROOT_SALIENCE": {
+          "observed_event_tolerant_recall": 0.8957,
+          "null_recall_mean": 0.3142,
+          "null_recall_p95": 0.3538,
+          "recall_above_null_mean": 0.5815,
+          "observed_false_movement": 0.0071,
+          "null_false_movement_mean": 0.0509,
+          "false_movement_below_null_mean": 0.0437
+        },
+        "FB_LOG_CHROMA": {
+          "observed_event_tolerant_recall": 0.893,
+          "null_recall_mean": 0.3004,
+          "null_recall_p95": 0.348,
+          "recall_above_null_mean": 0.5926,
+          "observed_false_movement": 0.0048,
+          "null_false_movement_mean": 0.0505,
+          "false_movement_below_null_mean": 0.0457
+        },
+        "NNLS_FRONTEND_ONLY": {
+          "observed_event_tolerant_recall": 0.9126,
+          "null_recall_mean": 0.3393,
+          "null_recall_p95": 0.3664,
+          "recall_above_null_mean": 0.5733,
+          "observed_false_movement": 0.0083,
+          "null_false_movement_mean": 0.0505,
+          "false_movement_below_null_mean": 0.0422
+        },
+        "NNLS_NOTES": {
+          "observed_event_tolerant_recall": 0.9097,
+          "null_recall_mean": 0.3382,
+          "null_recall_p95": 0.3761,
+          "recall_above_null_mean": 0.5715,
+          "observed_false_movement": 0.0068,
+          "null_false_movement_mean": 0.051,
+          "false_movement_below_null_mean": 0.0442
+        },
+        "NNLS_PUBLISHED_CHROMA": {
+          "observed_event_tolerant_recall": 0.9045,
+          "null_recall_mean": 0.3107,
+          "null_recall_p95": 0.342,
+          "recall_above_null_mean": 0.5938,
+          "observed_false_movement": 0.007,
+          "null_false_movement_mean": 0.052,
+          "false_movement_below_null_mean": 0.045
+        }
+      },
+      "reed_pipe": {
+        "P0_CURRENT": {
+          "observed_event_tolerant_recall": 0.6429,
+          "null_recall_mean": 0.3328,
+          "null_recall_p95": 0.4049,
+          "recall_above_null_mean": 0.31,
+          "observed_false_movement": 0.0305,
+          "null_false_movement_mean": 0.0511,
+          "false_movement_below_null_mean": 0.0207
+        },
+        "C3_ROOT_SALIENCE": {
+          "observed_event_tolerant_recall": 0.6505,
+          "null_recall_mean": 0.3254,
+          "null_recall_p95": 0.4038,
+          "recall_above_null_mean": 0.3251,
+          "observed_false_movement": 0.0289,
+          "null_false_movement_mean": 0.0527,
+          "false_movement_below_null_mean": 0.0238
+        },
+        "FB_LOG_CHROMA": {
+          "observed_event_tolerant_recall": 0.6276,
+          "null_recall_mean": 0.3152,
+          "null_recall_p95": 0.3524,
+          "recall_above_null_mean": 0.3124,
+          "observed_false_movement": 0.0305,
+          "null_false_movement_mean": 0.0516,
+          "false_movement_below_null_mean": 0.0212
+        },
+        "NNLS_FRONTEND_ONLY": {
+          "observed_event_tolerant_recall": 0.699,
+          "null_recall_mean": 0.3957,
+          "null_recall_p95": 0.4635,
+          "recall_above_null_mean": 0.3032,
+          "observed_false_movement": 0.0228,
+          "null_false_movement_mean": 0.0505,
+          "false_movement_below_null_mean": 0.0277
+        },
+        "NNLS_NOTES": {
+          "observed_event_tolerant_recall": 0.6539,
+          "null_recall_mean": 0.367,
+          "null_recall_p95": 0.4186,
+          "recall_above_null_mean": 0.2869,
+          "observed_false_movement": 0.0247,
+          "null_false_movement_mean": 0.0506,
+          "false_movement_below_null_mean": 0.0259
+        },
+        "NNLS_PUBLISHED_CHROMA": {
+          "observed_event_tolerant_recall": 0.6488,
+          "null_recall_mean": 0.3643,
+          "null_recall_p95": 0.4213,
+          "recall_above_null_mean": 0.2845,
+          "observed_false_movement": 0.0214,
+          "null_false_movement_mean": 0.0515,
+          "false_movement_below_null_mean": 0.0301
+        }
+      },
+      "synth_lead_pad": {
+        "P0_CURRENT": {
+          "observed_event_tolerant_recall": 0.5139,
+          "null_recall_mean": 0.3758,
+          "null_recall_p95": 0.4297,
+          "recall_above_null_mean": 0.1381,
+          "observed_false_movement": 0.0312,
+          "null_false_movement_mean": 0.0504,
+          "false_movement_below_null_mean": 0.0191
+        },
+        "C3_ROOT_SALIENCE": {
+          "observed_event_tolerant_recall": 0.5474,
+          "null_recall_mean": 0.359,
+          "null_recall_p95": 0.4019,
+          "recall_above_null_mean": 0.1884,
+          "observed_false_movement": 0.0288,
+          "null_false_movement_mean": 0.0518,
+          "false_movement_below_null_mean": 0.023
+        },
+        "FB_LOG_CHROMA": {
+          "observed_event_tolerant_recall": 0.5068,
+          "null_recall_mean": 0.3175,
+          "null_recall_p95": 0.3551,
+          "recall_above_null_mean": 0.1894,
+          "observed_false_movement": 0.0339,
+          "null_false_movement_mean": 0.0542,
+          "false_movement_below_null_mean": 0.0203
+        },
+        "NNLS_FRONTEND_ONLY": {
+          "observed_event_tolerant_recall": 0.5765,
+          "null_recall_mean": 0.4234,
+          "null_recall_p95": 0.4655,
+          "recall_above_null_mean": 0.1532,
+          "observed_false_movement": 0.034,
+          "null_false_movement_mean": 0.0527,
+          "false_movement_below_null_mean": 0.0187
+        },
+        "NNLS_NOTES": {
+          "observed_event_tolerant_recall": 0.588,
+          "null_recall_mean": 0.4106,
+          "null_recall_p95": 0.4866,
+          "recall_above_null_mean": 0.1774,
+          "observed_false_movement": 0.0345,
+          "null_false_movement_mean": 0.0541,
+          "false_movement_below_null_mean": 0.0196
+        },
+        "NNLS_PUBLISHED_CHROMA": {
+          "observed_event_tolerant_recall": 0.5558,
+          "null_recall_mean": 0.3461,
+          "null_recall_p95": 0.4013,
+          "recall_above_null_mean": 0.2097,
+          "observed_false_movement": 0.0324,
+          "null_false_movement_mean": 0.0531,
+          "false_movement_below_null_mean": 0.0206
+        }
+      }
+    }
+  },
+  "conditional_mixture_visual_test": {
+    "trigger_met": true,
+    "rule": "run the mixture visual test IF AND ONLY IF at least one PRIMARY family (synth_lead_pad or reed_pipe) shows reduced false movement versus C3_ROOT_SALIENCE while satisfying the RECALL_GUARD",
+    "run": true,
+    "receipt": "docs/mir/receipts/nnls_probe/J3O_VISUAL.json",
+    "grammar_modified": false,
+    "verdict": {
+      "margins_primary_all_20_mixes": {
+        "P0_CURRENT": 0.1158,
+        "C3_ROOT_SALIENCE": 0.2812,
+        "NNLS_FRONTEND_ONLY": 0.2339,
+        "NNLS_NOTES": 0.2149,
+        "NNLS_PUBLISHED_CHROMA": 0.1452,
+        "ORACLE": 0.4073
+      },
+      "margins_secondary_10_track_subset": {
+        "P0_CURRENT": 0.1328,
+        "C3_ROOT_SALIENCE": 0.3159,
+        "NNLS_FRONTEND_ONLY": 0.248,
+        "NNLS_NOTES": 0.2138,
+        "NNLS_PUBLISHED_CHROMA": 0.1484,
+        "ORACLE": 0.5152
+      },
+      "either_NNLS_arm_matches_or_beats_C3": false,
+      "per_arm": {
+        "NNLS_FRONTEND_ONLY": false,
+        "NNLS_NOTES": false
+      },
+      "contradicts_the_solo_family_result": true
+    }
+  },
+  "outcome": "NNLS_RESTRAINT_FAIL",
+  "J3M_mutated": false,
+  "J3N_mutated": false,
+  "target_modified": false,
+  "gpl_code_copied_into_product": false,
+  "plugin_source_modified": false,
+  "new_blocking_gate_added": false,
+  "cqt_run": false,
+  "basic_pitch_run": false,
+  "neural_estimator": false,
+  "source_separator": false,
+  "confidence_gate": false,
+  "visual_grammar_run": false,
+  "visual_test_run": true,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

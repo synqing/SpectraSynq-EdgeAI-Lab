@@ -1,0 +1,258 @@
+{
+  "schema": "spectrasynq.nnls_visual.v1",
+  "job": "J3O",
+  "label": "CONDITIONAL MIXTURE VISUAL TEST. J3E grammar UNCHANGED. HOST analysis on consumed data.",
+  "grammar": "J3E HARMONIC COLOUR TRANSITION unchanged: M_REF 0.35, A_MIN 0.02, A_MAX 0.60, photons 1.0, exposure 2.2, without_floor, +/-2-hop event tolerance, threshold = p90 of each condition's own resting frames",
+  "grammar_modified": false,
+  "headline_metric": "selectivity margin = mean(event-tolerant harmonic recall) - event-tolerant acoustic false response",
+  "PRIMARY_all_20_mixes": {
+    "P0_CURRENT": {
+      "threshold_deltaE_p90_of_own_resting_frames": 11.3775,
+      "consumer_time": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.1814,
+        "HARMONIC_CHANGE_NO_ONSET": 0.1755,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1616
+      },
+      "event_tolerant": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.4802,
+        "HARMONIC_CHANGE_NO_ONSET": 0.475,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3618
+      },
+      "resting_median_deltaE": 2.6895,
+      "direction_reversal_rate": 0.1701,
+      "mean_harmonic_recall": 0.4776,
+      "selectivity_margin": 0.1158,
+      "n_frames": 145311
+    },
+    "C3_ROOT_SALIENCE": {
+      "threshold_deltaE_p90_of_own_resting_frames": 4.6895,
+      "consumer_time": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.2749,
+        "HARMONIC_CHANGE_NO_ONSET": 0.288,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1498
+      },
+      "event_tolerant": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.5785,
+        "HARMONIC_CHANGE_NO_ONSET": 0.6152,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3156
+      },
+      "resting_median_deltaE": 1.0141,
+      "direction_reversal_rate": 0.1289,
+      "mean_harmonic_recall": 0.5968,
+      "selectivity_margin": 0.2812,
+      "n_frames": 145311
+    },
+    "NNLS_FRONTEND_ONLY": {
+      "threshold_deltaE_p90_of_own_resting_frames": 6.168,
+      "consumer_time": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.2092,
+        "HARMONIC_CHANGE_NO_ONSET": 0.2028,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1173
+      },
+      "event_tolerant": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.5398,
+        "HARMONIC_CHANGE_NO_ONSET": 0.5375,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3047
+      },
+      "resting_median_deltaE": 1.0666,
+      "direction_reversal_rate": 0.2971,
+      "mean_harmonic_recall": 0.5386,
+      "selectivity_margin": 0.2339,
+      "n_frames": 145311
+    },
+    "NNLS_NOTES": {
+      "threshold_deltaE_p90_of_own_resting_frames": 9.6607,
+      "consumer_time": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.1914,
+        "HARMONIC_CHANGE_NO_ONSET": 0.1792,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1261
+      },
+      "event_tolerant": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.5559,
+        "HARMONIC_CHANGE_NO_ONSET": 0.5427,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3344
+      },
+      "resting_median_deltaE": 2.3244,
+      "direction_reversal_rate": 0.3131,
+      "mean_harmonic_recall": 0.5493,
+      "selectivity_margin": 0.2149,
+      "n_frames": 145311
+    },
+    "NNLS_PUBLISHED_CHROMA": {
+      "threshold_deltaE_p90_of_own_resting_frames": 11.2052,
+      "consumer_time": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.1853,
+        "HARMONIC_CHANGE_NO_ONSET": 0.1512,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1352
+      },
+      "event_tolerant": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.5181,
+        "HARMONIC_CHANGE_NO_ONSET": 0.4838,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3557
+      },
+      "resting_median_deltaE": 2.5989,
+      "direction_reversal_rate": 0.2523,
+      "mean_harmonic_recall": 0.501,
+      "selectivity_margin": 0.1452,
+      "n_frames": 145311
+    },
+    "ORACLE": {
+      "threshold_deltaE_p90_of_own_resting_frames": 8.0781,
+      "consumer_time": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.2532,
+        "HARMONIC_CHANGE_NO_ONSET": 0.208,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.044
+      },
+      "event_tolerant": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.5733,
+        "HARMONIC_CHANGE_NO_ONSET": 0.5298,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1443
+      },
+      "resting_median_deltaE": 0.9388,
+      "direction_reversal_rate": 0.0693,
+      "mean_harmonic_recall": 0.5515,
+      "selectivity_margin": 0.4073,
+      "n_frames": 145311
+    },
+    "_counts": {
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000,
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292
+    }
+  },
+  "SECONDARY_10_track_subset_for_comparability_with_J3G2": {
+    "why": "the published J3G.2 Level-C margins were computed on the 10-track former holdout. This subset is reported so those numbers are compared like with like. The dev/holdout split is CONSUMED and protects nothing; it is a comparability aid only.",
+    "conditions": {
+      "P0_CURRENT": {
+        "threshold_deltaE_p90_of_own_resting_frames": 9.7329,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.1852,
+          "HARMONIC_CHANGE_NO_ONSET": 0.1753,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1501
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5005,
+          "HARMONIC_CHANGE_NO_ONSET": 0.4799,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3574
+        },
+        "resting_median_deltaE": 2.3013,
+        "direction_reversal_rate": 0.1614,
+        "mean_harmonic_recall": 0.4902,
+        "selectivity_margin": 0.1328,
+        "n_frames": 75896
+      },
+      "C3_ROOT_SALIENCE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 4.0277,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.2972,
+          "HARMONIC_CHANGE_NO_ONSET": 0.3002,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1457
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5745,
+          "HARMONIC_CHANGE_NO_ONSET": 0.6401,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2914
+        },
+        "resting_median_deltaE": 0.6956,
+        "direction_reversal_rate": 0.1181,
+        "mean_harmonic_recall": 0.6073,
+        "selectivity_margin": 0.3159,
+        "n_frames": 75896
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "threshold_deltaE_p90_of_own_resting_frames": 5.3538,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.2177,
+          "HARMONIC_CHANGE_NO_ONSET": 0.2135,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1158
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5474,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5588,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3051
+        },
+        "resting_median_deltaE": 0.9608,
+        "direction_reversal_rate": 0.2945,
+        "mean_harmonic_recall": 0.5531,
+        "selectivity_margin": 0.248,
+        "n_frames": 75896
+      },
+      "NNLS_NOTES": {
+        "threshold_deltaE_p90_of_own_resting_frames": 8.566,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.1816,
+          "HARMONIC_CHANGE_NO_ONSET": 0.2013,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1451
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5474,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5739,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3468
+        },
+        "resting_median_deltaE": 2.0052,
+        "direction_reversal_rate": 0.3119,
+        "mean_harmonic_recall": 0.5606,
+        "selectivity_margin": 0.2138,
+        "n_frames": 75896
+      },
+      "NNLS_PUBLISHED_CHROMA": {
+        "threshold_deltaE_p90_of_own_resting_frames": 10.1138,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.196,
+          "HARMONIC_CHANGE_NO_ONSET": 0.1626,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1339
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5411,
+          "HARMONIC_CHANGE_NO_ONSET": 0.4917,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.368
+        },
+        "resting_median_deltaE": 2.275,
+        "direction_reversal_rate": 0.2515,
+        "mean_harmonic_recall": 0.5164,
+        "selectivity_margin": 0.1484,
+        "n_frames": 75896
+      },
+      "ORACLE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 6.0139,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.3234,
+          "HARMONIC_CHANGE_NO_ONSET": 0.2679,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.0174
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6423,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5999,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1059
+        },
+        "resting_median_deltaE": 0.6648,
+        "direction_reversal_rate": 0.0531,
+        "mean_harmonic_recall": 0.6211,
+        "selectivity_margin": 0.5152,
+        "n_frames": 75896
+      },
+      "_counts": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 1107,
+        "HARMONIC_CHANGE_NO_ONSET": 2042,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 1606
+      }
+    }
+  },
+  "margins_primary": {
+    "P0_CURRENT": 0.1158,
+    "C3_ROOT_SALIENCE": 0.2812,
+    "NNLS_FRONTEND_ONLY": 0.2339,
+    "NNLS_NOTES": 0.2149,
+    "NNLS_PUBLISHED_CHROMA": 0.1452,
+    "ORACLE": 0.4073
+  },
+  "margins_secondary": {
+    "P0_CURRENT": 0.1328,
+    "C3_ROOT_SALIENCE": 0.3159,
+    "NNLS_FRONTEND_ONLY": 0.248,
+    "NNLS_NOTES": 0.2138,
+    "NNLS_PUBLISHED_CHROMA": 0.1484,
+    "ORACLE": 0.5152
+  },
+  "validity_note": "the 3 leading frames per mix that have no corresponding plugin frame under the +3 alignment are REMOVED from validity for every arm, so all arms are scored on an identical frame set. They are not zero-filled."
+}

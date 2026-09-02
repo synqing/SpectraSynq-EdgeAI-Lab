@@ -1,0 +1,290 @@
+{
+  "schema": "spectrasynq.nnls_null_diagnostic.v1",
+  "job": "J3O",
+  "label": "REPORTED DIAGNOSTIC. Chance floor of the event-tolerant recall metric. NOT GATED - no J3O outcome depends on this.",
+  "method": "per stem, circularly shift the candidate movement series by a random offset in [200, 2000] hops, destroying temporal correspondence with the oracle while preserving the series' own distribution and autocorrelation; recompute the identical metric. 20 permutations, seed 20260902.",
+  "why": "event-tolerant recall matches an oracle event if ANY of 5 frames (+/- 2 hops) is in the candidate's top 20 percent by within-stem rank. That has a high chance floor, so absolute recall figures in weak families must not be read as 'this fraction of events was recovered'. The floor is identical across arms, so ARM COMPARISONS remain valid.",
+  "n_permutations": 20,
+  "by_family": {
+    "bass": {
+      "P0_CURRENT": {
+        "observed_event_tolerant_recall": 0.8862,
+        "null_recall_mean": 0.3381,
+        "null_recall_p95": 0.401,
+        "recall_above_null_mean": 0.5481,
+        "observed_false_movement": 0.0029,
+        "null_false_movement_mean": 0.0526,
+        "false_movement_below_null_mean": 0.0497
+      },
+      "C3_ROOT_SALIENCE": {
+        "observed_event_tolerant_recall": 0.8935,
+        "null_recall_mean": 0.345,
+        "null_recall_p95": 0.3861,
+        "recall_above_null_mean": 0.5485,
+        "observed_false_movement": 0.0034,
+        "null_false_movement_mean": 0.0528,
+        "false_movement_below_null_mean": 0.0494
+      },
+      "FB_LOG_CHROMA": {
+        "observed_event_tolerant_recall": 0.9271,
+        "null_recall_mean": 0.3226,
+        "null_recall_p95": 0.3865,
+        "recall_above_null_mean": 0.6045,
+        "observed_false_movement": 0.0014,
+        "null_false_movement_mean": 0.0501,
+        "false_movement_below_null_mean": 0.0486
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "observed_event_tolerant_recall": 0.9343,
+        "null_recall_mean": 0.3608,
+        "null_recall_p95": 0.4217,
+        "recall_above_null_mean": 0.5734,
+        "observed_false_movement": 0.0062,
+        "null_false_movement_mean": 0.0511,
+        "false_movement_below_null_mean": 0.0449
+      },
+      "NNLS_NOTES": {
+        "observed_event_tolerant_recall": 0.9341,
+        "null_recall_mean": 0.3754,
+        "null_recall_p95": 0.444,
+        "recall_above_null_mean": 0.5587,
+        "observed_false_movement": 0.0032,
+        "null_false_movement_mean": 0.0515,
+        "false_movement_below_null_mean": 0.0483
+      },
+      "NNLS_PUBLISHED_CHROMA": {
+        "observed_event_tolerant_recall": 0.9154,
+        "null_recall_mean": 0.3286,
+        "null_recall_p95": 0.3922,
+        "recall_above_null_mean": 0.5868,
+        "observed_false_movement": 0.0021,
+        "null_false_movement_mean": 0.0548,
+        "false_movement_below_null_mean": 0.0527
+      }
+    },
+    "chromatic_percussion": {
+      "P0_CURRENT": {
+        "observed_event_tolerant_recall": 0.6541,
+        "null_recall_mean": 0.3041,
+        "null_recall_p95": 0.4201,
+        "recall_above_null_mean": 0.35,
+        "observed_false_movement": 0.0177,
+        "null_false_movement_mean": 0.0487,
+        "false_movement_below_null_mean": 0.031
+      },
+      "C3_ROOT_SALIENCE": {
+        "observed_event_tolerant_recall": 0.6284,
+        "null_recall_mean": 0.3269,
+        "null_recall_p95": 0.4403,
+        "recall_above_null_mean": 0.3015,
+        "observed_false_movement": 0.0158,
+        "null_false_movement_mean": 0.05,
+        "false_movement_below_null_mean": 0.0343
+      },
+      "FB_LOG_CHROMA": {
+        "observed_event_tolerant_recall": 0.6269,
+        "null_recall_mean": 0.3409,
+        "null_recall_p95": 0.4438,
+        "recall_above_null_mean": 0.286,
+        "observed_false_movement": 0.0168,
+        "null_false_movement_mean": 0.0489,
+        "false_movement_below_null_mean": 0.0321
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "observed_event_tolerant_recall": 0.7598,
+        "null_recall_mean": 0.4572,
+        "null_recall_p95": 0.5613,
+        "recall_above_null_mean": 0.3026,
+        "observed_false_movement": 0.037,
+        "null_false_movement_mean": 0.0476,
+        "false_movement_below_null_mean": 0.0107
+      },
+      "NNLS_NOTES": {
+        "observed_event_tolerant_recall": 0.7704,
+        "null_recall_mean": 0.4412,
+        "null_recall_p95": 0.5365,
+        "recall_above_null_mean": 0.3292,
+        "observed_false_movement": 0.0351,
+        "null_false_movement_mean": 0.0491,
+        "false_movement_below_null_mean": 0.0139
+      },
+      "NNLS_PUBLISHED_CHROMA": {
+        "observed_event_tolerant_recall": 0.7039,
+        "null_recall_mean": 0.4699,
+        "null_recall_p95": 0.6045,
+        "recall_above_null_mean": 0.234,
+        "observed_false_movement": 0.043,
+        "null_false_movement_mean": 0.0491,
+        "false_movement_below_null_mean": 0.0061
+      }
+    },
+    "piano_keys": {
+      "P0_CURRENT": {
+        "observed_event_tolerant_recall": 0.896,
+        "null_recall_mean": 0.3053,
+        "null_recall_p95": 0.3428,
+        "recall_above_null_mean": 0.5906,
+        "observed_false_movement": 0.0067,
+        "null_false_movement_mean": 0.0521,
+        "false_movement_below_null_mean": 0.0454
+      },
+      "C3_ROOT_SALIENCE": {
+        "observed_event_tolerant_recall": 0.8957,
+        "null_recall_mean": 0.3142,
+        "null_recall_p95": 0.3538,
+        "recall_above_null_mean": 0.5815,
+        "observed_false_movement": 0.0071,
+        "null_false_movement_mean": 0.0509,
+        "false_movement_below_null_mean": 0.0437
+      },
+      "FB_LOG_CHROMA": {
+        "observed_event_tolerant_recall": 0.893,
+        "null_recall_mean": 0.3004,
+        "null_recall_p95": 0.348,
+        "recall_above_null_mean": 0.5926,
+        "observed_false_movement": 0.0048,
+        "null_false_movement_mean": 0.0505,
+        "false_movement_below_null_mean": 0.0457
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "observed_event_tolerant_recall": 0.9126,
+        "null_recall_mean": 0.3393,
+        "null_recall_p95": 0.3664,
+        "recall_above_null_mean": 0.5733,
+        "observed_false_movement": 0.0083,
+        "null_false_movement_mean": 0.0505,
+        "false_movement_below_null_mean": 0.0422
+      },
+      "NNLS_NOTES": {
+        "observed_event_tolerant_recall": 0.9097,
+        "null_recall_mean": 0.3382,
+        "null_recall_p95": 0.3761,
+        "recall_above_null_mean": 0.5715,
+        "observed_false_movement": 0.0068,
+        "null_false_movement_mean": 0.051,
+        "false_movement_below_null_mean": 0.0442
+      },
+      "NNLS_PUBLISHED_CHROMA": {
+        "observed_event_tolerant_recall": 0.9045,
+        "null_recall_mean": 0.3107,
+        "null_recall_p95": 0.342,
+        "recall_above_null_mean": 0.5938,
+        "observed_false_movement": 0.007,
+        "null_false_movement_mean": 0.052,
+        "false_movement_below_null_mean": 0.045
+      }
+    },
+    "reed_pipe": {
+      "P0_CURRENT": {
+        "observed_event_tolerant_recall": 0.6429,
+        "null_recall_mean": 0.3328,
+        "null_recall_p95": 0.4049,
+        "recall_above_null_mean": 0.31,
+        "observed_false_movement": 0.0305,
+        "null_false_movement_mean": 0.0511,
+        "false_movement_below_null_mean": 0.0207
+      },
+      "C3_ROOT_SALIENCE": {
+        "observed_event_tolerant_recall": 0.6505,
+        "null_recall_mean": 0.3254,
+        "null_recall_p95": 0.4038,
+        "recall_above_null_mean": 0.3251,
+        "observed_false_movement": 0.0289,
+        "null_false_movement_mean": 0.0527,
+        "false_movement_below_null_mean": 0.0238
+      },
+      "FB_LOG_CHROMA": {
+        "observed_event_tolerant_recall": 0.6276,
+        "null_recall_mean": 0.3152,
+        "null_recall_p95": 0.3524,
+        "recall_above_null_mean": 0.3124,
+        "observed_false_movement": 0.0305,
+        "null_false_movement_mean": 0.0516,
+        "false_movement_below_null_mean": 0.0212
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "observed_event_tolerant_recall": 0.699,
+        "null_recall_mean": 0.3957,
+        "null_recall_p95": 0.4635,
+        "recall_above_null_mean": 0.3032,
+        "observed_false_movement": 0.0228,
+        "null_false_movement_mean": 0.0505,
+        "false_movement_below_null_mean": 0.0277
+      },
+      "NNLS_NOTES": {
+        "observed_event_tolerant_recall": 0.6539,
+        "null_recall_mean": 0.367,
+        "null_recall_p95": 0.4186,
+        "recall_above_null_mean": 0.2869,
+        "observed_false_movement": 0.0247,
+        "null_false_movement_mean": 0.0506,
+        "false_movement_below_null_mean": 0.0259
+      },
+      "NNLS_PUBLISHED_CHROMA": {
+        "observed_event_tolerant_recall": 0.6488,
+        "null_recall_mean": 0.3643,
+        "null_recall_p95": 0.4213,
+        "recall_above_null_mean": 0.2845,
+        "observed_false_movement": 0.0214,
+        "null_false_movement_mean": 0.0515,
+        "false_movement_below_null_mean": 0.0301
+      }
+    },
+    "synth_lead_pad": {
+      "P0_CURRENT": {
+        "observed_event_tolerant_recall": 0.5139,
+        "null_recall_mean": 0.3758,
+        "null_recall_p95": 0.4297,
+        "recall_above_null_mean": 0.1381,
+        "observed_false_movement": 0.0312,
+        "null_false_movement_mean": 0.0504,
+        "false_movement_below_null_mean": 0.0191
+      },
+      "C3_ROOT_SALIENCE": {
+        "observed_event_tolerant_recall": 0.5474,
+        "null_recall_mean": 0.359,
+        "null_recall_p95": 0.4019,
+        "recall_above_null_mean": 0.1884,
+        "observed_false_movement": 0.0288,
+        "null_false_movement_mean": 0.0518,
+        "false_movement_below_null_mean": 0.023
+      },
+      "FB_LOG_CHROMA": {
+        "observed_event_tolerant_recall": 0.5068,
+        "null_recall_mean": 0.3175,
+        "null_recall_p95": 0.3551,
+        "recall_above_null_mean": 0.1894,
+        "observed_false_movement": 0.0339,
+        "null_false_movement_mean": 0.0542,
+        "false_movement_below_null_mean": 0.0203
+      },
+      "NNLS_FRONTEND_ONLY": {
+        "observed_event_tolerant_recall": 0.5765,
+        "null_recall_mean": 0.4234,
+        "null_recall_p95": 0.4655,
+        "recall_above_null_mean": 0.1532,
+        "observed_false_movement": 0.034,
+        "null_false_movement_mean": 0.0527,
+        "false_movement_below_null_mean": 0.0187
+      },
+      "NNLS_NOTES": {
+        "observed_event_tolerant_recall": 0.588,
+        "null_recall_mean": 0.4106,
+        "null_recall_p95": 0.4866,
+        "recall_above_null_mean": 0.1774,
+        "observed_false_movement": 0.0345,
+        "null_false_movement_mean": 0.0541,
+        "false_movement_below_null_mean": 0.0196
+      },
+      "NNLS_PUBLISHED_CHROMA": {
+        "observed_event_tolerant_recall": 0.5558,
+        "null_recall_mean": 0.3461,
+        "null_recall_p95": 0.4013,
+        "recall_above_null_mean": 0.2097,
+        "observed_false_movement": 0.0324,
+        "null_false_movement_mean": 0.0531,
+        "false_movement_below_null_mean": 0.0206
+      }
+    }
+  }
+}

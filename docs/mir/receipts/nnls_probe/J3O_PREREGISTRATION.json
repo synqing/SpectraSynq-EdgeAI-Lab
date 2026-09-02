@@ -1,0 +1,263 @@
+{
+  "schema": "spectrasynq.nnls_restraint_prereg.v1",
+  "job": "J3O",
+  "label": "RESOLVED NNLS RESTRAINT PROBE. HOST research analysis against an EXTERNAL GPL dependency. Nothing promotable. No product lineage.",
+  "date": "2026-09-02",
+  "written_before_any_outcome_metric": true,
+  "the_only_question": "Can approximate note transcription through a harmonic NNLS (non-negative least squares) dictionary suppress overtone-driven and timbre-driven FALSE harmonic movement while preserving GENUINE harmonic events?",
+  "why_it_matters": "J3G.2 established that same-STFT tonal projection hits a timbre limit. J3M established that CRP (Chroma DCT-Reduced log Pitch) liftering does not solve the synth/reed restraint residual. J3N established that the low-register windfall came from the RESOLVED PITCH FRONT END, not the lifter. NNLS Chroma is the remaining published hypothesis that attacks the residual by a different mechanism: instead of reweighting spectral energy, it explains the observed spectrum as a non-negative combination of harmonic note templates, so overtone energy is attributed to its fundamental rather than treated as an independent pitch class.",
+
+  "EXTERNAL_DEPENDENCY_SCOPE": {
+    "status": "EXTERNAL HOST RESEARCH DEPENDENCY",
+    "do_not": [
+      "copy this GPL implementation, or any derivative of it, into SpectraSynq product code",
+      "treat any positive result here as product-lineage clearance",
+      "treat any positive result here as a compute or feasibility claim for M85"
+    ],
+    "what_a_positive_result_would_licence": "one thing only - authorisation to ask whether the MECHANISM (harmonic-dictionary attribution of overtone energy) is worth an independent, cleanly-licensed SpectraSynq implementation. That is a separate decision the PM makes, not an outcome of this job."
+  },
+
+  "PINNED_PROVENANCE": {
+    "algorithm": "NNLS Chroma (Matthias Mauch), Vamp plugin",
+    "repository_url": "https://github.com/c4dm/nnls-chroma",
+    "commit_sha": "4c5f214a75cb354f8d8c933e161377c5b4d83713",
+    "commit_date": "2020-04-22T14:21:25+01:00",
+    "commit_subject": "Update library URI so it's not document-local",
+    "licence": "GPL v2 (plugin reports copyright \"GPL\")",
+    "plugin_identity_reported_by_the_binary": {
+      "apiVersion": 2,
+      "pluginVersion": 5,
+      "identifier": "nnls-chroma",
+      "name": "NNLS Chroma",
+      "maker": "Matthias Mauch"
+    },
+    "built_artefact": "nnls-chroma.so",
+    "built_artefact_sha256": "8a8ba2ee629c9e3c29f7cbd541595d6d97b338c89ab5f40bdc74b7f3ea526d08",
+    "built_artefact_linkage": "statically linked against libvamp-sdk.a, so the measured binary is self-contained",
+    "vamp_plugin_sdk_repository": "https://github.com/vamp-plugins/vamp-plugin-sdk",
+    "vamp_plugin_sdk_commit": "44c2487763eb248a933e9eff9169cfadee375009",
+    "vamp_plugin_sdk_build_note": "configured with --disable-programs; the command-line host was not needed and libsndfile is absent in the container",
+    "build_dependency_added": "libboost-dev (boost/tokenizer.hpp), header-only, build-time only",
+    "python_host": "vamp 1.1.0 / vampyhost, built in place at /tmp/vampsrc/vamp-1.1.0 and used via sys.path (NOT installed into the project environment, and NOT added to any SpectraSynq dependency manifest)",
+    "invocation": "vamp.collect(y, 16000, 'nnls-chroma:nnls-chroma', output=..., parameters=..., block_size=B, step_size=512)",
+    "plugin_source_unmodified": true
+  },
+
+  "CANONICAL_PARAMETER_SET": {
+    "useNNLS": "the single variable under test - 1.0 for ARM N, 0.0 for ARM F",
+    "rollon": 0.0,
+    "tuningmode": 0.0,
+    "whitening": 1.0,
+    "s": 0.7,
+    "chromanormalize": 0.0,
+    "note": "every value other than useNNLS is the plugin's own published default, verified by reading them back from the loaded binary. No parameter was tuned by us."
+  },
+
+  "ANALYSIS_BLOCK_DECISION": {
+    "chosen_primary_block_size_samples": 2048,
+    "step_size_samples": 512,
+    "this_follows_the_brief": true,
+    "why_2048_is_the_right_choice": [
+      "2048 samples at 16 kHz is EXACTLY the existing host_chroma12 window (n_fft 2048, hop 512). The NNLS front end therefore sees the same time-frequency support as the SpectraSynq STFT it is being compared against, so the contrast with C3 is a single-variable change of PROJECTION METHOD and is not confounded by window length.",
+      "2048 samples = 4 hops, which is strictly less than the movement lag of 8 hops. The two states compared by tv_movement therefore share NO window content, so the movement metric is not mechanically attenuated.",
+      "measured: it is not materially worse than larger blocks (see the disclosed diagnostic below)."
+    ],
+    "PRIOR_ANALYST_RECOMMENDATION_WITHDRAWN": {
+      "what_I_previously_proposed": "block 4096 as primary, on the argument that a 2048-sample block at 16 kHz cannot resolve three bins per semitone below roughly MIDI 68 (linear FFT bin spacing 7.81 Hz exceeds one third of a semitone below about 394 Hz), and that this would forfeit exactly the low-register resolution J3N proved valuable.",
+      "why_it_is_withdrawn": "the argument makes a testable prediction - that block 2048 should transcribe the bass materially worse than block 4096 - and measurement does not support it. On real audio the two are effectively tied, including in the bass. The theoretical resolution loss is real but the plugin interpolates the log-frequency axis from the linear spectrum with a cosine kernel and the NNLS dictionary is tolerant of the resulting smear, so the note attribution survives.",
+      "status": "my earlier reasoning was wrong and is corrected by measurement. The brief's block 2048 stands unamended."
+    },
+    "DISCLOSED_SELECTION_DIAGNOSTIC": {
+      "what_was_measured": "mean per-frame cosine agreement between the plugin's 84-bin semitone spectrum folded to 12 pitch classes and the MIDI pitch-class mass target, on the first 30 s of 7 stems drawn from 5 tracks, with useNNLS=1 only",
+      "when": "BEFORE this pre-registration was written and before any outcome metric was computed",
+      "is_this_an_outcome_metric": false,
+      "was_any_arm_contrast_seen": false,
+      "why_it_is_disclosed": "the block size has to be fixed before scoring, and fixing it on evidence rather than assertion means the evidence was gathered first. The metric used is not one of the pre-registered outcome metrics and no FRONTEND_ONLY vs NNLS_NOTES comparison was computed.",
+      "results_pitch_class_cosine": {
+        "Track00001:S02 piano_keys": {"2048": 0.7421, "4096": 0.7321, "16384": 0.6047},
+        "Track00001:S03 bass": {"2048": 0.5893, "4096": 0.6089, "16384": 0.383},
+        "Track00002:S01 bass": {"2048": 0.6346, "4096": 0.6008, "16384": 0.2322},
+        "Track00002:S02 synth_lead_pad": {"2048": 0.8619, "4096": 0.8214, "16384": 0.4551},
+        "Track00004:S00 synth_lead_pad": {"2048": 0.8256, "4096": 0.8455, "16384": 0.5201},
+        "Track00005:S03 reed_pipe": {"2048": 0.4905, "4096": 0.6405, "16384": 0.3233},
+        "Track00006:S09 reed_pipe": {"2048": 0.7346, "4096": 0.7259, "16384": 0.7279}
+      },
+      "means": {"2048": 0.6969, "4096": 0.7107, "16384": 0.4423},
+      "reading": "2048 and 4096 differ by 0.014 on n=7, far inside the established 0.10 materiality scale and not separable at this sample size. The plugin's own preferred block of 16384 is clearly worse here, which is expected: 16384 samples is 1024 ms at 16 kHz, and the plugin's defaults were designed for 44.1 kHz where that block is 372 ms.",
+      "block_16384_would_also_have_been_wrong_for_a_movement_probe": "16384 samples = 32 hops, so two states 8 hops apart would share 75 percent of their window content and movement would be mechanically suppressed - a false-positive risk for a restraint probe.",
+      "REPORTED_NOT_GATED": true
+    }
+  },
+
+  "ALIGNMENT_RULE": {
+    "the_problem": "the plugin timestamps each feature at its BLOCK START. host_chroma12 uses a TRAILING CAUSAL window: host frame i covers samples [(i+1)*512 - 2048, (i+1)*512).",
+    "the_rule": "host_frame_index = plugin_frame_index + (B/512 - 1), which is +3 at block 2048",
+    "derivation": "plugin frame j covers [j*512, j*512 + B), ending at j*512 + B. Host frame i ends at (i+1)*512. Setting the window ENDS equal gives (i+1)*512 = j*512 + B, hence i = j + B/512 - 1. This is an exact integer shift; no interpolation, no resampling, no data fitting.",
+    "leading_frames": "the first (B/512 - 1) = 3 host frames have no corresponding plugin frame and are excluded by the validity mask. They are not zero-filled.",
+    "verification_performed": "a synthetic note onset at a known sample index appears at the predicted plugin frame at blocks 2048, 4096 and 16384, and both arms produce identical timing.",
+    "DISCLOSED_EMPIRICAL_SCAN": {
+      "what": "an integer shift sweep 0..8 maximising pitch-class cosine against the MIDI target on 5 stems",
+      "result_best_shift_per_stem": [1, 2, 2, 2, 0],
+      "spread_over_shifts_0_to_3_on_the_worst_case": 0.005,
+      "decision": "the DETERMINISTIC GEOMETRIC RULE (+3) is pre-registered, NOT the empirical optimum. The empirical optimum is data-selected on the scoring corpus and the difference is immaterial (0.005 cosine). Fitting the alignment to the corpus would be exactly the kind of quiet tuning this programme forbids.",
+      "why_the_empirical_optimum_sits_1_to_2_frames_earlier": "the MIDI target is a rectangular duration-occupancy measure and the whitened spectrum has its own onset and decay behaviour, so the cosine optimum blends onset alignment with sustain overlap. This is the same rectangular-oracle effect J3I characterised and it is not evidence against the geometric rule.",
+      "REPORTED_NOT_GATED": true
+    }
+  },
+
+  "TWO_REPRESENTATION_ARMS_FROM_ONE_FRONTEND": {
+    "design_note": "the contrast the brief asks for exists INSIDE the published implementation and does not require us to hand-roll anything. Both arms run the identical front end - log-frequency spectrum at 3 bins per semitone, tuning, spectral whitening - and diverge at exactly one branch in NNLSChroma.cpp (line 359, 'if (m_useNNLS == 0)').",
+    "ARM_F_FRONTEND_ONLY": {
+      "useNNLS": 0.0,
+      "what_the_published_code_does": "maps the whitened tuned log-frequency spectrum to 84 semitone bins by a triangular-weighted sum over the 3 bins per semitone. Linear energy mapping. NO transcription, NO dictionary, NO non-negative least squares.",
+      "what_it_isolates": "the value of the RESOLVED, TUNED, WHITENED front end on its own - the J3N hypothesis, now measured in a second independent implementation"
+    },
+    "ARM_N_NNLS_NOTES": {
+      "useNNLS": 1.0,
+      "what_the_published_code_does": "solves a non-negative least squares problem against a dictionary of harmonic note templates (geometric partial amplitude series, s = 0.7) over the significant semitone positions, yielding 84 approximate note activations.",
+      "what_it_isolates": "the value of harmonic-dictionary ATTRIBUTION on top of that front end - the J3O hypothesis"
+    },
+    "single_variable_changed": "useNNLS. Nothing else. Same binary, same parameters, same block, same step, same alignment, same fold, same normalisation, same movement metric."
+  },
+
+  "TWELVE_DIMENSIONAL_STATE_CONSTRUCTION": {
+    "source_output": "semitonespectrum (84 bins; bin k corresponds to MIDI note k+21, verified by synthetic single-note probe)",
+    "fold": "uniform mod-12 sum over all 84 bins",
+    "normalisation": "L1",
+    "movement": "the existing tv_movement at lag 8 hops, unchanged",
+    "identical_across_both_arms": true,
+    "why_semitonespectrum_and_not_the_plugin_chroma_output": [
+      "semitonespectrum IS the note-activation object the hypothesis is about; the chroma output is a downstream product of it",
+      "the plugin's chroma output applies a fixed treble register window (and basschroma a bass window) designed for CHORD RECOGNITION. Importing that weighting would confound the low-register comparison the brief explicitly asks for, and would not be a single-variable change against C3",
+      "every prior arm in this programme (C3, CRP, FB_LOG_CHROMA) builds its 12-D state by a uniform mod-12 fold of a pitch or semitone axis. Using the same fold is what makes the numbers comparable across receipts"
+    ],
+    "SECONDARY_DESCRIPTIVE_ARM": {
+      "id": "NNLS_PUBLISHED_CHROMA",
+      "what": "the plugin's own treble chroma output, useNNLS=1, reported alongside",
+      "why": "so the question 'did your fold choice drive the result?' is answered by measurement rather than assumed away",
+      "REPORTED_NOT_GATED": true
+    }
+  },
+
+  "COMPARATORS": {
+    "primary": "C3_ROOT_SALIENCE",
+    "also_reported": ["P0_CURRENT", "FB_LOG_CHROMA"],
+    "why_C3": "C3 is the current winner on the criterion that matters - restraint - and it is the arm the J3E visual advantage was measured on. P0_CURRENT is the shipping baseline. FB_LOG_CHROMA is the J3N arm and is needed for the low-register table.",
+    "not_used_as_the_probe_basis": "the brief is explicit that the primary NNLS probe must NOT be constructed on the old SpectraSynq nearest-bin STFT pitch-class map. It is not: both arms come from the plugin's own front end. The SpectraSynq arms appear only as comparators."
+  },
+
+  "FAMILIES": {
+    "primaries": ["synth_lead_pad", "reed_pipe"],
+    "controls": ["piano_keys", "bass"],
+    "reported_separately": ["chromatic_percussion"],
+    "why_chromatic_percussion_is_separate": "J3I showed chromatic percussion has NO oracle gate mismatch, so its residual is a genuine representation failure of a different kind (inharmonic partials violating the assumptions of harmonic-template pitch estimation). It is reported but it is not part of the primary decision."
+  },
+
+  "METRICS": {
+    "event_recall_event_tolerant": "fraction of oracle movement events (within-stem rank >= 0.95) matched by a detected candidate movement (rank >= 0.80) within +/- 2 hops",
+    "event_recall_consumer_time": "the same, with zero tolerance",
+    "false_movement_in_stable_periods": "fraction of stable oracle frames (rank <= 0.50) where the candidate movement reaches event rank (>= 0.95)",
+    "framewise_r2_DIAGNOSTIC": "grouped 5-fold cross-validated R-squared by track, alpha fitted on training folds only. DIAGNOSTIC ONLY - J3G.2 established that more information is not the objective.",
+    "spearman": "rank correlation against the oracle movement",
+    "selectivity_margin": "mean event-tolerant recall minus false movement in stable periods, reported per family. Descriptive summary only, as established in J3G.2.",
+    "median_raw_movement_level": "reported per arm per family, so 'restraint by deadness' is visible rather than hidden. REPORTED, NOT GATED.",
+    "all_rank_conventions_reused_verbatim": "event 0.95, detected 0.80, stable 0.50, tolerance +/- 2 hops, lag 8 hops"
+  },
+
+  "THE_ONE_BLOCKING_GUARD": {
+    "id": "RECALL_GUARD",
+    "rule": "an arm may only be credited with reducing false movement in a family if its EVENT-TOLERANT recall in that family is not more than 0.02 below C3_ROOT_SALIENCE in that family",
+    "applies_to": "event_recall_event_tolerant",
+    "consumer_time_recall": "reported alongside but NOT gated, so a single guard decides and no new blocking gate is introduced",
+    "why_only_one_guard": "the J3I instruction is explicit - DO NOT ADD NEW BLOCKING GATES. Everything else in this receipt is REPORTED_DIAGNOSTIC."
+  },
+
+  "PERMANENT_FIXTURES": {
+    "reported_for": ["C3_ROOT_SALIENCE", "NNLS_FRONTEND_ONLY", "NNLS_NOTES"],
+    "list": [
+      "pure sine at MIDI 60 - does the arm report one pitch class",
+      "harmonic note at MIDI 60, 1/h partial amplitudes - does the arm attribute overtone energy to the fundamental",
+      "two-note perfect fifth, MIDI 60 + 67 - does the arm report two pitch classes without a phantom third",
+      "major triad, MIDI 60 + 64 + 67 - does the arm report three pitch classes without a phantom root",
+      "constant-pitch brightness sweep (the exact J3M fixture, unchanged) - how much movement does pure spectral-envelope evolution produce"
+    ],
+    "DECLARED_IN_ADVANCE_CAVEAT": {
+      "status": "these fixtures were RUN BEFORE this pre-registration was written, during toolchain validation. Their results are therefore not blind and they are DIAGNOSTIC ONLY - no outcome depends on them.",
+      "what_was_seen": "on the synthetic 1/h harmonic stacks the plugin's semitone spectrum places only 0.22 to 0.42 of its mass on the correct note, and MIDI 84 fails outright (0.075 to 0.103).",
+      "diagnosis_established_before_pre_registration": "this is block-invariant (tested 4096, 8192, 16384, 32768) AND sample-rate-invariant (tested 16000, 22050 and 44100 Hz, the plugin's design rate), so it is NOT a rate or window mismatch. On real audio with known per-stem MIDI the same configuration achieves pitch-class cosine 0.62 to 0.89. The conclusion is that a mathematically exact 1/h harmonic stack is a PATHOLOGICAL input for a spectrally-whitened NNLS with a fixed geometric dictionary at s = 0.7 - the running-mean-and-standard-deviation whitening has no spectral irregularity to key on, and the perfectly regular stack matches many dictionary atoms almost equally.",
+      "how_it_must_be_read": "the fixtures are reported exactly as briefed, and they MUST NOT be read as a plugin failure or as evidence about real-audio behaviour. The corpus probe is the evidence."
+    }
+  },
+
+  "LOW_REGISTER_PRESERVATION_TABLE": {
+    "family": "bass",
+    "arms_in_order": ["C3_ROOT_SALIENCE", "FB_LOG_CHROMA", "NNLS_FRONTEND_ONLY", "NNLS_NOTES"],
+    "purpose": "does the NNLS front end independently reproduce the J3N low-register finding, and does NNLS attribution preserve or destroy it",
+    "NOT_A_BLOCKING_CRITERION": true,
+    "J3N_reference_values_bass": {
+      "C3_r2": 0.5539, "FB_LOG_r2": 0.7537, "CRP_r2": 0.8255,
+      "C3_recall_tol": 0.8935, "FB_LOG_recall_tol": 0.9271, "CRP_recall_tol": 0.9208,
+      "C3_false": 0.0034, "FB_LOG_false": 0.0014, "CRP_false": 0.0014
+    }
+  },
+
+  "RELIABILITY_DIAGNOSTIC": {
+    "what_was_asked_for": "the NNLS fit residual, as a reported reliability diagnostic",
+    "finding": "NOT FAITHFULLY OBSERVABLE through the published plugin",
+    "evidence": "the residual norm is computed at NNLSChroma.cpp line 386 (declaration) and line 399 (the nnls() call writes it into rnorm), and is then NEVER READ. None of the plugin's six outputs (logfreqspec, tunedlogfreqspec, semitonespectrum, chroma, basschroma, bothchroma) carries it.",
+    "declared_outcome": "NNLS_RELIABILITY_NOT_OBSERVED",
+    "no_proxy_will_be_manufactured": true,
+    "why_not_reconstructed_externally": "the residual is ||D*x - b||, and while b (tunedlogfreqspec) and x (semitonespectrum) are both exposed, the dictionary D is internal. Reimplementing D from the source would be a reconstruction of our own, not the published quantity, and getting it subtly wrong would produce a confident-looking number that means nothing.",
+    "available_follow_up_if_the_PM_WANTS_IT": "exposing rnorm would be a one-line addition to the GPL research host plus one extra Vamp output. That is a separate authorisation and has NOT been done."
+  },
+
+  "CONDITIONAL_MIXTURE_VISUAL_TEST": {
+    "trigger": "run the mixture visual test IF AND ONLY IF at least one PRIMARY family (synth_lead_pad or reed_pipe) shows reduced false movement versus C3_ROOT_SALIENCE while satisfying the RECALL_GUARD",
+    "if_not_triggered": "stop and return NNLS_RESTRAINT_FAIL. Do not run the visual test to look for a consolation result.",
+    "if_triggered": "the existing J3E visual protocol on the 20 BabySlakh mixes, unchanged - no visual grammar change"
+  },
+
+  "OUTCOMES": {
+    "NNLS_RESTRAINT_SIGNAL": "at least one primary family shows reduced false movement versus C3 while satisfying the recall guard, AND the conditional visual test does not contradict it",
+    "NNLS_RESTRAINT_FAIL": "no primary family reduces false movement versus C3 while satisfying the recall guard; or the visual test contradicts the solo-family result",
+    "NNLS_PROBE_INCONCLUSIVE": "a control fails, or the arms cannot be separated"
+  },
+
+  "CONTROLS_THAT_MUST_PASS": {
+    "both_arms_from_one_binary": "the same nnls-chroma.so sha256 serves both arms in the same run",
+    "single_variable": "the two arms' parameter dictionaries differ in useNNLS only, asserted programmatically",
+    "frame_count_parity": "after the +3 alignment shift, both arms have the same frame count as the host grid for every stem",
+    "alignment_is_integer": "no interpolation or resampling is applied to any plugin output",
+    "no_arm_is_constant": "each arm produces non-degenerate movement on at least the control families"
+  },
+
+  "PRESERVED_UNCHANGED_AND_NOT_MUTATED": {
+    "J3D": "immutable challenge membership - FLAT_ENERGY 2299, NO_ONSET 4000, ACOUSTIC 3292",
+    "J3E": "the visual protocol, unchanged",
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "J3K": "MIXTURE_TARGET_CORRECTION_IMMATERIAL",
+    "J3M": "CRP_MOVEMENT_FAIL",
+    "J3N": "PITCH_FRONTEND_RESOLUTION_SIGNAL",
+    "target": "the rectangular MIDI duration-occupancy oracle, unmodified. J3O does NOT revisit the target."
+  },
+
+  "DO_NOT_EXECUTE": [
+    "CQT",
+    "Basic Pitch",
+    "any neural estimator, student or foundation model",
+    "any source separator",
+    "any confidence gate",
+    "any visual grammar change",
+    "any production firmware change",
+    "Titan",
+    "student I/O freeze",
+    "any mutation of the J3D / J3E / J3F / J3G / J3G.2 / J3I / J3J / J3K / J3M / J3N receipts",
+    "any copy of GPL plugin code into SpectraSynq product code"
+  ],
+
+  "then_stop": "return exactly one outcome plus the full status flag block to the PM."
+}

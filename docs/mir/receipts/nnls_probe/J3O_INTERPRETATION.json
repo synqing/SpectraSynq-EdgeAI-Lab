@@ -1,0 +1,119 @@
+{
+  "schema": "spectrasynq.nnls_restraint_interpretation.v1",
+  "job": "J3O",
+  "outcome": "NNLS_RESTRAINT_FAIL",
+  "date": "2026-09-02",
+  "one_sentence": "Harmonic-dictionary NNLS (non-negative least squares) approximate transcription does what it advertises - it attributes overtone energy to the fundamental - and that does NOT buy restraint: on the mixture visual test both NNLS arms are clearly worse than C3_ROOT_SALIENCE, and on the constant-pitch brightness fixture NNLS moves more than twice as much as C3.",
+
+  "THE_DIRECT_ANSWER": {
+    "question": "Can approximate note transcription through a harmonic NNLS dictionary suppress overtone/timbre-induced false harmonic movement while preserving genuine harmonic events?",
+    "answer": "NO.",
+    "the_decisive_evidence": {
+      "mixture_visual_selectivity_margin_all_20_mixes": {
+        "ORACLE": 0.4073,
+        "C3_ROOT_SALIENCE": 0.2812,
+        "NNLS_FRONTEND_ONLY": 0.2339,
+        "NNLS_NOTES": 0.2149,
+        "NNLS_PUBLISHED_CHROMA": 0.1452,
+        "P0_CURRENT": 0.1158
+      },
+      "reading": "both NNLS arms sit BELOW C3 and the ordering is identical on the 10-track comparability subset. The pre-registered rule 'or the visual test contradicts the solo-family result' is met."
+    }
+  },
+
+  "WHAT_THE_MECHANISM_ACTUALLY_DID": {
+    "the_dictionary_works": {
+      "fixture": "F2, single harmonic note at MIDI 60 with 1/h partial amplitudes",
+      "mass_on_the_true_pitch_class": {"NNLS_FRONTEND_ONLY": 0.4388, "NNLS_NOTES": 0.5828},
+      "reading": "switching the NNLS transcription ON raises correct-note mass by 0.144 over the identical front end. The harmonic-dictionary attribution mechanism is real and it does what the literature says it does."
+    },
+    "and_it_still_fails_the_thing_we_need": {
+      "fixture": "F5, ONE sustained MIDI-60 note, CONSTANT pitch, harmonic amplitudes sweeping from 1/h to a much brighter distribution over 2.5 s. Every unit of movement here is pure spectral-envelope contamination.",
+      "median_movement": {"C3_ROOT_SALIENCE": 0.01301, "NNLS_FRONTEND_ONLY": 0.02968, "NNLS_NOTES": 0.03013},
+      "reading": "NNLS moves 2.32 times as much as C3 on a stimulus whose pitch never changes. Correct note attribution and restraint against envelope evolution are DIFFERENT PROPERTIES, and this job separates them cleanly."
+    },
+    "why_they_come_apart": "the NNLS front end whitens the log-frequency spectrum with a running local mean and standard deviation before fitting. Whitening is what makes note attribution robust to timbre, and it is also what makes the representation RESPOND to changes in spectral shape, because the whitened spectrum is by construction a description of local spectral contrast. A brightness sweep changes local spectral contrast at every partial. C3's root-salience gate suppresses that instead, which is why C3 is duller and better."
+  },
+
+  "THE_SECOND_FINDING_THE_TRANSCRIPTION_STEP_ADDS_NOTHING": {
+    "design": "ARM F and ARM N come from ONE binary and ONE front end and differ in exactly one parameter, useNNLS. The whole difference between them IS the transcription step.",
+    "false_movement_in_stable_periods_lower_is_better": {
+      "synth_lead_pad": {"C3": 0.0288, "NNLS_FRONTEND_ONLY": 0.0340, "NNLS_NOTES": 0.0345},
+      "reed_pipe": {"C3": 0.0289, "NNLS_FRONTEND_ONLY": 0.0228, "NNLS_NOTES": 0.0247}
+    },
+    "reading": "on BOTH primary families the transcription step makes restraint slightly WORSE than the front end alone. Whatever gain the NNLS pipeline shows on reed_pipe belongs to the resolved, tuned, whitened FRONT END, not to the harmonic dictionary.",
+    "this_reproduces_J3N_in_an_independent_implementation": "J3N found the low-register gain came from the resolved pitch front end and not from CRP liftering. J3O finds the reed gain comes from the resolved front end and not from NNLS transcription. Two different published algorithms, two different post-processing stages, same verdict: THE FRONT END CARRIES THE VALUE."
+  },
+
+  "THE_SOLO_FAMILY_PICTURE_HONESTLY_STATED": {
+    "what_the_pre_registered_guard_credited": "reed_pipe, both NNLS arms - false movement reduced versus C3 (0.0228 and 0.0247 against 0.0289) with the recall guard satisfied. That is why the conditional visual test was run rather than skipped.",
+    "what_the_guard_did_NOT_credit": "synth_lead_pad, the harder primary and the family this whole branch exists for. Both NNLS arms make false movement WORSE there (0.0340 and 0.0345 against C3's 0.0288).",
+    "the_apparent_recall_gain_is_largely_a_chance_floor_artefact": {
+      "why_this_matters": "event-tolerant recall counts an oracle event as matched if ANY of five frames is in the candidate's top 20 percent by within-stem rank. A burstier, more autocorrelated movement series scores higher on that metric even with no true correspondence.",
+      "measured_by_circular_shift_null_20_permutations": {
+        "reed_pipe_recall_above_own_null": {"C3_ROOT_SALIENCE": 0.3251, "NNLS_FRONTEND_ONLY": 0.3032, "NNLS_NOTES": 0.2869},
+        "synth_lead_pad_recall_above_own_null": {"C3_ROOT_SALIENCE": 0.1884, "NNLS_FRONTEND_ONLY": 0.1532, "NNLS_NOTES": 0.1774},
+        "chromatic_percussion_recall_above_own_null": {"C3_ROOT_SALIENCE": 0.3015, "NNLS_FRONTEND_ONLY": 0.3026, "NNLS_NOTES": 0.3292}
+      },
+      "reading": "the NNLS arms' raw recall is higher than C3 in every weak family, but their NULL recall is higher too. Corrected for each arm's own chance floor, NNLS recall on reed_pipe and synth_lead_pad is slightly WORSE than C3. The raw chromatic-percussion jump from 0.6284 to 0.7704 is almost entirely chance floor, which the Spearman collapse from 0.5400 to 0.1463 confirms independently.",
+      "status": "REPORTED DIAGNOSTIC, added by the analyst, NOT a pre-registered gate. It did not change the outcome - the visual test decided that - and it is disclosed because it changes how the solo-family recall numbers should be READ.",
+      "disclosure": "this diagnostic was designed and run AFTER the family metrics were seen. It cuts AGAINST the arm I would have been reporting favourably, not for it."
+    },
+    "false_movement_survives_the_null_correction_on_reed": "reed_pipe false movement below own null: C3 0.0238, NNLS_FRONTEND_ONLY 0.0277, NNLS_NOTES 0.0259. The reed restraint gain is real. It is simply not enough, it does not generalise to synth, and it does not survive the mixture."
+  },
+
+  "LOW_REGISTER_THE_J3N_FINDING_REPLICATES": {
+    "bass_framewise_r2_DIAGNOSTIC": {"C3": 0.5539, "FB_LOG_CHROMA": 0.7537, "NNLS_FRONTEND_ONLY": 0.6456, "NNLS_NOTES": 0.6222},
+    "bass_event_tolerant_recall": {"C3": 0.8935, "FB_LOG_CHROMA": 0.9271, "NNLS_FRONTEND_ONLY": 0.9343, "NNLS_NOTES": 0.9341},
+    "bass_false_movement": {"C3": 0.0034, "FB_LOG_CHROMA": 0.0014, "NNLS_FRONTEND_ONLY": 0.0062, "NNLS_NOTES": 0.0032},
+    "reading": "a SECOND, INDEPENDENT published front end with fine log-frequency resolution again beats the nearest-bin STFT map substantially in the bass (R-squared 0.5539 to 0.6456). J3N's PITCH_FRONTEND_RESOLUTION_SIGNAL is now replicated across two unrelated implementations, which is much stronger evidence than one measurement. The multirate filterbank front end (FB_LOG, 0.7537) is still the better of the two.",
+    "NOT_A_BLOCKING_CRITERION": true
+  },
+
+  "WHAT_THIS_DOES_NOT_SAY": [
+    "It does not say NNLS Chroma is a bad algorithm. It is measurably good at what it was built for - approximate note transcription for chord recognition - and the F2 fixture shows the mechanism working.",
+    "It does not say note transcription is worthless to SpectraSynq. It says transcription does not solve the RESTRAINT problem, which is a different problem from the accuracy problem.",
+    "It does not say the whitening stage is wrong. It says whitening trades restraint for timbre-robustness, and this programme's objective values restraint more.",
+    "It does not close the resolved-front-end lane. It reinforces it."
+  ],
+
+  "PROGRAMME_CONSEQUENCE": {
+    "the_criterion_has_now_bitten_four_times": "C2 over C3 in J3G (more information, worse visual behaviour); CRP in J3M; FB_LOG in J3N on the weak families; NNLS here. Every candidate that improved note-level accuracy failed to improve, or actively harmed, the visual selectivity margin.",
+    "what_survives": "C3_ROOT_SALIENCE remains the best real candidate on the only criterion that matters, at 0.2812 against an oracle ceiling of 0.4073 - it recovers 69 percent of the oracle's selectivity margin.",
+    "what_is_now_well_supported": "fine log-frequency / pitch resolution is a REAL and REPLICATED win in the low register, in two independent implementations, and it is orthogonal to the restraint problem.",
+    "what_is_now_much_less_likely": "that any published pitch-class or note-activation representation, applied uniformly across the spectrum, solves the synth/pad restraint residual. Four different mechanisms have been tried - reweighting, peak picking, cepstral liftering, harmonic-dictionary transcription - and none of them addresses envelope-driven movement, because none of them was designed to.",
+    "the_architectural_point_the_PM_raised": "the PM's emerging view that 'we may not end up with one universal chroma descriptor at all' is now better supported than it was before this job: the evidence is that the low register wants resolution and the synth/pad register wants restraint, and no single uniform descriptor tested so far delivers both."
+  },
+
+  "RELIABILITY": {
+    "outcome": "NNLS_RELIABILITY_NOT_OBSERVED",
+    "why": "the published plugin computes the NNLS residual norm (NNLSChroma.cpp lines 386 and 399) and never reads it. None of its six outputs carries it.",
+    "no_proxy_manufactured": true,
+    "available_if_authorised": "one added Vamp output on the GPL research host would expose it. Not done, not authorised, and NOT recommended on its own - a reliability signal would be a gate, and gating is a different job from representation choice."
+  },
+
+  "PROCESS_DISCLOSURES": [
+    "The block size was fixed at 2048 as briefed. My pre-compaction recommendation of 4096 was WITHDRAWN before pre-registration because measurement contradicted the resolution argument behind it - 2048 and 4096 differ by 0.014 mean pitch-class cosine on 7 stems, far inside the 0.10 materiality scale.",
+    "The block-size and alignment diagnostics were computed BEFORE the pre-registration and are disclosed in it. Neither is an outcome metric and no arm contrast was computed in either.",
+    "The five permanent fixtures were also run BEFORE the pre-registration, during toolchain validation, and the caveat about their pathological synthetic input was declared in advance rather than discovered afterwards.",
+    "The alignment rule is the DETERMINISTIC geometric shift (+3 frames at block 2048), not the empirical optimum (1 to 2 frames), even though the empirical scan was available. The difference is 0.005 cosine and fitting alignment to the scoring corpus is not acceptable here.",
+    "The circular-shift chance-floor diagnostic was added by me AFTER seeing the family metrics. It is REPORTED, NOT GATED, it changed no outcome, and it cuts against the more favourable reading.",
+    "NO new blocking gate was added. There is exactly one guard, the pre-registered recall guard, and it was applied as written even though its trigger produced a result the visual test then overturned."
+  ],
+
+  "STATUS_FLAGS": {
+    "J3D_mutated": false, "J3E_mutated": false, "J3F_mutated": false, "J3G_mutated": false,
+    "J3I_mutated": false, "J3J_mutated": false, "J3K_mutated": false,
+    "J3M_mutated": false, "J3N_mutated": false,
+    "target_modified": false,
+    "gpl_code_copied_into_product": false,
+    "plugin_source_modified": false,
+    "product_lineage_cleared": false,
+    "new_blocking_gate_added": false,
+    "cqt_run": false, "basic_pitch_run": false, "neural_estimator": false,
+    "foundation_model_run": false, "source_separator_run": false, "confidence_gate": false,
+    "visual_grammar_run": false, "visual_grammar_modified": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false,
+    "fresh_validation_required": "NO - the outcome is a FAIL and nothing is promoted"
+  }
+}
