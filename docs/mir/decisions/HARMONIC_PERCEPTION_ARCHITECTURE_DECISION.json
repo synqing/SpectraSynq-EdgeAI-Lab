@@ -1,0 +1,121 @@
+{
+  "schema": "spectrasynq.programme_decision.v1",
+  "id": "HARMONIC_PERCEPTION_ARCHITECTURE_DECISION",
+  "date": "2026-09-02",
+  "decided_by": "PM",
+  "recorded_by": "analyst",
+  "status": "ADOPTED",
+  "supersedes_nothing": true,
+  "mutates_no_receipt": true,
+
+  "HEADLINE": "The J3 harmonic-representation optimisation lane is CLOSED. No further attempt will be made on the consumed BabySlakh corpus to discover a single universal tonal representation or reliability gate that simultaneously maximises harmonic information, low-register accuracy and visual restraint.",
+
+  "ACCEPTED_ROLES": {
+    "C3_ROOT_SALIENCE": {
+      "role": "the current harmonic-transition / restraint descriptor",
+      "purpose": "answer - when is tonal change sufficiently trustworthy and musically meaningful to justify visual motion?",
+      "basis_of_selection": "demonstrated visual selectivity and stillness, NOT maximum symbolic-information score",
+      "supporting_measurement": {
+        "mixture_visual_selectivity_margin": 0.2812,
+        "oracle_ceiling": 0.4073,
+        "fraction_of_oracle_selectivity_recovered": 0.69,
+        "source": "docs/mir/receipts/nnls_probe/J3O_VISUAL.json, all 20 mixes, J3E grammar unchanged"
+      }
+    },
+    "fine_resolution_pitch_information": {
+      "role": "a SEPARATE retained capability, not a replacement for C3",
+      "purpose": "improve tonal-state observability where the existing 16 kHz / n_fft 2048 STFT resolution is limiting, particularly in the low register",
+      "supporting_measurement": {
+        "bass_framewise_r2": {"C3": 0.5539, "J3N_FB_LOG": 0.7537, "J3O_NNLS_frontend": 0.6456},
+        "why_it_counts": "two unrelated front ends independently reproduced the low-register gain"
+      },
+      "status_limit": "the existing HOST multirate implementations establish INFORMATION VALUE ONLY. They do NOT constitute an authorised product frontend. The J3N filterbank is non-causal (zero-phase filtering) and the J3O front end is an external GPL research dependency."
+    }
+  },
+
+  "EXPLICITLY_REJECTED_ARCHITECTURE_ASSUMPTION": {
+    "rejected": "that one universal chroma or pitch-class representation must serve all downstream musical purposes",
+    "what_the_evidence_supports_instead": "multiple musical views with distinct responsibilities",
+    "future_scope_note": "higher layers may eventually combine harmonic restraint, resolved tonal state, orchestration/source context, confidence and musical semantics according to the downstream decision being made. THAT FUTURE POLICY IS NOT SPECIFIED OR AUTHORISED BY THIS DECISION."
+  },
+
+  "SYNTH_PAD_LIMITATION": {
+    "status": "UNRESOLVED and PARKED. This is a known limitation, NOT an optimisation backlog item.",
+    "what_has_been_tested_and_failed": [
+      {"job": "J3G", "instrument": "deterministic same-STFT projection changes and peak methods", "outcome": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL"},
+      {"job": "J3G.2", "instrument": "peak-root hybrid", "outcome": "SAME_STFT_PROJECTION_TIMBRE_LIMIT"},
+      {"job": "J3M", "instrument": "CRP cepstral liftering", "outcome": "CRP_MOVEMENT_FAIL"},
+      {"job": "J3N", "instrument": "resolved multirate pitch folding", "outcome": "PITCH_FRONTEND_RESOLUTION_SIGNAL - a low-register win, no weak-family solution"},
+      {"job": "J3O", "instrument": "harmonic-dictionary NNLS transcription", "outcome": "NNLS_RESTRAINT_FAIL"},
+      {"job": "J3P", "instrument": "fixed cross-view reliability gating", "outcome": "CROSS_VIEW_RELIABILITY_FAIL"},
+      {"job": "J3Q", "instrument": "pooled learned causal reliability head", "outcome": "LEARNED_RESTRAINT_FAIL"},
+      {"job": "J3R", "instrument": "synth-only learned causal reliability head", "outcome": "SYNTH_FEATURE_LIMIT_SUPPORTED"}
+    ],
+    "what_this_residual_is_NOT": [
+      "evidence that harmonic intelligence is impossible",
+      "evidence that no causal solution exists"
+    ],
+    "what_it_means": "further work is unjustified unless it introduces genuinely NEW EVIDENCE rather than another transformation of the same evidence",
+    "conditions_for_a_legitimate_reopening": "must motivate at least one materially new information source - longer causal temporal structure, richer causal spectral-envelope dynamics, source/orchestration context, or another independently justified descriptor",
+    "explicitly_not_a_reopening": ["another CRP variant", "another NNLS variant", "a larger learned head on the same inputs", "threshold tuning", "CQT settings", "assorted MIR techniques applied to the same consumed corpus"]
+  },
+
+  "RESEARCH_DOCTRINE_RETAINED": {
+    "representation_accuracy_is_not_the_optimisation_target": true,
+    "the_operative_criterion": "Does the system react to musical change when it should, and remain visually still when it should not?",
+    "the_failure_rule": "more MIR information accompanied by worse restraint is a FAILURE for this consumer",
+    "standing_practice": "recall-above-own-null (circular-shift chance floor) is reported automatically and is never a gate"
+  },
+
+  "PROGRAMME_STATE": {
+    "immutable_evidence": "J3F through J3R",
+    "active_restraint_descriptor": "C3_ROOT_SALIENCE",
+    "independent_information_finding": "fine pitch resolution",
+    "NOT_AUTHORISED_BY_THIS_DECISION": ["CRP", "NNLS", "CQT", "a larger learned head", "a new frontend", "firmware integration", "Titan work", "student I/O freeze"]
+  },
+
+  "ANALYST_FLAGS_RAISED_BEFORE_ADOPTION": {
+    "status": "raised by the analyst, NOT part of the PM's decision text. Recorded so they are on the record rather than lost in conversation. The PM may strike any of them.",
+    "F1_the_oracle_construct_question_is_closed_on_TIMING_but_not_on_MEANING": {
+      "what_is_closed": "J3J and J3K tested a repaired acoustic-activation target and returned TARGET_CORRECTION_IMMATERIAL and MIXTURE_TARGET_CORRECTION_IMMATERIAL. J3K Axis A found 89.02 percent exact event overlap and 3.18 percent unmatched. The target-TIMING lane is genuinely closed.",
+      "what_is_NOT_closed": "whether MIDI note-occupancy is the right NOTION of harmonic change for a sustained pad at all. A pad that swells, filters and morphs without any note event is labelled STABLE by the oracle while C3 reports movement - and a listener might side with C3. Every restraint measurement in this programme, including the synth false-movement figures that closed seven lanes, inherits that construct.",
+      "why_it_does_not_change_the_decision": "C3 is still the best-performing descriptor on the visual criterion, and the visual test uses the same oracle for every arm, so the COMPARISONS stand.",
+      "why_it_belongs_on_the_record": "it changes what a legitimate reopening looks like. If the residual is partly a construct artefact, the new evidence required is a better DEFINITION of pad harmonic change - which is a target question, not a representation question - and that is not on the reopening list as currently written.",
+      "cost_to_settle": "not settleable on this corpus. It needs listener judgement or a differently-constructed target on fresh material."
+    },
+    "F2_the_parked_family_may_be_over_represented_in_actual_use": {
+      "observation": "sustained synth pads, drones and electronic textures are exactly the material an ambient lighting product is likely to spend a lot of time playing",
+      "implication": "the residual is parked in the family that may carry disproportionate product weight, so 'known limitation' should carry an expected-exposure note rather than being filed as an edge case",
+      "not_a_research_question": "this is a product-weighting judgement for the PM, not something the corpus can answer"
+    },
+    "F3_C3s_absolute_level_has_never_been_asked_about": {
+      "measurement": "C3 recovers 0.2812 of 0.4073 oracle selectivity margin - 69 percent",
+      "the_unasked_question": "is 69 percent of oracle selectivity ENOUGH to produce acceptable lighting? The programme has only ever compared candidates against each other and against the oracle. Nobody has established the product-acceptability floor.",
+      "why_it_matters_now": "adopting C3 as the accepted descriptor makes this the live risk. It is a product question, answerable by looking at renders, not by another representation experiment."
+    },
+    "F4_the_split_descriptor_architecture_has_an_unpriced_compute_bill": {
+      "observation": "keeping fine-resolution pitch as a second view implies a second front end eventually reaching M85. J3N explicitly declared compute out of scope, correctly for that job.",
+      "implication": "the decision is sound as a research conclusion and carries an unestimated engineering cost. At some point 'compute is not the question' stops being true, and it would be better to know the number before the architecture hardens."
+    },
+    "F5_every_future_J_job_now_needs_fresh_data": {
+      "observation": "all 20 BabySlakh tracks are consumed. The decision closes a lane partly because nothing more can be learned from this corpus.",
+      "implication": "fresh-corpus provisioning is now the binding constraint on ALL future work in this programme, not just on reopening the synth residual. It is not named anywhere in the decision and probably should be."
+    }
+  },
+
+  "PROVENANCE": {
+    "evidence_chain_commits": {
+      "J3O": "c2d3ed67faf40ce1f8fab56b390f97f46b5bbff8",
+      "programme_capture": "c08793a6cccfb2b10932a0beb8308ad4bb8e3299",
+      "J3P": "a2049cdce80bd4eaf5ad0f533fb6e500f77b6cf6",
+      "J3Q": "85a34544b8c0776cc006a6e8113511e1468b2b02",
+      "J3R": "0bb3170cfd036ca1708a3e341c3bc34bb271903a"
+    },
+    "commit_bindings": [
+      "docs/mir/receipts/nnls_probe/J3O_COMMIT_BINDING.json",
+      "docs/mir/receipts/cross_view_reliability/J3P_COMMIT_BINDING.json",
+      "docs/mir/receipts/learned_restraint/J3Q_COMMIT_BINDING.json",
+      "docs/mir/receipts/synth_representability/J3R_COMMIT_BINDING.json"
+    ]
+  }
+}

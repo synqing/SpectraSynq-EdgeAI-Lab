@@ -1,0 +1,38 @@
+{
+  "schema": "spectrasynq.commit_binding.v1",
+  "job": "J3R",
+  "label": "COMMIT BINDING ONLY. Bookkeeping. NO SCIENTIFIC CHANGES. No rerun. Nothing in this file alters any J3R measurement, threshold, control or outcome.",
+  "date": "2026-09-02",
+  "why_this_file_exists": "the J3R receipts were written before the commit existed, so each carries git_head UNKNOWN. This binds them to the commit that contains them.",
+  "repository": "SpectraSynq-EdgeAI-Lab",
+  "branch": "j3o-nnls-restraint-probe",
+  "commit_sha": "0bb3170cfd036ca1708a3e341c3bc34bb271903a",
+  "commit_sha_short": "0bb3170",
+  "parent_commit_sha": "85a34544b8c0776cc006a6e8113511e1468b2b02",
+  "tree_sha": "667f1b62bf6e6cd77f37454c7e10b6609764a5e0",
+  "author": "SpectraSynq",
+  "commit_date": "2026-09-02T22:04:10+00:00",
+  "receipt_sha256_as_committed": {
+    "docs/mir/receipts/synth_representability/J3R_PREREGISTRATION.json": "3cb606999b11fbc3f3db5f088eaccba0d23900ba69b0fec83e0a1552c00015c2",
+    "docs/mir/receipts/synth_representability/J3R_RESULT.json": "c309723ebd02e9b0a5e5120e0634c4de735e0e2d22309894ac133a41e6a07cf9",
+    "docs/mir/receipts/synth_representability/J3R_INTERPRETATION.json": "e4fed379f473c5b45bd3e91544a3a0ce6e1b66face1caa8a91802a610fc1cb58"
+  },
+  "code_sha256_as_committed": {
+    "scripts/j3r_synth_audit.py": "742874c78fe644d690f8fa12266b8bdab771f32df78a0ae68cad5bc769ac8e24",
+    "tests/test_tonal_projection.py": "1903b20d6e77a72aac50515b82f1da310a0d79544c6297ff1dabd908ff2b8fe8"
+  },
+  "git_head_field_in_those_receipts": "UNKNOWN - correct at the time of writing and DELIBERATELY LEFT AS WRITTEN. This file supplies the binding rather than editing immutable receipts after the fact.",
+  "also_committed_in_this_commit": "docs/mir/receipts/learned_restraint/J3Q_COMMIT_BINDING.json",
+  "reproducibility": {
+    "self_contained": true,
+    "why": "scripts/j3r_synth_audit.py imports the J3Q machinery directly (load_rows, labels_for, score, the frozen recipe) rather than re-implementing it, and every module it reaches is in the tree from the capture commit c08793a onwards.",
+    "single_variable_enforced_by_import": "the features, labels, topology, optimiser and recipe are the committed J3Q objects, so the one-variable claim is enforced by the code structure, not by discipline alone",
+    "external_inputs_not_in_git_by_design": {
+      "BabySlakh 16 kHz corpus": "copyrighted audio, never committed; md5 verified against the publisher's checksum",
+      "cached NPZ feature surfaces": "regenerable from the committed scripts; excluded by .gitignore"
+    }
+  },
+  "no_rerun_performed_for_this_file": true,
+  "outcome_unchanged": "SYNTH_FEATURE_LIMIT_SUPPORTED",
+  "J3R_mutated": false
+}
