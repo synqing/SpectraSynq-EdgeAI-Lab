@@ -1,0 +1,277 @@
+{
+  "schema": "spectrasynq.pitch_lifter_ablation_result.v1",
+  "job": "J3N",
+  "git_head": "WORKCOPY",
+  "label": "COMPONENT ABLATION OF J3M. HOST analysis on consumed data. Nothing promotable. No visual test.",
+  "preregistration": "docs/mir/receipts/pitch_lifter_ablation/J3N_PREREGISTRATION.json",
+  "the_one_new_arm": {
+    "id": "FB_LOG_CHROMA",
+    "pipeline": [
+      "the J3M faithful 88-band multirate elliptic pitch filterbank, unchanged",
+      "the same short-time pitch energies (128 ms window on the analysis hop grid)",
+      "the same log10(1 + 1000*v)",
+      "NO DCT",
+      "NO cepstral coefficient deletion",
+      "NO inverse DCT",
+      "fold the 120 pitch dimensions mod 12",
+      "L1 normalise the NON-NEGATIVE 12-D vector",
+      "the existing lag-8 tv_movement"
+    ],
+    "single_variable_changed_relative_to_CRP": "CRP liftering removed. Nothing else.",
+    "byte_identity_enforcement": "both arms derive from ONE cached pitch-energy surface via one shared log_pitch() function. A control asserts that CRP recomputed from that cached surface equals the J3M cached CRP exactly.",
+    "window": "the exact 128 ms J3M PRIMARY pitch-energy surface. The question is attribution of the already-observed J3M result, so using another window would change two variables. NO window sweep. The published 200 ms sensitivity result already exists in the J3M receipt and is not repeated."
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "controls": {
+    "n_stems": 84,
+    "crp_recomputed_from_cached_pitch_matches_J3M_max_abs_diff": 3.021582129919542e-07,
+    "byte_identical_upstream": true,
+    "fb_log_is_non_negative": true,
+    "single_variable_changed": "CRP liftering removed",
+    "window": "128 ms J3M primary pitch-energy surface, unchanged",
+    "visual_test_run": false,
+    "all_blocking_pass": true,
+    "upstream_identity_language_correction": "the pre-registration said 'byte-identical upstream'. That is not literally true and is corrected here: the shared pitch-energy surface is CACHED AS float32 while J3M computed in float64, so the two arms are identical up to float32 quantisation of that surface, not bit-for-bit. Measured effect on the final CRP vector: 3.02e-07 maximum absolute difference, well inside the declared 1e-6 control. Both arms in J3N derive from the SAME cached float32 surface through the SAME log_pitch() call, so the ablation's single-variable claim is exact."
+  },
+  "envelope_evolution_fixture": {
+    "P0_CURRENT": {
+      "median_movement": 0.01801,
+      "p90_movement": 0.03946
+    },
+    "C3_ROOT_SALIENCE": {
+      "median_movement": 0.01428,
+      "p90_movement": 0.01942
+    },
+    "FB_LOG_CHROMA": {
+      "median_movement": 0.02149,
+      "p90_movement": 0.03132
+    },
+    "CRP": {
+      "median_movement": 0.02287,
+      "p90_movement": 0.03211
+    },
+    "_stimulus": "one sustained MIDI-60 note, constant pitch, harmonic amplitudes sweeping from 1/h to a much brighter distribution over 2.5 s. Any movement is pure spectral-envelope contamination."
+  },
+  "family_metrics": {
+    "P0_CURRENT": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5997,
+        "spearman": 0.7002,
+        "event_recall_consumer_time": 0.7796,
+        "event_recall_event_tolerant": 0.8862,
+        "false_movement_in_stable_periods": 0.0029
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.2923,
+        "spearman": 0.5966,
+        "event_recall_consumer_time": 0.4532,
+        "event_recall_event_tolerant": 0.6541,
+        "false_movement_in_stable_periods": 0.0177
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5469,
+        "spearman": 0.7008,
+        "event_recall_consumer_time": 0.8053,
+        "event_recall_event_tolerant": 0.896,
+        "false_movement_in_stable_periods": 0.0067
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.153,
+        "spearman": 0.4559,
+        "event_recall_consumer_time": 0.2815,
+        "event_recall_event_tolerant": 0.6429,
+        "false_movement_in_stable_periods": 0.0305
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1027,
+        "spearman": 0.3336,
+        "event_recall_consumer_time": 0.3829,
+        "event_recall_event_tolerant": 0.5139,
+        "false_movement_in_stable_periods": 0.0312
+      }
+    },
+    "C3_ROOT_SALIENCE": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5539,
+        "spearman": 0.6853,
+        "event_recall_consumer_time": 0.7591,
+        "event_recall_event_tolerant": 0.8935,
+        "false_movement_in_stable_periods": 0.0034
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.1598,
+        "spearman": 0.54,
+        "event_recall_consumer_time": 0.4607,
+        "event_recall_event_tolerant": 0.6284,
+        "false_movement_in_stable_periods": 0.0158
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5264,
+        "spearman": 0.6877,
+        "event_recall_consumer_time": 0.7966,
+        "event_recall_event_tolerant": 0.8957,
+        "false_movement_in_stable_periods": 0.0071
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1466,
+        "spearman": 0.4554,
+        "event_recall_consumer_time": 0.2704,
+        "event_recall_event_tolerant": 0.6505,
+        "false_movement_in_stable_periods": 0.0289
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1212,
+        "spearman": 0.3173,
+        "event_recall_consumer_time": 0.3869,
+        "event_recall_event_tolerant": 0.5474,
+        "false_movement_in_stable_periods": 0.0288
+      }
+    },
+    "FB_LOG_CHROMA": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.7537,
+        "spearman": 0.7666,
+        "event_recall_consumer_time": 0.8682,
+        "event_recall_event_tolerant": 0.9271,
+        "false_movement_in_stable_periods": 0.0014
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": -0.0807,
+        "spearman": 0.4946,
+        "event_recall_consumer_time": 0.5166,
+        "event_recall_event_tolerant": 0.6269,
+        "false_movement_in_stable_periods": 0.0168
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5963,
+        "spearman": 0.7157,
+        "event_recall_consumer_time": 0.8104,
+        "event_recall_event_tolerant": 0.893,
+        "false_movement_in_stable_periods": 0.0048
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1726,
+        "spearman": 0.4728,
+        "event_recall_consumer_time": 0.2806,
+        "event_recall_event_tolerant": 0.6276,
+        "false_movement_in_stable_periods": 0.0305
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.0385,
+        "spearman": 0.2788,
+        "event_recall_consumer_time": 0.3555,
+        "event_recall_event_tolerant": 0.5068,
+        "false_movement_in_stable_periods": 0.0339
+      }
+    },
+    "CRP": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.8255,
+        "spearman": 0.7678,
+        "event_recall_consumer_time": 0.87,
+        "event_recall_event_tolerant": 0.9208,
+        "false_movement_in_stable_periods": 0.0014
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": -0.2879,
+        "spearman": 0.4624,
+        "event_recall_consumer_time": 0.5227,
+        "event_recall_event_tolerant": 0.6631,
+        "false_movement_in_stable_periods": 0.0194
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5683,
+        "spearman": 0.6941,
+        "event_recall_consumer_time": 0.7905,
+        "event_recall_event_tolerant": 0.868,
+        "false_movement_in_stable_periods": 0.0054
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.182,
+        "spearman": 0.4805,
+        "event_recall_consumer_time": 0.3078,
+        "event_recall_event_tolerant": 0.6071,
+        "false_movement_in_stable_periods": 0.0197
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.0293,
+        "spearman": 0.2777,
+        "event_recall_consumer_time": 0.3741,
+        "event_recall_event_tolerant": 0.5196,
+        "false_movement_in_stable_periods": 0.0328
+      }
+    }
+  },
+  "low_register_attribution": {
+    "bass_framewise_r2": {
+      "C3_ROOT_SALIENCE": 0.5539,
+      "FB_LOG_CHROMA": 0.7537,
+      "CRP": 0.8255
+    },
+    "fb_minus_c3": 0.1998,
+    "crp_minus_fb": 0.0718,
+    "crp_minus_c3": 0.2716,
+    "retains_most_of_the_CRP_gain": true,
+    "remains_near_C3": false,
+    "operationalisation": {
+      "status": "the brief deliberately declines to set a fraction-recovered gate. 'Most' and 'near' still have to be decidable, so they are operationalised with the ALREADY-ESTABLISHED 0.10 materiality scale and no new number.",
+      "retains_most": "FB_LOG bass R-squared >= CRP bass R-squared - 0.10 AND >= C3 bass R-squared + 0.10",
+      "remains_near_C3": "FB_LOG bass R-squared < C3 bass R-squared + 0.10 while CRP >= C3 + 0.10",
+      "reported_alongside": "recall and false movement, so the mechanism reading is never R-squared-only"
+    }
+  },
+  "outcome": "PITCH_FRONTEND_RESOLUTION_SIGNAL",
+  "scope": "this outcome is about the BASS / PITCH-RESOLUTION finding only. It does NOT change CRP_MOVEMENT_FAIL.",
+  "J3M_mutated": false,
+  "CRP_outcome_changed": false,
+  "new_transform_family": false,
+  "nnls_run": false,
+  "cqt_run": false,
+  "confidence_gate": false,
+  "neural_estimator": false,
+  "visual_grammar_run": false,
+  "target_modified": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

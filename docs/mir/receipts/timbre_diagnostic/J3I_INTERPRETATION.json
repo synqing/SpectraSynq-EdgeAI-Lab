@@ -1,0 +1,101 @@
+{
+  "schema": "spectrasynq.timbre_diagnostic_interpretation.v1",
+  "job": "J3I",
+  "date": "2026-09-02",
+  "outcome": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+
+  "the_one_sentence": "The audio-silence asymmetry was real and immaterial; the rectangular MIDI gate's RELEASE side is sound across every family; its ATTACK side is not, and for synth pads the 50% attack time is 8 hops - exactly the length of the movement comparison window - but even after audio-support parity and the event-tolerant view, synth_lead_pad still detects only 51% of its own harmonic events against piano's 90%, so the oracle explains part of the timbre failure and not the rest.",
+
+  "outcome_taxonomy_note": {
+    "ambiguity_in_the_brief": "TIMBRE_ORACLE_CONFOUNDED's literal condition is ALSO satisfied by this data, and the brief gives no precedence between the two.",
+    "why_MIXED_was_returned": "MIXED's distinguishing clause - substantial family failure REMAINS after audio support and event-tolerant evaluation - is true by a wide margin: the residual event-tolerant recall spread is 0.3821 against the established 0.10 scale. CONFOUNDED's interpretation, 'cannot yet be attributed cleanly to the representation', is not supportable for synth_lead_pad or chromatic_percussion.",
+    "the_Captain_may_overrule": "both clause sets are reported in the result receipt. This is a judgement about which label describes the data, not a new criterion.",
+    "correction_disclosed": "my first implementation of the taxonomy used a mutually-exclusive if/elif that returned CONFOUNDED without ever testing MIXED's distinguishing clause. That was an implementation defect in the outcome logic, corrected after the numbers were seen. The correction moves the conclusion AWAY from the more permissive label ('do not reopen frontend work') towards the more balanced one, so it does not favour a convenient direction."
+  },
+
+  "J3I_A_mask_parity_the_hypothesis_is_FALSIFIED": {
+    "the_asymmetry_was_real": "the solo-stem diagnostic applied no audio-silence criterion; the mixture path does. That has now been removed using the existing silence_mask at the existing -60 dBFS floor, with the vectorised RMS asserted equal to dsp_register_features to 0.0.",
+    "it_is_immaterial": {
+      "worst_family_r2": {"before": 0.0965, "after": 0.1027, "delta": 0.0062, "required": 0.10},
+      "family_spread": {"before": 0.4989, "after": 0.4970, "shrink": 0.0019, "required": 0.10},
+      "overall_r2": {"before": 0.4239, "after": 0.4353}
+    },
+    "why_it_could_not_have_helped": "the audio-support mask removes almost nothing: 0.2% of frames for synth_lead_pad, 0.3% for ensemble_voice, 5.5% for chromatic_percussion and 13.1% for reed_pipe - and reed_pipe, the family that loses most, gains only +0.031 R-squared. The rendered stems are simply not silent while their MIDI is on.",
+    "reading": "the evaluation asymmetry was a genuine defect and it is now fixed, but it was not the explanation. This clause of the audit comes back negative."
+  },
+
+  "J3I_B_attack_decay_the_mismatch_is_real_and_is_ATTACK_ONLY": {
+    "attack_50_median_hops": {"piano_keys": 0, "bass": 1, "guitar": 1, "brass": 1, "chromatic_percussion": 1, "strings": 1, "ensemble_voice": 3, "reed_pipe": 3, "synth_lead_pad": 8},
+    "the_single_most_important_number": "synth_lead_pad reaches 50% of its own peak amplitude 8 hops after note-on. The harmonic-movement metric compares the pitch-class state now against 8 hops ago. A synth pad's audio has not reached half amplitude within the ENTIRE comparison window, while the symbolic oracle registers the change on the first frame. For that family the target and the audio are describing different instants by construction.",
+    "release_side_is_SOUND": {
+      "release_10_median_hops": {"piano_keys": 0, "chromatic_percussion": 0, "bass": 1, "guitar": 1, "brass": 1, "ensemble_voice": -1, "reed_pipe": -1, "synth_lead_pad": -1, "strings": -1},
+      "audible_gate_coverage_median": "1.0 for every family except brass 0.986 and guitar 0.974",
+      "reading": "under a 10%-of-local-peak criterion plus the existing -60 dBFS floor, the MIDI-active interval is essentially fully audible for every family. The rectangular gate does NOT overstay the sound. The decay half of the hypothesis is not supported."
+    },
+    "the_prediction_that_FAILED": "chromatic percussion was expected to show rapid decay outrunning a held MIDI note. It does not: attack_50 = 1 hop, release_10 = 0 hops, coverage 1.0. Its notes are short enough that the gate tracks the sound. Its failure is therefore NOT a target artefact - which is consistent with J3G.2's finding that its collapse is driven by inharmonicity, and it is why CONFOUNDED cannot be the label.",
+    "sensitivity": "the 0.30 s guard retains >= 20 episodes only for bass (73), where attack_50 = 1.0 and release_10 = 1.0 - identical to the 0.10 s guard. The slow families cannot be checked at 0.30 s because isolated episodes that long do not exist in this corpus. Neighbour contamination therefore cannot be excluded for them, and is disclosed as a limitation."
+  },
+
+  "J3I_C_event_robustness_one_family_is_rehabilitated_and_three_are_not": {
+    "P0_CURRENT_on_audio_supported_frames": {
+      "piano_keys": {"framewise_r2": 0.547, "event_tolerant_recall": 0.8960, "false_movement": 0.0067},
+      "bass": {"framewise_r2": 0.600, "event_tolerant_recall": 0.8862, "false_movement": 0.0029},
+      "ensemble_voice": {"framewise_r2": 0.301, "event_tolerant_recall": 0.8630, "false_movement": 0.0118},
+      "guitar": {"framewise_r2": 0.388, "event_tolerant_recall": 0.8190, "false_movement": 0.0181},
+      "chromatic_percussion": {"framewise_r2": 0.292, "event_tolerant_recall": 0.6541, "false_movement": 0.0177},
+      "reed_pipe": {"framewise_r2": 0.153, "event_tolerant_recall": 0.6429, "false_movement": 0.0305},
+      "synth_lead_pad": {"framewise_r2": 0.103, "event_tolerant_recall": 0.5139, "false_movement": 0.0312}
+    },
+    "ensemble_voice_is_rehabilitated": "R-squared 0.301 - third worst - becomes event-tolerant recall 0.863, statistically alongside piano's 0.896. A family that looked broken is not broken at detecting musically important harmonic change. Its 3-hop attack destroyed the framewise correlation and nothing else.",
+    "reed_pipe_is_partly_rehabilitated": "0.153 to 0.643, a large gain, but still 0.25 below piano.",
+    "synth_lead_pad_is_NOT_rehabilitated": "0.103 to 0.514 - it improves but remains the worst family by 0.38. An 8-hop attack explains why its framewise R-squared is near zero; it does not explain why it misses half its own harmonic events under a +/-2-hop tolerance.",
+    "the_evidence_the_oracle_cannot_explain_at_all": "false movement during symbolically STABLE periods: synth_lead_pad 0.0312 and reed_pipe 0.0305 against piano 0.0067 and bass 0.0029 - four to ten times higher. A slow attack cannot manufacture movement where the symbolic state is not changing. That is the representation producing spurious harmonic activity on those timbres.",
+    "spread_reduction": {"framewise_r2_spread": 0.497, "event_tolerant_recall_spread": 0.3821, "reduction": 0.1149}
+  },
+
+  "attribution_family_by_family": {
+    "belongs_to_the_ORACLE": ["ensemble_voice - fully; a 3-hop attack, recall alongside piano once tolerance is applied"],
+    "SPLIT": ["reed_pipe - a 3-hop attack plus 13% of frames failing audio support, but still 0.25 below piano on event recall and 4x piano's false movement"],
+    "belongs_to_the_REPRESENTATION": [
+      "synth_lead_pad - the 8-hop attack explains the framewise collapse, not the 0.514 event-tolerant recall nor the 0.031 false-movement rate",
+      "chromatic_percussion - shows NO gate mismatch at all (attack 1 hop, release 0, coverage 1.0) and still sits at 0.654 recall with 2.6x piano's false movement"
+    ],
+    "do_not_collapse": "these are different failures with different owners. A single 'timbre-sensitive frontend' statement is now demonstrably too coarse."
+  },
+
+  "honest_caveats_on_my_own_operationalisation": {
+    "scale_mismatch": "the C clause compares the spread of an R-squared against the spread of a bounded recall. Those are different scales and a recall spread is compressed by construction, so part of the 0.115 reduction may be an artefact of the change of measure rather than evidence that families became less differentiated. Flagged because it is the weakest link in this audit.",
+    "knife_edge_number": "the event-tolerant spread reduction is 0.1149 against a 0.10 threshold. That IS close. It does not affect the returned outcome: with target mismatch present and substantial failure remaining, MIXED is returned whether or not that clause fires.",
+    "numbers_i_chose": "the brief quantifies only the mask-parity clause. I operationalised 'substantial systematic mismatch' as a >= 0.10 coverage gap OR a >= 1 hop attack_50 gap, declared in the pre-registration before any measurement. The coverage clause did NOT fire (gap 0.000); the attack clause fired at a 2.0 hop gap, and synth_lead_pad alone is 8 hops against 0-1 for piano and bass. The conclusion is not knife-edge on that number.",
+    "guard_window": "the isolation guard was reduced from 0.50 s to 0.10 s before any attack or decay measurement, on feasibility grounds - at 0.50 s the corpus yields 52 episodes and none for chromatic percussion. Disclosed with the full count table. Neighbour contamination cannot be excluded for the slow families.",
+    "no_new_blocking_gates_added": "every threshold in the decision path is either the Captain's 0.10 scale, a rank convention reused verbatim from J3D/J3G (0.95 / 0.80 / 0.50 / +/-2 hops), or the two operationalisations declared in the pre-registration and named above. Nothing was promoted from REPORTED_DIAGNOSTIC to a gate."
+  },
+
+  "what_this_does_and_does_not_authorise": {
+    "the_three_hypothesis_deliverable_is_NOT_triggered": "the brief conditions it on TIMBRE_REPRESENTATION_LIMIT_PERSISTS. That outcome was not reached, so no ranked representation comparison is returned and none of CRP-class, NNLS-class or alternate/learned representation is ranked, recommended or executed here.",
+    "two_lanes_now_exist_and_must_not_be_merged": [
+      "TARGET lane - a timbre-validity target that does not compare acoustic evidence against a rectangular gate. J3I diagnosed it and deliberately did NOT repair it; repairing inside the diagnostic would be circular.",
+      "REPRESENTATION lane - the residual failure on synth_lead_pad and chromatic_percussion, and the 4-10x false-movement rate on the weak families, which no target correction can remove."
+    ],
+    "what_would_settle_the_split": "re-running the family diagnostic against a target whose activation follows the audio rather than the MIDI gate. If synth_lead_pad's event recall stays near 0.51 and its false-movement rate stays near 0.031 under such a target, the representation lane owns it outright.",
+    "not_reopened_here": ["CQT", "alternate spectral resolution", "a learned estimator", "a faithful signed CRP probe", "NNLS", "a real-audio teacher", "source separation"]
+  },
+
+  "preserved_unchanged": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "note": "J3G.2 still closes the obvious deterministic pitch-class-projection family. J3I does not weaken that. What J3I changes is the strength of the ARCHITECTURAL inference that could be drawn from it: the timbre boundary is now known to be part measurement artefact and part representation, and the two have been separated family by family.",
+    "C4_CRP": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION, not repaired, not cited against CRP",
+    "minus_one_hop_anomaly": "unresolved, not reopened",
+    "J3H": "independently valid, separate real-audio question, neither blocked nor answered by J3I. J3F's perfect BabySlakh stems are not a test of commercial separator quality."
+  },
+
+  "status": {
+    "J3F_mutated": false, "J3G_mutated": false, "J3G2_mutated": false,
+    "new_tonal_candidate": false, "cqt_run": false, "basic_pitch_run": false,
+    "crp_repair": false, "nnls_run": false, "neural_model": false,
+    "midi_labels_shifted": false, "acoustic_midi_oracle_created": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false
+  }
+}

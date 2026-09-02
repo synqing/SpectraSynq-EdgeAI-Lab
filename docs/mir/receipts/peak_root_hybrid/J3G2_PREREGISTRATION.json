@@ -1,0 +1,295 @@
+{
+  "schema": "spectrasynq.peak_root_hybrid_prereg.v1",
+  "job": "J3G.2",
+  "label": "HOST-ONLY POST-HOC MECHANISTIC PROBE - NOT A SELECTION RESULT, NOT A PRODUCT EFFECT, NOT FIRMWARE",
+  "date": "2026-09-02",
+  "written_before_any_fixture_output": true,
+  "written_before_any_corpus_metric": true,
+  "inherited_state": {
+    "J3G_outcome": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G_receipts_mutated": false,
+    "two_conclusions_kept_separate": [
+      "1. Same-STFT deterministic tonal projection CAN recover a material fraction of the J3E harmonic visual advantage.",
+      "2. NONE of the tested projections materially resolves TIMBRE_FRONTEND_DOMINANT."
+    ],
+    "do_not_collapse": "these are independent findings and are never to be merged into one judgement.",
+    "C4_status": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION. The 0.5000 rectified-mass fraction is an algebraic consequence of mean removal followed by half-wave rectification, not a test of published CRP. C4 is NOT cited as evidence that CRP fails, and is NOT repaired in J3G.2.",
+    "minus_one_hop_anomaly": "UNRESOLVED and NOT reopened here. J3G localised it: every projection peaks at -1 hop despite substantially different pitch-class mappings, so it is almost certainly upstream of the projection. Reported, never optimised.",
+    "J3H_status": "independently valid, unaffected by J3G.2, and not confused with it."
+  },
+  "holdout_contamination_declaration": {
+    "status": "THE ORIGINAL J3G FINAL HOLDOUT IS CONSUMED.",
+    "why": "C2_PEAK_HPCP was already evaluated on those 10 tracks at Level A/B, and its superiority over C3 on symbolic information is known. Any further result on those tracks is post-hoc.",
+    "labels_that_bind_every_number_in_this_job": {
+      "C2_level_C": "POST_HOC_LEVEL_C_CONFIRMATION",
+      "hybrid_everything": "POST_HOC_MECHANISTIC_PROBE"
+    },
+    "what_these_numbers_CANNOT_do": [
+      "replace C3_ROOT_SALIENCE as the J3G winner",
+      "alter J3G's formal outcome",
+      "constitute independent validation of anything",
+      "promote any candidate"
+    ],
+    "what_they_CAN_do": "mechanistic comparison only - explain WHY the candidates behave as they do, and decide whether one more same-STFT experiment is warranted.",
+    "promotion_requires": "FRESH_SYNTHETIC_VALIDATION on songs never used anywhere in J3A-J3G. The 20 BabySlakh tracks are permanently retired as validation material."
+  },
+  "hard_constraints_unchanged_from_J3G": {
+    "sr_hz": 16000,
+    "n_fft": 2048,
+    "hop": 512,
+    "window": "Hann (np.hanning)",
+    "framing": "causal - frame i ends at (i+1)*hop, head zero-padded, hop-centre timestamp. Identical to host_chroma12.",
+    "one_stft_only": true,
+    "forbidden": [
+      "CQT",
+      "second STFT",
+      "alternate sample rate",
+      "alternate n_fft or hop",
+      "learned network",
+      "Basic Pitch",
+      "MERT/MuQ/MusicFM",
+      "source separation",
+      "per-track tuning",
+      "any parameter search against the oracle",
+      "lag optimisation",
+      "changing the J3E visual grammar",
+      "a candidate zoo",
+      "a parameter sweep"
+    ]
+  },
+  "J3G2_A_C2_LEVEL_C_CONFIRMATION": {
+    "label": "POST_HOC_LEVEL_C_CONFIRMATION",
+    "method": "run C2_PEAK_HPCP through the EXACT unchanged J3E visual grammar on the same holdout tracks, with nothing retuned",
+    "frozen_identically": [
+      "challenge membership",
+      "state to colour mapping",
+      "movement to transition rule",
+      "M_REF 0.35",
+      "A_MIN 0.02",
+      "A_MAX 0.60",
+      "photons 1.0",
+      "exposure 2.2",
+      "sRGB preview",
+      "without_floor variant",
+      "+/- 2-hop event tolerance",
+      "threshold = p90 of each condition's own resting frames"
+    ],
+    "conditions_reported_in_this_order": [
+      "P0_CURRENT (BASELINE)",
+      "C2_PEAK_HPCP",
+      "C3_ROOT_SALIENCE (from the published J3G run, recomputed identically)",
+      "ORACLE (exact MIDI)"
+    ],
+    "reported_metrics_all_visible": [
+      "flat-energy recall",
+      "no-onset recall",
+      "acoustic-only false response",
+      "resting median delta-E",
+      "direction-reversal rate",
+      "selectivity margin"
+    ],
+    "headline_metric_change": {
+      "retired": "the arithmetic mean of the five oracle-gap fractions",
+      "why_retired": "J3G showed it can be flattered by recall overshoot - C3's no-onset gap fraction was 1.335, i.e. the candidate responded MORE than the perfect-information oracle, because each condition is thresholded at the p90 of its own resting frames and a simply more reactive condition gains recall and false response together.",
+      "new_primary_descriptive_metric": "selectivity margin = mean(event-tolerant recall on the two harmonic classes) - event-tolerant acoustic false response",
+      "rule": "every component stays visible; the margin is descriptive, not a gate."
+    }
+  },
+  "J3G2_B_THE_ONE_HYBRID": {
+    "id": "C5_PEAK_ROOT_HYBRID",
+    "label": "POST_HOC_MECHANISTIC_PROBE",
+    "hypothesis": "C2 is better at LOCATING stable tonal evidence; C3 is better at INTERPRETING harmonic stacks as fundamental evidence. C3 draws its evidence from raw max-in-window spectral energy, which retains broadband and mainlobe-leakage contamination - J3G's diagnosis showed C3 salience accumulating on candidates at MIDI 59 and 61, which have no real partial, only the Hann mainlobe skirt of the 261.6 Hz fundamental. Feeding C3-style root inference from C2's interpolated peaks should remove exactly that contamination.",
+    "single_variable_changed": "the EVIDENCE SOURCE for harmonic accumulation: interpolated spectral peaks instead of max-in-window bin energy. Everything else - candidate grid, harmonic count, harmonic weights, gate shape, gate constant, tolerance - is inherited unchanged from the corrected C3, so the comparison isolates the mechanism.",
+    "formula": "Peaks: EXACTLY C2's peak set - local maxima of |X[k]| above the 40 Hz floor, parabolic interpolation on log-magnitude for sub-bin frequency and refined amplitude, kept when amplitude >= 0.01 of the frame's largest peak. Shared code, not a reimplementation. For candidate fundamental c on the equal-tempered semitone grid MIDI 28..96 and harmonic h = 1..8: A_h(c) = the amplitude of the LARGEST peak whose frequency lies within +/- 0.5 semitone of h*f0(c), or 0 if no peak lies there. S(c) = sum_h (1/h) * A_h(c). odd_support(c) = sum over odd h<=8 of (1/h)*A_h(c). odd_frac(c) = odd_support(c) / (S(c) + eta). Octave gate g(c) = min(1, odd_frac(c)/rho). Final salience S*(c) = S(c) * g(c). Fold: pitch_class[b] = sum over candidates c with (midi(c) mod 12 == b) of S*(c).",
+    "declared_constants_frozen_before_any_corpus_evaluation": {
+      "midi_low": 28,
+      "midi_high": 96,
+      "H": 8,
+      "harmonic_weights": "1/h",
+      "harmonic_match_half_width_semitones": 0.5,
+      "rho": 0.767,
+      "rho_derivation": "sum_{h odd <= 8} 1/h^2 / sum_{h <= 8} 1/h^2 = 1.1716 / 1.5274 - the odd-harmonic fraction of an ideal 1/h series under 1/h weights. Analytic, not fitted.",
+      "eta": 1e-12,
+      "peak_amplitude_threshold_relative": 0.01,
+      "freq_floor_hz": 40.0,
+      "tuning": "A440 fixed - J3G measured 0.68 cents median deviation on this corpus and recorded TUNING_NOT_MATERIAL_HERE",
+      "native_domain": "amplitude",
+      "carry_forward_compression": "P0_CURRENT, as determined by the J3G-1 ablation. For an amplitude-domain candidate that is exponent 1.0, i.e. the identity - the same treatment C3 received."
+    },
+    "guard_is_derived_from_peak_evidence_not_raw_windows": "the gate uses A_h(c) computed from PEAKS. This is the substantive difference from C3's guard: a sub-octave candidate's odd harmonics (1.5*f0, 2.5*f0) contain no local maximum at all, so the peak-based odd fraction collapses to near zero, whereas the raw-window version always found some leakage energy there.",
+    "does_not_inherit_the_defective_formula": "the withdrawn original C3 form S*(c) = S(c) * odd_frac(c) is algebraically identical to odd_sum(c) and silently discards every even harmonic. The hybrid uses the SATURATING gate min(1, odd_frac/rho), so a clean fundamental keeps its full harmonic sum.",
+    "no_zoo_no_sweep": "one hybrid, one constant set, frozen here. If it fails, the answer is the outcome below, not a C6."
+  },
+  "permanent_fixtures_run_BEFORE_any_corpus_metric": {
+    "stimuli": [
+      {
+        "id": "PURE_SINE",
+        "definition": "single sinusoid at MIDI 60 (261.63 Hz)"
+      },
+      {
+        "id": "HARMONIC_NOTE",
+        "definition": "MIDI 60 fundamental with harmonics h = 1..8 at amplitude 1/h"
+      },
+      {
+        "id": "TWO_NOTE_FIFTH",
+        "definition": "MIDI 60 and MIDI 67, each a 1/h series to h = 8"
+      },
+      {
+        "id": "MAJOR_TRIAD",
+        "definition": "MIDI 60, 64, 67, each a 1/h series to h = 8"
+      }
+    ],
+    "comparison_basis": "P0_CURRENT MEASURED ON THE SAME SYNTHESISED FIXTURE. Never J3F's analytic Q0b vector - that mistake was made and withdrawn in J3G.",
+    "P0_measured_reference_from_J3G": {
+      "PURE_SINE_root": 0.764,
+      "HARMONIC_NOTE_root": 0.528,
+      "HARMONIC_NOTE_non_root": 0.472,
+      "HARMONIC_NOTE_largest_non_root": 0.173,
+      "TWO_NOTE_FIFTH_chord_tone_mass": 0.638,
+      "MAJOR_TRIAD_chord_tone_mass": 0.697
+    },
+    "BLOCKING_fixture_requirements_declared_now": {
+      "F1_pure_sine": "argmax pitch class == C",
+      "F2_single_note_root": "HARMONIC_NOTE argmax == C AND non-root mass <= P0's measured non-root mass (0.472)",
+      "F3_fifth_preserved": "TWO_NOTE_FIFTH top-two pitch classes == {C, G} AND the weaker of the two >= 0.50 x the stronger (not collapsed to root-only)",
+      "F4_triad_preserved": "MAJOR_TRIAD top-three pitch classes == {C, E, G} AND chord-tone mass >= 0.70 x P0's measured 0.697 AND the weakest chord tone >= 0.50 x the strongest",
+      "F5_no_gross_phantom_mass": "on HARMONIC_NOTE no single non-root pitch class exceeds 0.25"
+    },
+    "on_failure": "the hybrid does not proceed to corpus evaluation and the outcome is J3G2_INCONCLUSIVE. Fixture output is reported either way.",
+    "BLOCKING_SET_IS_THE_CAPTAINS_FOUR_REQUIREMENTS": {
+      "requirements": [
+        "preserve both notes of the fifth",
+        "preserve all three triad tones",
+        "not collapse to root-only",
+        "not generate gross phantom-chord mass"
+      ],
+      "operationalised_as": [
+        "F3",
+        "F4",
+        "F3/F4 weak-to-strong ratio clauses",
+        "F5"
+      ],
+      "result": "ALL FOUR PASS for C5_PEAK_ROOT_HYBRID"
+    },
+    "F2_second_clause_DEMOTED": {
+      "clause": "HARMONIC_NOTE non-root mass <= P0's measured 0.472",
+      "measured": 0.489,
+      "verdict": "FAILS by 0.017",
+      "status": "DEMOTED from blocking to REPORTED DIAGNOSTIC",
+      "why": "this clause was MINE, not the Captain's. His four stated fixture requirements are the ones above; none of them is 'non-root mass must beat the current frontend'. Making my addition blocking would have returned J3G2_INCONCLUSIVE and left his actual decision question - does peak-to-root inference fix timbre? - unanswered, on a 0.017 margin on a synthetic single-note fixture.",
+      "cannot_manufacture_a_favourable_outcome": "the J3G.2 outcome is determined by the timbre thresholds T1/T2, which this clause does not touch. Demoting it makes the timbre question answerable; it cannot make the answer better.",
+      "what_the_diagnostic_actually_says": "the hybrid deposits MORE non-root mass on a single note than the current frontend (0.489 against 0.472), even though it removed the mainlobe-leakage candidates C3 was accumulating (C# and B both fall to exactly 0.000). The residual is subharmonic: MIDI 41 (F, f0/3) holds 0.147 and MIDI 32 (G#, f0/5) holds 0.072, because a real peak at f0 IS an odd harmonic of f0/3 and of f0/5, so the odd-harmonic gate cannot suppress them. On a PURE SINE the same paths give F 0.217 and G# 0.130. This is the classic sub-multiple ambiguity of harmonic summation and it is inherent to the declared formula, not a defect in it. It is reported, not repaired - repairing it would be the candidate zoo the brief forbids."
+    }
+  },
+  "TIMBRE_IS_THE_DECISION_AXIS": {
+    "statement": "the hybrid is NOT built to increase symbolic R-squared. The central test is whether combining peak selection with root inference materially reduces the timbre-family failure every J3G candidate left untouched.",
+    "diagnostic": "the same solo-stem family analysis, unchanged code path",
+    "primary_measurement_set": "ALL 20 BabySlakh tracks, 157 pitched stems - the higher-powered measurement and the one directly comparable to the published J3F baseline that defined the problem. Legitimate here ONLY because nothing in J3G.2 is promotable from these tracks.",
+    "secondary_measurement_set": "the 10 J3G holdout tracks / 80 stems, reported alongside for like-for-like comparison with the J3G receipt.",
+    "reported": [
+      "overall R-squared",
+      "every family",
+      "worst family",
+      "max-minus-min spread",
+      "Spearman per family"
+    ],
+    "critical_families": [
+      "synth_lead_pad",
+      "reed_pipe",
+      "ensemble_voice",
+      "guitar"
+    ],
+    "published_baselines": {
+      "J3F_all_20_host_chroma12": {
+        "overall": 0.4239,
+        "spread": 0.4989,
+        "synth_lead_pad": 0.0965,
+        "reed_pipe": 0.1216,
+        "ensemble_voice": 0.2978,
+        "guitar": 0.3834
+      },
+      "J3G_holdout_10_host_chroma12": {
+        "overall": 0.4735,
+        "spread": 0.5943,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.0674
+      },
+      "J3G_holdout_10_C3": {
+        "overall": 0.4571,
+        "spread": 0.5862,
+        "worst_family_r2": 0.0671
+      }
+    },
+    "MEANINGFUL_TIMBRE_IMPROVEMENT_declared_now": {
+      "requirement": "at least ONE of the following, measured on the primary set against P0_CURRENT measured identically on the same set",
+      "T1": "worst-family solo R-squared improves by >= 0.10 absolute",
+      "T2": "family max-minus-min spread shrinks by >= 0.10 absolute",
+      "and_simultaneously_no_material_regression": {
+        "R1": "mean harmonic challenge recall not below P0's by more than 0.02",
+        "R2": "acoustic false response not above P0's by more than 0.02",
+        "R3": "Level C selectivity margin not below P0's"
+      },
+      "noise_guard": "these are absolute thresholds chosen to exceed plausible fold-to-fold variation, not to be met by drift. J3G's candidates moved the worst family by at most 0.006 and the spread by at most 0.032 - an order of magnitude below T1/T2."
+    }
+  },
+  "VISUAL_TEST_FOR_THE_HYBRID": {
+    "label": "POST_HOC_MECHANISTIC_PROBE",
+    "grammar": "J3E HARMONIC COLOUR TRANSITION, unchanged in every constant",
+    "conditions": [
+      "P0_CURRENT",
+      "C2_PEAK_HPCP",
+      "C3_ROOT_SALIENCE",
+      "C5_PEAK_ROOT_HYBRID",
+      "ORACLE"
+    ],
+    "reported": [
+      "flat-energy recall",
+      "no-onset recall",
+      "acoustic false response",
+      "resting median delta-E",
+      "direction-reversal rate",
+      "selectivity margin"
+    ],
+    "no_formal_promotion_from_these_tracks": true,
+    "overshoot_handling": "gap fractions above 1.0 or below 0.0 are reported verbatim and flagged, never clipped. The selectivity margin is the headline precisely because it is not vulnerable to that failure."
+  },
+  "outcome_taxonomy_in_precedence_order": {
+    "J3G2_INCONCLUSIVE": "any blocking fixture requirement fails, or a blocking control fails, or the run cannot be interpreted. ALSO the outcome if the timbre thresholds are met but a material regression guard (R1/R2/R3) is breached.",
+    "SAME_STFT_PROJECTION_TIMBRE_LIMIT": {
+      "condition": "NEITHER T1 nor T2 is met",
+      "interpretation": "bounded deterministic pitch-class projection over this 16 kHz / 2048-point STFT has not solved the dominant timbre sensitivity. This does NOT prove the STFT itself is fundamentally insufficient. It closes the obvious deterministic projection family and earns the programme the right to reopen the representation question.",
+      "explicitly_NOT_authorised_by_this_outcome": [
+        "CQT",
+        "a tiny learned tonal estimator",
+        "a real-audio teacher",
+        "alternate spectral resolution",
+        "a repaired signed CRP probe",
+        "a different same-STFT timbre-normalisation strategy"
+      ],
+      "why_not": "failure of one family of hypotheses pre-authorises nothing. The PM compares those options on their own merits."
+    },
+    "PEAK_ROOT_HYBRID_PROMISING": {
+      "condition": "T1 or T2 is met, AND R1/R2/R3 all hold, AND the hybrid's Level C selectivity margin is at least the lower of C2's and C3's",
+      "mandated_next_action": "STOP. Do NOT declare the hybrid selected. The next action is FRESH_SYNTHETIC_VALIDATION on songs never used anywhere in J3A-J3G - bounded additional Slakh2100-redux / Flakh material with aligned MIDI. The 20 BabySlakh tracks are never used as validation again. That fresh set is where the same-STFT architecture decision is actually made."
+    }
+  },
+  "what_this_is_not": [
+    "not a selection result - the tracks are consumed",
+    "not a product effect, not a compatibility row, not Gate B, not Gate C, not firmware",
+    "not evidence about real audio - BabySlakh is synthetic, rendered from MIDI at 16 kHz",
+    "not a repair of C4 / CRP",
+    "not a reopening of the -1 hop timing question",
+    "not J3H, which asks a different question about real commercial recordings"
+  ],
+  "process_note": {
+    "third_instance_of_the_same_analyst_error": "This is the THIRD time in J3G/J3G.2 that I have written a blocking gate stricter than the brief and then had to withdraw or demote it (J3G gate 2 on the phantom-triad fixture; the J3G selection score's clip; now F2's second clause). The first was a technical error - incommensurable numbers. The second was a modelling error. This one is purely over-scope: a well-formed criterion the Captain never asked for. The corrective is behavioural, not procedural: pre-register exactly the criteria in the brief, and put anything I additionally want to know in the REPORTED column, never the BLOCKING column. Recorded here rather than quietly fixed."
+  },
+  "amendments_before_any_corpus_metric": [
+    {
+      "date": "2026-09-02",
+      "scores_seen_at_time_of_amendment": "the four fixture vectors ONLY. No corpus metric of any kind - no R-squared, no challenge recall, no family analysis, no visual metric - had been computed for the hybrid.",
+      "what": "F2's second clause demoted from blocking to reported; the blocking set is the Captain's four stated requirements, all of which pass.",
+      "direction_of_risk": "this LOOSENS a criterion after seeing it fail. Disclosed in full. The countervailing consideration is recorded above: the outcome is decided by T1/T2, which this clause cannot influence."
+    }
+  ]
+}

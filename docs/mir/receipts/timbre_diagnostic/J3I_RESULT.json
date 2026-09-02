@@ -1,0 +1,1608 @@
+{
+  "schema": "spectrasynq.timbre_diagnostic_result.v1",
+  "job": "J3I",
+  "git_head": "WORKCOPY",
+  "label": "CONSTRUCT-VALIDITY AUDIT - no new estimator, no model, no frontend, no visual experiment, no label repair",
+  "preregistration": "docs/mir/receipts/timbre_diagnostic/J3I_PREREGISTRATION.json",
+  "preregistration_amendments": [
+    {
+      "date": "2026-09-02",
+      "stage": "BEFORE ANY MEASUREMENT. Only episode COUNTS had been computed - no attack, no release, no coverage, no family statistic of any kind.",
+      "what": "isolation guard window G reduced from 0.50 s to 0.10 s, with 0.30 s retained as a reported sensitivity check",
+      "why": "a feasibility decision, equivalent to choosing a sample size. At G = 0.50 s the whole 157-stem corpus yields 52 eligible episodes and ZERO for chromatic percussion - the family the entire question turns on. The audit would have been unrunnable.",
+      "evidence_counts_by_guard_window": {
+        "G_0.50": {
+          "total": 52,
+          "chromatic_percussion": 0,
+          "piano_keys": 1,
+          "reed_pipe": 1
+        },
+        "G_0.30": {
+          "total": 142,
+          "chromatic_percussion": 0,
+          "piano_keys": 3
+        },
+        "G_0.20": {
+          "total": 461,
+          "chromatic_percussion": 4,
+          "piano_keys": 11
+        },
+        "G_0.10": {
+          "total": 1353,
+          "bass": 755,
+          "reed_pipe": 166,
+          "piano_keys": 99,
+          "guitar": 95,
+          "chromatic_percussion": 90,
+          "synth_lead_pad": 60,
+          "ensemble_voice": 56,
+          "brass": 19,
+          "strings": 13
+        },
+        "G_0.05": {
+          "total": 2971
+        }
+      },
+      "why_0.10_and_not_0.05": "0.10 s is the largest guard at which every one of the seven families named in the brief clears 20 episodes. It was chosen from the count table alone, with no attack or decay number in hand.",
+      "contamination_risk_disclosed": "a 100 ms guard cannot fully exclude a neighbouring note from a slow-attack instrument's rise or a long-release instrument's decay. The G = 0.30 s sensitivity check is reported for the two families that retain >= 20 episodes there - bass (73) and synth_lead_pad (21) - which happens to be the fast/slow contrast pair the hypothesis is about. If the two guards agree where both are powered, contamination is not driving the result.",
+      "min_duration_unchanged": 0.2
+    }
+  ],
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "controls": {
+    "instrumented_rms_max_abs_diff_vs_dsp_register_features": 0.0,
+    "audio_support_rule": "silence_mask(rms, -60.0 dBFS) - existing function, existing threshold, reused verbatim",
+    "representation_changed": false,
+    "midi_labels_changed": false
+  },
+  "J3I_A_mask_parity": {
+    "AUDIO_SUPPORTED_PAIR_definition": "audio_ok[i] AND audio_ok[i-8]",
+    "before_no_audio_mask": {
+      "_n_stems": 157,
+      "_n_frames": 618494,
+      "P0_CURRENT": {
+        "overall_r2": 0.4239,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118921,
+            "solo_stem_r2": 0.5906,
+            "spearman": 0.6965
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16704,
+            "solo_stem_r2": 0.5954,
+            "spearman": 0.7035
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13966,
+            "solo_stem_r2": 0.2927,
+            "spearman": 0.6006
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110344,
+            "solo_stem_r2": 0.2978,
+            "spearman": 0.4521
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 126446,
+            "solo_stem_r2": 0.3834,
+            "spearman": 0.6488
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 155027,
+            "solo_stem_r2": 0.5434,
+            "spearman": 0.699
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 26966,
+            "solo_stem_r2": 0.1216,
+            "spearman": 0.3933
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45402,
+            "solo_stem_r2": 0.0965,
+            "spearman": 0.3309
+          }
+        },
+        "spread": 0.4989,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.0965
+      },
+      "C3_ROOT_SALIENCE": {
+        "overall_r2": 0.4005,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118921,
+            "solo_stem_r2": 0.5457,
+            "spearman": 0.6814
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16704,
+            "solo_stem_r2": 0.5782,
+            "spearman": 0.7093
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13966,
+            "solo_stem_r2": 0.1536,
+            "spearman": 0.544
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110344,
+            "solo_stem_r2": 0.3061,
+            "spearman": 0.4619
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 126446,
+            "solo_stem_r2": 0.331,
+            "spearman": 0.6106
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 155027,
+            "solo_stem_r2": 0.5227,
+            "spearman": 0.686
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 26966,
+            "solo_stem_r2": 0.1191,
+            "spearman": 0.3928
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45402,
+            "solo_stem_r2": 0.1137,
+            "spearman": 0.3146
+          }
+        },
+        "spread": 0.4645,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.1137
+      },
+      "C2_PEAK_HPCP": {
+        "overall_r2": 0.421,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118921,
+            "solo_stem_r2": 0.5975,
+            "spearman": 0.6961
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16704,
+            "solo_stem_r2": 0.606,
+            "spearman": 0.705
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13966,
+            "solo_stem_r2": -0.128,
+            "spearman": 0.5242
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110344,
+            "solo_stem_r2": 0.2822,
+            "spearman": 0.4513
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 126446,
+            "solo_stem_r2": 0.354,
+            "spearman": 0.6603
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 155027,
+            "solo_stem_r2": 0.599,
+            "spearman": 0.7104
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 26966,
+            "solo_stem_r2": 0.1131,
+            "spearman": 0.3829
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45402,
+            "solo_stem_r2": 0.0186,
+            "spearman": 0.269
+          }
+        },
+        "spread": 0.734,
+        "worst_family": "chromatic_percussion",
+        "worst_family_r2": -0.128
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "overall_r2": 0.4082,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118921,
+            "solo_stem_r2": 0.5847,
+            "spearman": 0.6888
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16704,
+            "solo_stem_r2": 0.6021,
+            "spearman": 0.7152
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13966,
+            "solo_stem_r2": -0.6116,
+            "spearman": 0.4804
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110344,
+            "solo_stem_r2": 0.2981,
+            "spearman": 0.4678
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 126446,
+            "solo_stem_r2": 0.3598,
+            "spearman": 0.6511
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 155027,
+            "solo_stem_r2": 0.5924,
+            "spearman": 0.707
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 26966,
+            "solo_stem_r2": 0.1187,
+            "spearman": 0.3953
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45402,
+            "solo_stem_r2": 0.0062,
+            "spearman": 0.257
+          }
+        },
+        "spread": 1.2137,
+        "worst_family": "chromatic_percussion",
+        "worst_family_r2": -0.6116
+      }
+    },
+    "after_audio_supported_pair": {
+      "_n_stems": 157,
+      "_n_frames": 608631,
+      "P0_CURRENT": {
+        "overall_r2": 0.4353,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 117449,
+            "solo_stem_r2": 0.5997,
+            "spearman": 0.7002
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16173,
+            "solo_stem_r2": 0.5988,
+            "spearman": 0.7093
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13201,
+            "solo_stem_r2": 0.2923,
+            "spearman": 0.5966
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110082,
+            "solo_stem_r2": 0.3008,
+            "spearman": 0.4531
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 124878,
+            "solo_stem_r2": 0.3882,
+            "spearman": 0.6529
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153451,
+            "solo_stem_r2": 0.5469,
+            "spearman": 0.7008
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23436,
+            "solo_stem_r2": 0.153,
+            "spearman": 0.4559
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45252,
+            "solo_stem_r2": 0.1027,
+            "spearman": 0.3336
+          }
+        },
+        "spread": 0.497,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.1027
+      },
+      "C3_ROOT_SALIENCE": {
+        "overall_r2": 0.4112,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 117449,
+            "solo_stem_r2": 0.5539,
+            "spearman": 0.6853
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16173,
+            "solo_stem_r2": 0.5827,
+            "spearman": 0.7157
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13201,
+            "solo_stem_r2": 0.1598,
+            "spearman": 0.54
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110082,
+            "solo_stem_r2": 0.3088,
+            "spearman": 0.4628
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 124878,
+            "solo_stem_r2": 0.3342,
+            "spearman": 0.6136
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153451,
+            "solo_stem_r2": 0.5264,
+            "spearman": 0.6877
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23436,
+            "solo_stem_r2": 0.1466,
+            "spearman": 0.4554
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45252,
+            "solo_stem_r2": 0.1212,
+            "spearman": 0.3173
+          }
+        },
+        "spread": 0.4615,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.1212
+      },
+      "C2_PEAK_HPCP": {
+        "overall_r2": 0.4315,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 117449,
+            "solo_stem_r2": 0.6062,
+            "spearman": 0.6992
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16173,
+            "solo_stem_r2": 0.6104,
+            "spearman": 0.711
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13201,
+            "solo_stem_r2": -0.1683,
+            "spearman": 0.5106
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110082,
+            "solo_stem_r2": 0.2855,
+            "spearman": 0.4523
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 124878,
+            "solo_stem_r2": 0.357,
+            "spearman": 0.6641
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153451,
+            "solo_stem_r2": 0.605,
+            "spearman": 0.7138
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23436,
+            "solo_stem_r2": 0.1396,
+            "spearman": 0.4437
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45252,
+            "solo_stem_r2": 0.0208,
+            "spearman": 0.2715
+          }
+        },
+        "spread": 0.7787,
+        "worst_family": "chromatic_percussion",
+        "worst_family_r2": -0.1683
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "overall_r2": 0.4182,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 117449,
+            "solo_stem_r2": 0.5929,
+            "spearman": 0.6918
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16173,
+            "solo_stem_r2": 0.6071,
+            "spearman": 0.722
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13201,
+            "solo_stem_r2": -0.7479,
+            "spearman": 0.4689
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110082,
+            "solo_stem_r2": 0.3016,
+            "spearman": 0.4688
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 124878,
+            "solo_stem_r2": 0.363,
+            "spearman": 0.6548
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153451,
+            "solo_stem_r2": 0.5987,
+            "spearman": 0.7107
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23436,
+            "solo_stem_r2": 0.1429,
+            "spearman": 0.459
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45252,
+            "solo_stem_r2": 0.0072,
+            "spearman": 0.2595
+          }
+        },
+        "spread": 1.355,
+        "worst_family": "chromatic_percussion",
+        "worst_family_r2": -0.7479
+      }
+    },
+    "REPORTED_DIAGNOSTIC_single_endpoint_literal_mixture_parity": {
+      "_n_stems": 157,
+      "_n_frames": 611076,
+      "P0_CURRENT": {
+        "overall_r2": 0.4309,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118002,
+            "solo_stem_r2": 0.5946,
+            "spearman": 0.6981
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16247,
+            "solo_stem_r2": 0.5955,
+            "spearman": 0.7077
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13333,
+            "solo_stem_r2": 0.2801,
+            "spearman": 0.5862
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110242,
+            "solo_stem_r2": 0.2978,
+            "spearman": 0.4518
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 125526,
+            "solo_stem_r2": 0.3832,
+            "spearman": 0.6486
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153915,
+            "solo_stem_r2": 0.5454,
+            "spearman": 0.7004
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23696,
+            "solo_stem_r2": 0.1454,
+            "spearman": 0.4462
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45400,
+            "solo_stem_r2": 0.0965,
+            "spearman": 0.3309
+          }
+        },
+        "spread": 0.499,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.0965
+      },
+      "C3_ROOT_SALIENCE": {
+        "overall_r2": 0.407,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118002,
+            "solo_stem_r2": 0.55,
+            "spearman": 0.6833
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16247,
+            "solo_stem_r2": 0.578,
+            "spearman": 0.7134
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13333,
+            "solo_stem_r2": 0.1496,
+            "spearman": 0.526
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110242,
+            "solo_stem_r2": 0.306,
+            "spearman": 0.4617
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 125526,
+            "solo_stem_r2": 0.3305,
+            "spearman": 0.61
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153915,
+            "solo_stem_r2": 0.5247,
+            "spearman": 0.6874
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23696,
+            "solo_stem_r2": 0.1401,
+            "spearman": 0.4464
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45400,
+            "solo_stem_r2": 0.1137,
+            "spearman": 0.3145
+          }
+        },
+        "spread": 0.4643,
+        "worst_family": "synth_lead_pad",
+        "worst_family_r2": 0.1137
+      },
+      "C2_PEAK_HPCP": {
+        "overall_r2": 0.4274,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118002,
+            "solo_stem_r2": 0.6008,
+            "spearman": 0.6973
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16247,
+            "solo_stem_r2": 0.6065,
+            "spearman": 0.7094
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13333,
+            "solo_stem_r2": -0.1353,
+            "spearman": 0.507
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110242,
+            "solo_stem_r2": 0.2821,
+            "spearman": 0.451
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 125526,
+            "solo_stem_r2": 0.3535,
+            "spearman": 0.6603
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153915,
+            "solo_stem_r2": 0.6027,
+            "spearman": 0.713
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23696,
+            "solo_stem_r2": 0.1321,
+            "spearman": 0.434
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45400,
+            "solo_stem_r2": 0.0187,
+            "spearman": 0.2689
+          }
+        },
+        "spread": 0.7418,
+        "worst_family": "chromatic_percussion",
+        "worst_family_r2": -0.1353
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "overall_r2": 0.4144,
+        "by_family": {
+          "bass": {
+            "n_stems": 22,
+            "n_frames": 118002,
+            "solo_stem_r2": 0.5883,
+            "spearman": 0.6901
+          },
+          "brass": {
+            "n_stems": 4,
+            "n_frames": 16247,
+            "solo_stem_r2": 0.6026,
+            "spearman": 0.7199
+          },
+          "chromatic_percussion": {
+            "n_stems": 4,
+            "n_frames": 13333,
+            "solo_stem_r2": -0.6045,
+            "spearman": 0.4616
+          },
+          "ensemble_voice": {
+            "n_stems": 28,
+            "n_frames": 110242,
+            "solo_stem_r2": 0.298,
+            "spearman": 0.4675
+          },
+          "guitar": {
+            "n_stems": 40,
+            "n_frames": 125526,
+            "solo_stem_r2": 0.3594,
+            "spearman": 0.6512
+          },
+          "piano_keys": {
+            "n_stems": 38,
+            "n_frames": 153915,
+            "solo_stem_r2": 0.5964,
+            "spearman": 0.71
+          },
+          "reed_pipe": {
+            "n_stems": 9,
+            "n_frames": 23696,
+            "solo_stem_r2": 0.1364,
+            "spearman": 0.4501
+          },
+          "synth_lead_pad": {
+            "n_stems": 11,
+            "n_frames": 45400,
+            "solo_stem_r2": 0.0062,
+            "spearman": 0.257
+          }
+        },
+        "spread": 1.2071,
+        "worst_family": "chromatic_percussion",
+        "worst_family_r2": -0.6045
+      }
+    },
+    "frames_removed_by_family": {
+      "bass": {
+        "frames_before": 118921,
+        "frames_after": 117449,
+        "fraction_removed": 0.0124
+      },
+      "brass": {
+        "frames_before": 16704,
+        "frames_after": 16173,
+        "fraction_removed": 0.0318
+      },
+      "chromatic_percussion": {
+        "frames_before": 13966,
+        "frames_after": 13201,
+        "fraction_removed": 0.0548
+      },
+      "ensemble_voice": {
+        "frames_before": 110344,
+        "frames_after": 110082,
+        "fraction_removed": 0.0024
+      },
+      "guitar": {
+        "frames_before": 126446,
+        "frames_after": 124878,
+        "fraction_removed": 0.0124
+      },
+      "piano_keys": {
+        "frames_before": 155027,
+        "frames_after": 153451,
+        "fraction_removed": 0.0102
+      },
+      "reed_pipe": {
+        "frames_before": 26966,
+        "frames_after": 23436,
+        "fraction_removed": 0.1309
+      },
+      "strings": {
+        "frames_before": 4718,
+        "frames_after": 4709,
+        "fraction_removed": 0.0019
+      },
+      "synth_lead_pad": {
+        "frames_before": 45402,
+        "frames_after": 45252,
+        "fraction_removed": 0.0033
+      }
+    },
+    "materiality_established_0.10_scale_judged_on_P0": {
+      "worst_family_r2_before": 0.0965,
+      "worst_family_r2_after": 0.1027,
+      "delta_worst_family": 0.0062,
+      "spread_before": 0.4989,
+      "spread_after": 0.497,
+      "spread_shrink": 0.0019,
+      "material": false
+    }
+  },
+  "J3I_B_attack_decay_audit": {
+    "uses_no_chroma_no_candidate_no_pitch_estimator": true,
+    "envelope": {
+      "timing_envelope": "RMS over a 512-sample (32 ms) rectangular window on the analysis hop grid, causal, hop-centre timestamps. Declared here. A 32 ms window is used for timing because the 2048-sample analysis window is 128 ms and cannot resolve an attack.",
+      "absolute_floor": "the EXISTING silence_mask on the EXISTING dsp_register_features 2048-window RMS, used unchanged for the audible-coverage measurement, because that is where the -60 dBFS floor is calibrated",
+      "local_peak": "maximum of the timing envelope inside [note_on, note_off + 0.2 s]",
+      "relative_thresholds": [
+        0.1,
+        0.5
+      ],
+      "not_tuned_by_family": true
+    },
+    "eligibility": {
+      "source": "per-stem MIDI (Track/MIDI/<stem>.mid) against the rendered isolated stem",
+      "isolation_guard_window_G": 0.1,
+      "rule": "a note episode is eligible only if NO other note in the same stem overlaps the interval [note_on - G, note_off + G]",
+      "minimum_duration_s": 0.2,
+      "minimum_level": "the episode's local peak envelope must exceed the existing absolute silence floor, otherwise the episode is discarded as inaudible",
+      "isolation_guard_window_G_sensitivity": 0.3
+    },
+    "results": {
+      "guard_0.10s_primary": {
+        "bass": {
+          "n_episodes": 755,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 1.0,
+            "n": 755
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 755
+          },
+          "release_10_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 755
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 755
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.077,
+            "n": 755
+          }
+        },
+        "brass": {
+          "n_episodes": 17,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 17
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 17
+          },
+          "release_10_hops": {
+            "median": 1.0,
+            "iqr": 0.0,
+            "n": 17
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 17
+          },
+          "audible_gate_coverage": {
+            "median": 0.986,
+            "iqr": 0.037,
+            "n": 17
+          }
+        },
+        "chromatic_percussion": {
+          "n_episodes": 90,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 90
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 0.0,
+            "n": 90
+          },
+          "release_10_hops": {
+            "median": 0.0,
+            "iqr": 3.0,
+            "n": 90
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 90
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.085,
+            "n": 90
+          }
+        },
+        "ensemble_voice": {
+          "n_episodes": 46,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 46
+          },
+          "attack_50_hops": {
+            "median": 3.0,
+            "iqr": 5.0,
+            "n": 46
+          },
+          "release_10_hops": {
+            "median": -1.0,
+            "iqr": 0.0,
+            "n": 46
+          },
+          "release_50_hops": {
+            "median": 1.0,
+            "iqr": 3.0,
+            "n": 46
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.0,
+            "n": 46
+          }
+        },
+        "guitar": {
+          "n_episodes": 95,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 95
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 0.0,
+            "n": 95
+          },
+          "release_10_hops": {
+            "median": 1.0,
+            "iqr": 2.0,
+            "n": 95
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 95
+          },
+          "audible_gate_coverage": {
+            "median": 0.974,
+            "iqr": 0.08,
+            "n": 95
+          }
+        },
+        "piano_keys": {
+          "n_episodes": 96,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 96
+          },
+          "attack_50_hops": {
+            "median": 0.0,
+            "iqr": 1.0,
+            "n": 96
+          },
+          "release_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 96
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 96
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.0,
+            "n": 96
+          }
+        },
+        "reed_pipe": {
+          "n_episodes": 154,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 154
+          },
+          "attack_50_hops": {
+            "median": 3.0,
+            "iqr": 6.0,
+            "n": 154
+          },
+          "release_10_hops": {
+            "median": -1.0,
+            "iqr": 0.0,
+            "n": 154
+          },
+          "release_50_hops": {
+            "median": 2.0,
+            "iqr": 3.0,
+            "n": 154
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.071,
+            "n": 154
+          }
+        },
+        "strings": {
+          "n_episodes": 12,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 12
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 12
+          },
+          "release_10_hops": {
+            "median": -1.0,
+            "iqr": 0.0,
+            "n": 12
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 12
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.0,
+            "n": 12
+          }
+        },
+        "synth_lead_pad": {
+          "n_episodes": 42,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 1.75,
+            "n": 42
+          },
+          "attack_50_hops": {
+            "median": 8.0,
+            "iqr": 25.0,
+            "n": 42
+          },
+          "release_10_hops": {
+            "median": -1.0,
+            "iqr": 0.0,
+            "n": 42
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 2.0,
+            "n": 41
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.142,
+            "n": 42
+          }
+        }
+      },
+      "guard_0.30s_sensitivity": {
+        "bass": {
+          "n_episodes": 73,
+          "low_powered_under_20_episodes": false,
+          "attack_10_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 73
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 73
+          },
+          "release_10_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 73
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 73
+          },
+          "audible_gate_coverage": {
+            "median": 0.98,
+            "iqr": 0.032,
+            "n": 73
+          }
+        },
+        "brass": {
+          "n_episodes": 8,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 1.0,
+            "iqr": 1.25,
+            "n": 8
+          },
+          "attack_50_hops": {
+            "median": 1.5,
+            "iqr": 1.25,
+            "n": 8
+          },
+          "release_10_hops": {
+            "median": 1.0,
+            "iqr": 0.25,
+            "n": 8
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 8
+          },
+          "audible_gate_coverage": {
+            "median": 0.987,
+            "iqr": 0.053,
+            "n": 8
+          }
+        },
+        "ensemble_voice": {
+          "n_episodes": 3,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 3.0,
+            "iqr": 1.0,
+            "n": 3
+          },
+          "attack_50_hops": {
+            "median": 6.0,
+            "iqr": 2.5,
+            "n": 3
+          },
+          "release_10_hops": {
+            "median": -1.0,
+            "iqr": 0.0,
+            "n": 3
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 3
+          },
+          "audible_gate_coverage": {
+            "median": 0.893,
+            "iqr": 0.025,
+            "n": 3
+          }
+        },
+        "guitar": {
+          "n_episodes": 15,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 1.0,
+            "iqr": 1.0,
+            "n": 15
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 0.5,
+            "n": 15
+          },
+          "release_10_hops": {
+            "median": 1.0,
+            "iqr": 2.0,
+            "n": 15
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 15
+          },
+          "audible_gate_coverage": {
+            "median": 0.979,
+            "iqr": 0.046,
+            "n": 15
+          }
+        },
+        "piano_keys": {
+          "n_episodes": 3,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 0.0,
+            "iqr": 0.5,
+            "n": 3
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 0.5,
+            "n": 3
+          },
+          "release_10_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 3
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 3
+          },
+          "audible_gate_coverage": {
+            "median": 1.0,
+            "iqr": 0.264,
+            "n": 3
+          }
+        },
+        "reed_pipe": {
+          "n_episodes": 6,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 3.0,
+            "iqr": 0.75,
+            "n": 6
+          },
+          "attack_50_hops": {
+            "median": 7.0,
+            "iqr": 3.5,
+            "n": 6
+          },
+          "release_10_hops": {
+            "median": -1.0,
+            "iqr": 0.0,
+            "n": 6
+          },
+          "release_50_hops": {
+            "median": 3.0,
+            "iqr": 1.5,
+            "n": 6
+          },
+          "audible_gate_coverage": {
+            "median": 0.897,
+            "iqr": 0.027,
+            "n": 6
+          }
+        },
+        "synth_lead_pad": {
+          "n_episodes": 3,
+          "low_powered_under_20_episodes": true,
+          "attack_10_hops": {
+            "median": 1.0,
+            "iqr": 0.5,
+            "n": 3
+          },
+          "attack_50_hops": {
+            "median": 1.0,
+            "iqr": 0.5,
+            "n": 3
+          },
+          "release_10_hops": {
+            "median": 2.0,
+            "iqr": 0.5,
+            "n": 3
+          },
+          "release_50_hops": {
+            "median": 0.0,
+            "iqr": 0.0,
+            "n": 3
+          },
+          "audible_gate_coverage": {
+            "median": 0.99,
+            "iqr": 0.033,
+            "n": 3
+          }
+        }
+      },
+      "columns": [
+        "attack_10_hops",
+        "attack_50_hops",
+        "release_10_hops",
+        "release_50_hops",
+        "audible_gate_coverage"
+      ]
+    },
+    "weak_vs_strong": {
+      "weak_families": [
+        "synth_lead_pad",
+        "reed_pipe",
+        "ensemble_voice",
+        "chromatic_percussion"
+      ],
+      "strong_families": [
+        "piano_keys",
+        "guitar",
+        "bass"
+      ],
+      "median_audible_gate_coverage_weak": 1.0,
+      "median_audible_gate_coverage_strong": 1.0,
+      "coverage_gap": 0.0,
+      "median_attack_50_weak_hops": 3.0,
+      "median_attack_50_strong_hops": 1.0,
+      "attack_gap_hops": 2.0,
+      "substantial_systematic_mismatch": true
+    }
+  },
+  "J3I_C_event_robustness": {
+    "rank_convention_reused_verbatim": {
+      "event": 0.95,
+      "detected": 0.8,
+      "stable": 0.5,
+      "tolerance_hops": 2
+    },
+    "computed_on": "AUDIO_SUPPORTED_PAIR frames",
+    "results": {
+      "P0_CURRENT": {
+        "by_family": {
+          "bass": {
+            "n_events": 5886,
+            "event_recall_consumer_time": 0.7796,
+            "event_recall_event_tolerant": 0.8862,
+            "false_movement_rate_in_stable_periods": 0.0029
+          },
+          "brass": {
+            "n_events": 811,
+            "event_recall_consumer_time": 0.7139,
+            "event_recall_event_tolerant": 0.8434,
+            "false_movement_rate_in_stable_periods": 0.003
+          },
+          "chromatic_percussion": {
+            "n_events": 662,
+            "event_recall_consumer_time": 0.4532,
+            "event_recall_event_tolerant": 0.6541,
+            "false_movement_rate_in_stable_periods": 0.0177
+          },
+          "ensemble_voice": {
+            "n_events": 5517,
+            "event_recall_consumer_time": 0.574,
+            "event_recall_event_tolerant": 0.863,
+            "false_movement_rate_in_stable_periods": 0.0118
+          },
+          "guitar": {
+            "n_events": 6265,
+            "event_recall_consumer_time": 0.6595,
+            "event_recall_event_tolerant": 0.819,
+            "false_movement_rate_in_stable_periods": 0.0181
+          },
+          "piano_keys": {
+            "n_events": 7689,
+            "event_recall_consumer_time": 0.8053,
+            "event_recall_event_tolerant": 0.896,
+            "false_movement_rate_in_stable_periods": 0.0067
+          },
+          "reed_pipe": {
+            "n_events": 1176,
+            "event_recall_consumer_time": 0.2815,
+            "event_recall_event_tolerant": 0.6429,
+            "false_movement_rate_in_stable_periods": 0.0305
+          },
+          "strings": {
+            "n_events": 236,
+            "event_recall_consumer_time": 0.4534,
+            "event_recall_event_tolerant": 0.6186,
+            "false_movement_rate_in_stable_periods": 0.0047
+          },
+          "synth_lead_pad": {
+            "n_events": 2267,
+            "event_recall_consumer_time": 0.3829,
+            "event_recall_event_tolerant": 0.5139,
+            "false_movement_rate_in_stable_periods": 0.0312
+          }
+        },
+        "spread_event_tolerant_recall": 0.3821,
+        "spread_consumer_time_recall": 0.5238,
+        "worst_family_event_tolerant": "synth_lead_pad"
+      },
+      "C3_ROOT_SALIENCE": {
+        "by_family": {
+          "bass": {
+            "n_events": 5886,
+            "event_recall_consumer_time": 0.7591,
+            "event_recall_event_tolerant": 0.8935,
+            "false_movement_rate_in_stable_periods": 0.0034
+          },
+          "brass": {
+            "n_events": 811,
+            "event_recall_consumer_time": 0.7238,
+            "event_recall_event_tolerant": 0.8496,
+            "false_movement_rate_in_stable_periods": 0.0026
+          },
+          "chromatic_percussion": {
+            "n_events": 662,
+            "event_recall_consumer_time": 0.4607,
+            "event_recall_event_tolerant": 0.6284,
+            "false_movement_rate_in_stable_periods": 0.0158
+          },
+          "ensemble_voice": {
+            "n_events": 5517,
+            "event_recall_consumer_time": 0.6125,
+            "event_recall_event_tolerant": 0.8874,
+            "false_movement_rate_in_stable_periods": 0.011
+          },
+          "guitar": {
+            "n_events": 6265,
+            "event_recall_consumer_time": 0.6405,
+            "event_recall_event_tolerant": 0.8059,
+            "false_movement_rate_in_stable_periods": 0.0187
+          },
+          "piano_keys": {
+            "n_events": 7689,
+            "event_recall_consumer_time": 0.7966,
+            "event_recall_event_tolerant": 0.8957,
+            "false_movement_rate_in_stable_periods": 0.0071
+          },
+          "reed_pipe": {
+            "n_events": 1176,
+            "event_recall_consumer_time": 0.2704,
+            "event_recall_event_tolerant": 0.6505,
+            "false_movement_rate_in_stable_periods": 0.0289
+          },
+          "strings": {
+            "n_events": 236,
+            "event_recall_consumer_time": 0.4364,
+            "event_recall_event_tolerant": 0.6314,
+            "false_movement_rate_in_stable_periods": 0.011
+          },
+          "synth_lead_pad": {
+            "n_events": 2267,
+            "event_recall_consumer_time": 0.3869,
+            "event_recall_event_tolerant": 0.5474,
+            "false_movement_rate_in_stable_periods": 0.0288
+          }
+        },
+        "spread_event_tolerant_recall": 0.3483,
+        "spread_consumer_time_recall": 0.5262,
+        "worst_family_event_tolerant": "synth_lead_pad"
+      },
+      "C2_PEAK_HPCP": {
+        "by_family": {
+          "bass": {
+            "n_events": 5886,
+            "event_recall_consumer_time": 0.7671,
+            "event_recall_event_tolerant": 0.8904,
+            "false_movement_rate_in_stable_periods": 0.0047
+          },
+          "brass": {
+            "n_events": 811,
+            "event_recall_consumer_time": 0.7226,
+            "event_recall_event_tolerant": 0.857,
+            "false_movement_rate_in_stable_periods": 0.0017
+          },
+          "chromatic_percussion": {
+            "n_events": 662,
+            "event_recall_consumer_time": 0.4637,
+            "event_recall_event_tolerant": 0.6571,
+            "false_movement_rate_in_stable_periods": 0.0154
+          },
+          "ensemble_voice": {
+            "n_events": 5517,
+            "event_recall_consumer_time": 0.5693,
+            "event_recall_event_tolerant": 0.8621,
+            "false_movement_rate_in_stable_periods": 0.0123
+          },
+          "guitar": {
+            "n_events": 6265,
+            "event_recall_consumer_time": 0.6726,
+            "event_recall_event_tolerant": 0.8198,
+            "false_movement_rate_in_stable_periods": 0.0183
+          },
+          "piano_keys": {
+            "n_events": 7689,
+            "event_recall_consumer_time": 0.8249,
+            "event_recall_event_tolerant": 0.8984,
+            "false_movement_rate_in_stable_periods": 0.0066
+          },
+          "reed_pipe": {
+            "n_events": 1176,
+            "event_recall_consumer_time": 0.2594,
+            "event_recall_event_tolerant": 0.6165,
+            "false_movement_rate_in_stable_periods": 0.0329
+          },
+          "strings": {
+            "n_events": 236,
+            "event_recall_consumer_time": 0.4576,
+            "event_recall_event_tolerant": 0.6017,
+            "false_movement_rate_in_stable_periods": 0.0047
+          },
+          "synth_lead_pad": {
+            "n_events": 2267,
+            "event_recall_consumer_time": 0.3701,
+            "event_recall_event_tolerant": 0.4905,
+            "false_movement_rate_in_stable_periods": 0.0338
+          }
+        },
+        "spread_event_tolerant_recall": 0.4079,
+        "spread_consumer_time_recall": 0.5655,
+        "worst_family_event_tolerant": "synth_lead_pad"
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "by_family": {
+          "bass": {
+            "n_events": 5886,
+            "event_recall_consumer_time": 0.7703,
+            "event_recall_event_tolerant": 0.893,
+            "false_movement_rate_in_stable_periods": 0.0089
+          },
+          "brass": {
+            "n_events": 811,
+            "event_recall_consumer_time": 0.7263,
+            "event_recall_event_tolerant": 0.8681,
+            "false_movement_rate_in_stable_periods": 0.0016
+          },
+          "chromatic_percussion": {
+            "n_events": 662,
+            "event_recall_consumer_time": 0.4471,
+            "event_recall_event_tolerant": 0.5785,
+            "false_movement_rate_in_stable_periods": 0.0151
+          },
+          "ensemble_voice": {
+            "n_events": 5517,
+            "event_recall_consumer_time": 0.604,
+            "event_recall_event_tolerant": 0.8883,
+            "false_movement_rate_in_stable_periods": 0.0121
+          },
+          "guitar": {
+            "n_events": 6265,
+            "event_recall_consumer_time": 0.6694,
+            "event_recall_event_tolerant": 0.8286,
+            "false_movement_rate_in_stable_periods": 0.0192
+          },
+          "piano_keys": {
+            "n_events": 7689,
+            "event_recall_consumer_time": 0.8269,
+            "event_recall_event_tolerant": 0.9001,
+            "false_movement_rate_in_stable_periods": 0.0059
+          },
+          "reed_pipe": {
+            "n_events": 1176,
+            "event_recall_consumer_time": 0.273,
+            "event_recall_event_tolerant": 0.6446,
+            "false_movement_rate_in_stable_periods": 0.0307
+          },
+          "strings": {
+            "n_events": 236,
+            "event_recall_consumer_time": 0.4492,
+            "event_recall_event_tolerant": 0.6186,
+            "false_movement_rate_in_stable_periods": 0.0093
+          },
+          "synth_lead_pad": {
+            "n_events": 2267,
+            "event_recall_consumer_time": 0.3639,
+            "event_recall_event_tolerant": 0.5285,
+            "false_movement_rate_in_stable_periods": 0.0278
+          }
+        },
+        "spread_event_tolerant_recall": 0.3716,
+        "spread_consumer_time_recall": 0.5539,
+        "worst_family_event_tolerant": "synth_lead_pad"
+      }
+    },
+    "framewise_r2_spread_P0": 0.497,
+    "event_tolerant_recall_spread_P0": 0.3821,
+    "spread_reduction": 0.1149,
+    "substantially_reduces_cross_family_failure": true
+  },
+  "operationalisation_disclosure": {
+    "status": "DISCLOSED ANALYST OPERATIONALISATION. The brief quantifies only the mask-parity clause. Rather than invent new numbers, the established 0.10 absolute scale is reused for the other two clauses on quantities that already live on a comparable scale.",
+    "attack_decay_substantial_systematic_mismatch": "the audible-gate coverage fraction of the weakest families (synth_lead_pad, reed_pipe, ensemble_voice, chromatic_percussion) is lower than that of the strong families (piano_keys, guitar, bass) by >= 0.10, OR the median attack_50 of the weakest families exceeds that of the strong families by >= 1 hop. Both quantities are already on scales the programme uses.",
+    "event_tolerant_substantially_reduces_cross_family_failure": "the max-minus-min spread of event-tolerant family event recall is smaller than the max-minus-min spread of framewise family R-squared by >= 0.10, on the same audio-supported frames, for P0_CURRENT.",
+    "no_other_threshold_enters_the_decision_path": true
+  },
+  "outcome_taxonomy_evaluation": {
+    "target_mismatch_clause_met": true,
+    "which_sub_clause": {
+      "mask_parity_material": false,
+      "attack_decay_substantial_mismatch": true
+    },
+    "event_tolerant_substantially_reduces_failure": true,
+    "substantial_family_failure_remains": true,
+    "residual_event_tolerant_recall_spread": 0.3821,
+    "AMBIGUITY_IN_THE_BRIEF_DISCLOSED": "TIMBRE_ORACLE_CONFOUNDED's literal condition is ALSO satisfied by this data - attack/decay mismatch is substantial AND the event-tolerant metric substantially reduces the apparent cross-family failure. The two outcomes overlap and the brief gives no precedence. MIXED is returned because its distinguishing clause - substantial family failure REMAINS after audio support and event-tolerant evaluation - is true by a wide margin, and because CONFOUNDED's interpretation ('cannot yet be attributed cleanly to the representation') is not supported for synth_lead_pad and chromatic_percussion. The Captain may overrule; both clause sets are reported."
+  },
+  "outcome": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+  "J3F_mutated": false,
+  "J3G_mutated": false,
+  "J3G2_mutated": false,
+  "new_tonal_candidate": false,
+  "cqt_run": false,
+  "basic_pitch_run": false,
+  "crp_repair": false,
+  "nnls_run": false,
+  "neural_model": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

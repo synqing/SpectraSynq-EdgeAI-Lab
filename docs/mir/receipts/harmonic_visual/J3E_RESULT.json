@@ -1,0 +1,189 @@
+{
+  "challenge_membership": {
+    "counts": {
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292,
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000
+    },
+    "expected_from_J3D_A_v2": {
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292,
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000
+    },
+    "holdout_frames": 137047,
+    "matches": true
+  },
+  "compatibility_pin_changed": false,
+  "conditions": {
+    "CONTROL": "host_chroma12 -> the SAME state->colour mapping; host chroma movement -> the SAME transition engine. This is the strongest relevant control; onset/RMS are diagnostic references only.",
+    "TREATMENT": "oracle pitch-class state -> the SAME state->colour mapping; oracle M_tv -> the SAME transition engine.",
+    "invariant": "same renderer, same degrees of freedom, same frozen constants. ONLY the musical information differs."
+  },
+  "decision_inputs": {
+    "acoustic_false_response_gain": true,
+    "chatter_guard_reversal_rate_ok": true,
+    "control_harmonic_recall_event_tolerant": 0.4776,
+    "recall_gain_on_both_harmonic_classes": false,
+    "treatment_harmonic_recall_event_tolerant": 0.5515
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). Corpus md5 verified against the publisher's checksum.",
+  "git_head": "a16fd3bb501ad92c75a5d8563ac424c7b3c0996b",
+  "job": "J3E",
+  "label": "HOST_ORACLE_VISUAL_FEASIBILITY",
+  "oracle": {
+    "movement": "M_tv = 0.5*L1(pc_t, pc_{t-8}) - identical to J3D-A",
+    "must_not": [
+      "alter the J3D oracle to improve visual behaviour",
+      "use Basic Pitch"
+    ],
+    "percussion_exclusion": "is_drum OR General MIDI program >= 112 - identical to J3D-A",
+    "silence": "explicit, never zero-filled",
+    "source": "exact BabySlakh MIDI, unchanged from J3D-A",
+    "state": "12-D duration-overlap weighted pitch-class state, NO velocity weighting, L1-normalised"
+  },
+  "outcome": "HARMONIC_VISUAL_INFORMATION_GAIN",
+  "preregistration": "docs/mir/receipts/harmonic_visual/J3E_PREREGISTRATION.json",
+  "preregistration_written_before_any_score": true,
+  "primary_variant": "without_floor",
+  "product_mode_created": false,
+  "production_firmware_changed": false,
+  "results": {
+    "with_floor": {
+      "CONTROL": {
+        "consumer_time": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1479,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.1583,
+          "HARMONIC_CHANGE_NO_ONSET": 0.1535
+        },
+        "event_tolerant": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3104,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.3488,
+          "HARMONIC_CHANGE_NO_ONSET": 0.3427
+        },
+        "holdout": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 0.1074,
+          "direction_reversal_rate": 0.1613,
+          "median_deltaE": 0.0
+        },
+        "n_frames": 145311,
+        "threshold_deltaE_p90_of_own_holdout": 0.3562
+      },
+      "TREATMENT": {
+        "consumer_time": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 1.0,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 1.0,
+          "HARMONIC_CHANGE_NO_ONSET": 1.0
+        },
+        "event_tolerant": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 1.0,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 1.0,
+          "HARMONIC_CHANGE_NO_ONSET": 1.0
+        },
+        "holdout": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 1.0,
+          "direction_reversal_rate": 0.0546,
+          "median_deltaE": 0.0
+        },
+        "n_frames": 145311,
+        "threshold_deltaE_p90_of_own_holdout": 0.0
+      }
+    },
+    "without_floor": {
+      "CONTROL": {
+        "consumer_time": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1616,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.1814,
+          "HARMONIC_CHANGE_NO_ONSET": 0.1755
+        },
+        "event_tolerant": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3618,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.4802,
+          "HARMONIC_CHANGE_NO_ONSET": 0.475
+        },
+        "holdout": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 0.1003,
+          "direction_reversal_rate": 0.1701,
+          "median_deltaE": 2.6895
+        },
+        "n_frames": 145311,
+        "threshold_deltaE_p90_of_own_holdout": 11.3775
+      },
+      "TREATMENT": {
+        "consumer_time": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.044,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.2532,
+          "HARMONIC_CHANGE_NO_ONSET": 0.208
+        },
+        "event_tolerant": {
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1443,
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5733,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5298
+        },
+        "holdout": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 0.1,
+          "direction_reversal_rate": 0.0693,
+          "median_deltaE": 0.9388
+        },
+        "n_frames": 145311,
+        "threshold_deltaE_p90_of_own_holdout": 8.0781
+      }
+    }
+  },
+  "schema": "spectrasynq.harmonic_visual_result.v1",
+  "student_io_frozen": false,
+  "temporal_views": {
+    "consumer_time": "no correction",
+    "event_tolerant_hops": 2
+  },
+  "thresholds_applied": {
+    "HARMONIC_VISUAL_CARRIER_FAIL": "TREATMENT harmonic recall (event-tolerant, mean of the two harmonic classes) < 0.50. Even with perfect information the grammar does not respond at harmonic events. This fails the GRAMMAR, not harmonic intelligence.",
+    "HARMONIC_VISUAL_INCONCLUSIVE": "anything else, including a gain on one axis accompanied by pathological holdout behaviour",
+    "HARMONIC_VISUAL_INFORMATION_GAIN": "carrier works (TREATMENT harmonic recall >= 0.50) AND [ TREATMENT harmonic recall exceeds CONTROL by >= 0.10 absolute on BOTH harmonic classes OR TREATMENT acoustic-only false response is at least 0.10 lower than CONTROL ] AND TREATMENT ordinary-holdout above-threshold rate is not more than 1.5x CONTROL's",
+    "HARMONIC_VISUAL_NO_INCREMENT": "carrier works but neither gain criterion is met"
+  },
+  "titan": false,
+  "visual_verb": {
+    "compositor": {
+      "curve": "edgeai.mir.k1_photons.photons_curve, PHOTONS_CURVE_MODE 0 (shipping)",
+      "display": "edgeai.mir.host_chroma.preview_encode, exposure 2.2 (existing HOST preview transform)",
+      "photons": "HELD FIXED at 1.0 for both conditions, so luminance carries no information and the metric cannot degenerate to brightness"
+    },
+    "movement_to_transition": {
+      "M_REF_justification": "0.35 is the median M_tv of the J3D challenge frames' CHROMA baseline (0.349 / 0.373), i.e. a scale taken from the CONTROL side, not the treatment side, so it cannot favour the oracle",
+      "forbidden": [
+        "movement modulating brightness",
+        "movement spawning particles",
+        "any per-track tuning",
+        "any tuning after seeing a score"
+      ],
+      "frozen": {
+        "A_MAX": 0.6,
+        "A_MIN": 0.02,
+        "M_REF": 0.35
+      },
+      "rule": "harmonic movement controls ONLY the transition rate between successive tonal colour states: alpha(t) = A_MIN + (A_MAX - A_MIN) * clip(M(t)/M_REF, 0, 1); colour(t) = (1-alpha)*colour(t-1) + alpha*target(t)"
+    },
+    "name": "HARMONIC COLOUR TRANSITION",
+    "semantics": "tonal state changes -> visual colour state changes. NOT 'harmonic movement rises -> brightness rises'.",
+    "state_to_colour": {
+      "frozen": {
+        "led_count": 160,
+        "saturation": 1.0,
+        "strip": "uniform - no new spatial verb is invented",
+        "value": 1.0
+      },
+      "reuse": "existing SpectraSynq chroma->colour semantics, not a new colour theory",
+      "rule": "pitch-class bin b maps to hue b/12 on the wheel; bin weight is the SQUARED chromagram drive, which is the documented firmware bloom path (hsv(..., bin^2/6), then RGB squared again); the frame's target colour is the weight-normalised mix of those 12 hues",
+      "shaping": "edgeai.mir.host_chroma.bloom_chromagram with its frozen floor=0.65, applied identically to both conditions"
+    }
+  },
+  "what_this_is_not": [
+    "a production effect",
+    "a compatibility-pin row",
+    "Gate B",
+    "Gate C",
+    "firmware authority",
+    "a perceptual preference claim",
+    "real-audio evidence"
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "schema": "spectrasynq.harmonic_visual_prereg.v1",
+  "job": "J3E",
+  "written_at": "2026-09-01T12:00:00Z",
+  "written_before_any_score": true,
+  "label": "HOST_ORACLE_VISUAL_FEASIBILITY",
+  "titan": false,
+  "student_io_frozen": false,
+  "production_firmware_changed": false,
+  "compatibility_pin_changed": false,
+  "question": "IF SpectraSynq possessed correct harmonic-state and harmonic-movement information, would that information enable a visual behaviour worth pursuing?",
+  "explicitly_independent_of": "whether the current frontend can recover it. That is J3D / C1 / C1b territory and remains unresolved. VALUE != RECOVERABILITY != COMPUTE COST.",
+  "this_is_not": [
+    "a production effect",
+    "a compatibility-pin row",
+    "Gate B",
+    "Gate C",
+    "firmware authority",
+    "a perceptual preference claim",
+    "real-audio evidence"
+  ],
+  "oracle": {
+    "source": "exact BabySlakh MIDI, unchanged from J3D-A",
+    "state": "12-D duration-overlap weighted pitch-class state, NO velocity weighting, L1-normalised",
+    "percussion_exclusion": "is_drum OR General MIDI program >= 112 - identical to J3D-A",
+    "silence": "explicit, never zero-filled",
+    "movement": "M_tv = 0.5*L1(pc_t, pc_{t-8}) - identical to J3D-A",
+    "must_not": [
+      "alter the J3D oracle to improve visual behaviour",
+      "use Basic Pitch"
+    ]
+  },
+  "challenge_set": {
+    "membership": "REUSED from J3D-A v2, recomputed by the identical code path and ASSERTED against the v2 receipt counts",
+    "expected_counts_from_J3D_A_v2": {
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000,
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292
+    },
+    "on_mismatch": "the run is INVALID. Membership must never be reselected from rendering results.",
+    "ordinary_holdout": "all valid frames not in any challenge class"
+  },
+  "visual_verb": {
+    "name": "HARMONIC COLOUR TRANSITION",
+    "semantics": "tonal state changes -> visual colour state changes. NOT 'harmonic movement rises -> brightness rises'.",
+    "state_to_colour": {
+      "reuse": "existing SpectraSynq chroma->colour semantics, not a new colour theory",
+      "rule": "pitch-class bin b maps to hue b/12 on the wheel; bin weight is the SQUARED chromagram drive, which is the documented firmware bloom path (hsv(..., bin^2/6), then RGB squared again); the frame's target colour is the weight-normalised mix of those 12 hues",
+      "shaping": "edgeai.mir.host_chroma.bloom_chromagram with its frozen floor=0.65, applied identically to both conditions",
+      "frozen": {
+        "saturation": 1.0,
+        "value": 1.0,
+        "led_count": 160,
+        "strip": "uniform - no new spatial verb is invented"
+      }
+    },
+    "movement_to_transition": {
+      "rule": "harmonic movement controls ONLY the transition rate between successive tonal colour states: alpha(t) = A_MIN + (A_MAX - A_MIN) * clip(M(t)/M_REF, 0, 1); colour(t) = (1-alpha)*colour(t-1) + alpha*target(t)",
+      "frozen": {
+        "A_MIN": 0.02,
+        "A_MAX": 0.6,
+        "M_REF": 0.35
+      },
+      "M_REF_justification": "0.35 is the median M_tv of the J3D challenge frames' CHROMA baseline (0.349 / 0.373), i.e. a scale taken from the CONTROL side, not the treatment side, so it cannot favour the oracle",
+      "forbidden": [
+        "movement modulating brightness",
+        "movement spawning particles",
+        "any per-track tuning",
+        "any tuning after seeing a score"
+      ]
+    },
+    "compositor": {
+      "photons": "HELD FIXED at 1.0 for both conditions, so luminance carries no information and the metric cannot degenerate to brightness",
+      "curve": "edgeai.mir.k1_photons.photons_curve, PHOTONS_CURVE_MODE 0 (shipping)",
+      "display": "edgeai.mir.host_chroma.preview_encode, exposure 2.2 (existing HOST preview transform)"
+    }
+  },
+  "conditions": {
+    "CONTROL": "host_chroma12 -> the SAME state->colour mapping; host chroma movement -> the SAME transition engine. This is the strongest relevant control; onset/RMS are diagnostic references only.",
+    "TREATMENT": "oracle pitch-class state -> the SAME state->colour mapping; oracle M_tv -> the SAME transition engine.",
+    "invariant": "same renderer, same degrees of freedom, same frozen constants. ONLY the musical information differs."
+  },
+  "temporal_views": {
+    "CONSUMER_TIME": "each series on its declared causal/nominal timeline. No lag correction. J3D's chroma timing is unresolved and no receptive-field correction is authorised because C1 did not establish one.",
+    "EVENT_TOLERANT": {
+      "tolerance_hops": 2,
+      "tolerance_ms": 64,
+      "justification": "2 hops is 64 ms, the figure the cadence receipt already records as the actual added delay at the 20 Hz transport edge. It is a correspondence WINDOW for event metrics only - the signal is never shifted and no lag is optimised."
+    }
+  },
+  "metric": {
+    "visual_transition_magnitude": "CIELAB Delta-E between consecutive rendered frames, computed on the sRGB-encoded rendered LED bytes",
+    "why_not_luminance": "the visual verb is a colour transition; mean luminance is explicitly forbidden and photons are held fixed so luminance carries nothing",
+    "response_threshold": {
+      "rule": "per condition, the 90th percentile of that condition's OWN ordinary-holdout Delta-E distribution",
+      "why": "FAIRNESS CONTROL. A per-condition threshold prevents TREATMENT winning merely by being more active overall. Each condition is judged against its own resting behaviour."
+    },
+    "measures": [
+      "harmonic challenge recall: fraction of HARMONIC_CHANGE_FLAT_ENERGY and HARMONIC_CHANGE_NO_ONSET frames with a response within the tolerance window",
+      "acoustic-only false response: same fraction on ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE",
+      "increment over CONTROL on both",
+      "ordinary-holdout chatter: above-threshold rate, median Delta-E, and a direction-reversal rate as an oscillation measure"
+    ]
+  },
+  "outcome_thresholds": {
+    "HARMONIC_VISUAL_CARRIER_FAIL": "TREATMENT harmonic recall (event-tolerant, mean of the two harmonic classes) < 0.50. Even with perfect information the grammar does not respond at harmonic events. This fails the GRAMMAR, not harmonic intelligence.",
+    "HARMONIC_VISUAL_INFORMATION_GAIN": "carrier works (TREATMENT harmonic recall >= 0.50) AND [ TREATMENT harmonic recall exceeds CONTROL by >= 0.10 absolute on BOTH harmonic classes OR TREATMENT acoustic-only false response is at least 0.10 lower than CONTROL ] AND TREATMENT ordinary-holdout above-threshold rate is not more than 1.5x CONTROL's",
+    "HARMONIC_VISUAL_NO_INCREMENT": "carrier works but neither gain criterion is met",
+    "HARMONIC_VISUAL_INCONCLUSIVE": "anything else, including a gain on one axis accompanied by pathological holdout behaviour"
+  },
+  "artefact": {
+    "when": "only if the machine result is HARMONIC_VISUAL_INFORMATION_GAIN",
+    "selection": "excerpts chosen from J3D challenge membership BEFORE rendering - never after looking at output",
+    "status": "decision support for Captain, NOT an automatic perceptual gate, NOT D25/C1, does not reopen Gate C"
+  },
+  "forbidden_in_this_job": [
+    "mutating J3D-A v1/v2 or J3D-C1",
+    "running C1b",
+    "creating a J3D-A v3",
+    "changing the lag rule",
+    "manufacturing HARMONIC_MOVEMENT_INCREMENTAL",
+    "Basic Pitch",
+    "EfficientAT",
+    "foundation models",
+    "voice-conditioned register",
+    "real-audio inference",
+    "Titan",
+    "student training",
+    "production firmware",
+    "compatibility-pin rows",
+    "a new product mode",
+    "reopening D25 / D26 / cadence",
+    "freezing student I/O",
+    "calling a high transfer score good lighting"
+  ],
+  "pre_score_clarifications": [
+    {
+      "at": "2026-09-01T12:10:00Z",
+      "no_score_of_any_kind_exists_yet": true,
+      "subject": "bloom_chromagram's floor=0.65",
+      "finding": "bloom_chromagram compresses the 12 bins into [0.65, 1.0]. That floor exists so a sparse one-hot does not render BLACK in the bloom engine - it is a brightness accommodation for that engine, not a colour-mix rule. Applied to a hue MIX it washes every frame toward white and would bias this job toward CARRIER_FAIL.",
+      "decision": "compute BOTH weightings and report both: (a) with_floor - the product-faithful bloom drive, squared; (b) without_floor - the squared L1-normalised state, the bin^2 semantics alone. Both are applied IDENTICALLY to CONTROL and TREATMENT, so neither can bias the comparison between them. The with_floor variant additionally tests, inside the sandbox, the compatibility pin's own warning that palette-locked hue is a weak observable.",
+      "primary": "without_floor is the primary variant for the outcome classification, because the floor is a bloom-engine brightness accommodation and this sandbox is not the bloom engine. with_floor is reported alongside."
+    },
+    {
+      "at": "2026-09-01T12:10:00Z",
+      "no_score_of_any_kind_exists_yet": true,
+      "subject": "smoothing space",
+      "decision": "the transition smoother runs on linear RGB before the sRGB preview encode - a straight-line path through colour space. Declared so it is not chosen after seeing output."
+    },
+    {
+      "at": "2026-09-01T12:20:00Z",
+      "no_score_of_any_kind_exists_yet": true,
+      "subject": "the ordinary-holdout chatter guard is vacuous as first written",
+      "finding": "the response threshold is defined as the 90th percentile of each condition's OWN ordinary-holdout Delta-E. That makes the holdout above-threshold rate exactly 0.10 for BOTH conditions by construction, so the criterion 'TREATMENT holdout rate <= 1.5x CONTROL' is always satisfied and protects against nothing.",
+      "decision": "the OPERATIVE chatter guard becomes the DIRECTION-REVERSAL RATE on ordinary holdout: the fraction of holdout frames where consecutive colour-trajectory steps reverse direction (dot product of successive colour deltas < 0). It is threshold-independent and measures oscillation directly. Guard: TREATMENT reversal rate <= 1.5 x CONTROL reversal rate. Set now, before any score exists.",
+      "the_original_criterion": "still computed and reported, flagged as vacuous, so the record shows what was replaced and why."
+    }
+  ]
+}

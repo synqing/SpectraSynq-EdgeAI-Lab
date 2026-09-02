@@ -1,0 +1,1391 @@
+{
+  "schema": "spectrasynq.stft_harmonic_recovery_dev.v1",
+  "job": "J3G-DEV",
+  "label": "HOST-ONLY DETERMINISTIC TONAL PROJECTION - DEVELOPMENT STAGE",
+  "git_head": "WORKCOPY",
+  "preregistration": "docs/mir/receipts/stft_harmonic_recovery/J3G_PREREGISTRATION.json",
+  "preregistration_amendments": [
+    {
+      "date": "2026-09-01",
+      "what": "declared the empty-window rule for C3/C4 pitch pooling and the absence of an upper frequency limit in C1",
+      "scores_seen_at_time_of_amendment": "NONE - no candidate, ablation or diagnostic had been computed",
+      "why": "the formulas as first written were silent on what happens where the STFT has fewer than one bin per semitone, which is exactly the region J3F Q0a flagged. Leaving it undeclared would have let the implementation choose."
+    },
+    {
+      "date": "2026-09-01",
+      "what": "C3 octave guard changed from a multiplicative fraction to a saturating gate",
+      "scores_seen_at_time_of_amendment": "the four phantom-triad UNIT FIXTURE vectors only. NO corpus metric, NO ablation score, NO candidate R-squared, NO challenge recall, NO visual metric had been computed for any candidate. The development/holdout split had not been touched.",
+      "the_fault": "the originally declared S*(c) = S(c) * odd_frac(c) is algebraically degenerate: odd_frac(c) = odd_sum(c)/(S(c)+eta), so S*(c) reduces identically to odd_sum(c). The declared prose called it a guard on a harmonic SUM, but the algebra silently discarded every even-harmonic term, i.e. roughly half the harmonic evidence, in every case including a perfectly clean fundamental.",
+      "why_it_had_to_be_fixed_rather_than_run": "running the degenerate form would have tested a strawman version of the harmonic-aware hypothesis. That biases the programme towards concluding the existing STFT is exhausted - the more dangerous error direction, because it is the one that would send SpectraSynq to CQT, a teacher or a learned student on false evidence.",
+      "the_fix": "S*(c) = S(c) * min(1, odd_frac(c)/rho), rho = 0.767 derived analytically from the same 1/h series the harmonic weights already assume. An ideal fundamental now keeps its FULL harmonic sum (gate = 1); a sub-octave, whose odd harmonics are absent, is still driven to 0.",
+      "not_tuned": "rho is derived from the declared harmonic weights, not fitted. No constant was chosen to change a fixture number, and the fixture was not re-consulted to pick it.",
+      "precedent": "identical handling to the J3A CONTROL_A design fault: caught before any hypothesis score, disclosed, corrected, with the pre-correction output recorded rather than hidden.",
+      "pre_correction_fixture_output_recorded_for_audit": {
+        "stimulus": "HARMONIC_NOTE (MIDI 60, harmonics 1..8 at 1/h)",
+        "degenerate_C3_L1_vector": {
+          "C": 0.414,
+          "C#": 0.036,
+          "D": 0.029,
+          "D#": 0.037,
+          "E": 0.052,
+          "F": 0.124,
+          "F#": 0.024,
+          "G": 0.106,
+          "G#": 0.075,
+          "A": 0.034,
+          "A#": 0.031,
+          "B": 0.039
+        }
+      }
+    },
+    {
+      "date": "2026-09-01",
+      "what": "withdrew my self-invented blocking gate 2, and fixed the fixture comparison basis",
+      "scores_seen_at_time_of_amendment": "the phantom-triad UNIT FIXTURE vectors for P0/P1/P2/C1/C2/C3/C4 on HARMONIC_NOTE only. NO corpus metric of any kind had been computed - no ablation, no candidate R-squared, no challenge recall, no family analysis, no visual metric. The development split had not been touched.",
+      "what_i_saw": "measured non-root mass on HARMONIC_NOTE: P0 0.472, P1 0.156, P2 0.472, C1 0.698, C2 0.367, C3 0.551, C4 0.667. Under my gate 2 as written, C1, C3 and C4 would all have been eliminated before touching the corpus.",
+      "fault_1": "gate 2 compared measured fixture output against J3F's Q0b non-root figure of 0.151. Q0b is ANALYTIC - an ideal 1/k series folded through the nearest-pitch-class rule with no window and no leakage. Measured P0 through the actual Hann STFT is 0.472. The gate was therefore comparing two incommensurable numbers and P0 itself would have failed it.",
+      "fault_2": "the blocking gate was MINE, not the Captain's. His brief makes the phantom-triad fixture a REPORTING requirement with an expectation ('should reduce spurious non-root mass') plus one anti-gaming clause ('prevents fixing single notes by destroying real chords'). Turning that into a hard elimination criterion over-scoped the instruction.",
+      "why_it_also_fails_on_the_merits": "a soft filterbank spreads to neighbouring pitch classes BY DESIGN; that is what conventional chroma does. Whether the spread costs or buys anything is a polyphony question, not a single-note question. Eliminating C1 on a single-note fixture would have left J3G unable to answer its own stated question - C1 is precisely 'the conventional baseline against which current host_chroma12 should have been compared'.",
+      "the_fix": "gate 2 withdrawn. The fixture is reported for every candidate, compared against P0 measured on the SAME fixture, and feeds the tie-break. The anti-gaming clause survives as the only blocking part: a candidate that collapses a genuine major triad fails. Blocking gate 1 (acoustic false response, corpus-measured) is unchanged.",
+      "direction_of_risk_disclosed": "this amendment LOOSENS a criterion after seeing that three candidates would fail it. Recorded in full so the Captain can judge it. The countervailing risk was worse: eliminating the conventional baseline on an incommensurable threshold would have manufactured a FAIL outcome and sent the programme to CQT or a learned student on bad evidence."
+    }
+  ],
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "split": {
+    "development": [
+      "Track00001",
+      "Track00003",
+      "Track00005",
+      "Track00007",
+      "Track00009",
+      "Track00011",
+      "Track00013",
+      "Track00015",
+      "Track00017",
+      "Track00019"
+    ],
+    "final_holdout": [
+      "Track00002",
+      "Track00004",
+      "Track00006",
+      "Track00008",
+      "Track00010",
+      "Track00012",
+      "Track00014",
+      "Track00016",
+      "Track00018",
+      "Track00020"
+    ]
+  },
+  "final_holdout_opened_in_this_stage": false,
+  "controls": {
+    "C_FRAMING_max_abs_diff": 0.0,
+    "C_IDENTITY_max_abs_diff": 0.0,
+    "C_FRAMING_ok": true,
+    "C_IDENTITY_ok": true,
+    "C_MEMBERSHIP_counts": {
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000,
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292
+    },
+    "C_MEMBERSHIP_expected": {
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000,
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292
+    },
+    "C_MEMBERSHIP_ok": true,
+    "C_SHUFFLE_r2": -0.0326,
+    "C_SHUFFLE_ok": true,
+    "all_blocking_pass": true
+  },
+  "tuning_diagnostic": {
+    "per_track": [
+      {
+        "track": "Track00001",
+        "weighted_circular_mean_cents": -0.03,
+        "n_peaks": 109748
+      },
+      {
+        "track": "Track00003",
+        "weighted_circular_mean_cents": 1.46,
+        "n_peaks": 187232
+      },
+      {
+        "track": "Track00005",
+        "weighted_circular_mean_cents": 0.29,
+        "n_peaks": 168148
+      },
+      {
+        "track": "Track00007",
+        "weighted_circular_mean_cents": 0.69,
+        "n_peaks": 119921
+      },
+      {
+        "track": "Track00009",
+        "weighted_circular_mean_cents": -0.5,
+        "n_peaks": 103553
+      },
+      {
+        "track": "Track00011",
+        "weighted_circular_mean_cents": 1.47,
+        "n_peaks": 138171
+      },
+      {
+        "track": "Track00013",
+        "weighted_circular_mean_cents": -0.67,
+        "n_peaks": 207452
+      },
+      {
+        "track": "Track00015",
+        "weighted_circular_mean_cents": 1.77,
+        "n_peaks": 117627
+      },
+      {
+        "track": "Track00017",
+        "weighted_circular_mean_cents": 0.65,
+        "n_peaks": 181863
+      },
+      {
+        "track": "Track00019",
+        "weighted_circular_mean_cents": 2.03,
+        "n_peaks": 118460
+      }
+    ],
+    "median_abs_deviation_cents": 0.68,
+    "declared_threshold_cents": 10.0,
+    "verdict": "TUNING_NOT_MATERIAL_HERE",
+    "action": "no candidate spent on tuning compensation"
+  },
+  "phantom_triad_fixture": {
+    "PURE_SINE": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.7645,
+          "C#": 0.1055,
+          "D": 0.0056,
+          "D#": 0.0015,
+          "E": 0.0006,
+          "F": 0.0003,
+          "F#": 0.0003,
+          "G": 0.0003,
+          "G#": 0.0009,
+          "A": 0.0013,
+          "A#": 0.0057,
+          "B": 0.1134
+        },
+        "root_mass": 0.7645,
+        "fifth_mass": 0.0003,
+        "major_third_mass": 0.0006,
+        "chord_tone_mass": 0.7645,
+        "non_chord_tone_mass": 0.2355
+      },
+      "P1_POWER_L1": {
+        "vector": {
+          "C": 0.9604,
+          "C#": 0.0183,
+          "D": 0.0001,
+          "D#": 0.0,
+          "E": 0.0,
+          "F": 0.0,
+          "F#": 0.0,
+          "G": 0.0,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0001,
+          "B": 0.0211
+        },
+        "root_mass": 0.9604,
+        "fifth_mass": 0.0,
+        "major_third_mass": 0.0,
+        "chord_tone_mass": 0.9604,
+        "non_chord_tone_mass": 0.0396
+      },
+      "P2_SQRT_L1_NO_CLIP": {
+        "vector": {
+          "C": 0.7645,
+          "C#": 0.1055,
+          "D": 0.0056,
+          "D#": 0.0015,
+          "E": 0.0006,
+          "F": 0.0003,
+          "F#": 0.0003,
+          "G": 0.0003,
+          "G#": 0.0009,
+          "A": 0.0013,
+          "A#": 0.0057,
+          "B": 0.1134
+        },
+        "root_mass": 0.7645,
+        "fifth_mass": 0.0003,
+        "major_third_mass": 0.0006,
+        "chord_tone_mass": 0.7645,
+        "non_chord_tone_mass": 0.2355
+      },
+      "C1_SOFT_FILTERBANK": {
+        "vector": {
+          "C": 0.4483,
+          "C#": 0.2375,
+          "D": 0.0338,
+          "D#": 0.0021,
+          "E": 0.0005,
+          "F": 0.0002,
+          "F#": 0.0002,
+          "G": 0.0003,
+          "G#": 0.0007,
+          "A": 0.0025,
+          "A#": 0.035,
+          "B": 0.2388
+        },
+        "root_mass": 0.4483,
+        "fifth_mass": 0.0003,
+        "major_third_mass": 0.0005,
+        "chord_tone_mass": 0.4483,
+        "non_chord_tone_mass": 0.5517
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 1.0,
+          "C#": 0.0,
+          "D": 0.0,
+          "D#": 0.0,
+          "E": 0.0,
+          "F": 0.0,
+          "F#": 0.0,
+          "G": 0.0,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0,
+          "B": 0.0
+        },
+        "root_mass": 1.0,
+        "fifth_mass": 0.0,
+        "major_third_mass": 0.0,
+        "chord_tone_mass": 1.0,
+        "non_chord_tone_mass": 0.0
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.4544,
+          "C#": 0.0874,
+          "D": 0.0052,
+          "D#": 0.0029,
+          "E": 0.0345,
+          "F": 0.1523,
+          "F#": 0.0307,
+          "G": 0.0215,
+          "G#": 0.0924,
+          "A": 0.019,
+          "A#": 0.0057,
+          "B": 0.0941
+        },
+        "root_mass": 0.4544,
+        "fifth_mass": 0.0215,
+        "major_third_mass": 0.0345,
+        "chord_tone_mass": 0.4544,
+        "non_chord_tone_mass": 0.5456
+      },
+      "C4_CRP": {
+        "vector": {
+          "C": 0.2391,
+          "C#": 0.0322,
+          "D": 0.0241,
+          "D#": 0.0848,
+          "E": 0.1464,
+          "F": 0.0768,
+          "F#": 0.033,
+          "G": 0.049,
+          "G#": 0.2039,
+          "A": 0.0403,
+          "A#": 0.0368,
+          "B": 0.0337
+        },
+        "root_mass": 0.2391,
+        "fifth_mass": 0.049,
+        "major_third_mass": 0.1464,
+        "chord_tone_mass": 0.2391,
+        "non_chord_tone_mass": 0.7609
+      }
+    },
+    "HARMONIC_NOTE": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.5283,
+          "C#": 0.063,
+          "D": 0.0033,
+          "D#": 0.0009,
+          "E": 0.0931,
+          "F": 0.0002,
+          "F#": 0.0012,
+          "G": 0.1734,
+          "G#": 0.0013,
+          "A": 0.0009,
+          "A#": 0.0666,
+          "B": 0.0677
+        },
+        "root_mass": 0.5283,
+        "fifth_mass": 0.1734,
+        "major_third_mass": 0.0931,
+        "chord_tone_mass": 0.5283,
+        "non_chord_tone_mass": 0.4717
+      },
+      "P1_POWER_L1": {
+        "vector": {
+          "C": 0.8436,
+          "C#": 0.012,
+          "D": 0.0,
+          "D#": 0.0,
+          "E": 0.0262,
+          "F": 0.0,
+          "F#": 0.0,
+          "G": 0.0909,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0134,
+          "B": 0.0138
+        },
+        "root_mass": 0.8436,
+        "fifth_mass": 0.0909,
+        "major_third_mass": 0.0262,
+        "chord_tone_mass": 0.8436,
+        "non_chord_tone_mass": 0.1564
+      },
+      "P2_SQRT_L1_NO_CLIP": {
+        "vector": {
+          "C": 0.5283,
+          "C#": 0.063,
+          "D": 0.0033,
+          "D#": 0.0009,
+          "E": 0.0931,
+          "F": 0.0002,
+          "F#": 0.0012,
+          "G": 0.1734,
+          "G#": 0.0013,
+          "A": 0.0009,
+          "A#": 0.0666,
+          "B": 0.0677
+        },
+        "root_mass": 0.5283,
+        "fifth_mass": 0.1734,
+        "major_third_mass": 0.0931,
+        "chord_tone_mass": 0.5283,
+        "non_chord_tone_mass": 0.4717
+      },
+      "C1_SOFT_FILTERBANK": {
+        "vector": {
+          "C": 0.302,
+          "C#": 0.1545,
+          "D": 0.0209,
+          "D#": 0.03,
+          "E": 0.0542,
+          "F": 0.0195,
+          "F#": 0.0443,
+          "G": 0.1021,
+          "G#": 0.0473,
+          "A": 0.0272,
+          "A#": 0.0423,
+          "B": 0.1555
+        },
+        "root_mass": 0.302,
+        "fifth_mass": 0.1021,
+        "major_third_mass": 0.0542,
+        "chord_tone_mass": 0.302,
+        "non_chord_tone_mass": 0.698
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 0.6329,
+          "C#": 0.0,
+          "D": 0.0,
+          "D#": 0.0,
+          "E": 0.1045,
+          "F": 0.0,
+          "F#": 0.0,
+          "G": 0.2043,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0583,
+          "B": 0.0
+        },
+        "root_mass": 0.6329,
+        "fifth_mass": 0.2043,
+        "major_third_mass": 0.1045,
+        "chord_tone_mass": 0.6329,
+        "non_chord_tone_mass": 0.3671
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.4487,
+          "C#": 0.0308,
+          "D": 0.026,
+          "D#": 0.0341,
+          "E": 0.0447,
+          "F": 0.1323,
+          "F#": 0.0208,
+          "G": 0.1059,
+          "G#": 0.0648,
+          "A": 0.0311,
+          "A#": 0.0275,
+          "B": 0.0332
+        },
+        "root_mass": 0.4487,
+        "fifth_mass": 0.1059,
+        "major_third_mass": 0.0447,
+        "chord_tone_mass": 0.4487,
+        "non_chord_tone_mass": 0.5513
+      },
+      "C4_CRP": {
+        "vector": {
+          "C": 0.3334,
+          "C#": 0.0042,
+          "D": 0.001,
+          "D#": 0.057,
+          "E": 0.2062,
+          "F": 0.0082,
+          "F#": 0.0,
+          "G": 0.2339,
+          "G#": 0.0368,
+          "A": 0.0084,
+          "A#": 0.1074,
+          "B": 0.0034
+        },
+        "root_mass": 0.3334,
+        "fifth_mass": 0.2339,
+        "major_third_mass": 0.2062,
+        "chord_tone_mass": 0.3334,
+        "non_chord_tone_mass": 0.6666
+      }
+    },
+    "TWO_NOTE_FIFTH": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.3164,
+          "C#": 0.0377,
+          "D": 0.1039,
+          "D#": 0.0007,
+          "E": 0.0557,
+          "F": 0.0398,
+          "F#": 0.005,
+          "G": 0.3221,
+          "G#": 0.0093,
+          "A": 0.0007,
+          "A#": 0.0399,
+          "B": 0.0689
+        },
+        "root_mass": 0.3164,
+        "fifth_mass": 0.3221,
+        "major_third_mass": 0.0557,
+        "chord_tone_mass": 0.6384,
+        "non_chord_tone_mass": 0.3616
+      },
+      "P1_POWER_L1": {
+        "vector": {
+          "C": 0.4406,
+          "C#": 0.0063,
+          "D": 0.0475,
+          "D#": 0.0,
+          "E": 0.0137,
+          "F": 0.007,
+          "F#": 0.0001,
+          "G": 0.4565,
+          "G#": 0.0004,
+          "A": 0.0,
+          "A#": 0.007,
+          "B": 0.0209
+        },
+        "root_mass": 0.4406,
+        "fifth_mass": 0.4565,
+        "major_third_mass": 0.0137,
+        "chord_tone_mass": 0.8972,
+        "non_chord_tone_mass": 0.1028
+      },
+      "P2_SQRT_L1_NO_CLIP": {
+        "vector": {
+          "C": 0.3164,
+          "C#": 0.0377,
+          "D": 0.1039,
+          "D#": 0.0007,
+          "E": 0.0557,
+          "F": 0.0398,
+          "F#": 0.005,
+          "G": 0.3221,
+          "G#": 0.0093,
+          "A": 0.0007,
+          "A#": 0.0399,
+          "B": 0.0689
+        },
+        "root_mass": 0.3164,
+        "fifth_mass": 0.3221,
+        "major_third_mass": 0.0557,
+        "chord_tone_mass": 0.6384,
+        "non_chord_tone_mass": 0.3616
+      },
+      "C1_SOFT_FILTERBANK": {
+        "vector": {
+          "C": 0.1912,
+          "C#": 0.1015,
+          "D": 0.0661,
+          "D#": 0.0352,
+          "E": 0.0383,
+          "F": 0.0279,
+          "F#": 0.0933,
+          "G": 0.1968,
+          "G#": 0.0932,
+          "A": 0.0197,
+          "A#": 0.0327,
+          "B": 0.1041
+        },
+        "root_mass": 0.1912,
+        "fifth_mass": 0.1968,
+        "major_third_mass": 0.0383,
+        "chord_tone_mass": 0.388,
+        "non_chord_tone_mass": 0.612
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 0.355,
+          "C#": 0.0,
+          "D": 0.1147,
+          "D#": 0.0,
+          "E": 0.0586,
+          "F": 0.0321,
+          "F#": 0.0,
+          "G": 0.3498,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0327,
+          "B": 0.057
+        },
+        "root_mass": 0.355,
+        "fifth_mass": 0.3498,
+        "major_third_mass": 0.0586,
+        "chord_tone_mass": 0.7048,
+        "non_chord_tone_mass": 0.2952
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.3186,
+          "C#": 0.026,
+          "D": 0.0567,
+          "D#": 0.0458,
+          "E": 0.0451,
+          "F": 0.0795,
+          "F#": 0.016,
+          "G": 0.241,
+          "G#": 0.0454,
+          "A": 0.0369,
+          "A#": 0.0449,
+          "B": 0.0442
+        },
+        "root_mass": 0.3186,
+        "fifth_mass": 0.241,
+        "major_third_mass": 0.0451,
+        "chord_tone_mass": 0.5596,
+        "non_chord_tone_mass": 0.4404
+      },
+      "C4_CRP": {
+        "vector": {
+          "C": 0.2507,
+          "C#": 0.0,
+          "D": 0.0765,
+          "D#": 0.0737,
+          "E": 0.193,
+          "F": 0.0017,
+          "F#": 0.0033,
+          "G": 0.2969,
+          "G#": 0.0192,
+          "A": 0.0003,
+          "A#": 0.0588,
+          "B": 0.0259
+        },
+        "root_mass": 0.2507,
+        "fifth_mass": 0.2969,
+        "major_third_mass": 0.193,
+        "chord_tone_mass": 0.5476,
+        "non_chord_tone_mass": 0.4524
+      }
+    },
+    "MAJOR_TRIAD": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.2275,
+          "C#": 0.0272,
+          "D": 0.08,
+          "D#": 0.004,
+          "E": 0.2382,
+          "F": 0.0296,
+          "F#": 0.0035,
+          "G": 0.2316,
+          "G#": 0.0406,
+          "A": 0.0005,
+          "A#": 0.0287,
+          "B": 0.0886
+        },
+        "root_mass": 0.2275,
+        "fifth_mass": 0.2316,
+        "major_third_mass": 0.2382,
+        "chord_tone_mass": 0.6972,
+        "non_chord_tone_mass": 0.3028
+      },
+      "P1_POWER_L1": {
+        "vector": {
+          "C": 0.2868,
+          "C#": 0.0041,
+          "D": 0.0355,
+          "D#": 0.0001,
+          "E": 0.3143,
+          "F": 0.0049,
+          "F#": 0.0001,
+          "G": 0.2971,
+          "G#": 0.0091,
+          "A": 0.0,
+          "A#": 0.0046,
+          "B": 0.0435
+        },
+        "root_mass": 0.2868,
+        "fifth_mass": 0.2971,
+        "major_third_mass": 0.3143,
+        "chord_tone_mass": 0.8982,
+        "non_chord_tone_mass": 0.1018
+      },
+      "P2_SQRT_L1_NO_CLIP": {
+        "vector": {
+          "C": 0.2275,
+          "C#": 0.0272,
+          "D": 0.08,
+          "D#": 0.004,
+          "E": 0.2382,
+          "F": 0.0296,
+          "F#": 0.0035,
+          "G": 0.2316,
+          "G#": 0.0406,
+          "A": 0.0005,
+          "A#": 0.0287,
+          "B": 0.0886
+        },
+        "root_mass": 0.2275,
+        "fifth_mass": 0.2316,
+        "major_third_mass": 0.2382,
+        "chord_tone_mass": 0.6972,
+        "non_chord_tone_mass": 0.3028
+      },
+      "C1_SOFT_FILTERBANK": {
+        "vector": {
+          "C": 0.1433,
+          "C#": 0.0762,
+          "D": 0.0525,
+          "D#": 0.0762,
+          "E": 0.1493,
+          "F": 0.0738,
+          "F#": 0.0696,
+          "G": 0.1464,
+          "G#": 0.0736,
+          "A": 0.0172,
+          "A#": 0.0315,
+          "B": 0.0904
+        },
+        "root_mass": 0.1433,
+        "fifth_mass": 0.1464,
+        "major_third_mass": 0.1493,
+        "chord_tone_mass": 0.439,
+        "non_chord_tone_mass": 0.561
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 0.2484,
+          "C#": 0.0,
+          "D": 0.0834,
+          "D#": 0.0,
+          "E": 0.248,
+          "F": 0.0225,
+          "F#": 0.0,
+          "G": 0.2447,
+          "G#": 0.0398,
+          "A": 0.0,
+          "A#": 0.0229,
+          "B": 0.0903
+        },
+        "root_mass": 0.2484,
+        "fifth_mass": 0.2447,
+        "major_third_mass": 0.248,
+        "chord_tone_mass": 0.7411,
+        "non_chord_tone_mass": 0.2589
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.2366,
+          "C#": 0.0285,
+          "D": 0.0369,
+          "D#": 0.033,
+          "E": 0.1854,
+          "F": 0.0571,
+          "F#": 0.0292,
+          "G": 0.1704,
+          "G#": 0.0564,
+          "A": 0.0758,
+          "A#": 0.0329,
+          "B": 0.0577
+        },
+        "root_mass": 0.2366,
+        "fifth_mass": 0.1704,
+        "major_third_mass": 0.1854,
+        "chord_tone_mass": 0.5924,
+        "non_chord_tone_mass": 0.4076
+      },
+      "C4_CRP": {
+        "vector": {
+          "C": 0.176,
+          "C#": 0.0007,
+          "D": 0.0623,
+          "D#": 0.0177,
+          "E": 0.2932,
+          "F": 0.0011,
+          "F#": 0.0022,
+          "G": 0.2187,
+          "G#": 0.0997,
+          "A": 0.0001,
+          "A#": 0.0387,
+          "B": 0.0897
+        },
+        "root_mass": 0.176,
+        "fifth_mass": 0.2187,
+        "major_third_mass": 0.2932,
+        "chord_tone_mass": 0.6879,
+        "non_chord_tone_mass": 0.3121
+      }
+    }
+  },
+  "J3G_1_postprocessing_ablation": {
+    "variants": {
+      "P0_CURRENT": {
+        "r2": 0.2165,
+        "spearman": 0.4919,
+        "top5_event_recall_in_top20": 0.655,
+        "challenge_recall": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6216,
+          "HARMONIC_CHANGE_NO_ONSET": 0.7007,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1975
+        },
+        "n_frames": 69415
+      },
+      "P1_POWER_L1": {
+        "r2": 0.1812,
+        "spearman": 0.4615,
+        "top5_event_recall_in_top20": 0.6311,
+        "challenge_recall": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6023,
+          "HARMONIC_CHANGE_NO_ONSET": 0.6675,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1661
+        },
+        "n_frames": 69415
+      },
+      "P2_SQRT_L1_NO_CLIP": {
+        "r2": 0.2165,
+        "spearman": 0.4919,
+        "top5_event_recall_in_top20": 0.655,
+        "challenge_recall": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6216,
+          "HARMONIC_CHANGE_NO_ONSET": 0.7007,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1975
+        },
+        "n_frames": 69415
+      }
+    },
+    "r2_gain_over_P0": {
+      "P0_CURRENT": 0.0,
+      "P1_POWER_L1": -0.0353,
+      "P2_SQRT_L1_NO_CLIP": 0.0
+    },
+    "winner": "P0_CURRENT",
+    "stop_rule_threshold": 0.15,
+    "stop_rule_hit": false,
+    "arithmetic_note": "the fixed reference divisor is a constant scale and cancels under L1; P0 vs P2 therefore isolates the clip, P2 vs P1 the compression exponent"
+  },
+  "carry_forward_compression_applied_to_candidates": "P0_CURRENT",
+  "candidates_development": {
+    "P0_CURRENT": {
+      "r2": 0.2165,
+      "spearman": 0.4919,
+      "top5_event_recall_in_top20": 0.655,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.6216,
+        "HARMONIC_CHANGE_NO_ONSET": 0.7007,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1975
+      },
+      "n_frames": 69415
+    },
+    "P1_POWER_L1": {
+      "r2": 0.1812,
+      "spearman": 0.4615,
+      "top5_event_recall_in_top20": 0.6311,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.6023,
+        "HARMONIC_CHANGE_NO_ONSET": 0.6675,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1661
+      },
+      "n_frames": 69415
+    },
+    "P2_SQRT_L1_NO_CLIP": {
+      "r2": 0.2165,
+      "spearman": 0.4919,
+      "top5_event_recall_in_top20": 0.655,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.6216,
+        "HARMONIC_CHANGE_NO_ONSET": 0.7007,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1975
+      },
+      "n_frames": 69415
+    },
+    "C1_SOFT_FILTERBANK": {
+      "r2": 0.1847,
+      "spearman": 0.4562,
+      "top5_event_recall_in_top20": 0.6101,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.5805,
+        "HARMONIC_CHANGE_NO_ONSET": 0.667,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1453
+      },
+      "n_frames": 69415
+    },
+    "C2_PEAK_HPCP": {
+      "r2": 0.256,
+      "spearman": 0.5138,
+      "top5_event_recall_in_top20": 0.7076,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.6963,
+        "HARMONIC_CHANGE_NO_ONSET": 0.7145,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1886
+      },
+      "n_frames": 69415
+    },
+    "C3_ROOT_SALIENCE": {
+      "r2": 0.257,
+      "spearman": 0.5041,
+      "top5_event_recall_in_top20": 0.6881,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.6703,
+        "HARMONIC_CHANGE_NO_ONSET": 0.7538,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1524
+      },
+      "n_frames": 69415
+    },
+    "C4_CRP": {
+      "r2": 0.1628,
+      "spearman": 0.5285,
+      "top5_event_recall_in_top20": 0.7212,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.703,
+        "HARMONIC_CHANGE_NO_ONSET": 0.7227,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1477
+      },
+      "n_frames": 69415
+    }
+  },
+  "lag_curves_development_REPORTED_NOT_OPTIMISED": {
+    "P0_CURRENT": {
+      "-4": 0.1105,
+      "-3": 0.1647,
+      "-2": 0.2176,
+      "-1": 0.244,
+      "0": 0.2165,
+      "1": 0.1473,
+      "2": 0.0831,
+      "3": 0.0388,
+      "4": 0.0116
+    },
+    "P1_POWER_L1": {
+      "-4": 0.0928,
+      "-3": 0.1391,
+      "-2": 0.1846,
+      "-1": 0.2069,
+      "0": 0.1812,
+      "1": 0.1244,
+      "2": 0.0713,
+      "3": 0.033,
+      "4": 0.0077
+    },
+    "P2_SQRT_L1_NO_CLIP": {
+      "-4": 0.1105,
+      "-3": 0.1647,
+      "-2": 0.2176,
+      "-1": 0.244,
+      "0": 0.2165,
+      "1": 0.1473,
+      "2": 0.0831,
+      "3": 0.0388,
+      "4": 0.0116
+    },
+    "C1_SOFT_FILTERBANK": {
+      "-4": 0.0763,
+      "-3": 0.1218,
+      "-2": 0.1731,
+      "-1": 0.2075,
+      "0": 0.1847,
+      "1": 0.1217,
+      "2": 0.0636,
+      "3": 0.0255,
+      "4": 0.0026
+    },
+    "C2_PEAK_HPCP": {
+      "-4": 0.1644,
+      "-3": 0.2283,
+      "-2": 0.2807,
+      "-1": 0.2947,
+      "0": 0.256,
+      "1": 0.1861,
+      "2": 0.1181,
+      "3": 0.0676,
+      "4": 0.035
+    },
+    "C3_ROOT_SALIENCE": {
+      "-4": 0.1185,
+      "-3": 0.181,
+      "-2": 0.2477,
+      "-1": 0.2886,
+      "0": 0.257,
+      "1": 0.1699,
+      "2": 0.0905,
+      "3": 0.0385,
+      "4": 0.0077
+    },
+    "C4_CRP": {
+      "-4": 0.0942,
+      "-3": 0.1368,
+      "-2": 0.171,
+      "-1": 0.1829,
+      "0": 0.1628,
+      "1": 0.1193,
+      "2": 0.0752,
+      "3": 0.037,
+      "4": 0.0089
+    }
+  },
+  "solo_stem_family_development": {
+    "P0_CURRENT": {
+      "overall_r2": 0.3665,
+      "overall_spearman": 0.6056,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.4799,
+          "spearman": 0.6789
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.3102,
+          "spearman": 0.5105
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": 0.2499,
+          "spearman": 0.6251
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.5616,
+          "spearman": 0.7391
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.1173,
+          "spearman": 0.3887
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.2983,
+          "spearman": 0.2508
+        }
+      },
+      "spread": 0.8599,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": -0.2983
+    },
+    "P1_POWER_L1": {
+      "overall_r2": 0.3417,
+      "overall_spearman": 0.5893,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.5552,
+          "spearman": 0.7073
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.2019,
+          "spearman": 0.4193
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": 0.1806,
+          "spearman": 0.6246
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.565,
+          "spearman": 0.739
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.125,
+          "spearman": 0.3716
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.3007,
+          "spearman": 0.2174
+        }
+      },
+      "spread": 0.8657,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": -0.3007
+    },
+    "P2_SQRT_L1_NO_CLIP": {
+      "overall_r2": 0.3665,
+      "overall_spearman": 0.6056,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.4799,
+          "spearman": 0.6789
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.3102,
+          "spearman": 0.5105
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": 0.2499,
+          "spearman": 0.6251
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.5616,
+          "spearman": 0.7391
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.1173,
+          "spearman": 0.3887
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.2983,
+          "spearman": 0.2508
+        }
+      },
+      "spread": 0.8599,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": -0.2983
+    },
+    "C1_SOFT_FILTERBANK": {
+      "overall_r2": 0.3482,
+      "overall_spearman": 0.5911,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.4895,
+          "spearman": 0.689
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.2406,
+          "spearman": 0.4508
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": 0.2732,
+          "spearman": 0.6194
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.5124,
+          "spearman": 0.7396
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.1072,
+          "spearman": 0.3764
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.3216,
+          "spearman": 0.2324
+        }
+      },
+      "spread": 0.834,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": -0.3216
+    },
+    "C2_PEAK_HPCP": {
+      "overall_r2": 0.3521,
+      "overall_spearman": 0.5882,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.4958,
+          "spearman": 0.6845
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.2779,
+          "spearman": 0.4993
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": 0.1167,
+          "spearman": 0.6331
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.6052,
+          "spearman": 0.7511
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.1091,
+          "spearman": 0.3783
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.2921,
+          "spearman": 0.0165
+        }
+      },
+      "spread": 0.8973,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": -0.2921
+    },
+    "C3_ROOT_SALIENCE": {
+      "overall_r2": 0.3387,
+      "overall_spearman": 0.5794,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.3832,
+          "spearman": 0.6366
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.2924,
+          "spearman": 0.5064
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": 0.2451,
+          "spearman": 0.6016
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.5235,
+          "spearman": 0.7171
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.1119,
+          "spearman": 0.3861
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.3042,
+          "spearman": 0.2485
+        }
+      },
+      "spread": 0.8277,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": -0.3042
+    },
+    "C4_CRP": {
+      "overall_r2": 0.2786,
+      "overall_spearman": 0.5911,
+      "by_family": {
+        "bass": {
+          "n_stems": 10,
+          "n_frames": 46606,
+          "solo_stem_r2": 0.5104,
+          "spearman": 0.7002
+        },
+        "ensemble_voice": {
+          "n_stems": 11,
+          "n_frames": 44056,
+          "solo_stem_r2": 0.2928,
+          "spearman": 0.5245
+        },
+        "guitar": {
+          "n_stems": 25,
+          "n_frames": 75826,
+          "solo_stem_r2": -0.2925,
+          "spearman": 0.6112
+        },
+        "piano_keys": {
+          "n_stems": 18,
+          "n_frames": 72411,
+          "solo_stem_r2": 0.5858,
+          "spearman": 0.7283
+        },
+        "reed_pipe": {
+          "n_stems": 8,
+          "n_frames": 25836,
+          "solo_stem_r2": 0.1023,
+          "spearman": 0.3885
+        },
+        "synth_lead_pad": {
+          "n_stems": 3,
+          "n_frames": 12861,
+          "solo_stem_r2": -0.2764,
+          "spearman": 0.1284
+        }
+      },
+      "spread": 0.8783,
+      "worst_family": "guitar",
+      "worst_family_r2": -0.2925
+    },
+    "_n_stems": 77
+  },
+  "selection": {
+    "rule": {
+      "why_a_rule_is_pre_registered": "exactly one winner must reach FINAL and Level C. Choosing it after seeing all scores would be selection on the outcome. The rule below is fixed now and is a SELECTION DEVICE ONLY - it is never reported as a headline result, and every component is reported separately.",
+      "blocking_gate_1": "candidate ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE false-response rate must not exceed P0's by more than 0.02. No candidate may win by becoming more reactive to non-harmonic energy.",
+      "score": "selection_score = 0.5 * mean(challenge recall on HARMONIC_CHANGE_FLAT_ENERGY and HARMONIC_CHANGE_NO_ONSET) + 0.5 * clip(worst-family solo R-squared, 0, 1)",
+      "score_justification": "the two halves encode the two things J3F said matter: recover genuine harmonic events, and do not win by improving only the easy timbres.",
+      "tie_break_order": [
+        "lower non-root mass on the HARMONIC_NOTE fixture",
+        "smaller family max-minus-min spread",
+        "lower arithmetic cost per frame"
+      ],
+      "blocking_gate_2_WITHDRAWN": {
+        "withdrawn_text": "candidate non-root mass on the HARMONIC_NOTE fixture must be <= host_chroma12's 0.151, AND the candidate must not reduce MAJOR_TRIAD's three chord-tone mass below 0.70 of host_chroma12's value.",
+        "status": "WITHDRAWN before any corpus score. Replaced by the reporting requirement the Captain actually specified."
+      },
+      "phantom_triad_reporting_requirement": "the fixture vector is REPORTED for every candidate and discussed. It is not an elimination gate. The one clause that IS blocking is the Captain's own anti-gaming clause: a candidate that collapses a genuine MAJOR_TRIAD towards a single pitch class - chord-tone mass below 0.70 of P0's on the same fixture - fails Level B regardless of its single-note behaviour."
+    },
+    "P0_acoustic_false_response": 0.1975,
+    "P0_major_triad_chord_tone_mass": 0.6972,
+    "per_candidate": {
+      "C1_SOFT_FILTERBANK": {
+        "gate_1_acoustic_false_response_ok": true,
+        "gate_anti_gaming_major_triad_ok": false,
+        "eligible": false,
+        "mean_harmonic_challenge_recall": 0.6238,
+        "worst_family_solo_r2": -0.3216,
+        "selection_score": 0.3119,
+        "family_spread": 0.834,
+        "non_root_mass_HARMONIC_NOTE": 0.698
+      },
+      "C2_PEAK_HPCP": {
+        "gate_1_acoustic_false_response_ok": true,
+        "gate_anti_gaming_major_triad_ok": true,
+        "eligible": true,
+        "mean_harmonic_challenge_recall": 0.7054,
+        "worst_family_solo_r2": -0.2921,
+        "selection_score": 0.3527,
+        "family_spread": 0.8973,
+        "non_root_mass_HARMONIC_NOTE": 0.3671
+      },
+      "C3_ROOT_SALIENCE": {
+        "gate_1_acoustic_false_response_ok": true,
+        "gate_anti_gaming_major_triad_ok": true,
+        "eligible": true,
+        "mean_harmonic_challenge_recall": 0.7121,
+        "worst_family_solo_r2": -0.3042,
+        "selection_score": 0.356,
+        "family_spread": 0.8277,
+        "non_root_mass_HARMONIC_NOTE": 0.5513
+      },
+      "C4_CRP": {
+        "gate_1_acoustic_false_response_ok": true,
+        "gate_anti_gaming_major_triad_ok": true,
+        "eligible": true,
+        "mean_harmonic_challenge_recall": 0.7128,
+        "worst_family_solo_r2": -0.2925,
+        "selection_score": 0.3564,
+        "family_spread": 0.8783,
+        "non_root_mass_HARMONIC_NOTE": 0.6666
+      }
+    },
+    "eligible": [
+      "C2_PEAK_HPCP",
+      "C3_ROOT_SALIENCE",
+      "C4_CRP"
+    ],
+    "winner": "C4_CRP"
+  },
+  "c4_rectified_mass_fraction_by_track": {
+    "Track00001": 0.5,
+    "Track00003": 0.5,
+    "Track00005": 0.5,
+    "Track00007": 0.5,
+    "Track00009": 0.5,
+    "Track00011": 0.5,
+    "Track00013": 0.5,
+    "Track00015": 0.5,
+    "Track00017": 0.5,
+    "Track00019": 0.5
+  },
+  "arithmetic_cost_per_frame": {
+    "shared_stft_excluded": true,
+    "P0_P1_P2_nearest_bin": {
+      "mac": 1025,
+      "note": "one accumulate per bin"
+    },
+    "C1_SOFT_FILTERBANK": {
+      "mac": 12300,
+      "note": "dense 12xK matrix-vector; a 3-nonzero-per-column sparse form costs ~3K"
+    },
+    "C2_PEAK_HPCP": {
+      "mac": "~3K compares + ~2 x n_peaks",
+      "note": "peak picking dominates; n_peaks is typically << K"
+    },
+    "C3_ROOT_SALIENCE": {
+      "mac": 1104,
+      "note": "69 candidates x 8 harmonics, max+accumulate"
+    },
+    "C4_CRP": {
+      "mac": 75486,
+      "note": "pitch pooling then ONE fixed 69x69 projection"
+    }
+  },
+  "student_io_frozen": false,
+  "titan": false,
+  "production_firmware_changed": false,
+  "basic_pitch_run": false,
+  "foundation_model_run": false,
+  "cqt_run": false,
+  "source_separator_run": false,
+  "neural_student_trained": false
+}

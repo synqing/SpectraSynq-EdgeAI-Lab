@@ -1,0 +1,140 @@
+{
+  "schema": "spectrasynq.register_frontend_prereg.v1",
+  "job": "J3C",
+  "written_at": "2026-09-01T08:10:00Z",
+  "written_before_any_score": true,
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "titan": false,
+  "student_io_frozen": false,
+  "construct_validity": {
+    "exact_construct_under_test": "How much REGISTER information is already recoverable from the EXISTING SpectraSynq HOST frontend (host_spectrogram80), with no second FFT, no CQT, no alternate sample rate and no new neural frontend.",
+    "what_this_job_is_NOT_testing": [
+      "whether register is VALUABLE",
+      "whether register earns a visual lever",
+      "whether register should become a capability",
+      "whether register needs machine learning",
+      "anything at all about pitch class, melody, harmony, tonal centre or tension"
+    ],
+    "representation_used_as_proxy_for_register": "velocity x sounding-duration weighted mean MIDI note number of non-drum notes in the causal analysis window (identical to the J3A H2 target, so the two jobs are comparable)",
+    "why_that_proxy_has_sufficient_construct_validity_FOR_THIS_QUESTION": "The question is about RECOVERABILITY from a specific frontend, not about musical meaning. A single scalar register centroid is an adequate proxy for that narrow question because any richer register representation (bands, quantile spread, per-actor register) is a superset: if the frontend cannot recover the mean, it cannot recover the richer forms either, and if it can recover the mean cheaply that is direct evidence about the frontend's information content. It would NOT be an adequate proxy for the question 'is register musically useful'.",
+    "what_a_PASS_permits": "The statement 'register information is cheaply extractable from the frontend we already run'. Nothing about value.",
+    "what_a_FAIL_permits": "The statement 'this frontend does not expose register sufficiently under a synthetic upper bound'. It does NOT permit 'register lacks value' and it does NOT authorise a second frontend.",
+    "broader_conclusions_that_remain_FORBIDDEN": [
+      "register is/is not valuable",
+      "register does/does not need a neural student",
+      "tonal or melodic intelligence is closed",
+      "pitch class is redundant or useful",
+      "any real-audio claim (SELECTION_GATE criterion 3 rejects synthetic evidence)"
+    ]
+  },
+  "corpus": {
+    "id": "babyslakh",
+    "published_md5": "311096dc2bde7d61c97e930edbfc7f78",
+    "tracks": 20,
+    "sample_rate_hz": 16000,
+    "note": "drums excluded from the LABEL (no pitch), retained in the AUDIO. A register estimator must cope with broadband percussion present."
+  },
+  "grid": "identical to J3A: sr 16000, hop 512, n_fft 2048, hop-centre timestamps, causal frame ending at (i+1)*hop, label lookahead 0",
+  "split": "grouped 5-fold cross-validation, groups = track",
+  "stage_1_deterministic": {
+    "input": "host_spectrogram80 ONLY (80 geomspaced bins, 40 Hz - 8 kHz). Bin centre frequencies converted to MIDI position m_b = 69 + 12*log2(f_b/440).",
+    "forbidden": [
+      "second FFT",
+      "CQT",
+      "alternate sample rate",
+      "new neural frontend",
+      "any hyperparameter sweep"
+    ],
+    "estimators": [
+      {
+        "id": "E1_midi_energy_centroid",
+        "definition": "sum(m_b * p_b) / sum(p_b) over bin power p"
+      },
+      {
+        "id": "E2_weighted_median",
+        "definition": "MIDI position where the cumulative bin-power distribution crosses 0.50"
+      },
+      {
+        "id": "E3_weighted_quantiles",
+        "definition": "MIDI positions at cumulative power 0.25 and 0.75, used both individually and as a 2-feature set"
+      },
+      {
+        "id": "E4_harmonic_sum_centroid",
+        "definition": "subharmonic-summation spectrum S(m) = sum_{k=1..5} (1/k) * P(m + 12*log2(k)) evaluated on the same MIDI-position axis by linear interpolation, then the energy-weighted centroid of S",
+        "JUSTIFIED_BEFORE_SCORING": "The dominant error mode of ANY spectral centroid used as a fundamental-register estimate is harmonic bias: a note at MIDI m puts energy at m, m+12, m+19.02, m+24, m+27.86..., pulling the centroid upward by a timbre-dependent amount. Harmonic/subharmonic summation is the classical deterministic correction - it reinforces the common fundamental of a harmonic series and suppresses the upward pull. It is computed on the SAME host_spectrogram80 with no new transform, so it stays inside the frontend budget. This is the ONE bounded harmonic-aware estimator permitted by the J3C authority, declared here before any score exists.",
+        "fixed_parameters": {
+          "n_harmonics": 5,
+          "weights": "1/k",
+          "interpolation": "linear on the MIDI-position axis"
+        }
+      }
+    ],
+    "reported_per_estimator": [
+      "raw MAE in semitones with no calibration",
+      "out-of-fold R^2 after a global AFFINE calibration (slope + intercept) fitted on training tracks only",
+      "out-of-fold MAE and median absolute error in semitones after that calibration",
+      "per-track MAE",
+      "lag/alignment diagnostic"
+    ],
+    "also_reported": "the small deterministic FEATURE SET {E1, E2, q25, q75, E4} under one out-of-fold linear ridge, as the strongest bounded deterministic combination"
+  },
+  "thresholds": {
+    "SUFFICIENT": "best deterministic estimator reaches out-of-fold R^2 >= 0.70 AND MAE <= 3.0 semitones",
+    "CLEARLY_INSUFFICIENT": "best deterministic reaches R^2 < 0.40 OR MAE > 4.5 semitones",
+    "OPEN_GOES_TO_STAGE_2": "anything between those",
+    "rationale_for_3_0_semitones": "Register is expected to drive coarse visual distinctions - roughly a four-band low / low-mid / high-mid / high split. With a target sd of ~5.2 semitones those bands are ~8 semitones wide, so a mean absolute error of 3 semitones is about a third of a band and keeps most frames in the correct band. This is set before any score is seen.",
+    "rationale_for_R2_0_70": "the estimator must capture most of the variance, not merely correlate. J3A's linear ridge on six DSP scalars reached 0.217 out-of-fold; 0.70 is a materially higher bar chosen to mean 'the frontend really does carry this'."
+  },
+  "stage_2_nonlinear": {
+    "runs_only_if": "Stage 1 does not reach SUFFICIENT",
+    "models": [
+      {
+        "id": "GBM",
+        "spec": "one gradient-boosted tree regressor, fixed modest settings, no sweep"
+      },
+      {
+        "id": "TINY_MLP",
+        "spec": "one deliberately small MLP, fixed architecture, no sweep"
+      }
+    ],
+    "input": "host_spectrogram80 (log) plus the Stage-1 deterministic scalars",
+    "status": "INFORMATION PROBES ONLY. Not product architecture. No CNN, no transformer, no recurrent net, no second frontend, no broad hyperparameter search.",
+    "controls": [
+      "grouped-by-track splits",
+      "shuffled-label control must score R^2 <= 0.10"
+    ]
+  },
+  "outcome_categories": {
+    "REGISTER_FRONTEND_DSP": "a deterministic transform reaches SUFFICIENT. Register is cheaply extractable from the existing frontend. No register neural student. No new audio frontend. Register remains a CANDIDATE musical-state capability with its visual value still untested.",
+    "REGISTER_FRONTEND_LATENT": "deterministic insufficient, but a bounded nonlinear probe reaches R^2 >= 0.70 AND MAE <= 3.0. Register is latent in the frontend but needs nonlinear extraction. This does NOT authorise a student.",
+    "REGISTER_FRONTEND_INSUFFICIENT": "neither deterministic nor bounded nonlinear reaches R^2 >= 0.55 / MAE <= 3.5. Obtaining register may cost additional representation. No second frontend may be authorised until register's VISUAL value is demonstrated.",
+    "REGISTER_INCONCLUSIVE": "anything else. No promotion."
+  },
+  "lag_rule": "inherited from the J3A amendment 2: alignment fault iff |argmax lag| >= 2 hops OR the argmax beats lag 0 by more than 0.02 absolute R^2",
+  "machinery_controls": "reused from J3A: linear-combination recovery must reach R^2 >= 0.95; shuffled-baseline must stay <= 0.10",
+  "forbidden_in_this_job": [
+    "Basic Pitch",
+    "real-audio testing",
+    "reopening H1 / pitch class",
+    "any second audio frontend",
+    "any conclusion about register's visual value",
+    "any conclusion about tonal or melodic intelligence as a family",
+    "hyperparameter sweeps"
+  ],
+  "pre_score_clarifications": [
+    {
+      "at": "2026-09-01T08:15:00Z",
+      "no_score_of_any_kind_exists_yet": true,
+      "subject": "weighting of host_spectrogram80 bins",
+      "finding": "host_spectrogram80 does not emit linear power. It emits clip(log1p(mean |FFT|)/4, 0, 1) - a compressed, CLIPPED [0,1] frame. A 'power-weighted centroid' is therefore ambiguous on this frontend.",
+      "decision": "every Stage-1 estimator is computed under BOTH weightings and both are reported: (a) FROZEN - the [0,1] output exactly as the product frontend emits it; (b) DECOMPRESSED - w = expm1(4*x), the frontend's own output inverted back to mean magnitude by arithmetic. Neither is a new transform and neither adds an FFT, so both stay inside the frontend budget. Reporting both prevents a favourable weighting being chosen after the fact.",
+      "known_limitation_to_report": "the frontend clips at 1.0, so loud bins are saturated and that information is unrecoverable under either weighting. This is a property of the deployed frontend, not of the experiment."
+    },
+    {
+      "at": "2026-09-01T08:15:00Z",
+      "no_score_of_any_kind_exists_yet": true,
+      "subject": "E4 evaluation range",
+      "decision": "the MIDI-position axis spans ~27.5 to ~119.2 (80 geomspaced bins, 40 Hz - 8 kHz, ~1.15 semitones per bin). The subharmonic sum S(m) is evaluated only where all 5 harmonic positions m + 12*log2(k), k=1..5, fall inside that axis, i.e. m <= ~91.3; outside that range S(m) is zero. Declared before scoring."
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "schema": "spectrasynq.acoustic_activation_interpretation.v1",
+  "job": "J3J",
+  "date": "2026-09-02",
+  "outcome": "TARGET_CORRECTION_IMMATERIAL",
+
+  "the_one_sentence": "The cross-fitted attack kernels are real and strongly family-differentiated - a synth pad enters at 28% weight and reaches 71% only at hop 8 while a piano is at 99% by hop 2 - and they change almost nothing, because the harmonic-movement construct is L1-scale-invariant by design: on a SOLO stem every note shares one family kernel, so the activation is a common per-frame scalar that normalisation cancels, and the normalised pitch-class state differs on only 7-16% of frames.",
+
+  "READ_THIS_BEFORE_THE_LABEL": {
+    "the_outcome_is_correct_as_measured": "no weak family improved by the established 0.10 materiality on either event-tolerant recall or false movement. The largest movement anywhere was ensemble_voice at +0.0215 recall.",
+    "its_STATED_interpretation_is_NOT_fully_earned": "the taxonomy attaches the reading 'representation / front-end owns almost all of the remaining failure' to this outcome. That reading requires the target repair to have been a FAIR test of the target hypothesis. On solo stems it structurally was not.",
+    "why": "tv_movement is 0.5 x L1 distance between L1-NORMALISED pitch-class states at lag 8. Multiplying every note in a frame by the same activation scalar leaves the normalised state identical. In a solo stem all notes belong to one family and therefore share one kernel, so the correction can only act where two notes of that stem are simultaneously at DIFFERENT points in their attack - chord onsets and overlapping voices, and nowhere else.",
+    "measured_confirmation": {
+      "median_state_L1_distance_old_vs_new": "0.00000 for EVERY family",
+      "fraction_of_frames_that_differ_at_all": {"bass": 0.0706, "chromatic_percussion": 0.0869, "synth_lead_pad": 0.1167, "ensemble_voice": 0.1276, "guitar": 0.1426, "brass": 0.1464, "piano_keys": 0.1582, "strings": 0.1618, "reed_pipe": 0.1647},
+      "mean_state_L1_distance_where_measured": {"piano_keys": 0.00418, "bass": 0.00787, "chromatic_percussion": 0.00991, "ensemble_voice": 0.01440, "synth_lead_pad": 0.01493, "guitar": 0.01560, "brass": 0.02090, "reed_pipe": 0.02551},
+      "reading": "the physics J3I measured is real; this particular target repair cannot express it in this particular metric on this particular evaluation path."
+    },
+    "the_honest_conclusion": "J3J does NOT license the statement that the representation owns almost all of the remaining failure. It licenses the narrower statement that a family-common activation kernel applied to a scale-invariant pitch-class-shape target is nearly a no-op on solo stems."
+  },
+
+  "the_kernels_are_real": {
+    "cross_fitted_leave_one_track_out": true,
+    "source_episodes": 1307,
+    "k_at_hops_0_1_2_4_8_16_32": {
+      "piano_keys": [0.542, 0.990, 0.999, 1.0, 1.0, 1.0, 1.0],
+      "bass": [0.102, 0.941, 1.0, 1.0, 1.0, 1.0, 1.0],
+      "guitar": [0.052, 0.823, 1.0, 1.0, 1.0, 1.0, 1.0],
+      "chromatic_percussion": [0.318, 0.689, 0.774, 1.0, 1.0, 1.0, 1.0],
+      "ensemble_voice": [0.308, 0.366, 0.456, 0.597, 0.742, 0.786, 1.0],
+      "reed_pipe": [0.265, 0.292, 0.410, 0.756, 1.0, 1.0, 1.0],
+      "synth_lead_pad": [0.281, 0.383, 0.383, 0.476, 0.708, 0.855, 1.0]
+    },
+    "reading": "these reproduce J3I's attack finding independently and in full curve form. Synth pad is at 38% of its eventual weight at hop 2 and only 71% at hop 8 - the entire movement comparison window. Piano is at 99% by hop 2.",
+    "fallback_usage": "the exact-family level served every held-out track for guitar, piano_keys, bass and reed_pipe; ensemble_voice and chromatic_percussion fell back to their organological group for one held-out track each; synth_lead_pad fell back to the global kernel for one; brass and strings used the group throughout. All declared before any chroma was evaluated.",
+    "leakage_control": "the identity kernel reproduces pitch_class_state to 0.0 exactly, and an AST import audit confirms the target module imports nothing from any chroma or projection path."
+  },
+
+  "the_target_did_move_just_not_enough": {
+    "movement_correlation_old_vs_new": "Pearson 0.973 to 0.998 across families",
+    "top5_events_whose_timing_changes": {"chromatic_percussion": 0.024, "bass": 0.034, "strings": 0.044, "piano_keys": 0.063, "synth_lead_pad": 0.079, "brass": 0.084, "ensemble_voice": 0.104, "guitar": 0.105, "reed_pipe": 0.109},
+    "median_event_displacement_hops": 0.0,
+    "stable_period_agreement": "0.868 to 0.984",
+    "events_added_equals_events_removed_by_construction": "the top-5% rank threshold is a fixed quantile, so an added event implies a removed one"
+  },
+
+  "the_Captains_prediction_was_directionally_right_and_an_order_of_magnitude_too_optimistic": {
+    "his_prediction": "ensemble/voice substantially rehabilitated; reed improves; synth improves but remains problematic; chromatic percussion barely changes",
+    "framewise_r2_change_under_the_new_target_P0": {"ensemble_voice": 0.062, "reed_pipe": 0.044, "guitar": 0.025, "bass": 0.014, "piano_keys": 0.002, "synth_lead_pad": -0.008, "chromatic_percussion": -0.010},
+    "reading": "the ORDERING is exactly as predicted - the two families J3I called target-owned or mixed gain the most, and the two J3I called representation-owned get slightly WORSE. That is an independent qualitative confirmation of J3I's attribution. The MAGNITUDES are 0.06 and 0.04 against a 0.10 materiality bar, so nothing is material.",
+    "event_recall_change_P0": {"ensemble_voice": 0.0215, "synth_lead_pad": 0.0110, "chromatic_percussion": 0.0090, "bass": 0.0023, "piano_keys": -0.0004, "guitar": -0.0046, "reed_pipe": -0.0111},
+    "ensemble_voice_is_the_only_family_with_a_visible_gain": "15.7% of its old event misses were removed by the target change alone. Real, and still far below the 0.10 absolute bar."
+  },
+
+  "negative_control_behaved": {
+    "chromatic_percussion_red_flag": "NOT raised - event-miss reduction 0.0090 against a 0.10 flag threshold",
+    "why_that_matters": "J3I found this family has no attack or gate mismatch. A large improvement would have indicated the target construction was doing something it should not. It did not."
+  },
+
+  "false_movement_is_completely_untouched": {
+    "P0_old_vs_new": {"synth_lead_pad": [0.0312, 0.0316], "reed_pipe": [0.0305, 0.0307], "guitar": [0.0181, 0.0176], "chromatic_percussion": [0.0177, 0.0183], "ensemble_voice": [0.0118, 0.0116], "piano_keys": [0.0067, 0.0068], "bass": [0.0029, 0.0027]},
+    "reading": "every change is within +/- 0.0006. The 4-10x false-movement excess on synth and reed that J3I identified is not a target artefact under ANY reading of this experiment - the acoustic-activation target leaves it exactly where it was. This is the one part of the J3I attribution that J3J strengthens rather than qualifies.",
+    "language_correction_honoured": "a slow or spectrally evolving attack CAN make an audio pitch-class estimator move while a rectangular symbolic target stays constant. J3J tested how much of that disappears when the oracle models activation timing. The answer is: none of it."
+  },
+
+  "residual_disparity_under_the_repaired_target": {
+    "P0_event_tolerant_recall": {"piano_keys": 0.8956, "bass": 0.8885, "ensemble_voice": 0.8845, "guitar": 0.8144, "chromatic_percussion": 0.6631, "reed_pipe": 0.6318, "synth_lead_pad": 0.5249},
+    "gap_to_best": {"bass": 0.0071, "ensemble_voice": 0.0111, "guitar": 0.0812, "chromatic_percussion": 0.2325, "reed_pipe": 0.2638, "synth_lead_pad": 0.3707},
+    "reading": "ensemble_voice now sits within 0.011 of piano. reed_pipe, chromatic_percussion and synth_lead_pad remain 0.23 to 0.37 below it."
+  },
+
+  "what_would_make_the_target_test_fair": {
+    "observation_not_a_proposal_and_not_authorised": true,
+    "statement": "the L1 cancellation is specific to SOLO stems, where one family kernel scales every note in the frame. On the MIXTURE path, families with different kernels sound simultaneously - a piano at 99% weight beside a pad at 38% - and the common factor does NOT cancel, so an acoustic-activation target would change the normalised state materially. That is where this target hypothesis could still be tested fairly.",
+    "why_it_is_not_done_here": "the brief's decision axis is the per-family solo diagnostic, and J3J was scoped to repair the target and rerun the existing representations against it. Extending to the mixture path is a different experiment and is not authorised by this outcome."
+  },
+
+  "deliverable_status": {
+    "three_hypothesis_ranking_NOT_triggered": "the brief conditions it on TARGET_CORRECTION_PARTIAL_REPRESENTATION_REMAINS. That outcome was not reached, so no CRP-class, NNLS-class or alternate/learned representation is ranked, recommended or executed.",
+    "nothing_is_promotable": "the BabySlakh tracks remain consumed."
+  },
+
+  "preserved_unchanged": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "note": "J3I's three-way decomposition survives. J3J adds that the ensemble_voice rehabilitation J3I found under event tolerance is NOT reproduced by an activation-timing target on solo stems, and that the synth and reed false-movement excess is definitively not a target artefact.",
+    "C4_CRP": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION, not repaired, not cited against CRP",
+    "minus_one_hop_anomaly": "unresolved, not reopened",
+    "J3H": "independently valid and separate - a real-audio commercial-separator question, not merged with J3J"
+  },
+
+  "process_note": {
+    "two_defects_in_my_own_run_caught_and_fixed": [
+      "the representation-independence control was a substring grep over the module source and tripped on the module's own DOCSTRING, which names the modules it does not import. It returned a false TARGET_REPAIR_INCONCLUSIVE. Replaced with an AST import audit.",
+      "the old-versus-new movement correlation used a plain median over a list that could contain NaN from constant-input stems, producing NaN for guitar and chromatic_percussion. Fixed to skip non-finite values."
+    ],
+    "no_new_blocking_gates_added": "every number in the decision path is the Captain's 0.10 materiality scale or a rank convention reused verbatim (0.95 / 0.80 / 0.50 / +/-2 hops). K_MAX = 32 hops, the 20-episode fallback minimum, the organological groups and the 4-tap window mean are TARGET CONSTRUCTION, fixed before any candidate was scored, and appear in no outcome test."
+  },
+
+  "status": {
+    "J3I_mutated": false, "J3G_mutated": false, "J3G2_mutated": false, "J3F_mutated": false,
+    "new_tonal_representation": false, "cqt_run": false, "crp_repair": false, "nnls_run": false,
+    "basic_pitch_run": false, "neural_model": false,
+    "midi_pitch_or_identity_altered": false, "release_model_created": false, "velocity_weighting": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false
+  }
+}

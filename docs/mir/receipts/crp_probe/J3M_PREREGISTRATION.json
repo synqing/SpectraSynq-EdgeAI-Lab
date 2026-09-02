@@ -1,0 +1,199 @@
+{
+  "schema": "spectrasynq.crp_movement_probe_prereg.v1",
+  "job": "J3M",
+  "label": "POST_HOC_CRP_MECHANISTIC_PROBE - HOST INFORMATION PROBE ONLY. Not a product frontend, not a firmware proposal, not a same-STFT approximation.",
+  "date": "2026-09-02",
+  "written_before_any_corpus_metric": true,
+  "question": "Does a faithful CRP-style timbre-invariant representation substantially reduce the unwanted harmonic MOVEMENT produced by spectrally evolving timbres, while preserving detection of genuine harmonic changes?",
+  "what_it_is_a_test_of": "spectral-envelope evolution -> false harmonic movement. NOT a generic chroma benchmark.",
+  "preserved_unchanged_and_not_mutated": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "J3K": "MIXTURE_TARGET_STATE_IMMATERIAL / ATTRIBUTION_IMMATERIAL",
+    "target": "the existing RECTANGULAR MIDI oracle is the authority target. No target modifications.",
+    "C4": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION. Not substituted, not repaired, not cited."
+  },
+  "language_corrections_adopted_from_the_PM": {
+    "on_the_oracle": "the rectangular MIDI oracle is validated as PROGRAMME-SUFFICIENT for harmonic-movement event timing at the present lag, tolerance and materiality scale. It is not physically identical to the activation model - challenge-set Jaccards are 0.778 to 0.847 - but those differences do not materially change the strongest harmonic events.",
+    "retired_sentence": "no pitch-class representation can be right about an inharmonic source",
+    "correct_sentence": "inharmonic spectra violate the assumptions of simple harmonic-template pitch estimators and can make their tonal estimate unreliable. Low confidence means 'do not trust this tonal estimate enough to move the harmonic visual verb', NOT 'there is no harmony here'. A vibraphone, marimba or bell can carry perceptually meaningful pitch and harmony despite inharmonic partials.",
+    "on_the_ranking": "a 69-bin projection from the existing 16 kHz / 2048 STFT is a CRP-CLASS APPROXIMATION, not faithful CRP, and its failure would not falsify CRP proper. The same caveat applies to any same-STFT NNLS."
+  },
+  "CRP_IMPLEMENTATION_PROVENANCE": {
+    "published_source": "Mueller and Ewert, Chroma Toolbox 2.0 - audio_to_pitch_via_FB and pitch_to_CRP, plus the ISMIR 2011 Chroma Toolbox paper",
+    "parameters_taken_verbatim_from_the_published_implementation": {
+      "pitch_filterbank": "88 bands, MIDI 21 to 108, elliptic, zero-phase filtfilt, multirate; published pitch groups 21-59 / 60-95 / 96-108",
+      "published_rates": "882 / 4410 / 22050 Hz for those groups at 22050 Hz input",
+      "published_window": "winLenSTMSP 4410 samples at 22050 Hz (200 ms) with 50% overlap, 10 Hz feature rate",
+      "log_compression": "log10(addTermLogCompr + factorLogCompr * v) with addTermLogCompr = 1, factorLogCompr = 1000",
+      "dct_matrix": "internal_DCT(120): M[m,n] = sqrt(2/120) * cos(m*(n+0.5)*pi/120), first row scaled by 1/sqrt(2)",
+      "coeffsToKeep": "[55:120] 1-indexed, i.e. CRP(55); rows 1..54 zeroed",
+      "inverse": "DCT_filter = DCT' * DCTcut",
+      "chroma_folding": "mod(p,12)+1 over the 120 pitch dimensions",
+      "normalisation": "l-p norm with normP = 2, normThresh = 1e-6",
+      "smoothing": "winLenSmooth = 1 and downsampSmooth = 1 - none applied",
+      "signed": "CRP features MAY HAVE NEGATIVE ENTRIES - stated explicitly in the published paper"
+    },
+    "canonical_configuration_used": "CRP(55). NO cutoff sweep. NO parameter optimisation against BabySlakh.",
+    "DEVIATIONS_ENUMERATED": [
+      "input sample rate is 16 kHz, not the published 22050 Hz, so the multirate decimation factors are re-derived. Published: 882 / 4410 / 22050 for MIDI 21-59 / 60-95 / 96-108. Here: 800 / 8000 / 16000 (decimate 20 / 2 / 1). The published pitch-group BOUNDARIES are preserved; only the rate each group is computed at changes, chosen as the lowest of the available rates whose Nyquist exceeds 1.15x the group's highest centre frequency. Multirate is a computational device, not part of the feature definition, so this does not alter the intended filter responses.",
+      "short-time energy is computed on the SpectraSynq analysis grid - 2048-sample window, 512 hop, causal frame ending at (i+1)*hop - instead of the published 4410-sample window with 50% overlap at 22050 Hz (200 ms, 10 Hz feature rate). This is required so CRP movement is comparable with C3 movement at the same lag of 8 hops. Our window is SHORTER and therefore LESS smoothed than the published one, which if anything makes CRP more responsive - a bias AGAINST the restraint hypothesis under test, not for it.",
+      "the published filterbank uses filtfilt, which is ZERO-PHASE and therefore NON-CAUSAL. That is retained here for fidelity. It is a hard blocker for any product path and is the reason this is labelled a HOST information probe.",
+      "the filter coefficients are designed here with scipy.signal.ellip rather than loaded from the toolbox's precomputed .mat files, which were not available. Order, ripple, attenuation and band edges are declared below and the ACHIEVED responses are measured and reported as a fidelity control.",
+      "movement is computed on the sum(|x|)-normalised CRP vector as specified by the brief. The published normalisation is l2; it is applied to the feature and is then superseded for the movement metric by the brief's rule."
+    ],
+    "IMPLEMENTATION_FIDELITY_CONTROL_measured_before_any_corpus_metric": {
+      "n_filters": 88,
+      "passband_min_gain_within_pm25_cents_dB": {
+        "median": -0.01,
+        "worst": -0.02
+      },
+      "adjacent_semitone_rejection_dB": {
+        "median": -49.68,
+        "worst": -49.29
+      },
+      "declared": {
+        "order": 4,
+        "passband_ripple_dB": 1.0,
+        "stopband_attenuation_dB": 50.0,
+        "Q": 25.0,
+        "passband_edges": "f0 * (1 -+ 1/(2Q))",
+        "stopband_reference": "adjacent semitone centres"
+      },
+      "rates_used": {
+        "21-59": 800,
+        "60-95": 8000,
+        "96-108": 16000
+      }
+    },
+    "fidelity_reading": "the designed filters hold the passband flat to within 0.02 dB across +/- 25 cents - the published robustness claim - and reject the adjacent semitone centres by about 49.5 dB, meeting the 50 dB design target. Both published behavioural claims are reproduced.",
+    "if_fidelity_cannot_be_established": "return CRP_PROBE_INCONCLUSIVE. Do NOT substitute the old C4."
+  },
+  "SIGNED_CRP_MUST_REMAIN_SIGNED": {
+    "forbidden": [
+      "half-wave rectification",
+      "absolute value",
+      "row-min shift",
+      "non-negative floor"
+    ],
+    "why": "those operations change the object being tested. C4 did exactly that and is invalid because of it.",
+    "movement_definition": "normalise each signed CRP vector by sum(|x|) where non-zero, then M_CRP(t) = 0.5 * L1(CRP_norm(t), CRP_norm(t-8))",
+    "this_is_the_only_role_CRP_plays_in_J3M": true,
+    "controls": [
+      "a source audit asserting no rectification, absolute value, clipping-to-zero or floor is applied to the CRP output",
+      "an assertion that negative entries are present in the produced features",
+      "an assertion that the movement normaliser is sum(|x|)"
+    ]
+  },
+  "SEPARATE_WHAT_FROM_WHEN": {
+    "CRP_supplies": "WHEN should harmonic colour transition",
+    "CRP_does_NOT_supply": "WHAT colour harmony should have",
+    "CONTROL": "C3_ROOT_SALIENCE state + C3_ROOT_SALIENCE movement",
+    "TREATMENT": "C3_ROOT_SALIENCE state + CRP movement",
+    "ORACLE": "existing MIDI state + MIDI movement",
+    "frozen": [
+      "the J3E colour mapping",
+      "the J3E transition rule",
+      "M_REF 0.35",
+      "A_MIN 0.02",
+      "A_MAX 0.60",
+      "photons 1.0",
+      "exposure 2.2",
+      "without_floor variant",
+      "+/- 2-hop event tolerance",
+      "challenge membership"
+    ],
+    "nothing_retuned": true,
+    "why": "this avoids forcing signed CRP values through a non-negative colour grammar"
+  },
+  "PRIMARY_SOLO_STEM_TEST": {
+    "framework": "the same audio-supported solo-stem family framework, AUDIO_SUPPORTED_PAIR frames from J3I",
+    "primary_mechanism_A_families": [
+      "synth_lead_pad",
+      "reed_pipe"
+    ],
+    "strong_family_controls": [
+      "piano_keys",
+      "bass"
+    ],
+    "reported_separately_not_required_to_be_solved": [
+      "chromatic_percussion"
+    ],
+    "primary_comparator": "C3_ROOT_SALIENCE, because it currently has the best proven restraint behaviour. P0_CURRENT is also reported. Do not compare only against P0.",
+    "metrics": [
+      "event-tolerant harmonic recall",
+      "consumer-time recall",
+      "false movement during symbolically stable periods",
+      "framewise R-squared as DIAGNOSTIC ONLY"
+    ],
+    "rank_conventions_reused_verbatim": {
+      "event": 0.95,
+      "detected": 0.8,
+      "stable": 0.5,
+      "tolerance_hops": 2,
+      "lag_hops": 8
+    }
+  },
+  "REGRESSION_GUARD": {
+    "existing_guard_retained": "a drop in event-tolerant recall greater than 0.02 is a material regression",
+    "no_new_blocking_threshold_for_false_movement": "its absolute and relative change is reported and the combined visual test adjudicates utility",
+    "no_other_number_enters_the_decision_path": true
+  },
+  "MIXTURE_VISUAL_TEST": {
+    "grammar": "the unchanged J3E harmonic-colour-transition grammar",
+    "reported": [
+      "flat-energy harmonic recall",
+      "no-onset harmonic recall",
+      "acoustic-only false response",
+      "resting median delta-E",
+      "direction-reversal rate",
+      "selectivity margin"
+    ],
+    "decisive_question": "does CRP make the visual system more SELECTIVE and RESTRAINED, rather than merely increasing MIR accuracy? A treatment that improves harmonic recall but increases resting churn is NOT a win."
+  },
+  "DATA_STATUS": {
+    "all_20_BabySlakh_tracks_are_consumed": true,
+    "label": "POST_HOC_CRP_MECHANISTIC_PROBE",
+    "nothing_is_independently_promotable": true,
+    "if_a_mechanism_signal_appears": "fresh unseen synthetic material is MANDATORY before selection"
+  },
+  "outcomes_exactly_as_briefed": {
+    "CRP_MOVEMENT_SIGNAL": {
+      "all_of": [
+        "CRP reduces false movement on BOTH synth_lead_pad and reed_pipe",
+        "neither loses more than 0.02 event-tolerant recall",
+        "mixture visual selectivity margin is no worse than C3",
+        "resting delta-E and direction-reversal rate do not regress relative to C3"
+      ],
+      "meaning": "the mechanism deserves FRESH VALIDATION. It does NOT select CRP. Next step is FRESH_CRP_VALIDATION on unseen aligned synthetic songs. Do NOT implement a same-STFT CRP approximation yet."
+    },
+    "CRP_MOVEMENT_FAIL": {
+      "condition": "CRP does not reduce false movement in the targeted timbres, or obtains apparent gain by violating the recall or restraint guards",
+      "interpretation": "spectral-envelope suppression through CRP does not solve the residual under this construct. STOP and return to the PM. Do NOT automatically run NNLS."
+    },
+    "CRP_PROBE_INCONCLUSIVE": "implementation-fidelity or control failure"
+  },
+  "CHROMATIC_PERCUSSION_HANDLING": {
+    "reported_separately": true,
+    "not_required_to_be_solved_by_CRP": "its spectrum violates a different assumption",
+    "must_not_be_read_as": "evidence against the entire CRP hypothesis, or as absence of harmony",
+    "correct_reading": "the estimator may have low reliability under inharmonic spectra - which is where confidence gating may later become useful"
+  },
+  "DO_NOT_EXECUTE": [
+    "NNLS",
+    "CQT",
+    "Basic Pitch",
+    "neural estimator",
+    "foundation model",
+    "source separator",
+    "production firmware",
+    "Titan",
+    "student I/O freeze",
+    "new visual grammar",
+    "any alteration of the J3D/J3E/J3F/J3G/J3I/J3J/J3K receipts"
+  ],
+  "note_on_the_CQT_prohibition": "the published CRP pitch front end is a multirate ELLIPTIC FILTERBANK, not a constant-Q transform. Implementing it does not run a CQT. Flagged explicitly so the PM can overrule if the intent was to forbid any fine-resolution front end, including the published one."
+}

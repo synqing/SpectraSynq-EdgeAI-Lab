@@ -1,0 +1,216 @@
+{
+  "schema": "spectrasynq.separator_asset_discovery.v1",
+  "job": "J3H",
+  "date": "2026-09-01",
+  "label": "LOCAL ASSET DISCOVERY - no audio copied, uploaded or committed",
+  "outcome": "REAL_AUDIO_SEPARATOR_INCONCLUSIVE",
+  "reason": "no matched separator asset sets exist on this machine. The primary comparison (original / Demucs / Moises / LALAL on the SAME source track) cannot be run.",
+  "what_was_searched": {
+    "granted_roots": [
+      "~/Downloads",
+      "~/Desktop",
+      "~/Music"
+    ],
+    "grant": "one permission prompt, approved; read-only use",
+    "name_patterns": [
+      "moises",
+      "lalal",
+      "demucs",
+      "htdemucs",
+      "stem",
+      "separat",
+      "acapella",
+      "instrumental",
+      "no_vocal",
+      "karaoke"
+    ],
+    "stem_filename_patterns": [
+      "vocals.*",
+      "drums.*",
+      "bass.*",
+      "other.*",
+      "piano.*",
+      "guitar.*"
+    ],
+    "archive_scan": "zip/rar/7z in Downloads and Desktop, filtered for non-engineering names",
+    "audio_inventory": "every .wav/.flac/.mp3/.m4a/.aiff/.ogg to depth 6, clustered by directory",
+    "additional_skeleton_probes_no_prompt_spent": [
+      "~/_archive",
+      "~/musica/test_audio",
+      "~/content-production-pipeline",
+      "~/SpectraSynq",
+      "~/Music/rekordbox",
+      "~/Music/PioneerDJ",
+      "~/Music/Mixxx",
+      "~/outputs",
+      "~/output"
+    ]
+  },
+  "what_was_found": {
+    "separator_exports": "NONE. No Moises, LALAL.AI or Demucs output anywhere in the searched roots.",
+    "no_per_song_stem_folders": true,
+    "no_separator_archives": true,
+    "rekordbox_note": "~/Music/rekordbox contains only Recording and Sampler (DJ sample packs). No rekordbox stem-separation cache was present.",
+    "audio_that_does_exist": {
+      "reference_audio": {
+        "path": "~/Downloads/reference_audio",
+        "n_files": 21,
+        "character": "curated harmonically diverse reference set - jazz, classical, funk, trip-hop, metal, afrobeat, prog",
+        "files": [
+          {
+            "name": " Dave Brubeck - Take Five.mp3",
+            "bytes": 7196825
+          },
+          {
+            "name": " Debussy - Clair de Lune.mp3",
+            "bytes": 5081607
+          },
+          {
+            "name": " John Coltrane - Giant Steps.mp3",
+            "bytes": 4660046
+          },
+          {
+            "name": " Thelonious Monk Quartet - 'Round Midnight.mp3",
+            "bytes": 6695159
+          },
+          {
+            "name": "Bob Marley - Waiting In Vain.mp3",
+            "bytes": 8791301
+          },
+          {
+            "name": "Brahms - Viola Sonata Opus 120 No. 1.mp3",
+            "bytes": 24807804
+          },
+          {
+            "name": "Chopin - Nocturne op.9 No.2.mp3",
+            "bytes": 4358440
+          },
+          {
+            "name": "D'Angelo - Untitled (How Does It Feel).mp3",
+            "bytes": 6874277
+          },
+          {
+            "name": "Eagles - Hotel California.mp3",
+            "bytes": 10150632
+          },
+          {
+            "name": "Eric Clapton - Wonderful Tonight.mp3",
+            "bytes": 5593998
+          },
+          {
+            "name": "Fela Kuti - Zombie.mp3",
+            "bytes": 19564633
+          },
+          {
+            "name": "James Brown ~ Papa s Got A Brand New Bag.mp3",
+            "bytes": 7471152
+          },
+          {
+            "name": "MESHUGGAH - Bleed.mp3",
+            "bytes": 7759073
+          },
+          {
+            "name": "METERS - Cissy Strut.mp3",
+            "bytes": 4583576
+          },
+          {
+            "name": "Massive Attack - Teardrop.mp3",
+            "bytes": 7501190
+          },
+          {
+            "name": "Ornette Coleman - Lonely Woman.mp3",
+            "bytes": 7648226
+          },
+          {
+            "name": "Portishead - Glory Box.mp3",
+            "bytes": 5643249
+          },
+          {
+            "name": "Satie - Gymnope\u0301die No. 1.mp3",
+            "bytes": 3960442
+          },
+          {
+            "name": "Snoop Dogg - Gin and Juice.mp3",
+            "bytes": 3573719
+          },
+          {
+            "name": "TOOL - Lateralus.mp3",
+            "bytes": 14754063
+          },
+          {
+            "name": "Talking Heads - The Great Curve.mp3",
+            "bytes": 10098899
+          }
+        ]
+      },
+      "downloads_root_loose_tracks": 36,
+      "gtzan_like": "~/Downloads/Data/genres_original - 1000 tracks across 10 genres",
+      "idmt_smt_drums_v2": "~/Downloads/IDMT-SMT-DRUMS-V2/audio - 560 files, drums only"
+    }
+  },
+  "what_would_unblock_J3H": {
+    "requirement": "the SAME source track separated by at least two separator families, with the original retained",
+    "minimum_viable": "5-6 tracks x {original, Moises, LALAL, Demucs}",
+    "recommended_track_set_and_why": [
+      {
+        "track": "Debussy - Clair de Lune",
+        "why": "solo piano, no percussion - isolates harmonic recovery with the confound removed. piano_keys scored 0.543 solo in J3F."
+      },
+      {
+        "track": "Thelonious Monk Quartet - 'Round Midnight",
+        "why": "piano + bass + drums, dense jazz voicings, frequent harmonic movement"
+      },
+      {
+        "track": "Portishead - Glory Box",
+        "why": "sparse arrangement, strong harmonic movement, prominent bass; bass scored 0.591 in J3F"
+      },
+      {
+        "track": "Massive Attack - Teardrop",
+        "why": "ADVERSARIAL CASE. Sustained pads dominate, and synth_lead_pad was the WORST family in J3F at 0.097. If separation helps anywhere, it should help most here."
+      },
+      {
+        "track": "Eagles - Hotel California",
+        "why": "guitar-led with a clear progression; guitar scored 0.383, mid-table"
+      },
+      {
+        "track": "Steely Dan - Peg",
+        "why": "in ~/Downloads root; dense keys-plus-guitar harmony, a hard case for pitch-class folding"
+      }
+    ],
+    "selection_logic": "the set deliberately spans the BEST and WORST instrument families J3F measured, so the separator comparison can show whether separation helps uniformly or only where the frontend already fails",
+    "constraints": "commercial recordings. Research-only, HOST-only. No audio is committed to the repository and none is uploaded."
+  },
+  "design_traps_recorded_for_when_J3H_RUNS": [
+    {
+      "trap": "consensus is not truth",
+      "detail": "Moises and LALAL agreeing more with each other than with Demucs is evidence of shared BEHAVIOUR, not shared correctness. Both are plausibly HTDemucs/band-split derivatives trained on similar data, so they may share a bias. Q1 consensus is only informative if the separators are architecturally independent, and that cannot be verified from the outputs.",
+      "mitigation": "report consensus as agreement, never as accuracy, unless a ground-truth leg exists"
+    },
+    {
+      "trap": "stem taxonomies are not comparable as given",
+      "detail": "Demucs gives 4 stems, Moises and LALAL give more. Summing 'pitched stems' means different things per separator.",
+      "mitigation": "define the pitched reconstruction as FULL RECONSTRUCTION MINUS the drum/percussion stems. That is comparable across taxonomies at the level that matters and does not manufacture instrument identity from `other`."
+    },
+    {
+      "trap": "resampling can masquerade as harmonic difference",
+      "detail": "separators output at their own sample rates; the analysis runs at 16 kHz. Different resamplers or different source rates could produce chroma differences that have nothing to do with separation quality.",
+      "mitigation": "record every file's native sample rate and channel count, and use one identical resampling path for all conditions"
+    }
+  ],
+  "programme_impact": {
+    "J3F_untouched": "TIMBRE_FRONTEND_DOMINANT stands. J3H was never a test of J3F: J3F used BabySlakh's actual rendered stems, which are better than any separator can produce.",
+    "J3G_unaffected": "J3G_EXISTING_STFT_HARMONIC_RECOVERY remains the recommended path and does not wait on J3H. J3F showed the frontend deserves work even with perfect synthetic stems.",
+    "what_J3H_would_still_add": "whether high-quality separation changes the economics on REAL audio - a different question, still open, and worth answering once assets exist."
+  },
+  "copyrighted_audio_committed": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_trained": false,
+  "basic_pitch_run": false,
+  "foundation_model_run": false,
+  "J3F_mutated": false,
+  "superseded": true,
+  "superseded_by": "J3H_ASSET_DISCOVERY_v2.json",
+  "superseded_reason": "Captain connected /Users/spectrasynq/Workspace_Management/Software/P4-nano after this receipt was written. That folder was NOT in the granted search roots (~/Downloads, ~/Desktop, ~/Music) and contains a 151-stem separator corpus. The finding 'no separator exports anywhere' was true of the roots searched and FALSE of the machine. The outcome verdict REAL_AUDIO_SEPARATOR_INCONCLUSIVE is retained but for different reasons - see v2.",
+  "superseded_on": "2026-09-01"
+}

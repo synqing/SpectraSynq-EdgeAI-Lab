@@ -1,0 +1,24 @@
+{
+  "schema": "spectrasynq.note_register_diagnostic.v1",
+  "job": "J3A",
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "date": "2026-09-01",
+  "why_this_exists": "H2 scored R^2 0.217 against six DSP scalars but only 0.058 against an 80-bin log-spectrogram. A richer baseline scoring WORSE is the signature of either a broken feature pipeline or a genuine generalisation failure. This diagnostic separates the two, because if it were the former the H2 PASS would be manufactured.",
+  "target": {"name": "register_centroid", "mean_midi": 59.69, "sd_semitones": 5.24, "n_frames": 145928},
+  "in_sample_vs_out_of_fold": {
+    "B1_dsp_6_features": {"in_sample_r2": 0.2701, "out_of_fold_r2": 0.2166},
+    "B2_host_spectrogram80": {"in_sample_r2": 0.2831, "out_of_fold_r2": 0.0584}
+  },
+  "finding": "The pipeline is not broken. host_spectrogram80 FITS register about as well as the 6 DSP scalars in sample (0.283 vs 0.270) and then fails to generalise to held-out tracks (0.058 vs 0.217). The spectral-shape -> register mapping is arrangement- and instrument-specific; six coarse scalars carry a more transferable version of it. Both baselines leave ~72% of register variance unexplained even in sample.",
+  "track_statistics": {"within_track_register_sd_semitones": {"min": 2.00, "median": 4.32, "max": 6.99},
+                       "sd_of_per_track_register_means_semitones": 3.01,
+                       "note": "register varies substantially WITHIN tracks, so the target is not a per-track constant the split could leak"},
+  "LIMITATION_that_qualifies_both_verdicts": {
+    "statement": "Every comparator in J3A is a LINEAR ridge. H1 INCONCLUSIVE and H2 PASS therefore mean 'not LINEARLY recoverable from these baselines', not 'new information'.",
+    "consequence": "A cheap NONLINEAR read of the frontend already in the product (small MLP or gradient-boosted trees on the same 6 DSP scalars, or on host_spectrogram80) could close the gap. If it does, register is a FEATURE-EXTRACTION change on the M85, not a capability, and no student is warranted.",
+    "required_before_any_promotion": "run the nonlinear baseline first. This is the DETERMINISTIC_REGISTER_NEXT branch of the pre-registered outcome table, and it is cheaper than any real-audio leg."
+  },
+  "does_not_change": "the pre-registered thresholds or the v2 verdict. This qualifies how the verdict may be read.",
+  "student_io_frozen": false,
+  "titan": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "spectrasynq.harmonic_movement_defect.v1",
+  "job": "J3D-A",
+  "date": "2026-09-01",
+  "kind": "MEASUREMENT DEFECT found in run v1, after v1 scores were seen. v1 is retained unmutated.",
+
+  "defect": {
+    "what": "the B_onset baseline was misaligned by 2 hops (64 ms) against the causal grid",
+    "declared_mapping_in_the_script": "our frame i maps to librosa onset_strength index i - (n_fft/hop - 1) = i - 3",
+    "why_that_was_wrong": "librosa.onset.onset_strength internally takes a first difference of the mel spectrogram, which shifts its effective frame reference. The naive window-arithmetic mapping does not account for that.",
+    "how_it_was_caught": "the receipt's own onset-vs-flux alignment diagnostic returned Spearman 0.155 - implausibly low for two energy-change measures computed on the same grid from the same audio. That number is in the v1 receipt and is what triggered the check.",
+    "measurement": {
+      "test": "Spearman(onset_strength shifted by k, 1-hop rectified flux over host_spectrogram80), 6 tracks",
+      "by_shift": {"0": 0.3775, "1": 0.8096, "2": 0.4605, "3": 0.0467, "4": -0.0414, "5": 0.0093, "6": -0.0462},
+      "correct_shift": 1,
+      "shift_used_in_v1": 3
+    }
+  },
+
+  "what_v1_results_it_contaminates": [
+    "HARMONIC_CHANGE_NO_ONSET (3093 frames) - built on rank(B_onset)",
+    "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE (3523 frames) - built on rank(B_onset)",
+    "M_tv_from_acoustic_energy_set (0.1444) and M_tv_from_all_four (0.3288) - both include B_onset",
+    "M_cos equivalents"
+  ],
+  "what_v1_results_it_does_NOT_contaminate": [
+    "HARMONIC_CHANGE_FLAT_ENERGY (2299 frames) - uses B_rms, not onset",
+    "M_tv_from_B_chroma_alone (0.3097)",
+    "the chroma-movement lag diagnostic",
+    "chroma event recall (0.7266)",
+    "both blocking controls, which passed"
+  ],
+
+  "v1_outcome_stands": {
+    "outcome": "HARMONIC_MOVEMENT_INCONCLUSIVE",
+    "reason_1": "the inherited alignment rule fired: chroma-movement argmax lag -1 with margin 0.0229 over lag 0, above the 0.02 tolerance",
+    "reason_2": "this onset defect, discovered afterwards",
+    "note": "the two reasons are independent and both point the same way: v1 issues no verdict."
+  },
+
+  "repair_and_its_boundary": {
+    "what_is_being_fixed": "a measurement bug in a baseline, empirically located against an independent baseline (rectified flux), not against the target M_tv - so it cannot bias the result toward the hypothesis",
+    "direction_of_the_correction": "conservative. Better onset alignment makes onset ranks MORE accurate, which can only REDUCE spurious HARMONIC_CHANGE_NO_ONSET frames.",
+    "what_is_NOT_being_changed": [
+      "the pre-registered thresholds",
+      "the precedence order",
+      "the inherited chroma lag rule (still |argmax| >= 2 hops or margin > 0.02)",
+      "the construct, the metrics, the lag, the percussion exclusion",
+      "the v1 receipt"
+    ],
+    "disclosure": "v1 scores WERE seen before this repair. v2 is therefore a post-hoc re-run and is labelled as such. Captain decides whether v2 counts."
+  },
+
+  "student_io_frozen": false,
+  "titan": false
+}

@@ -1,0 +1,482 @@
+{
+  "schema": "spectrasynq.stft_harmonic_recovery_prereg.v1",
+  "job": "J3G",
+  "label": "HOST-ONLY DETERMINISTIC TONAL PROJECTION - NOT A PRODUCT EFFECT, NOT FIRMWARE, NOT A COMPATIBILITY ROW",
+  "date": "2026-09-01",
+  "written_before_any_candidate_score": true,
+  "written_before_any_postprocessing_ablation_score": true,
+  "question": "Can substantially more of the visually useful harmonic-movement information be recovered from the exact STFT SpectraSynq already computes, using better deterministic tonal projection, without adding a second audio frontend?",
+  "question_this_is_not": [
+    "which chroma algorithm has the highest generic MIR benchmark score",
+    "can we perfectly reproduce symbolic MIDI duration occupancy",
+    "does source separation help - J3F closed that for this construct"
+  ],
+  "inherited_programme_state": {
+    "J3F_outcome": "TIMBRE_FRONTEND_DOMINANT",
+    "J3F_receipts_mutated": false,
+    "correct_wording_of_the_separation_result": "SOURCE SEPARATION IS NOT CURRENTLY JUSTIFIED AS THE FIX FOR HARMONIC MOVEMENT. This is NOT 'source separation has no value to SpectraSynq'. Source ownership remains independently valuable.",
+    "retracted_one_liner": {
+      "do_not_carry_forward": "fixing pitch-class folding is worth up to 0.57 R-squared",
+      "why_it_was_wrong": "1 - S1_R2 is not recoverable frontend headroom. Audio chroma measures spectral energy; the symbolic oracle measures duration occupancy. A perfect audio estimator need not equal that target frame-for-frame, so the absolute ceiling is unknown.",
+      "correct_statement": "the evidence strongly favours frontend/representation improvement over source separation as the next harmonic-recovery investment; the magnitude of recoverable improvement remains unknown."
+    }
+  },
+  "hard_constraints": {
+    "sr_hz": 16000,
+    "n_fft": 2048,
+    "hop": 512,
+    "window": "Hann (np.hanning)",
+    "framing": "causal - frame i ends at (i+1)*hop, head zero-padded, hop-centre timestamp. Identical to host_chroma12.",
+    "one_stft_only": "every candidate consumes the SAME complex rfft frames, computed once per signal and passed by reference. Structurally enforced, and asserted against host_chroma12.",
+    "forbidden": [
+      "CQT",
+      "second STFT",
+      "alternate sample rate",
+      "alternate n_fft or hop",
+      "learned network",
+      "Basic Pitch",
+      "MERT/MuQ/MusicFM",
+      "source separation as an inference dependency",
+      "per-track parameter tuning",
+      "any parameter search against the oracle"
+    ],
+    "permitted_inputs": [
+      "existing complex/magnitude/power STFT",
+      "rfft bin centre frequencies",
+      "spectral peaks derived from that STFT",
+      "slow causal state"
+    ]
+  },
+  "J3G_0_metric_doctrine": {
+    "three_levels_never_collapsed": true,
+    "LEVEL_A_symbolic_agreement": {
+      "status": "DIAGNOSTIC ONLY. Candidates are NOT ranked by R-squared.",
+      "target": "tv_movement of the J3D duration-weighted symbolic pitch-class state (lag 8 hops), tonal instruments only",
+      "metrics": [
+        "movement R-squared (grouped 5-fold CV by track, alpha on training folds only)",
+        "Spearman",
+        "top-5% event recall in candidate top-20%",
+        "challenge-class recall"
+      ],
+      "explicit_caveat": "because symbolic duration occupancy is not acoustic spectral energy, no candidate is required to approach R-squared = 1, and failure to do so is not evidence of a bad estimator."
+    },
+    "LEVEL_B_error_structure": {
+      "status": "DIAGNOSTIC, and supplies two BLOCKING gates for candidate selection",
+      "measures": [
+        "wrong pitch-class emphasis",
+        "ambiguous-overlap failures",
+        "residual previous chord",
+        "acoustic-only false harmonic response",
+        "timbre-family disparity",
+        "phantom-triad leakage on the deterministic fixture"
+      ],
+      "central_question": "does the estimator stop interpreting ordinary harmonic overtones as independent pitch classes?"
+    },
+    "LEVEL_C_visual_recovery": {
+      "status": "PRIMARY PROGRAMME METRIC",
+      "method": "run the single final candidate through the UNCHANGED J3E HOST visual grammar; compare BASELINE (host_chroma12) / CANDIDATE / ORACLE (exact MIDI) on the same final-holdout tracks",
+      "closes_the_loop": "representation -> musical information -> visual behaviour"
+    }
+  },
+  "development_holdout_discipline": {
+    "declared_before_any_score": true,
+    "split_rule": "sort the 20 BabySlakh track directory names ascending; even positions (0-indexed) are DEVELOPMENT, odd positions are FINAL. Deterministic, stated before any candidate ran, no content inspection.",
+    "development_tracks": [
+      "Track00001",
+      "Track00003",
+      "Track00005",
+      "Track00007",
+      "Track00009",
+      "Track00011",
+      "Track00013",
+      "Track00015",
+      "Track00017",
+      "Track00019"
+    ],
+    "final_holdout_tracks": [
+      "Track00002",
+      "Track00004",
+      "Track00006",
+      "Track00008",
+      "Track00010",
+      "Track00012",
+      "Track00014",
+      "Track00016",
+      "Track00018",
+      "Track00020"
+    ],
+    "rules": [
+      "every postprocessing decision, every candidate decision and every parameter value is fixed on DEVELOPMENT only",
+      "exactly ONE winner is carried to FINAL",
+      "FINAL is scored once",
+      "no per-family winner, no per-challenge-class winner, no tuning by challenge excerpt",
+      "no lag optimisation - the J3D -1-hop anomaly is reported, never fitted"
+    ]
+  },
+  "blocking_controls_all_must_pass_before_any_candidate_score": {
+    "C_IDENTITY": {
+      "test": "the P0 path reproduces host_chroma12",
+      "threshold": "max abs diff <= 1e-5"
+    },
+    "C_FRAMING": {
+      "test": "the shared STFT frame matrix reproduces host_chroma12's frames",
+      "threshold": "max abs diff <= 1e-9"
+    },
+    "C_SHUFFLE": {
+      "test": "candidate movement shuffled across frames, regressed on oracle movement",
+      "threshold": "R-squared <= 0.10"
+    },
+    "C_MEMBERSHIP": {
+      "test": "challenge-class membership recomputed on all 20 tracks equals J3D-A v2",
+      "expected": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+        "HARMONIC_CHANGE_NO_ONSET": 4000,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292
+      },
+      "note": "membership is IMMUTABLE and is never redefined by J3G"
+    },
+    "on_failure": "outcome is EXISTING_STFT_HARMONIC_RECOVERY_INCONCLUSIVE and no candidate ranking is reported"
+  },
+  "J3G_1_postprocessing_ablation": {
+    "purpose": "isolate whether the loss is caused by the pitch-class MAPPING or merely by the sqrt / reference / clip behaviour AFTER the mapping",
+    "run_before_any_candidate": true,
+    "arithmetic_note_declared_in_advance": "division by the fixed reference amplitude is a constant scale and is therefore a no-op for movement once rows are L1-normalised, EXCEPT through the clip at 1.0. P0 vs P2 isolates clipping; P2 vs P1 isolates the compression exponent.",
+    "variants_maximum_three": {
+      "P0_CURRENT": "exact host_chroma12: nearest-bin pitch-class power, sqrt, divide by frozen reference amplitude, clip to [0,1], then L1",
+      "P1_POWER_L1": "same nearest-bin assignment; pitch-class POWER; no sqrt, no reference scaling, no clip; L1",
+      "P2_SQRT_L1_NO_CLIP": "same nearest-bin assignment; sqrt(power); no reference scaling, no clip; L1"
+    },
+    "stop_rule": "if P1 or P2 closes most of the P0-to-oracle symbolic gap on DEVELOPMENT, report that and stop before the projection candidates. 'Most' is declared as: recovers >= 0.15 absolute movement R-squared over P0 on DEVELOPMENT.",
+    "carry_forward_rule": "the winning compression on DEVELOPMENT is applied to every projection candidate, so C1-C4 are compared on PROJECTION, not on compression. Applied in each candidate's native domain: power-domain candidates (C1, C2) take the exponent directly; amplitude-domain candidates (C3) take twice the exponent; C4 is exempt because log compression is intrinsic to CRP and a second compression would double-compress. Every exemption is recorded in the result."
+  },
+  "J3G_2_candidates_maximum_four": {
+    "C1_SOFT_STFT_CHROMA_FILTERBANK": {
+      "hypothesis": "hard nearest-bin rounding, not the STFT, destroys the pitch-class mapping",
+      "formula": "for each rfft bin k with f_k >= 40 Hz: p_k = (69 + 12*log2(f_k/440)) mod 12. For pitch class b, d = circular distance from p_k to b in [-6,6). w[b,k] = exp(-0.5*(d/sigma)^2) with sigma = 0.55 semitones DECLARED. Columns normalised so sum_b w[b,k] = 1. Output = w @ power.",
+      "declared_constants": {
+        "sigma_semitones": 0.55,
+        "freq_floor_hz": 40.0,
+        "tuning": "A440 fixed",
+        "octave_weighting": "NONE - omitted deliberately so the difference from P0 isolates hard-rounding versus soft assignment",
+        "upper_frequency_limit": "NONE - all bins to Nyquist, identical to host_chroma12, so the comparison isolates the mapping"
+      },
+      "native_domain": "power"
+    },
+    "C2_PEAK_WEIGHTED_HPCP_CLASS": {
+      "hypothesis": "broadband and noise energy voting equally with stable tonal peaks is the loss",
+      "formula": "local maxima of |X[k]| above the 40 Hz floor; parabolic interpolation on log-magnitude gives sub-bin frequency and refined magnitude; keep peaks with amplitude >= 0.01 of the frame's largest peak; each peak contributes its POWER to pitch class b with weight cos^2(pi/2 * d/Delta) for |d| <= Delta, else 0, where d is the circular semitone distance.",
+      "declared_constants": {
+        "Delta_semitones": 0.6667,
+        "peak_amplitude_threshold_relative": 0.01,
+        "n_harmonics": 1
+      },
+      "n_harmonics_justification": "DELIBERATELY 1. Classic HPCP sums contributions at sub-multiples with a decay factor. Setting that blindly would manufacture exactly the phantom triad J3F Q0b found. Harmonic-aware treatment is C3's job, not C2's. C2 tests ONE thing: do stable peaks beat broadband energy?",
+      "native_domain": "power"
+    },
+    "C3_FUNDAMENTAL_ROOT_SALIENCE": {
+      "hypothesis": "the frontend treats every overtone as an independent note; converting harmonic stacks into evidence for their ROOT is the fix (directly addresses J3F Q0b)",
+      "formula": "candidate fundamentals on the equal-tempered semitone grid MIDI 28..96. A(f) = sqrt of the maximum bin power within +/- 0.5 semitone of f (single nearest bin if the window is empty). S(c) = sum_{h=1..8} (1/h) * A(h*c). odd_frac(c) = [sum over odd h<=8 of (1/h)*A(h*c)] / [S(c) + eta]. Octave gate g(c) = min(1, odd_frac(c) / rho) with rho = 0.767, the odd-harmonic fraction of an ideal 1/h series under 1/h weights. Final salience S*(c) = S(c) * g(c). Fold: pitch_class[b] = sum over candidates c with (midi(c) mod 12 == b) of S*(c).",
+      "declared_constants": {
+        "midi_low": 28,
+        "midi_high": 96,
+        "H": 8,
+        "harmonic_weights": "1/h",
+        "eta": 1e-12,
+        "half_width_semitones": 0.5,
+        "empty_window_rule": "if no rfft bin centre falls within +/- 0.5 semitone of the target frequency, the single nearest bin is used",
+        "rho": 0.767,
+        "rho_derivation": "sum_{h odd <= 8} 1/h^2 / sum_{h<=8} 1/h^2 = 1.1716 / 1.5274"
+      },
+      "octave_guard_justification": "a plain harmonic sum scores the sub-octave c = f0/2 as highly as f0, because every harmonic of f0 is an even harmonic of f0/2. The odd-harmonic fraction of a true fundamental with a 1/h series is about 0.62; for its sub-octave it collapses towards 0 because 1.5*f0, 2.5*f0 are absent. Declared before scoring, not fitted.",
+      "native_domain": "amplitude"
+    },
+    "C4_TIMBRE_ROBUST_CRP_CLASS": {
+      "hypothesis": "the 0.4989 solo-stem family R-squared spread is spectral-envelope (timbre) leakage that a fixed timbre-suppression transform removes",
+      "formula": "pitch representation v[m] = sum of bin power over bins within +/- 0.5 semitone of MIDI m, m = 28..96 (69 bins). Log compression u = log(1 + 1000*v). Orthonormal DCT-II across the 69 pitch bins. Zero coefficients 0..31 (k = round(69 * 55/120) = 32, scaled from Muller and Ewert's 55-of-120 cutoff). Inverse DCT. Half-wave rectify. Fold to 12 pitch classes by summing over octaves. L1.",
+      "declared_constants": {
+        "midi_low": 28,
+        "midi_high": 96,
+        "log_compression_C": 1000,
+        "dct_cutoff_index": 32,
+        "cutoff_derivation": "round(69 * 55/120)",
+        "empty_window_rule": "same as C3: if no bin centre falls within the +/- 0.5 semitone window, the single nearest bin is used, so the low pitch bins are not identically zero"
+      },
+      "documented_deviations_from_published_CRP": [
+        "69 pitch bins instead of 120, because this STFT cannot resolve semitones below MIDI 49 and has an 8 kHz Nyquist",
+        "half-wave rectification after the inverse DCT, because the downstream J3E colour grammar and the L1 movement metric require a non-negative vector. Published CRP keeps signed values. The fraction of mass discarded by rectification is reported as a diagnostic - if it is large, the transform is not doing what CRP does.",
+        "no second compression stage (see the carry-forward rule)"
+      ],
+      "cost_disclosure": "the two DCT matrices collapse into ONE fixed 69x69 projection, so the marginal cost is one 69x69 matrix-vector product per frame plus the 69-band pitch pooling. If measured cost is disproportionate this candidate is marked HOST_INFORMATION_PROBE_ONLY rather than a product candidate.",
+      "native_domain": "log-compressed, exempt from the carry-forward compression"
+    }
+  },
+  "tuning_diagnostic_not_a_candidate": {
+    "run_before_deciding_whether_tuning_compensation_is_needed": true,
+    "method": "per track, collect interpolated spectral peaks above the 40 Hz floor and above the C2 amplitude threshold; express each peak's deviation from the nearest A440 equal-tempered semitone in cents, wrapped to [-50, 50); take the power-weighted circular mean.",
+    "declared_threshold": "if the absolute median per-track deviation across all 20 tracks is <= 10 cents, record TUNING_NOT_MATERIAL_HERE and spend no candidate on tuning compensation",
+    "if_material": "add tuning compensation to C1 and C2 using a declared SLOW CAUSAL estimator only. Whole-song future information is forbidden and would not be product-realistic."
+  },
+  "phantom_triad_unit_fixture": {
+    "status": "permanent deterministic unit fixture, no corpus involved",
+    "stimuli": [
+      {
+        "id": "PURE_SINE",
+        "definition": "single sinusoid at MIDI 60 (261.63 Hz), unit amplitude"
+      },
+      {
+        "id": "HARMONIC_NOTE",
+        "definition": "MIDI 60 fundamental with harmonics h = 1..8 at amplitude 1/h"
+      },
+      {
+        "id": "TWO_NOTE_FIFTH",
+        "definition": "MIDI 60 and MIDI 67, each a 1/h series to h = 8"
+      },
+      {
+        "id": "MAJOR_TRIAD",
+        "definition": "MIDI 60, 64, 67, each a 1/h series to h = 8"
+      }
+    ],
+    "reported_per_candidate": "L1-normalised 12-vector, plus root mass, fifth contamination, major-third contamination, other contamination",
+    "pass_rule": "an improved harmonic-aware candidate must reduce spurious NON-ROOT pitch-class mass on HARMONIC_NOTE relative to host_chroma12. Mathematically zero leakage is NOT required.",
+    "anti_gaming_clause": "TWO_NOTE_FIFTH and MAJOR_TRIAD exist so that a candidate cannot 'fix' single notes by destroying real chords. A candidate that collapses a genuine triad towards a single pitch class fails Level B regardless of its single-note behaviour.",
+    "host_chroma12_reference_from_J3F_Q0b": {
+      "root": 0.849,
+      "fifth": 0.093,
+      "major_third": 0.032,
+      "other": 0.026
+    },
+    "comparison_basis": "all fixture comparisons are against P0 MEASURED ON THE SAME SYNTHESISED FIXTURE, not against J3F's Q0b vector. Q0b was analytic - it folded an ideal 1/k series through the nearest-pitch-class rule with no window, no leakage and no STFT. Measured P0 on real synthesised audio through the real 2048-point Hann STFT is materially less clean than the analytic figure, so the two are not comparable."
+  },
+  "solo_timbre_diagnostic": {
+    "method": "repeat the J3F solo-stem family analysis for host_chroma12 and for the final winning candidate",
+    "reported": [
+      "per-family R-squared",
+      "per-family Spearman",
+      "weighted overall",
+      "max-minus-min spread",
+      "worst-family improvement"
+    ],
+    "explicit_failure_mode": "a candidate that improves the aggregate by making already-easy piano/bass better while synth_lead_pad and reed_pipe remain broken is NOT a convincing solution to TIMBRE_FRONTEND_DOMINANT and must not be reported as one.",
+    "host_chroma12_baseline_from_J3F": {
+      "overall": 0.4239,
+      "spread": 0.4989,
+      "worst_two": {
+        "synth_lead_pad": 0.0965,
+        "reed_pipe": 0.1216
+      },
+      "best_two": {
+        "brass": 0.5954,
+        "bass": 0.5906
+      }
+    }
+  },
+  "candidate_selection_rule_DEVELOPMENT_ONLY": {
+    "why_a_rule_is_pre_registered": "exactly one winner must reach FINAL and Level C. Choosing it after seeing all scores would be selection on the outcome. The rule below is fixed now and is a SELECTION DEVICE ONLY - it is never reported as a headline result, and every component is reported separately.",
+    "blocking_gate_1": "candidate ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE false-response rate must not exceed P0's by more than 0.02. No candidate may win by becoming more reactive to non-harmonic energy.",
+    "score": "selection_score = 0.5 * mean(challenge recall on HARMONIC_CHANGE_FLAT_ENERGY and HARMONIC_CHANGE_NO_ONSET) + 0.5 * clip(worst-family solo R-squared, 0, 1)",
+    "score_justification": "the two halves encode the two things J3F said matter: recover genuine harmonic events, and do not win by improving only the easy timbres.",
+    "tie_break_order": [
+      "lower non-root mass on the HARMONIC_NOTE fixture",
+      "smaller family max-minus-min spread",
+      "lower arithmetic cost per frame"
+    ],
+    "blocking_gate_2_WITHDRAWN": {
+      "withdrawn_text": "candidate non-root mass on the HARMONIC_NOTE fixture must be <= host_chroma12's 0.151, AND the candidate must not reduce MAJOR_TRIAD's three chord-tone mass below 0.70 of host_chroma12's value.",
+      "status": "WITHDRAWN before any corpus score. Replaced by the reporting requirement the Captain actually specified."
+    },
+    "phantom_triad_reporting_requirement": "the fixture vector is REPORTED for every candidate and discussed. It is not an elimination gate. The one clause that IS blocking is the Captain's own anti-gaming clause: a candidate that collapses a genuine MAJOR_TRIAD towards a single pitch class - chord-tone mass below 0.70 of P0's on the same fixture - fails Level B regardless of its single-note behaviour."
+  },
+  "J3E_visual_recovery_test": {
+    "run_for": "the FINAL selected candidate only",
+    "grammar": "HARMONIC COLOUR TRANSITION from J3E, UNCHANGED",
+    "frozen_identically": [
+      "state to colour mapping",
+      "movement to transition rule",
+      "M_REF 0.35",
+      "A_MIN 0.02",
+      "A_MAX 0.60",
+      "photons fixed at 1.0",
+      "preview exposure 2.2 and sRGB",
+      "challenge membership",
+      "+/- 2-hop event-tolerant view",
+      "without_floor primary variant"
+    ],
+    "forbidden": "changing any threshold, constant or mapping to help CANDIDATE",
+    "conditions": {
+      "BASELINE": "original host_chroma12",
+      "CANDIDATE": "winning J3G same-STFT estimator",
+      "ORACLE": "exact MIDI oracle from J3E"
+    },
+    "scope_note": "all three conditions are re-run on the FINAL HOLDOUT tracks only, so the three numbers are internally comparable. They will therefore NOT equal J3E's published all-20-track figures, and the J3E receipt is not modified.",
+    "reported_metrics_separately_never_averaged_into_one_headline": [
+      "HARMONIC_CHANGE_FLAT_ENERGY recall (higher better)",
+      "HARMONIC_CHANGE_NO_ONSET recall (higher better)",
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE false response (lower better)",
+      "resting median delta-E on holdout frames (lower better)",
+      "direction-reversal rate (lower better)"
+    ],
+    "oracle_gap_fraction_recovered": {
+      "higher_is_better_metrics": "(candidate - baseline) / (oracle - baseline)",
+      "lower_is_better_metrics": "(baseline - candidate) / (baseline - oracle)",
+      "handling": "computed and reported PER METRIC. Overshoot beyond 1.0 and undershoot below 0.0 are reported verbatim and flagged, never clipped silently. A mean across the five is computed ONLY because the outcome thresholds below reference it, and it is reported alongside all five components.",
+      "guard": "if a denominator is smaller than 0.01 in absolute value the fraction is reported as null, not as a large number"
+    }
+  },
+  "temporal_and_challenge_metrics": {
+    "challenge_membership": "IMMUTABLE, reused from J3D-A v2. J3G does not redefine it.",
+    "per_candidate_reported": [
+      "HARMONIC_CHANGE_FLAT_ENERGY recall",
+      "HARMONIC_CHANGE_NO_ONSET recall",
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE false response",
+      "ordinary holdout stability",
+      "lag curve over shifts -4..+4 hops"
+    ],
+    "lag_rule": "the lag curve is REPORTED, never optimised. Candidate timing is evaluated at nominal consumer time plus the already-declared +/- 2-hop event-tolerant view. The J3D -1-hop anomaly remains unresolved and J3G does not attempt to resolve it."
+  },
+  "outcome_taxonomy_in_precedence_order": {
+    "EXISTING_STFT_HARMONIC_RECOVERY_INCONCLUSIVE": "any blocking control fails, or the final-holdout run cannot be interpreted",
+    "EXISTING_STFT_HARMONIC_RECOVERY_STRONG": {
+      "all_of": [
+        "mean oracle_gap_fraction_recovered across the five visual metrics >= 0.50",
+        "oracle_gap_fraction_recovered >= 0.25 on EACH of the two harmonic recall metrics individually",
+        "worst-family solo R-squared improves by >= 0.10 absolute AND family max-minus-min spread shrinks by >= 0.10",
+        "final-holdout symbolic movement R-squared improves by >= 0.05 absolute over P0",
+        "no timing or chatter pathology: candidate direction-reversal rate <= 1.5x baseline AND candidate acoustic false response <= baseline"
+      ],
+      "interpretation": "harmonic intelligence appears recoverable with the frontend SpectraSynq already pays for. No Basic Pitch, no neural student. Next step is product-feasibility / M85 implementation of the minimal winning transform."
+    },
+    "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL": {
+      "any_of": [
+        "final-holdout symbolic movement R-squared improves by >= 0.05 absolute over P0",
+        "mean oracle_gap_fraction_recovered >= 0.20"
+      ],
+      "and_not": "the STRONG conditions",
+      "interpretation": "same-STFT conventional MIR helps but does not close harmonic perception. PM decides whether another deterministic refinement is warranted or whether learned / alternate-frontend research earns its cost."
+    },
+    "EXISTING_STFT_HARMONIC_RECOVERY_FAIL": {
+      "all_of": [
+        "no candidate improves final-holdout symbolic movement R-squared by >= 0.02 absolute over P0",
+        "mean oracle_gap_fraction_recovered < 0.05"
+      ],
+      "interpretation": "the existing STFT has been reasonably exhausted for this construct. ONLY THEN reconsider CQT/alternate frontend, real-audio teacher, Basic Pitch-class teacher paths, a tiny learned estimator, or source-conditioned approaches where independently justified."
+    }
+  },
+  "prohibited_in_this_job": [
+    "running Demucs or any separator for this lane",
+    "inferring that source separation is useless generally",
+    "CQT",
+    "changing FFT size",
+    "changing sample rate",
+    "running Basic Pitch",
+    "training a network",
+    "MERT/MuQ/MusicFM",
+    "touching Titan",
+    "changing production firmware",
+    "altering the J3E visual grammar",
+    "optimising against all 20 tracks",
+    "optimising lag",
+    "treating raw R-squared as the only success metric",
+    "mutating the J3D, J3E or J3F receipts"
+  ],
+  "what_this_is_not": [
+    "not a product effect and not a compatibility row",
+    "not Gate B and not Gate C",
+    "not firmware and not a firmware proposal",
+    "not evidence about real-audio behaviour - BabySlakh is synthetic rendered audio at 16 kHz",
+    "not a claim that the symbolic oracle is the correct target for a shipping estimator"
+  ],
+  "amendments_before_any_score": [
+    {
+      "date": "2026-09-01",
+      "what": "declared the empty-window rule for C3/C4 pitch pooling and the absence of an upper frequency limit in C1",
+      "scores_seen_at_time_of_amendment": "NONE - no candidate, ablation or diagnostic had been computed",
+      "why": "the formulas as first written were silent on what happens where the STFT has fewer than one bin per semitone, which is exactly the region J3F Q0a flagged. Leaving it undeclared would have let the implementation choose."
+    },
+    {
+      "date": "2026-09-01",
+      "what": "C3 octave guard changed from a multiplicative fraction to a saturating gate",
+      "scores_seen_at_time_of_amendment": "the four phantom-triad UNIT FIXTURE vectors only. NO corpus metric, NO ablation score, NO candidate R-squared, NO challenge recall, NO visual metric had been computed for any candidate. The development/holdout split had not been touched.",
+      "the_fault": "the originally declared S*(c) = S(c) * odd_frac(c) is algebraically degenerate: odd_frac(c) = odd_sum(c)/(S(c)+eta), so S*(c) reduces identically to odd_sum(c). The declared prose called it a guard on a harmonic SUM, but the algebra silently discarded every even-harmonic term, i.e. roughly half the harmonic evidence, in every case including a perfectly clean fundamental.",
+      "why_it_had_to_be_fixed_rather_than_run": "running the degenerate form would have tested a strawman version of the harmonic-aware hypothesis. That biases the programme towards concluding the existing STFT is exhausted - the more dangerous error direction, because it is the one that would send SpectraSynq to CQT, a teacher or a learned student on false evidence.",
+      "the_fix": "S*(c) = S(c) * min(1, odd_frac(c)/rho), rho = 0.767 derived analytically from the same 1/h series the harmonic weights already assume. An ideal fundamental now keeps its FULL harmonic sum (gate = 1); a sub-octave, whose odd harmonics are absent, is still driven to 0.",
+      "not_tuned": "rho is derived from the declared harmonic weights, not fitted. No constant was chosen to change a fixture number, and the fixture was not re-consulted to pick it.",
+      "precedent": "identical handling to the J3A CONTROL_A design fault: caught before any hypothesis score, disclosed, corrected, with the pre-correction output recorded rather than hidden.",
+      "pre_correction_fixture_output_recorded_for_audit": {
+        "stimulus": "HARMONIC_NOTE (MIDI 60, harmonics 1..8 at 1/h)",
+        "degenerate_C3_L1_vector": {
+          "C": 0.414,
+          "C#": 0.036,
+          "D": 0.029,
+          "D#": 0.037,
+          "E": 0.052,
+          "F": 0.124,
+          "F#": 0.024,
+          "G": 0.106,
+          "G#": 0.075,
+          "A": 0.034,
+          "A#": 0.031,
+          "B": 0.039
+        }
+      }
+    },
+    {
+      "date": "2026-09-01",
+      "what": "withdrew my self-invented blocking gate 2, and fixed the fixture comparison basis",
+      "scores_seen_at_time_of_amendment": "the phantom-triad UNIT FIXTURE vectors for P0/P1/P2/C1/C2/C3/C4 on HARMONIC_NOTE only. NO corpus metric of any kind had been computed - no ablation, no candidate R-squared, no challenge recall, no family analysis, no visual metric. The development split had not been touched.",
+      "what_i_saw": "measured non-root mass on HARMONIC_NOTE: P0 0.472, P1 0.156, P2 0.472, C1 0.698, C2 0.367, C3 0.551, C4 0.667. Under my gate 2 as written, C1, C3 and C4 would all have been eliminated before touching the corpus.",
+      "fault_1": "gate 2 compared measured fixture output against J3F's Q0b non-root figure of 0.151. Q0b is ANALYTIC - an ideal 1/k series folded through the nearest-pitch-class rule with no window and no leakage. Measured P0 through the actual Hann STFT is 0.472. The gate was therefore comparing two incommensurable numbers and P0 itself would have failed it.",
+      "fault_2": "the blocking gate was MINE, not the Captain's. His brief makes the phantom-triad fixture a REPORTING requirement with an expectation ('should reduce spurious non-root mass') plus one anti-gaming clause ('prevents fixing single notes by destroying real chords'). Turning that into a hard elimination criterion over-scoped the instruction.",
+      "why_it_also_fails_on_the_merits": "a soft filterbank spreads to neighbouring pitch classes BY DESIGN; that is what conventional chroma does. Whether the spread costs or buys anything is a polyphony question, not a single-note question. Eliminating C1 on a single-note fixture would have left J3G unable to answer its own stated question - C1 is precisely 'the conventional baseline against which current host_chroma12 should have been compared'.",
+      "the_fix": "gate 2 withdrawn. The fixture is reported for every candidate, compared against P0 measured on the SAME fixture, and feeds the tie-break. The anti-gaming clause survives as the only blocking part: a candidate that collapses a genuine major triad fails. Blocking gate 1 (acoustic false response, corpus-measured) is unchanged.",
+      "direction_of_risk_disclosed": "this amendment LOOSENS a criterion after seeing that three candidates would fail it. Recorded in full so the Captain can judge it. The countervailing risk was worse: eliminating the conventional baseline on an incommensurable threshold would have manufactured a FAIL outcome and sent the programme to CQT or a learned student on bad evidence."
+    }
+  ],
+  "amendments_after_development_scores_before_holdout": [
+    {
+      "date": "2026-09-01",
+      "stage": "DEVELOPMENT SCORES SEEN. FINAL HOLDOUT NOT OPENED. No holdout metric of any kind had been computed when this was written.",
+      "what": "the pre-registered selection score is degenerate and its margin is smaller than its own standard error. The winner is resolved by the ORIGINAL, pre-contamination tie-break.",
+      "fault_1_degeneracy": {
+        "declared": "selection_score = 0.5 * mean(harmonic challenge recall) + 0.5 * clip(worst-family solo R-squared, 0, 1)",
+        "what_happened": "worst-family solo R-squared is NEGATIVE for every candidate on the development set (synth_lead_pad about -0.29 to -0.32; C4's worst is guitar at -0.29). clip(x, 0, 1) maps all of them to exactly 0, so the second half of the score is identically zero and the rule collapses to 0.5 * mean harmonic recall - the single thing the second term existed to counterbalance.",
+        "why_i_got_it_wrong": "I assumed a positive worst-family value because J3F measured synth_lead_pad at +0.0965 over 20 tracks and 157 stems. On 10 development tracks and 77 stems it is negative."
+      },
+      "fault_2_margin": {
+        "selection_scores": {
+          "C4_CRP": 0.3564,
+          "C3_ROOT_SALIENCE": 0.356,
+          "C2_PEAK_HPCP": 0.3527
+        },
+        "max_minus_min": 0.0037,
+        "standard_error_of_the_score": "about 0.0042 per candidate under an OPTIMISTIC independent-frame assumption; frames are autocorrelated so the true error is larger",
+        "reading": "the entire spread across the three eligible candidates is smaller than the standard error of the score itself. The argmax is not a decision. Same class of defect as the J3A lag rule, whose 0.0063 margin invalidated that run."
+      },
+      "minimal_repair_checked_and_reported": {
+        "repair": "delete the clip, keep the 0.5/0.5 weights - the smallest possible edit, since the clip existed only to put the two halves on a common scale",
+        "result": {
+          "C4_CRP": 0.2102,
+          "C2_PEAK_HPCP": 0.2067,
+          "C3_ROOT_SALIENCE": 0.2039
+        },
+        "note": "C4 still wins under the repair, so no winner-shopping is possible through this route. The margin is still inside the error."
+      },
+      "resolution": {
+        "rule_applied": "the score cannot discriminate, so the pre-registered TIE-BREAK decides",
+        "which_tie_break": "the ORIGINAL tie-break order as first written, BEFORE any number of any kind was computed: (1) smaller family max-minus-min spread, (2) lower arithmetic cost per frame",
+        "family_spread": {
+          "C3_ROOT_SALIENCE": 0.8277,
+          "C4_CRP": 0.8783,
+          "C2_PEAK_HPCP": 0.8973
+        },
+        "winner": "C3_ROOT_SALIENCE",
+        "why_not_the_amended_tie_break": "amendment 3 inserted 'lower non-root mass on the HARMONIC_NOTE fixture' as the FIRST tie-break key. That was written after the fixture vectors were known (P0 0.472, C1 0.698, C2 0.367, C3 0.551, C4 0.667), so I already knew which candidate that key would favour - C2_PEAK_HPCP. Using a key I chose with its own ordering in front of me to settle the winner would be selection by the analyst. The original key was declared with no numbers in hand and is therefore used instead. DISCLOSED SO THE CAPTAIN CAN OVERRULE: the amended key would have selected C2_PEAK_HPCP."
+      },
+      "consequences_declared_before_the_holdout_is_opened": {
+        "primary": "C3_ROOT_SALIENCE. The J3G OUTCOME is bound to this candidate and to nothing else.",
+        "level_C_visual_recovery": "run for C3_ROOT_SALIENCE ONLY, per the Captain's instruction 'Run only the FINAL selected frontend candidate'.",
+        "pre_declared_secondary": "C2_PEAK_HPCP is reported at LEVEL A/B on the final holdout only, with NO visual test. It is information about whether the development tie survives out of sample. It CANNOT change this job's outcome and is not eligible to become the winner.",
+        "P0_CURRENT": "run on the holdout as the baseline comparator, as required."
+      }
+    }
+  ]
+}

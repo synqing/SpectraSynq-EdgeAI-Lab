@@ -1,0 +1,72 @@
+{
+  "schema": "spectrasynq.stft_harmonic_recovery_interpretation.v1",
+  "job": "J3G",
+  "date": "2026-09-01",
+  "outcome": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+  "the_one_sentence": "A deterministic root-salience projection over the EXACT existing STFT recovers roughly half of the perfect-information oracle's visual selectivity - with no CQT, no second frontend, no learned parameter and about 1.1k extra MACs per frame - while leaving the timbre disparity that J3F identified completely untouched.",
+  "what_J3G_1_settled": {
+    "finding": "the postprocessing is not the problem. P0 and P2 are IDENTICAL to four decimal places on every metric, because the fixed reference divisor cancels under L1 normalisation and the clip at 1.0 never activates on this corpus. P1 (raw power, no sqrt) is WORSE: 0.1812 against 0.2165 on development.",
+    "consequence": "the sqrt / reference / clip stage is exonerated. The loss is in the nearest-bin pitch-class MAPPING, exactly where J3F Q0a and Q0b said it was. This closes off the cheapest possible fix and justifies spending the candidate budget on projection.",
+    "bonus": "the sqrt compression is doing useful work - removing it costs 0.035 R-squared. That is worth knowing before anyone 'simplifies' the frontend."
+  },
+  "what_the_candidates_showed": {
+    "two_of_four_improve_harmonic_observability": "C2_PEAK_HPCP and C3_ROOT_SALIENCE both beat the current frontend on symbolic movement R-squared, on BOTH harmonic challenge classes, and on acoustic false response, on development and again on the untouched holdout.",
+    "one_is_the_conventional_baseline_and_it_loses": "C1_SOFT_FILTERBANK - the standard weighted chroma filterbank that host_chroma12 should have been compared against years ago - is WORSE than hard nearest-bin rounding on every metric, and was the only candidate eliminated by the Captain's anti-gaming clause: it collapses a genuine major triad to 0.439 chord-tone mass against P0's 0.697. Soft assignment spreads energy across semitone-adjacent pitch classes, which is musically the worst place to put it.",
+    "the_timbre_transform_did_not_test_what_it_claims": "C4_CRP's rectified mass fraction is EXACTLY 0.5000 on every track. Zeroing DCT coefficient 0 removes the mean by construction, so positive and negative mass are exactly equal and half-wave rectification discards precisely half the signal every time. C4 as implemented is not a fair test of CRP. Any future timbre-invariance work must handle signed chroma end to end, or use a non-negative variant, not rectify.",
+    "nothing_fixed_the_timbre_disparity": "on the holdout, solo-stem family R-squared: baseline overall 0.4735, spread 0.5943, worst family synth_lead_pad 0.0674. Winner: overall 0.4571, spread 0.5862, worst family synth_lead_pad 0.0671. Identical to three decimal places on the worst family, and the winner is slightly WORSE overall - it trades guitar (0.425 to 0.337) for a small ensemble/voice gain. TIMBRE_FRONTEND_DOMINANT is not resolved by any deterministic projection tested."
+  },
+  "the_dissociation_that_matters": {
+    "statement": "the winner gains only +0.0249 symbolic movement R-squared - well short of the +0.05 the STRONG outcome required - yet recovers 70% of the oracle's visual gap on the pre-registered mean and 48% on the more conservative post-hoc selectivity margin.",
+    "why_this_vindicates_the_Captain's_reframing": "had J3G been given the objective 'maximise R-squared against the MIDI target', this candidate would have been judged a near-miss and possibly discarded. Measured against what the programme actually wants - recovery of the J3E visual advantage - it is the strongest same-STFT result the programme has produced. Symbolic duration occupancy and acoustic spectral evidence are different quantities, and the gap between the two metrics here is the empirical demonstration of that.",
+    "the_single_most_visually_valuable_change": "resting median delta-E falls from 2.3013 to 0.6956 against the oracle's 0.6648 - 98% of the oracle's colour stillness recovered. The J3E finding was that the oracle's advantage came from RESTRAINT. The winner reproduces almost all of that restraint. That is what a viewer would actually notice."
+  },
+  "honest_deflation": {
+    "the_headline_is_flattered": "the pre-registered mean gap fraction of 0.7001 includes a gap fraction of 1.335 on HARMONIC_CHANGE_NO_ONSET - the candidate responds MORE than the perfect-information oracle. That is not superior selectivity. Each condition is thresholded at the p90 of its own resting frames, so a more reactive condition gains recall and false response together.",
+    "the_conservative_figure": "the candidate's acoustic false response is 0.2914 against the oracle's 0.1059 - still nearly three times as reactive to non-harmonic energy. On the recall-minus-false-response margin the recovery is 0.4788, not 0.70. Quote both.",
+    "power": "10 holdout tracks, 80 solo stems, one synthetic corpus at 16 kHz. No real-audio evidence of any kind. BabySlakh is rendered from MIDI with sampled instruments and tuning deviation measured at 0.68 cents - real masters will not be that clean.",
+    "the_secondary_looked_better_on_information": "C2_PEAK_HPCP, reported as a pre-declared secondary that could not change the outcome, beat the winner on holdout symbolic R-squared (0.4286 against 0.3853) and on four of five Level A/B metrics, and it would have met the +0.05 R-squared condition the winner missed. It was given NO visual test and NO holdout family analysis, so whether it converts that into visual value is UNKNOWN. On development it failed both timbre-family conditions - worst-family +0.006 against +0.10 required, and a family spread WIDER than the baseline's - so it is very unlikely to have reached STRONG, but that is an inference from development, not a holdout measurement. It is the obvious next thing to test."
+  },
+  "process_failures_disclosed": {
+    "count": 3,
+    "list": [
+      "the C3 formula as first pre-registered was algebraically degenerate (S * odd_frac reduces identically to odd_sum, silently discarding every even harmonic). Caught on the unit fixture before any corpus score, corrected to a saturating gate, disclosed with the pre-correction fixture vector recorded.",
+      "a blocking gate I invented compared measured fixture output against J3F's ANALYTIC Q0b figure - incommensurable numbers, under which the current frontend itself would have failed. It also over-scoped the Captain's brief, which makes the fixture a reporting requirement plus one anti-gaming clause. Withdrawn before any corpus score, with the numbers I had already seen recorded.",
+      "the pre-registered selection score was degenerate on the development set: every candidate's worst-family R-squared was negative, clip(x,0,1) mapped them all to zero, and the rule collapsed to the single term the second term existed to counterbalance. Its margin across the three eligible candidates was 0.0037 against a standard error of about 0.0042. Resolved by the ORIGINAL pre-contamination tie-break, with the disclosure that my own amended tie-break would have chosen differently."
+    ],
+    "why_they_are_listed": "two of the three were faults in MY pre-registration, not in the frontend. A reader deciding how much weight to give this result should know how much of the design was repaired mid-flight and in which direction each repair could have biased it."
+  },
+  "unresolved_and_now_better_characterised": {
+    "the_minus_one_hop_anomaly": "every candidate peaks at -1 hop on both development and holdout - the current frontend, the soft filterbank, the peak HPCP, the root salience and the CRP variant alike, despite having almost nothing in common downstream of the FFT. J3D-C1 already falsified the renderer-timing explanation and measured the wrong sign. J3G adds that the anomaly is invariant to the entire pitch-class mapping, so it is upstream of it - in the framing, the hop-centre timestamp convention, or the symbolic state construction. NOT optimised, as instructed. This is now a well-localised question rather than an open one.",
+    "tuning": "TUNING_NOT_MATERIAL_HERE - 0.68 cents median absolute deviation across the development tracks. No candidate was spent on tuning compensation. This finding does NOT transfer to real audio; the P4-nano corpus alone carries reference tunings from 438 to 443 Hz."
+  },
+  "recommended_next_path": {
+    "one_only": "J3G_2_PEAK_ROOT_HYBRID_AND_VISUAL_CONFIRMATION",
+    "what": "a bounded follow-up that (a) gives C2_PEAK_HPCP the Level C visual test the winner received, on the same holdout and the same unchanged J3E grammar, and (b) tests the single obvious hybrid - root salience accumulated from C2's interpolated peaks rather than from raw max-in-window bin energy, which is where the winner's remaining contamination comes from.",
+    "why_this_and_not_something_else": "the two candidates that worked share a mechanism - stop letting broadband energy vote - and differ in how they identify tonal evidence. Neither has been tested with the other's front half. That is one experiment, not a programme, and it is the only same-STFT question J3G leaves genuinely open.",
+    "what_it_is_NOT_a_licence_for": "not CQT, not an alternate sample rate, not a teacher, not a learned student, not a separator. The FAIL outcome that would unlock those was not reached: two deterministic projections improved the important metrics and one recovered about half the oracle's visual selectivity. The existing STFT is not exhausted.",
+    "what_would_change_the_recommendation": "if the hybrid also leaves worst-family R-squared at ~0.067 and the family spread at ~0.59, then the timbre axis is genuinely not addressable by deterministic projection over this STFT, and THAT - not the visual result - is the finding that would justify reopening the frontend question."
+  },
+  "wording_the_programme_must_carry_forward": {
+    "on_separation": "SOURCE SEPARATION IS NOT CURRENTLY JUSTIFIED AS THE FIX FOR HARMONIC MOVEMENT. Not 'source separation has no value to SpectraSynq'. Source ownership remains independently valuable.",
+    "on_headroom": "the evidence favours frontend/representation improvement over source separation as the next harmonic-recovery investment; the magnitude of recoverable improvement remains UNKNOWN. Do not quote '1 - S1_R2' as headroom.",
+    "on_this_result": "a deterministic same-STFT projection recovers about half the oracle's visual selectivity and none of its timbre robustness. Harmonic intelligence looks reachable on the frontend SpectraSynq already pays for; timbre invariance does not, yet."
+  },
+  "status": {
+    "J3D_mutated": false,
+    "J3E_mutated": false,
+    "J3F_mutated": false,
+    "J3E_visual_grammar_altered": false,
+    "source_separator_run": false,
+    "cqt_run": false,
+    "basic_pitch_run": false,
+    "neural_student_trained": false,
+    "foundation_model_run": false,
+    "lag_optimised": false,
+    "tuned_against_all_20_tracks": false,
+    "production_firmware_changed": false,
+    "titan": false,
+    "student_io_frozen": false,
+    "compatibility_pin_changed": false,
+    "product_mode_created": false
+  }
+}

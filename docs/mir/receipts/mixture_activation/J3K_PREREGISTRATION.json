@@ -1,0 +1,120 @@
+{
+  "schema": "spectrasynq.mixture_activation_target_prereg.v1",
+  "job": "J3K",
+  "label": "MIXTURE-LEVEL TARGET REPAIR ONLY - the final fair test of the target-timing hypothesis. No new representation, no tonal candidate, no visual grammar, no CQT, no CRP, no NNLS, no Basic Pitch, no learned estimator.",
+  "date": "2026-09-02",
+  "written_before_any_mixture_target_is_built_and_before_any_candidate_is_scored": true,
+
+  "BRIEF_PROVENANCE_DISCLOSURE": {
+    "status": "NO SEPARATE J3K BRIEF WAS RECEIVED IN THIS THREAD. J3G.2, J3I and J3J were issued in full; J3K was not.",
+    "what_this_job_was_executed_from": [
+      "the Captain's one-line pipeline: 'per-stem raw MIDI pitch-class mass -> family-specific cross-fitted attack weighting -> sum all tonal stems -> L1-normalise once at mixture level -> compare old/new target -> evaluate P0 and C3'",
+      "his stated decision rule: 'If J3K says the mixture target is also immaterial, I am comfortable closing this target-timing branch and moving decisively back to representation. If it says the target materially changes, then we correct the oracle before spending another cycle on MIR architecture.'",
+      "the inherited J3J discipline: representation-independent target, cross-fitted leave-one-track-out kernels, identical frame set for both arms, the established 0.10 materiality scale, the verbatim rank conventions, and NO NEW BLOCKING GATES"
+    ],
+    "consequence": "the outcome labels below are DERIVED from the Captain's decision sentence, not quoted from an issued brief. If the brief as issued uses different labels or thresholds, the receipts carry every underlying quantity, so it can be relabelled without re-running anything.",
+    "flagged_rather_than_guessed": true
+  },
+
+  "preserved_unchanged_and_not_mutated": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL"
+  },
+
+  "why_this_experiment_exists": {
+    "the_J3J_structural_limitation": "tv_movement is the L1 distance between L1-NORMALISED pitch-class states. On a SOLO stem every note shares one family kernel, so the activation is a common per-frame scalar that normalisation cancels. J3J measured the consequence directly: the normalised state differed on only 7-16% of frames and the median state distance was exactly 0.00000 for every family.",
+    "why_the_mixture_is_different": "in a polyphonic mixture, simultaneously sounding families receive DIFFERENT activation weights - a piano at 99% of its eventual weight beside a pad at 38% - so there is no common factor to cancel. This is the condition under which the target hypothesis can actually express itself.",
+    "what_is_already_settled_and_not_re_opened": "the excess false harmonic movement on synth_lead_pad and reed_pipe is untouched by target correction - J3J measured changes of at most +/- 0.0006 - so that component belongs to the representation/timbre interaction. J3K does not revisit it."
+  },
+
+  "construct_boundary_unchanged_from_J3J": {
+    "this_is_NOT_an_acoustic_transcription_oracle": "MIDI note identities are already known. Only WHEN an already-known note becomes acoustically active is corrected.",
+    "must_not_be_altered": ["pitch", "pitch class", "note identity", "note-off identity", "polyphony", "instrumentation", "velocity semantics"],
+    "velocity": "still excluded",
+    "attack_only": "no release model; the note still drops to zero at MIDI note-off using the existing rectangular gate",
+    "kernels": "the J3J cross-fitted kernels, unchanged - K_MAX 32 hops, median monotone episode curve normalised to reach 1.0, 4-tap window mean, leave-one-track-out, declared organological fallback hierarchy"
+  },
+
+  "TARGET_MUST_REMAIN_REPRESENTATION_INDEPENDENT": {
+    "forbidden_inputs": ["host_chroma12", "P0_CURRENT", "C2_PEAK_HPCP", "C3_ROOT_SALIENCE", "C5_PEAK_ROOT_HYBRID", "FFT pitch-class bins", "spectral peaks", "any predicted chroma", "candidate error"],
+    "permitted_inputs": ["MIDI note identity and timing", "General MIDI program family", "cross-fitted attack-envelope statistics learned from isolated rendered audio"],
+    "enforcement": "the target module is `edgeai.mir.acoustic_activation`, whose AST import audit already passes and is re-asserted here"
+  },
+
+  "pipeline_exactly_as_specified": [
+    "1. per-instrument raw MIDI pitch-class mass, tonal instruments only, using the existing is_tonal_instrument rule",
+    "2. family-specific cross-fitted attack weighting applied to each instrument independently, family taken from that instrument's General MIDI program",
+    "3. sum across all tonal instruments",
+    "4. L1-normalise ONCE, at mixture level",
+    "5. tv_movement at the same lag 8",
+    "6. compare against the old target and evaluate P0_CURRENT and C3_ROOT_SALIENCE"
+  ],
+
+  "targets": {
+    "old": "RECTANGULAR_MIXTURE_PC - sum over tonal instruments of the rectangular duration-overlap state, L1-normalised once",
+    "new": "ACOUSTIC_ACTIVATION_MIXTURE_PC - identical except each instrument's contribution is multiplied by its cross-fitted family attack kernel before the sum"
+  },
+
+  "blocking_controls": {
+    "C_OLD_ARM_REPRODUCES_THE_PUBLISHED_ORACLE": "the reconstructed old mixture target must reproduce the cached J3D/J3E M_oracle movement to <= 1e-9. Pitch-class mass is additive over notes, so summing per-instrument states must equal the single all-notes state. If it does not, the note sets differ and the run is INCONCLUSIVE.",
+    "C_IDENTITY_KERNEL": "with an all-ones kernel the activation state must reproduce pitch_class_state exactly (0.0), already asserted in J3J and re-asserted here",
+    "C_REPRESENTATION_INDEPENDENCE": "AST import audit of the target module",
+    "C_IDENTICAL_FRAME_SET": "both arms are evaluated on exactly the same frames - the cached J3E validity mask intersected with finiteness of both movement series",
+    "on_failure": "MIXTURE_TARGET_REPAIR_INCONCLUSIVE"
+  },
+
+  "primary_evidence_the_state_level_test": {
+    "why_first": "J3J showed the decisive quantity is whether the NORMALISED state changes at all. That is measured before any candidate is scored.",
+    "reported": ["median, mean and p90 of the per-frame L1 distance between the old and new L1-normalised mixture states", "fraction of frames that differ at all"],
+    "J3J_solo_reference_for_comparison": {"median": 0.0, "fraction_of_frames_that_differ": "0.071 to 0.165 by family"}
+  },
+
+  "REPORTED_DIAGNOSTIC_polyphony_structure": {
+    "purpose": "the mixture is only different from the solo case to the extent that DIFFERENT families sound simultaneously. If most frames carry one family, the cancellation persists and that is the explanation, not a surprise.",
+    "reported": ["mean number of distinct tonal families active per valid frame", "fraction of valid frames with 2 or more distinct families active", "mean spread (max minus min) of the applied activation weight across simultaneously sounding notes"],
+    "not_a_gate": true
+  },
+
+  "candidates": {"primary": ["P0_CURRENT", "C3_ROOT_SALIENCE"], "secondary_diagnostic_only": ["C2_PEAK_HPCP", "C5_PEAK_ROOT_HYBRID"], "new_candidate": false},
+
+  "metrics_per_candidate_against_BOTH_targets": [
+    "framewise movement R-squared, grouped 5-fold CV by track - DIAGNOSTIC ONLY",
+    "Spearman",
+    "event recall at consumer time",
+    "event recall with the existing +/- 2-hop tolerance",
+    "false movement during target-stable periods",
+    "REPORTED_DIAGNOSTIC: challenge-class recall under each target's OWN membership, since the J3D membership is defined by the old target and is not transferable"
+  ],
+
+  "rank_conventions_reused_verbatim": {"event": 0.95, "detected": 0.80, "stable": 0.50, "tolerance_hops": 2, "movement_lag_hops": 8},
+
+  "outcomes_DERIVED_FROM_THE_CAPTAINS_DECISION_SENTENCE": {
+    "MIXTURE_TARGET_CORRECTION_MATERIAL": {
+      "condition": "for P0_CURRENT, the absolute change in event-tolerant recall OR in false-movement rate is >= 0.10 on the established scale",
+      "interpretation": "the target materially changes at mixture level. Correct the oracle before spending another cycle on MIR architecture."
+    },
+    "MIXTURE_TARGET_CORRECTION_IMMATERIAL": {
+      "condition": "neither changes by >= 0.10",
+      "interpretation": "the target-timing branch closes. Move decisively back to representation."
+    },
+    "MIXTURE_TARGET_REPAIR_INCONCLUSIVE": "any blocking control fails"
+  },
+
+  "NO_NEW_BLOCKING_GATES": {
+    "the_only_numbers_in_the_decision_path": {"materiality": 0.10, "event_rank": 0.95, "detection_rank": 0.80, "stable_rank": 0.50, "tolerance_hops": 2},
+    "everything_else_is": "REPORTED_DIAGNOSTIC",
+    "kernel_construction_constants_are_not_gates": "K_MAX 32 hops, the 20-episode fallback floor, the organological groups and the 4-tap window mean are inherited target construction and appear in no outcome test"
+  },
+
+  "what_this_is_not": [
+    "not a new representation and not a tonal candidate",
+    "not a release model and not an acoustic transcription oracle",
+    "not a visual experiment",
+    "not promotable - the BabySlakh tracks remain consumed",
+    "not a reopening of the -1 hop timing question",
+    "not J3H, which remains a separate real-audio commercial-separator question"
+  ]
+}

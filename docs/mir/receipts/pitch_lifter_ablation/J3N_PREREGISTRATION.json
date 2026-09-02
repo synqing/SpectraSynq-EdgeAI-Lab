@@ -1,0 +1,119 @@
+{
+  "schema": "spectrasynq.pitch_lifter_ablation_prereg.v1",
+  "job": "J3N",
+  "label": "COMPONENT ABLATION OF J3M ONLY. No new algorithm family, no NNLS, no confidence gate, no CQT, no learned model, no visual test.",
+  "date": "2026-09-02",
+  "written_before_any_ablation_metric": true,
+  "the_only_question": "Did the large low-register gain observed in J3M come primarily from the fine multirate pitch front end, or from the CRP cepstral liftering?",
+  "why_it_matters": "J3M changed two major things at once - a fine multirate pitch front end AND cepstral liftering. The envelope fixture showed the lifter does not do what was wanted on the synth problem; it says nothing about which stage produced the bass windfall. That determines whether the next branch stays on representation semantics / reliability / NNLS or reopens fine-frequency-resolution front ends.",
+  "preserved_unchanged_and_not_mutated": {
+    "J3M": "CRP_MOVEMENT_FAIL - the primary CRP hypothesis is dead. Canonical CRP(55) spectral-envelope suppression does not solve the synth/reed restraint residual. J3N does not revisit or soften that.",
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "J3K": "MIXTURE_TARGET_STATE_IMMATERIAL / ATTRIBUTION_IMMATERIAL",
+    "C4": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION",
+    "target": "the rectangular MIDI oracle, unmodified"
+  },
+  "THE_ONE_NEW_ARM": {
+    "id": "FB_LOG_CHROMA",
+    "pipeline": [
+      "the J3M faithful 88-band multirate elliptic pitch filterbank, unchanged",
+      "the same short-time pitch energies (128 ms window on the analysis hop grid)",
+      "the same log10(1 + 1000*v)",
+      "NO DCT",
+      "NO cepstral coefficient deletion",
+      "NO inverse DCT",
+      "fold the 120 pitch dimensions mod 12",
+      "L1 normalise the NON-NEGATIVE 12-D vector",
+      "the existing lag-8 tv_movement"
+    ],
+    "single_variable_changed_relative_to_CRP": "CRP liftering removed. Nothing else.",
+    "byte_identity_enforcement": "both arms derive from ONE cached pitch-energy surface via one shared log_pitch() function. A control asserts that CRP recomputed from that cached surface equals the J3M cached CRP exactly.",
+    "window": "the exact 128 ms J3M PRIMARY pitch-energy surface. The question is attribution of the already-observed J3M result, so using another window would change two variables. NO window sweep. The published 200 ms sensitivity result already exists in the J3M receipt and is not repeated."
+  },
+  "arms": [
+    "P0_CURRENT",
+    "C3_ROOT_SALIENCE",
+    "FB_LOG_CHROMA",
+    "CRP"
+  ],
+  "no_other_candidate": true,
+  "envelope_evolution_fixture": {
+    "stimulus": "the exact J3M constant-pitch brightness-sweep fixture, unchanged",
+    "reported_for": "all four arms",
+    "what_it_separates": {
+      "A": "FB_LOG_CHROMA stable but CRP moves strongly -> the DCT/lifter itself introduces or amplifies sensitivity to fine partial evolution",
+      "B": "both move strongly -> the fine pitch-energy representation itself is sensitive to the brightness sweep; liftering is not the sole culprit"
+    },
+    "no_new_threshold": true,
+    "diagnostic_only": true
+  },
+  "low_register_attribution": {
+    "primary_family": "bass",
+    "control_family": "piano_keys",
+    "metrics": [
+      "framewise R-squared DIAGNOSTIC",
+      "event recall consumer time",
+      "event recall +/- 2 hops",
+      "false movement in stable periods"
+    ],
+    "key_descriptive_comparison": "C3 -> FB_LOG_CHROMA -> CRP",
+    "no_formal_fraction_recovered_gate": true,
+    "J3M_reference_values": {
+      "bass": {
+        "C3_r2": 0.5539,
+        "CRP_r2": 0.8255,
+        "C3_recall_tol": 0.8935,
+        "CRP_recall_tol": 0.9208,
+        "C3_false": 0.0034,
+        "CRP_false": 0.0014
+      },
+      "piano_keys": {
+        "C3_r2": 0.5264,
+        "CRP_r2": 0.5683,
+        "C3_false": 0.0071,
+        "CRP_false": 0.0054
+      }
+    }
+  },
+  "residual_family_diagnostic": {
+    "reported_not_gated": [
+      "synth_lead_pad",
+      "reed_pipe",
+      "chromatic_percussion"
+    ],
+    "secondary_question": "does fine pitch resolution WITHOUT liftering unexpectedly help any of the actual weak families?",
+    "if_a_large_signal_appears": "return it to the PM. Do NOT promote it automatically."
+  },
+  "NO_VISUAL_TEST": {
+    "reason": "this job is attribution, not candidate selection. CRP already failed visually. If FB_LOG unexpectedly shows a major restraint or information improvement in the weak families, the PM will separately authorise a visual probe.",
+    "J3E_not_run": true
+  },
+  "compute_is_not_the_question": "HOST analysis. No M85 cost estimation. The published pitch filterbank is NON-CAUSAL here because it retains zero-phase filtering; product feasibility is a later question.",
+  "outcomes": {
+    "PITCH_FRONTEND_RESOLUTION_SIGNAL": "FB_LOG retains most of the bass improvement seen in CRP while CRP adds little further benefit. Interpretation: J3M's bass windfall principally originates UPSTREAM of cepstral liftering, in the resolved pitch-energy representation.",
+    "CRP_LIFTER_LOW_REGISTER_SIGNAL": "FB_LOG remains near C3/P0 and the large bass gain appears only after CRP. This does NOT rehabilitate CRP for synth/reed - it would mean the same liftering that fails mechanism A carries useful low-register information.",
+    "LOW_REGISTER_ATTRIBUTION_INCONCLUSIVE": "otherwise",
+    "scope": "this outcome is about the BASS / PITCH-RESOLUTION finding only. It does not change CRP_MOVEMENT_FAIL."
+  },
+  "DISCLOSED_ANALYST_OPERATIONALISATION": {
+    "status": "the brief deliberately declines to set a fraction-recovered gate. 'Most' and 'near' still have to be decidable, so they are operationalised with the ALREADY-ESTABLISHED 0.10 materiality scale and no new number.",
+    "retains_most": "FB_LOG bass R-squared >= CRP bass R-squared - 0.10 AND >= C3 bass R-squared + 0.10",
+    "remains_near_C3": "FB_LOG bass R-squared < C3 bass R-squared + 0.10 while CRP >= C3 + 0.10",
+    "reported_alongside": "recall and false movement, so the mechanism reading is never R-squared-only"
+  },
+  "DO_NOT_EXECUTE": [
+    "NNLS",
+    "confidence gate",
+    "CQT",
+    "neural representation",
+    "learned model",
+    "new transform family",
+    "visual rendering",
+    "any mutation of the J3D/J3E/J3F/J3G/J3I/J3J/J3K/J3M receipts"
+  ],
+  "then_stop": "return to the PM. J3N decides whether J3M materially changes the ranking of the remaining representation hypotheses."
+}

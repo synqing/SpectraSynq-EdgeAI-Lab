@@ -1,0 +1,260 @@
+{
+  "Q0_analytical_frontend_audit": {
+    "Q0a_pitch_class_resolution": {
+      "fft_bin_spacing_hz": 7.8125,
+      "lowest_midi_with_1_bin_per_semitone": 49,
+      "lowest_midi_with_2_bins_per_semitone": 61,
+      "measurements": [
+        {
+          "bins_per_semitone": 0.3,
+          "f0_hz": 41.2,
+          "midi": 28,
+          "semitone_width_hz": 2.38
+        },
+        {
+          "bins_per_semitone": 0.61,
+          "f0_hz": 82.4,
+          "midi": 40,
+          "semitone_width_hz": 4.76
+        },
+        {
+          "bins_per_semitone": 0.97,
+          "f0_hz": 130.8,
+          "midi": 48,
+          "semitone_width_hz": 7.56
+        },
+        {
+          "bins_per_semitone": 1.93,
+          "f0_hz": 261.6,
+          "midi": 60,
+          "semitone_width_hz": 15.11
+        },
+        {
+          "bins_per_semitone": 3.87,
+          "f0_hz": 523.3,
+          "midi": 72,
+          "semitone_width_hz": 30.23
+        }
+      ],
+      "reading": "every pitch below MIDI 49 (138.6 Hz) occupies less than one FFT bin per semitone and therefore CANNOT be pitch-class resolved by this frontend by construction. J3C measured this corpus's lowest sounding voice at a mean of MIDI 37.2 - the entire bass register sits inside the unresolvable zone."
+    },
+    "Q0b_single_note_harmonic_leakage": {
+      "energy_by_interval_above_root": {
+        "0": 0.849,
+        "10": 0.013,
+        "2": 0.008,
+        "4": 0.032,
+        "6": 0.005,
+        "7": 0.093
+      },
+      "method": "fold a 1/k-amplitude harmonic series through the same nearest-pitch-class rule and normalise",
+      "reading": "ONE note already deposits a major-triad-plus-seventh pattern: 85% root, 9.3% fifth, 3.2% major third. This is a systematic bias present in every frame, not noise.",
+      "scale_invariant": true
+    },
+    "status": "computed from the frontend constants alone, before any corpus metric. Arithmetic, not a result.",
+    "why_this_is_in_the_preregistration": "these two facts create a strong prior for a frontend-dominant outcome. Stating them BEFORE the ladder runs means the ladder can still falsify them - if individual stems track the oracle well despite this arithmetic, the prior was wrong."
+  },
+  "Q1_renderer_stem_timing": {
+    "by_family": {
+      "bass": {
+        "median": 0.001,
+        "n": 389
+      },
+      "brass": {
+        "median": 0.628,
+        "n": 134
+      },
+      "chromatic_percussion": {
+        "median": -0.666,
+        "n": 76
+      },
+      "ensemble_voice": {
+        "median": 3.56,
+        "n": 823
+      },
+      "guitar": {
+        "median": 0.0,
+        "n": 542
+      },
+      "piano_keys": {
+        "median": 0.0,
+        "n": 842
+      },
+      "reed_pipe": {
+        "median": 2.527,
+        "n": 226
+      },
+      "strings": {
+        "median": 0.155,
+        "n": 20
+      },
+      "synth_lead_pad": {
+        "median": 0.885,
+        "n": 290
+      }
+    },
+    "iqr_hops": 4.603,
+    "median_offset_hops": 0.477,
+    "n_isolated_onsets": 3342
+  },
+  "Q2_degradation": {
+    "S1_aggregate_minus_S2": 0.0433,
+    "S2_minus_S3": 0.0754,
+    "total_S1_minus_S3": 0.1187
+  },
+  "Q2_ladder": {
+    "S1_aggregate": {
+      "challenge_recall": {
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.0844,
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7677,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8433
+      },
+      "r2": 0.4284,
+      "spearman": 0.6509,
+      "top5_event_recall_in_top20": 0.8117
+    },
+    "S2_pitched_mix": {
+      "challenge_recall": {
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.0878,
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7386,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8183
+      },
+      "r2": 0.3851,
+      "spearman": 0.6086,
+      "top5_event_recall_in_top20": 0.7855
+    },
+    "S3_full_mix": {
+      "challenge_recall": {
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2023,
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.6612,
+        "HARMONIC_CHANGE_NO_ONSET": 0.7558
+      },
+      "r2": 0.3097,
+      "spearman": 0.5505,
+      "top5_event_recall_in_top20": 0.7266
+    }
+  },
+  "Q2_ladder_at_measured_alignment": {
+    "applied_shift_hops": 0,
+    "r2": {
+      "S1_aggregate": 0.4284,
+      "S2_pitched_mix": 0.3851,
+      "S3_full_mix": 0.3097
+    }
+  },
+  "Q3_nonlinear_mixing": {
+    "A_minus_B": 0.0433,
+    "A_power_sum_no_cross_terms_r2": 0.4284,
+    "B_waveform_sum_r2": 0.3851,
+    "implication": "RENDERER_OR_FRONTEND"
+  },
+  "basic_pitch_run": false,
+  "controls": {
+    "all_blocking_pass": true,
+    "instrumented_chroma_max_abs_diff_vs_host_chroma12": 0.0,
+    "instrumented_chroma_ok": true,
+    "shuffle_ok": true,
+    "shuffled_baseline_r2": -0.021,
+    "stem_sum_reconstruction": "0.100% to 0.301%, 20/20 tracks pass, best scalar gain 1.0000"
+  },
+  "corpus": {
+    "pitched_stems_used": 189,
+    "tracks": 20,
+    "valid_frames": 145311
+  },
+  "error_typology": {
+    "counts": {
+      "ambiguous_overlapping_voices": 62,
+      "broadband_transient_contamination": 25,
+      "false_stable": 9,
+      "percussion_contamination": 18,
+      "premature_next_state": 9,
+      "residual_previous_chord": 34,
+      "wrong_pitch_class_emphasis": 43
+    },
+    "sample_size": 200
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). Corpus md5 verified against the publisher's checksum.",
+  "family_diagnosis": {
+    "bass": {
+      "median_offset_hops": 0.001,
+      "n_onsets": 389
+    },
+    "brass": {
+      "median_offset_hops": 0.628,
+      "n_onsets": 134
+    },
+    "chromatic_percussion": {
+      "median_offset_hops": -0.666,
+      "n_onsets": 76
+    },
+    "ensemble_voice": {
+      "median_offset_hops": 3.56,
+      "n_onsets": 823
+    },
+    "guitar": {
+      "median_offset_hops": 0.0,
+      "n_onsets": 542
+    },
+    "piano_keys": {
+      "median_offset_hops": 0.0,
+      "n_onsets": 842
+    },
+    "reed_pipe": {
+      "median_offset_hops": 2.527,
+      "n_onsets": 226
+    },
+    "strings": {
+      "median_offset_hops": 0.155,
+      "n_onsets": 20
+    },
+    "synth_lead_pad": {
+      "median_offset_hops": 0.885,
+      "n_onsets": 290
+    }
+  },
+  "foundation_model_run": false,
+  "git_head": "a16fd3bb501ad92c75a5d8563ac424c7b3c0996b",
+  "job": "J3F",
+  "label": "HOST-ONLY AUDIO-INFORMATION FORENSIC",
+  "outcome": "TIMBRE_FRONTEND_DOMINANT",
+  "preregistration": "docs/mir/receipts/harmonic_observability/J3F_PREREGISTRATION.json",
+  "preregistration_written_before_any_ladder_metric": true,
+  "product_grammar_wording": "J3E's L6/L7 result is preserved as HOST_EVIDENCE_OF_PRODUCT_HARMONIC_GRAMMAR_GAP. The actual device and LGP path have not been tested and no claim is made that the hardware cannot express harmony.",
+  "production_firmware_changed": false,
+  "schema": "spectrasynq.harmonic_observability_result.v1",
+  "student_io_frozen": false,
+  "thresholds_applied": [
+    {
+      "condition": "any blocking control fails",
+      "outcome": "HARMONIC_OBSERVABILITY_INCONCLUSIVE",
+      "rank": 1
+    },
+    {
+      "condition": "per-stem half-rise offset is systematic (median in [-1.5,-0.5] or [0.5,1.5] hops with IQR <= 1.0 and consistent sign across most families) AND S1 R^2 at the measured aligned lag >= 0.70 while at zero lag < 0.50",
+      "outcome": "RENDERER_TIMING_DOMINANT",
+      "rank": 2
+    },
+    {
+      "condition": "S1 R^2 < 0.50 even at the measured aligned lag AND the spread across families is material (max-family minus min-family R^2 >= 0.20)",
+      "outcome": "TIMBRE_FRONTEND_DOMINANT",
+      "rank": 3
+    },
+    {
+      "condition": "S1_aggregate R^2 >= 0.70 AND (S1_aggregate - S2) >= 0.5 * (S1_aggregate - S3)",
+      "outcome": "PITCHED_MIXTURE_INTERFERENCE_DOMINANT",
+      "rank": 4
+    },
+    {
+      "condition": "(S2 - S3) >= 0.5 * (S1_aggregate - S3) AND S2 >= 0.60",
+      "outcome": "PERCUSSION_OR_FULL_MIX_INTERFERENCE_DOMINANT",
+      "rank": 5
+    },
+    {
+      "condition": "no single rung accounts for at least half the recoverable degradation",
+      "outcome": "MULTIFACTOR_HARMONIC_LOSS",
+      "rank": 6
+    }
+  ],
+  "titan": false
+}

@@ -1,0 +1,213 @@
+{
+  "schema": "spectrasynq.mixture_activation_result.v1",
+  "job": "J3K",
+  "git_head": "WORKCOPY",
+  "label": "MIXTURE-LEVEL TARGET REPAIR - representation-independent by construction. BabySlakh tracks remain consumed; nothing here is promotable.",
+  "brief_provenance": {
+    "status": "NO SEPARATE J3K BRIEF WAS RECEIVED IN THIS THREAD. J3G.2, J3I and J3J were issued in full; J3K was not.",
+    "what_this_job_was_executed_from": [
+      "the Captain's one-line pipeline: 'per-stem raw MIDI pitch-class mass -> family-specific cross-fitted attack weighting -> sum all tonal stems -> L1-normalise once at mixture level -> compare old/new target -> evaluate P0 and C3'",
+      "his stated decision rule: 'If J3K says the mixture target is also immaterial, I am comfortable closing this target-timing branch and moving decisively back to representation. If it says the target materially changes, then we correct the oracle before spending another cycle on MIR architecture.'",
+      "the inherited J3J discipline: representation-independent target, cross-fitted leave-one-track-out kernels, identical frame set for both arms, the established 0.10 materiality scale, the verbatim rank conventions, and NO NEW BLOCKING GATES"
+    ],
+    "consequence": "the outcome labels below are DERIVED from the Captain's decision sentence, not quoted from an issued brief. If the brief as issued uses different labels or thresholds, the receipts carry every underlying quantity, so it can be relabelled without re-running anything.",
+    "flagged_rather_than_guessed": true
+  },
+  "preregistration": "docs/mir/receipts/mixture_activation/J3K_PREREGISTRATION.json",
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "controls": {
+    "identity_kernel_reproduces_pitch_class_state": 0.0,
+    "identity_kernel_ok": true,
+    "old_arm_reproduces_published_oracle_max_abs_diff": 0.0,
+    "old_arm_ok": true,
+    "target_module_imports_no_representation": true,
+    "identical_frame_set_for_both_targets": true,
+    "n_tracks": 20,
+    "n_frames": 145311,
+    "all_blocking_pass": true
+  },
+  "PRIMARY_EVIDENCE_state_level_change": {
+    "median": 0.01917,
+    "mean": 0.02705,
+    "p90": 0.06075,
+    "fraction_of_frames_that_differ_at_all": 0.8462,
+    "per_track_fraction_min": 0.6216,
+    "per_track_fraction_max": 0.9726,
+    "J3J_solo_reference": {
+      "median": 0.0,
+      "fraction_range": [
+        0.0706,
+        0.1647
+      ]
+    }
+  },
+  "REPORTED_DIAGNOSTIC_polyphony_structure": {
+    "mean_distinct_tonal_families_active_per_frame": 3.766,
+    "fraction_of_frames_with_2_or_more_families": 0.9749,
+    "fraction_of_frames_with_3_or_more_families": 0.8755,
+    "mean_tonal_instruments_per_track": 10.05
+  },
+  "kernel_levels_used_by_family": {
+    "Track00001": {
+      "guitar": "exact_family",
+      "piano_keys": "exact_family",
+      "bass": "exact_family",
+      "ensemble_voice": "exact_family",
+      "synth_effects": "attack_class_group"
+    },
+    "Track00002": {
+      "ensemble_voice": "exact_family",
+      "bass": "exact_family",
+      "synth_lead_pad": "exact_family",
+      "chromatic_percussion": "exact_family",
+      "piano_keys": "exact_family",
+      "brass": "attack_class_group",
+      "guitar": "exact_family"
+    },
+    "Track00003": {
+      "piano_keys": "exact_family",
+      "bass": "exact_family",
+      "guitar": "exact_family",
+      "synth_effects": "attack_class_group"
+    }
+  },
+  "targets": {
+    "old": "RECTANGULAR_MIXTURE_PC",
+    "new": "ACOUSTIC_ACTIVATION_MIXTURE_PC"
+  },
+  "metrics_RECTANGULAR_MIXTURE_PC": {
+    "P0_CURRENT": {
+      "framewise_r2_DIAGNOSTIC": 0.3097,
+      "spearman": 0.5505,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.7266,
+      "event_recall_event_tolerant": 0.9072,
+      "false_movement_in_target_stable_periods": 0.0105
+    },
+    "C3_ROOT_SALIENCE": {
+      "framewise_r2_DIAGNOSTIC": 0.3365,
+      "spearman": 0.5581,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.7583,
+      "event_recall_event_tolerant": 0.9222,
+      "false_movement_in_target_stable_periods": 0.0079
+    },
+    "C2_PEAK_HPCP": {
+      "framewise_r2_DIAGNOSTIC": 0.365,
+      "spearman": 0.5836,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.7744,
+      "event_recall_event_tolerant": 0.9194,
+      "false_movement_in_target_stable_periods": 0.0088
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "framewise_r2_DIAGNOSTIC": 0.385,
+      "spearman": 0.5931,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.7923,
+      "event_recall_event_tolerant": 0.9251,
+      "false_movement_in_target_stable_periods": 0.0088
+    }
+  },
+  "metrics_ACOUSTIC_ACTIVATION_MIXTURE_PC": {
+    "P0_CURRENT": {
+      "framewise_r2_DIAGNOSTIC": 0.3263,
+      "spearman": 0.5649,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.7407,
+      "event_recall_event_tolerant": 0.9101,
+      "false_movement_in_target_stable_periods": 0.0101
+    },
+    "C3_ROOT_SALIENCE": {
+      "framewise_r2_DIAGNOSTIC": 0.3581,
+      "spearman": 0.5763,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.7743,
+      "event_recall_event_tolerant": 0.9256,
+      "false_movement_in_target_stable_periods": 0.0073
+    },
+    "C2_PEAK_HPCP": {
+      "framewise_r2_DIAGNOSTIC": 0.3901,
+      "spearman": 0.6014,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.791,
+      "event_recall_event_tolerant": 0.9237,
+      "false_movement_in_target_stable_periods": 0.0081
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "framewise_r2_DIAGNOSTIC": 0.4113,
+      "spearman": 0.6109,
+      "n_events": 7274,
+      "event_recall_consumer_time": 0.8064,
+      "event_recall_event_tolerant": 0.9291,
+      "false_movement_in_target_stable_periods": 0.0082
+    }
+  },
+  "delta": {
+    "P0_CURRENT": {
+      "framewise_r2_change_DIAGNOSTIC": 0.0166,
+      "event_tolerant_recall_old": 0.9072,
+      "event_tolerant_recall_new": 0.9101,
+      "event_tolerant_recall_change": 0.0029,
+      "consumer_time_recall_change": 0.0141,
+      "false_movement_old": 0.0105,
+      "false_movement_new": 0.0101,
+      "false_movement_change": -0.0004
+    },
+    "C3_ROOT_SALIENCE": {
+      "framewise_r2_change_DIAGNOSTIC": 0.0216,
+      "event_tolerant_recall_old": 0.9222,
+      "event_tolerant_recall_new": 0.9256,
+      "event_tolerant_recall_change": 0.0034,
+      "consumer_time_recall_change": 0.016,
+      "false_movement_old": 0.0079,
+      "false_movement_new": 0.0073,
+      "false_movement_change": -0.0006
+    },
+    "C2_PEAK_HPCP": {
+      "framewise_r2_change_DIAGNOSTIC": 0.0251,
+      "event_tolerant_recall_old": 0.9194,
+      "event_tolerant_recall_new": 0.9237,
+      "event_tolerant_recall_change": 0.0043,
+      "consumer_time_recall_change": 0.0166,
+      "false_movement_old": 0.0088,
+      "false_movement_new": 0.0081,
+      "false_movement_change": -0.0007
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "framewise_r2_change_DIAGNOSTIC": 0.0263,
+      "event_tolerant_recall_old": 0.9251,
+      "event_tolerant_recall_new": 0.9291,
+      "event_tolerant_recall_change": 0.004,
+      "consumer_time_recall_change": 0.0141,
+      "false_movement_old": 0.0088,
+      "false_movement_new": 0.0082,
+      "false_movement_change": -0.0006
+    }
+  },
+  "decision": {
+    "judged_on": "P0_CURRENT",
+    "materiality_scale": 0.1,
+    "event_tolerant_recall_change": 0.0029,
+    "false_movement_change": -0.0004,
+    "material": false
+  },
+  "outcome": "MIXTURE_TARGET_CORRECTION_IMMATERIAL",
+  "J3J_mutated": false,
+  "J3I_mutated": false,
+  "J3G_mutated": false,
+  "J3G2_mutated": false,
+  "J3F_mutated": false,
+  "new_tonal_representation": false,
+  "cqt_run": false,
+  "crp_repair": false,
+  "nnls_run": false,
+  "basic_pitch_run": false,
+  "neural_model": false,
+  "midi_pitch_or_identity_altered": false,
+  "release_model_created": false,
+  "velocity_weighting": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

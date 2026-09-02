@@ -1,0 +1,84 @@
+{
+  "schema": "spectrasynq.pitch_lifter_ablation_interpretation.v1",
+  "job": "J3N", "date": "2026-09-02",
+  "outcome": "PITCH_FRONTEND_RESOLUTION_SIGNAL",
+  "scope": "this outcome concerns the BASS / PITCH-RESOLUTION finding only. CRP_MOVEMENT_FAIL is unchanged.",
+
+  "the_one_sentence": "Roughly three quarters of J3M's bass windfall - +0.1998 of the +0.2716 R-squared - survives with the cepstral liftering deleted, and the un-liftered arm actually beats CRP on bass recall while matching its halved false movement, so the low-register gain belongs to the resolved pitch front end, not to the lifter.",
+
+  "attribution": {
+    "bass_framewise_r2": {"C3_ROOT_SALIENCE": 0.5539, "FB_LOG_CHROMA": 0.7537, "CRP": 0.8255},
+    "front_end_share": {"fb_minus_c3": 0.1998, "crp_minus_fb": 0.0718, "crp_minus_c3": 0.2716,
+                        "fraction_of_the_gain_upstream_of_liftering": 0.736},
+    "and_the_front_end_alone_is_BETTER_on_what_matters": {
+      "bass_event_tolerant_recall": {"C3": 0.8935, "FB_LOG_CHROMA": 0.9271, "CRP": 0.9208},
+      "bass_false_movement": {"C3": 0.0034, "FB_LOG_CHROMA": 0.0014, "CRP": 0.0014},
+      "reading": "FB_LOG_CHROMA achieves the BEST bass recall of any arm measured and the same halved false movement as CRP. The liftering's extra +0.0718 R-squared is bought at a recall cost. On the programme's own doctrine - event behaviour over R-squared - the un-liftered front end is the better of the two."},
+    "piano_control_agrees": {"framewise_r2": {"C3": 0.5264, "FB_LOG_CHROMA": 0.5963, "CRP": 0.5683},
+                             "false_movement": {"C3": 0.0071, "FB_LOG_CHROMA": 0.0048, "CRP": 0.0054},
+                             "reading": "the front end helps piano too, and again more than CRP does. This is a general resolution effect, not a bass-only artefact."}
+  },
+
+  "THE_ENVELOPE_FIXTURE_IS_CASE_B_AND_IT_CORRECTS_MY_J3M_INTERPRETATION": {
+    "median_movement_on_the_constant_pitch_brightness_sweep": {
+      "C3_ROOT_SALIENCE": 0.01428, "P0_CURRENT": 0.01801,
+      "FB_LOG_CHROMA": 0.02149, "CRP": 0.02287},
+    "the_brief_s_own_reading": "case B - both FB_LOG and CRP move strongly, so the fine pitch-energy representation itself is sensitive to the brightness sweep and liftering is not the sole culprit.",
+    "what_I_got_wrong_in_J3M": "the J3M interpretation proposed that the DCT liftering was the source of the envelope sensitivity - 'it removes the coarse envelope and relatively amplifies fine partial structure'. J3N falsifies that as the PRINCIPAL cause. The un-liftered pitch representation is already at 0.02149; liftering adds only 0.00138 on top, about 6% of the excess over C3. Most of the envelope sensitivity lives in the log-compressed pitch-energy representation itself.",
+    "the_more_likely_mechanism_flagged_as_interpretation": "log compression boosts the relative weight of weaker high partials. When a note brightens, the pitch bins at 2f0, 3f0 and above gain, the log lifts them further, and the mod-12 fold redistributes mass across pitch classes. Any pitch-energy-folded chroma inherits this. It is why a FINER front end does not automatically mean a MORE STABLE one.",
+    "the_arm_that_is_actually_most_envelope_robust": "C3_ROOT_SALIENCE at 0.01428 - lower than P0, FB_LOG and CRP. Root-salience inference, which explicitly attributes overtones to a fundamental rather than folding them, remains the programme's most envelope-stable representation. That was not the hypothesis under test and it survives another attack."
+  },
+
+  "residual_families_no_solution_appears": {
+    "synth_lead_pad": {"C3": {"r2": 0.1212, "recall_tol": 0.5474, "false": 0.0288},
+                       "FB_LOG_CHROMA": {"r2": 0.0385, "recall_tol": 0.5068, "false": 0.0339},
+                       "CRP": {"r2": 0.0293, "recall_tol": 0.5196, "false": 0.0328},
+                       "reading": "FB_LOG is the WORST arm on this family on every axis. Fine pitch resolution does not help mechanism A."},
+    "reed_pipe": {"C3": {"r2": 0.1466, "recall_tol": 0.6505, "false": 0.0289},
+                  "FB_LOG_CHROMA": {"r2": 0.1726, "recall_tol": 0.6276, "false": 0.0305},
+                  "CRP": {"r2": 0.1820, "recall_tol": 0.6071, "false": 0.0197},
+                  "reading": "IMPORTANT SUB-FINDING: reed's 31.8% false-movement reduction in J3M is attributable to the LIFTERING, not the front end. FB_LOG shows no false-movement gain at all (0.0305 against C3's 0.0289). So the one place CRP's mechanism genuinely worked does NOT transfer to a lifter-free resolved front end."},
+    "chromatic_percussion": {"C3": {"r2": 0.1598}, "FB_LOG_CHROMA": {"r2": -0.0807}, "CRP": {"r2": -0.2879},
+                             "reading": "both filterbank arms are worse than C3 on R-squared, and liftering makes it worse again. Recall is roughly flat across arms. Consistent with the standing reading: inharmonic spectra violate the assumptions of harmonic-template estimators, which is a reliability question, not an absence of harmony."},
+    "per_the_brief": "no large weak-family signal appeared, so there is nothing to return for separate authorisation."
+  },
+
+  "THE_OPERATIVE_ANSWER_TO_THE_QUESTION_THE_PM_POSED": {
+    "the_question": "does the newly discovered low-frequency resolution benefit need to be preserved in the input representation of whatever comes next?",
+    "the_answer": "YES, and substantially. +0.1998 bass R-squared, +0.0336 bass event-tolerant recall and a HALVING of bass false movement come from the resolved pitch surface ALONE, before any liftering. An NNLS - or anything else - built on the existing 2048-point STFT would forfeit all of it, because that STFT has fewer than one bin per semitone below MIDI 49 and the corpus's lowest sounding voice averages MIDI 37.2.",
+    "what_it_does_NOT_say": "it says nothing about the synth, reed or percussion residual, which is where the product problem lives. Fine resolution is a LOW-REGISTER ACCURACY device on this evidence, not a restraint device.",
+    "not_a_recommendation": "J3N does not rank, recommend or authorise anything. This is the fact the PM asked for in order to decide."
+  },
+
+  "two_corrections_I_owe_across_two_jobs": [
+    "J3L ranking: I argued against prioritising frequency resolution because bass was already strong at 0.591 despite living in the unresolvable zone. Bass was adequate, not saturated - a resolved front end takes it to 0.754 without liftering and 0.826 with. That argument was too strong and I withdrew it in J3M; J3N confirms the withdrawal was right and quantifies it.",
+    "J3M interpretation: I attributed the envelope sensitivity to the DCT liftering. J3N shows the un-liftered representation carries about 94% of that sensitivity. The liftering is not the principal cause. The J3M receipt is NOT mutated; this correction lives here."
+  ],
+
+  "controls": {
+    "shared_upstream": "both arms derive from ONE cached pitch-energy surface through ONE log_pitch() call, so the single-variable claim is exact",
+    "identity_check": "CRP recomputed from the cached surface reproduces the J3M CRP to 3.02e-07 maximum absolute difference, inside the declared 1e-6 control. Not literally byte-identical - the cache is float32 while J3M computed in float64 - and the receipt's language is corrected accordingly.",
+    "window": "the 128 ms J3M primary surface, unchanged. No sweep.",
+    "n_stems": 84, "visual_test_run": false
+  },
+
+  "then_stop": {
+    "mandated": "return to the PM. No NNLS, no confidence gate, no CQT, no neural representation.",
+    "what_J3N_changes_in_the_ranking": "fine pitch resolution moves back onto the board as an INPUT-REPRESENTATION requirement for whatever comes next - not as a candidate in its own right, and not as CQT, which was never tested. It does not reorder the residual hypotheses, because none of them was shown to be helped by it."
+  },
+
+  "preserved_unchanged": {
+    "J3M": "CRP_MOVEMENT_FAIL", "J3K": "MIXTURE_TARGET_STATE_IMMATERIAL / ATTRIBUTION_IMMATERIAL",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL", "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT", "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3F": "TIMBRE_FRONTEND_DOMINANT", "C4": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION",
+    "J3H": "independent and still worth doing when the matched local files are surfaced"
+  },
+
+  "status": {
+    "J3M_mutated": false, "CRP_outcome_changed": false, "new_transform_family": false,
+    "nnls_run": false, "cqt_run": false, "confidence_gate": false, "neural_estimator": false,
+    "visual_grammar_run": false, "target_modified": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false
+  }
+}

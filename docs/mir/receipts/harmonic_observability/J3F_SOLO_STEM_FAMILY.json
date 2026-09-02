@@ -1,0 +1,84 @@
+{
+  "by_family": {
+    "bass": {
+      "median_pitch": 53.0,
+      "n_frames": 118921,
+      "n_stems": 22,
+      "solo_stem_r2": 0.5906,
+      "spearman": 0.6965
+    },
+    "brass": {
+      "median_pitch": 67.0,
+      "n_frames": 16704,
+      "n_stems": 4,
+      "solo_stem_r2": 0.5954,
+      "spearman": 0.7035
+    },
+    "chromatic_percussion": {
+      "median_pitch": 72.8,
+      "n_frames": 13966,
+      "n_stems": 4,
+      "solo_stem_r2": 0.2927,
+      "spearman": 0.6006
+    },
+    "ensemble_voice": {
+      "median_pitch": 66.0,
+      "n_frames": 110344,
+      "n_stems": 28,
+      "solo_stem_r2": 0.2978,
+      "spearman": 0.4521
+    },
+    "guitar": {
+      "median_pitch": 61.0,
+      "n_frames": 126446,
+      "n_stems": 40,
+      "solo_stem_r2": 0.3834,
+      "spearman": 0.6488
+    },
+    "piano_keys": {
+      "median_pitch": 64.0,
+      "n_frames": 155027,
+      "n_stems": 38,
+      "solo_stem_r2": 0.5434,
+      "spearman": 0.699
+    },
+    "reed_pipe": {
+      "median_pitch": 71.0,
+      "n_frames": 26966,
+      "n_stems": 9,
+      "solo_stem_r2": 0.1216,
+      "spearman": 0.3933
+    },
+    "synth_lead_pad": {
+      "median_pitch": 63.0,
+      "n_frames": 45402,
+      "n_stems": 11,
+      "solo_stem_r2": 0.0965,
+      "spearman": 0.3309
+    }
+  },
+  "by_register_split_at_the_analytical_resolution_limit": {
+    "at_or_above_midi_49": {
+      "n_stems": 155,
+      "solo_stem_r2": 0.4218
+    }
+  },
+  "family_r2_spread": 0.4989,
+  "job": "J3F-addendum",
+  "label": "HOST-ONLY AUDIO-INFORMATION FORENSIC",
+  "overall": {
+    "n_frames": 618494,
+    "n_stems": 157,
+    "solo_stem_r2": 0.4239,
+    "spearman": 0.6149
+  },
+  "production_firmware_changed": false,
+  "question": "with NO mixing at all, how well does host_chroma12 track a single pitched stem's own harmonic movement?",
+  "schema": "spectrasynq.solo_stem_family.v1",
+  "spread_clause_of_TIMBRE_FRONTEND_DOMINANT": {
+    "met": true,
+    "requirement": ">= 0.20"
+  },
+  "student_io_frozen": false,
+  "titan": false
+}

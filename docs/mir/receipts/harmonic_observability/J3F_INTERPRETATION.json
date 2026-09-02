@@ -1,0 +1,96 @@
+{
+  "schema": "spectrasynq.harmonic_observability_interpretation.v1",
+  "job": "J3F",
+  "date": "2026-09-01",
+  "label": "HOST-ONLY AUDIO-INFORMATION FORENSIC",
+  "companion_to": ["J3F_RESULT.json", "J3F_SOLO_STEM_FAMILY.json"],
+  "does_not_mutate": ["J3D_A_RESULT_v1.json", "J3D_A_RESULT_v2.json", "J3D_C1_RESULT.json", "J3E_RESULT.json"],
+
+  "outcome": "TIMBRE_FRONTEND_DOMINANT",
+
+  "the_ladder": {
+    "S1_aggregate_power_sum_no_cross_terms": 0.4284,
+    "S2_pitched_waveform_mix": 0.3851,
+    "S3_full_mix_incl_percussion": 0.3097,
+    "S3_reproduces_J3D_A_v2_exactly": true,
+    "cost_of_pitched_mixing": 0.0433,
+    "cost_of_percussion_and_full_mix": 0.0754,
+    "total_cost_of_all_mixing": 0.1187,
+    "reading": "give the frontend PERFECT source separation and zero interference and it still only reaches 0.428. All mixing together costs 0.119. The ceiling is set before any mixing happens."
+  },
+
+  "the_purest_test": {
+    "solo_single_stem_r2": 0.4239,
+    "n_stems": 157, "n_frames": 618494,
+    "reading": "one stem alone, its own MIDI, no other instrument, no percussion, no mixing: 0.424 - statistically the same as the 0.428 from perfectly aggregating every stem. Perfect separation would buy essentially nothing."
+  },
+
+  "family_spread_fills_the_preregistered_clause": {
+    "requirement": ">= 0.20", "measured": 0.4989, "met": true,
+    "by_family_solo_r2": {"brass": 0.595, "bass": 0.591, "piano_keys": 0.543, "guitar": 0.383,
+                          "ensemble_voice": 0.298, "chromatic_percussion": 0.293,
+                          "reed_pipe": 0.122, "synth_lead_pad": 0.097},
+    "pattern": "the frontend tracks TRANSIENT, HARMONICALLY CLEAN, SPARSE timbres (piano, bass, brass) and fails on SUSTAINED, SPECTRALLY DENSE, often detuned or chorused ones (synth pads, reeds, choir). This is a timbre-density story, not a register story.",
+    "disclosure": "the main J3F run implemented only the first clause of the pre-registered TIMBRE_FRONTEND_DOMINANT condition (S1 R^2 < 0.50). The spread clause was evaluated by this addendum afterwards. It is met, so the outcome stands - but the sequence is disclosed rather than presented as if both clauses were tested in one pass."
+  },
+
+  "Q1_renderer_timing_hypothesis_FALSIFIED": {
+    "n_isolated_onsets": 3342,
+    "median_offset_hops": 0.477,
+    "iqr_hops": 4.603,
+    "family_medians": {"chromatic_percussion": -0.666, "bass": 0.001, "guitar": 0.0, "piano_keys": 0.0,
+                       "strings": 0.155, "brass": 0.628, "synth_lead_pad": 0.885,
+                       "reed_pipe": 2.527, "ensemble_voice": 3.56},
+    "verdict": "NOT systematic. IQR 4.6 hops and family medians spanning -0.67 to +3.56. Piano, guitar and bass are at essentially zero; slow-attack patches (choir, reeds, pads) LAG by 2.5-3.6 hops.",
+    "consequence_for_the_J3D_minus_one_hop": "the renderer/sampler explanation is falsified twice over: the effect is not systematic, and where it exists its sign is POSITIVE (audio lags MIDI), the opposite of the -1 hop lead J3D observed. The J3D-C1 CHROMA_PHASE_INCONCLUSIVE stands and the -1 hop remains unexplained.",
+    "what_it_did_reveal": "attack time is timbre-dependent and large for sustained patches - which is the same family axis that dominates the R^2 spread."
+  },
+
+  "Q3_nonlinear_mixing": {
+    "A_power_sum_r2": 0.4284, "B_waveform_sum_r2": 0.3851, "A_minus_B": 0.0433,
+    "threshold_for_MIXTURE_INTERFERENCE": 0.15,
+    "verdict": "cross terms cost 0.043. Interference is real but small. Not the dominant mechanism."
+  },
+
+  "error_typology_n200": {
+    "ambiguous_overlapping_voices": 62, "wrong_pitch_class_emphasis": 43,
+    "residual_previous_chord": 34, "broadband_transient_contamination": 25,
+    "percussion_contamination": 18, "false_stable": 9, "premature_next_state": 9,
+    "reading": "52.5% (62 + 43) are PITCH-CLASS IDENTIFICATION failures, exactly what the Q0b harmonic-leakage arithmetic predicts. 17% is temporal smearing from the 128 ms window. Only 9% is percussion."
+  },
+
+  "percussion_causes_the_FALSE_responses": {
+    "acoustic_only_challenge_recall": {"S3_full_mix": 0.2023, "S2_pitched_mix": 0.0878, "S1_aggregate": 0.0844},
+    "reading": "chroma's tendency to fire at acoustic-only events more than halves once percussion is removed. Percussion is not where the harmonic information is lost - it is where the FALSE harmonic response comes from. That is a different defect from the one that limits recall, and it maps directly onto the restraint advantage J3E measured."
+  },
+
+  "corrections_to_my_own_analytical_prior": [
+    {"prior": "Q0a predicted the sub-bin bass register would be a major loss source",
+     "outcome": "PARTIALLY FALSIFIED. Bass scores 0.591, among the best families, despite its fundamentals occupying under one FFT bin per semitone. Its harmonics land in resolvable bins and fold to the root and fifth, so the smeared fundamental costs less than predicted."},
+    {"prior": "a register split would isolate the resolution effect",
+     "outcome": "COULD NOT BE TESTED. Stem MEDIAN pitch rarely falls below MIDI 49 (bass median is 53), so the below-49 bucket had too few stems. The resolution finding remains analytical, not empirically isolated."}
+  ],
+
+  "confound_that_limits_how_the_absolute_numbers_may_be_read": {
+    "statement": "chroma measures ENERGY distribution; the symbolic state measures DURATION occupancy. A perfect chroma extractor would still not reach R^2 = 1.0 against this target, because a sustained quiet note and a loud short note weigh differently in the two representations.",
+    "consequence": "0.42 must NOT be read as '58% of the information is lost'. The absolute ceiling is unknown.",
+    "why_the_attribution_survives": "every ladder comparison is RELATIVE and uses the identical target, so the confound cancels between rungs. The finding is 'mixing costs 0.119 while the stem-level ceiling is 0.428', and that comparison is unaffected."
+  },
+
+  "recommended_next_path": {
+    "choice": "J3G_EXISTING_STFT_HARMONIC_RECOVERY",
+    "why": "mixing costs 0.119; timing is not systematic; cross terms cost 0.043; but a SOLO stem through the existing frontend reaches only 0.424, with a 0.499 spread across timbre families and a majority of missed events classified as pitch-class identification failures. The loss is in how the existing STFT is folded into pitch classes.",
+    "what_it_would_test": ["a proper chroma filterbank over the SAME STFT instead of nearest-bin assignment",
+                           "tuning-aware bin weighting",
+                           "harmonic salience or a subharmonic sum to suppress the Q0b phantom-triad leakage",
+                           "pitch-class normalisation and the sqrt/clip choice"],
+    "explicitly_not_recommended_yet": ["CQT (a second frontend, unjustified until the existing STFT is exhausted)",
+                                       "Basic Pitch", "any neural student", "foundation models",
+                                       "source separation - the ladder shows perfect separation would buy 0.043"],
+    "the_strongest_single_argument": "perfect source separation is worth 0.043 R^2. Fixing the pitch-class folding is worth up to 0.57. We were about to consider spending on the wrong axis."
+  },
+
+  "product_grammar": "HOST_EVIDENCE_OF_PRODUCT_HARMONIC_GRAMMAR_GAP (J3E) is preserved unchanged. The device and LGP path have not been tested and no claim is made that the hardware cannot express harmony.",
+  "student_io_frozen": false, "titan": false, "production_firmware_changed": false,
+  "basic_pitch_run": false, "foundation_model_run": false
+}

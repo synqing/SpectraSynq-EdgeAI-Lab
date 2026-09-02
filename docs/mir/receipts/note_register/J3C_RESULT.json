@@ -1,0 +1,411 @@
+{
+  "controls": {
+    "all_pass": true,
+    "machinery_linear_recovery": {
+      "pass": true,
+      "r2": 0.9999999999999998,
+      "requirement": ">= 0.95"
+    },
+    "shuffled_labels": {
+      "pass": true,
+      "r2": -0.043993288216800375,
+      "requirement": "<= 0.10"
+    }
+  },
+  "corpus": {
+    "frames_valid": 145928,
+    "target_mean_midi": 59.69,
+    "target_sd_semitones": 5.24,
+    "tracks": 20
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). Corpus md5 verified against the publisher's checksum.",
+  "forbidden_conclusions": [
+    "register is/is not valuable",
+    "register does/does not need a neural student",
+    "tonal or melodic intelligence is closed",
+    "pitch class is redundant or useful",
+    "any real-audio claim (SELECTION_GATE criterion 3 rejects synthetic evidence)"
+  ],
+  "git_head": "a16fd3bb501ad92c75a5d8563ac424c7b3c0996b",
+  "grid": {
+    "hop": 512,
+    "n_fft": 2048,
+    "sr_hz": 16000
+  },
+  "job": "J3C",
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "lag_diagnostic": {
+    "argmax_lag": 0,
+    "by_lag": {
+      "-1": 0.097832,
+      "-2": 0.074479,
+      "-3": 0.05188,
+      "-4": 0.03492,
+      "0": 0.108827,
+      "1": 0.101174,
+      "2": 0.084031,
+      "3": 0.066541,
+      "4": 0.053412
+    },
+    "margin_over_lag0": 0.0
+  },
+  "lag_ok": true,
+  "outcome": "REGISTER_INCONCLUSIVE",
+  "preregistration": "docs/mir/receipts/note_register/J3C_PREREGISTRATION.json",
+  "preregistration_written_before_any_score": true,
+  "production_firmware_changed": false,
+  "schema": "spectrasynq.register_frontend_result.v1",
+  "split": "grouped 5-fold, groups = track",
+  "stage_1_best": {
+    "estimator": "DETERMINISTIC_FEATURE_SET__decompressed",
+    "oof_mae_semitones": 3.619,
+    "oof_r2": 0.1675
+  },
+  "stage_1_deterministic": {
+    "DETERMINISTIC_FEATURE_SET__decompressed": {
+      "features": [
+        "E1",
+        "E2",
+        "q25",
+        "q75",
+        "E4"
+      ],
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.619,
+      "oof_median_abs_err_semitones": 2.873,
+      "oof_r2": 0.1675
+    },
+    "DETERMINISTIC_FEATURE_SET__frozen": {
+      "features": [
+        "E1",
+        "E2",
+        "q25",
+        "q75",
+        "E4"
+      ],
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.663,
+      "oof_median_abs_err_semitones": 2.936,
+      "oof_r2": 0.1592
+    },
+    "E1_midi_energy_centroid__decompressed": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.865,
+      "oof_median_abs_err_semitones": 3.048,
+      "oof_r2_after_affine_calibration": 0.0587,
+      "per_track_mae": {
+        "Track00001": 5.438,
+        "Track00002": 2.643,
+        "Track00003": 4.885,
+        "Track00004": 6.055,
+        "Track00005": 3.824,
+        "Track00006": 2.8,
+        "Track00007": 3.894,
+        "Track00008": 2.589,
+        "Track00009": 9.333,
+        "Track00010": 4.724,
+        "Track00011": 2.167,
+        "Track00012": 3.538,
+        "Track00013": 5.29,
+        "Track00014": 3.023,
+        "Track00015": 2.376,
+        "Track00016": 4.064,
+        "Track00017": 3.951,
+        "Track00018": 2.37,
+        "Track00019": 3.753,
+        "Track00020": 3.427
+      },
+      "raw_mae_semitones_uncalibrated": 4.92
+    },
+    "E1_midi_energy_centroid__frozen": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.767,
+      "oof_median_abs_err_semitones": 3.002,
+      "oof_r2_after_affine_calibration": 0.1108,
+      "per_track_mae": {
+        "Track00001": 4.967,
+        "Track00002": 2.656,
+        "Track00003": 4.6,
+        "Track00004": 6.122,
+        "Track00005": 3.907,
+        "Track00006": 3.043,
+        "Track00007": 3.539,
+        "Track00008": 2.527,
+        "Track00009": 8.968,
+        "Track00010": 4.433,
+        "Track00011": 2.254,
+        "Track00012": 3.258,
+        "Track00013": 5.347,
+        "Track00014": 2.922,
+        "Track00015": 2.288,
+        "Track00016": 4.11,
+        "Track00017": 3.513,
+        "Track00018": 2.717,
+        "Track00019": 3.439,
+        "Track00020": 3.493
+      },
+      "raw_mae_semitones_uncalibrated": 5.101
+    },
+    "E2_weighted_median__decompressed": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.904,
+      "oof_median_abs_err_semitones": 3.067,
+      "oof_r2_after_affine_calibration": 0.0238,
+      "per_track_mae": {
+        "Track00001": 5.481,
+        "Track00002": 2.727,
+        "Track00003": 5.008,
+        "Track00004": 6.107,
+        "Track00005": 3.894,
+        "Track00006": 2.656,
+        "Track00007": 3.908,
+        "Track00008": 2.69,
+        "Track00009": 9.815,
+        "Track00010": 4.937,
+        "Track00011": 1.923,
+        "Track00012": 3.661,
+        "Track00013": 5.374,
+        "Track00014": 3.139,
+        "Track00015": 2.414,
+        "Track00016": 3.915,
+        "Track00017": 4.119,
+        "Track00018": 2.209,
+        "Track00019": 3.575,
+        "Track00020": 3.477
+      },
+      "raw_mae_semitones_uncalibrated": 6.358
+    },
+    "E2_weighted_median__frozen": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.763,
+      "oof_median_abs_err_semitones": 2.99,
+      "oof_r2_after_affine_calibration": 0.1014,
+      "per_track_mae": {
+        "Track00001": 4.985,
+        "Track00002": 2.466,
+        "Track00003": 4.611,
+        "Track00004": 6.174,
+        "Track00005": 4.072,
+        "Track00006": 2.929,
+        "Track00007": 3.664,
+        "Track00008": 2.555,
+        "Track00009": 9.053,
+        "Track00010": 4.33,
+        "Track00011": 2.14,
+        "Track00012": 3.531,
+        "Track00013": 5.39,
+        "Track00014": 2.987,
+        "Track00015": 2.411,
+        "Track00016": 4.053,
+        "Track00017": 3.633,
+        "Track00018": 2.251,
+        "Track00019": 3.337,
+        "Track00020": 3.401
+      },
+      "raw_mae_semitones_uncalibrated": 4.182
+    },
+    "E3_q25__decompressed": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.982,
+      "oof_median_abs_err_semitones": 3.117,
+      "oof_r2_after_affine_calibration": -0.0197,
+      "per_track_mae": {
+        "Track00001": 5.689,
+        "Track00002": 2.774,
+        "Track00003": 5.112,
+        "Track00004": 6.138,
+        "Track00005": 3.978,
+        "Track00006": 2.725,
+        "Track00007": 3.944,
+        "Track00008": 2.943,
+        "Track00009": 10.212,
+        "Track00010": 5.287,
+        "Track00011": 1.941,
+        "Track00012": 3.587,
+        "Track00013": 5.211,
+        "Track00014": 3.291,
+        "Track00015": 2.338,
+        "Track00016": 3.957,
+        "Track00017": 4.073,
+        "Track00018": 2.211,
+        "Track00019": 3.576,
+        "Track00020": 3.719
+      },
+      "raw_mae_semitones_uncalibrated": 13.55
+    },
+    "E3_q25__frozen": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.902,
+      "oof_median_abs_err_semitones": 3.078,
+      "oof_r2_after_affine_calibration": 0.0278,
+      "per_track_mae": {
+        "Track00001": 5.423,
+        "Track00002": 2.681,
+        "Track00003": 4.897,
+        "Track00004": 6.22,
+        "Track00005": 4.037,
+        "Track00006": 2.914,
+        "Track00007": 3.868,
+        "Track00008": 2.931,
+        "Track00009": 9.611,
+        "Track00010": 4.929,
+        "Track00011": 2.035,
+        "Track00012": 3.601,
+        "Track00013": 5.264,
+        "Track00014": 3.236,
+        "Track00015": 2.413,
+        "Track00016": 3.969,
+        "Track00017": 3.789,
+        "Track00018": 2.046,
+        "Track00019": 3.436,
+        "Track00020": 3.643
+      },
+      "raw_mae_semitones_uncalibrated": 11.106
+    },
+    "E3_q75__decompressed": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.782,
+      "oof_median_abs_err_semitones": 2.972,
+      "oof_r2_after_affine_calibration": 0.0919,
+      "per_track_mae": {
+        "Track00001": 5.373,
+        "Track00002": 2.485,
+        "Track00003": 4.805,
+        "Track00004": 6.013,
+        "Track00005": 3.77,
+        "Track00006": 2.728,
+        "Track00007": 3.937,
+        "Track00008": 2.516,
+        "Track00009": 9.294,
+        "Track00010": 4.381,
+        "Track00011": 2.349,
+        "Track00012": 3.372,
+        "Track00013": 5.359,
+        "Track00014": 3.054,
+        "Track00015": 2.492,
+        "Track00016": 3.896,
+        "Track00017": 3.841,
+        "Track00018": 2.212,
+        "Track00019": 3.39,
+        "Track00020": 3.251
+      },
+      "raw_mae_semitones_uncalibrated": 7.474
+    },
+    "E3_q75__frozen": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.703,
+      "oof_median_abs_err_semitones": 2.967,
+      "oof_r2_after_affine_calibration": 0.1388,
+      "per_track_mae": {
+        "Track00001": 4.791,
+        "Track00002": 2.615,
+        "Track00003": 4.37,
+        "Track00004": 6.075,
+        "Track00005": 3.775,
+        "Track00006": 2.985,
+        "Track00007": 3.406,
+        "Track00008": 2.293,
+        "Track00009": 9.207,
+        "Track00010": 4.263,
+        "Track00011": 2.539,
+        "Track00012": 2.954,
+        "Track00013": 5.373,
+        "Track00014": 2.984,
+        "Track00015": 2.408,
+        "Track00016": 3.8,
+        "Track00017": 3.477,
+        "Track00018": 3.057,
+        "Track00019": 2.991,
+        "Track00020": 3.468
+      },
+      "raw_mae_semitones_uncalibrated": 14.95
+    },
+    "E4_harmonic_sum_centroid__decompressed": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.759,
+      "oof_median_abs_err_semitones": 2.976,
+      "oof_r2_after_affine_calibration": 0.1088,
+      "per_track_mae": {
+        "Track00001": 5.316,
+        "Track00002": 2.414,
+        "Track00003": 4.679,
+        "Track00004": 6.072,
+        "Track00005": 3.784,
+        "Track00006": 2.741,
+        "Track00007": 3.895,
+        "Track00008": 2.392,
+        "Track00009": 8.623,
+        "Track00010": 4.309,
+        "Track00011": 2.398,
+        "Track00012": 3.525,
+        "Track00013": 5.308,
+        "Track00014": 2.984,
+        "Track00015": 2.44,
+        "Track00016": 3.945,
+        "Track00017": 3.974,
+        "Track00018": 2.156,
+        "Track00019": 3.498,
+        "Track00020": 3.292
+      },
+      "raw_mae_semitones_uncalibrated": 8.958
+    },
+    "E4_harmonic_sum_centroid__frozen": {
+      "n_scored": 145928,
+      "oof_mae_semitones": 3.688,
+      "oof_median_abs_err_semitones": 2.952,
+      "oof_r2_after_affine_calibration": 0.1472,
+      "per_track_mae": {
+        "Track00001": 4.91,
+        "Track00002": 2.286,
+        "Track00003": 4.402,
+        "Track00004": 6.167,
+        "Track00005": 3.974,
+        "Track00006": 3.027,
+        "Track00007": 3.575,
+        "Track00008": 2.41,
+        "Track00009": 8.356,
+        "Track00010": 4.097,
+        "Track00011": 2.454,
+        "Track00012": 3.327,
+        "Track00013": 5.402,
+        "Track00014": 3.019,
+        "Track00015": 2.492,
+        "Track00016": 4.008,
+        "Track00017": 3.501,
+        "Track00018": 2.331,
+        "Track00019": 3.176,
+        "Track00020": 3.342
+      },
+      "raw_mae_semitones_uncalibrated": 5.819
+    }
+  },
+  "stage_2_nonlinear": {
+    "gbm": {
+      "oof_mae_semitones": 3.491,
+      "oof_median_abs_err_semitones": 2.726,
+      "oof_r2": 0.199
+    },
+    "mlp": {
+      "oof_mae_semitones": 3.634,
+      "oof_median_abs_err_semitones": 2.888,
+      "oof_r2": 0.1391
+    },
+    "ran": true,
+    "shuffled_label_control_gbm": {
+      "oof_r2": -0.0446,
+      "pass": true,
+      "requirement": "<= 0.10"
+    },
+    "status": "INFORMATION PROBES ONLY - not product architecture"
+  },
+  "student_io_frozen": false,
+  "thresholds_applied": {
+    "CLEARLY_INSUFFICIENT": "best deterministic reaches R^2 < 0.40 OR MAE > 4.5 semitones",
+    "OPEN_GOES_TO_STAGE_2": "anything between those",
+    "SUFFICIENT": "best deterministic estimator reaches out-of-fold R^2 >= 0.70 AND MAE <= 3.0 semitones",
+    "rationale_for_3_0_semitones": "Register is expected to drive coarse visual distinctions - roughly a four-band low / low-mid / high-mid / high split. With a target sd of ~5.2 semitones those bands are ~8 semitones wide, so a mean absolute error of 3 semitones is about a third of a band and keeps most frames in the correct band. This is set before any score is seen.",
+    "rationale_for_R2_0_70": "the estimator must capture most of the variance, not merely correlate. J3A's linear ridge on six DSP scalars reached 0.217 out-of-fold; 0.70 is a materially higher bar chosen to mean 'the frontend really does carry this'."
+  },
+  "titan": false,
+  "what_this_says_about_visual_value": "NOTHING. J3C measures recoverability from the existing frontend only. VALUE != RECOVERABILITY != COMPUTE COST."
+}

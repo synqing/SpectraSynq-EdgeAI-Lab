@@ -1,0 +1,85 @@
+{
+  "schema": "spectrasynq.chroma_timing_prereg.v1",
+  "job": "J3D-C1",
+  "written_at": "2026-09-01T11:00:00Z",
+  "written_before_any_fixture_score": true,
+  "label": "HOST-ONLY DETERMINISTIC FIXTURE",
+  "titan": false,
+  "student_io_frozen": false,
+
+  "purpose": "Establish the effective temporal alignment of host_chroma12 -> chroma movement INDEPENDENTLY of BabySlakh. Determine whether the J3D-A -1 hop argmax is mechanically explained by frontend phase, or is an unexplained offset.",
+
+  "hard_boundary": {
+    "must_not": [
+      "inspect M_tv",
+      "use any BabySlakh audio, MIDI or score",
+      "optimise any lag against a hypothesis metric",
+      "choose the answer after seeing it"
+    ],
+    "why": "using the J3D-A result to justify a correction to the J3D-A result is circular. The timing rule must be fixed by an independent deterministic fixture before any reanalysis exists."
+  },
+
+  "analytical_timing": {
+    "frontend": {"sr_hz": 16000, "hop": 512, "n_fft": 2048, "window": "Hann", "causality": "trailing"},
+    "frame_i_analysis_window_samples": "[(i+1)*512 - 2048, (i+1)*512) = [(i-3)*512, (i+1)*512)",
+    "window_start_s": "(i-3)*0.032",
+    "window_end_s": "(i+1)*0.032",
+    "rectangular_centre_s": "(i-1)*0.032",
+    "hann_centre_s": "(i-1)*0.032 - the Hann window is symmetric over n_fft, so its centroid is the window midpoint",
+    "nominal_output_timestamp_s": "(i + 0.5)*0.032  (hop centre, as host_chroma12 emits)",
+    "effective_observation_centre_minus_nominal_timestamp_hops": -1.5,
+    "effective_observation_centre_minus_nominal_timestamp_ms": -48.0,
+    "IMPORTANT_note": "pitch_class_state in J3D-A uses the IDENTICAL window convention, so on window geometry ALONE both sides carry the same -1.5 hop phase and should cancel. Any residual offset must therefore come from what fills the window - Hann weighting of magnitude vs rectangular occupancy of note duration, the sqrt/clip nonlinearity in host_chroma12, or the L1 renormalisation - NOT from the nominal timestamp. The fixture measures the residual."
+  },
+
+  "fixture": {
+    "kind": "deterministic additive synthesis. No Kontakt, no sampler, no corpus. The only timing effects present are the frontend's own.",
+    "state_pairs": [
+      "C major triad -> F major triad", "C major -> A minor", "C major -> G major",
+      "D minor -> B flat major", "E major -> C sharp minor", "F major -> C major"
+    ],
+    "conditions": [
+      {"id": "AB", "shape": "state A sustained 4 s, then state B sustained 4 s"},
+      {"id": "ABA", "shape": "A 3 s, B 3 s, A 3 s"},
+      {"id": "AB_energy_matched", "shape": "as AB, with both states normalised to identical RMS so amplitude carries no timing information"}
+    ],
+    "transition": {
+      "primary": "4 ms raised-cosine equal-power crossfade - far shorter than the 128 ms analysis window, so it cannot dominate the measured group delay, but long enough to remove the broadband click of a hard switch",
+      "control": "hard switch with no crossfade, reported alongside. If the two disagree the crossfade is driving the measurement and the run is INCONCLUSIVE."
+    },
+    "synthesis": "each note is 6 harmonics at 1/k amplitude, phase-continuous within a state; transition times are exact by construction",
+    "status": "TIMING FIXTURE ONLY. It is not musical evidence and makes no claim about harmony, perception or value."
+  },
+
+  "measurement": {
+    "audio_side": "run host_chroma12 on the fixture, L1-normalise rows, form the SAME movement measure as J3D-A: 0.5*L1(chroma_t, chroma_{t-8})",
+    "symbolic_side": "run pitch_class_state on the fixture's exact note list with the SAME window convention, then the SAME movement measure",
+    "statistics_per_pair_and_condition": [
+      "peak frame of the audio movement response",
+      "peak frame of the symbolic movement response",
+      "response centre of each (centroid of the response mass in a window around the transition)",
+      "offset = audio_centre - symbolic_centre, in hops",
+      "50% rise point of the underlying chroma state distance, as a second independent group-delay estimate"
+    ],
+    "aggregate": "median and interquartile spread of the offset across all pairs x conditions"
+  },
+
+  "outcome_thresholds": {
+    "CHROMA_PHASE_EXPLAINED": "median offset in [-1.5, -0.5] hops AND interquartile spread <= 1.0 hop AND every condition's median offset is negative. This is compatible with the J3D-A -1 hop argmax.",
+    "CHROMA_PHASE_NOT_EXPLAINED": "median offset >= -0.25 hops (essentially zero or positive), OR the crossfade and hard-switch controls disagree by more than 1 hop",
+    "CHROMA_PHASE_INCONCLUSIVE": "anything else - including multi-modal responses or spread > 1 hop"
+  },
+
+  "what_each_outcome_permits": {
+    "EXPLAINED": "J3D-C2 mechanistic reanalysis may run, applying ONLY this independently measured correction. No lag search. No BabySlakh-derived offset.",
+    "NOT_EXPLAINED": "STOP. Do not run J3D-C2 and do not run J3D-B. Investigate the construct or the alignment further.",
+    "INCONCLUSIVE": "STOP. No promotion."
+  },
+
+  "what_this_can_never_establish": [
+    "that harmonic movement is incremental",
+    "that harmonic movement has visual value",
+    "anything about real audio",
+    "any change to the J3D-A v1 or v2 receipts"
+  ]
+}

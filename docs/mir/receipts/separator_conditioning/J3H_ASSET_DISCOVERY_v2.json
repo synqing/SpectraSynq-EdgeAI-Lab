@@ -1,0 +1,171 @@
+{
+  "schema": "spectrasynq.separator_asset_discovery.v2",
+  "job": "J3H",
+  "date": "2026-09-01",
+  "supersedes": "J3H_ASSET_DISCOVERY.json",
+  "label": "LOCAL ASSET DISCOVERY v2 - no audio copied, uploaded or committed. Commercial copyrighted audio. Metadata and derived scalars only.",
+  "outcome": "REAL_AUDIO_SEPARATOR_INCONCLUSIVE",
+  "outcome_changed_from_v1": false,
+  "outcome_reasons_changed_from_v1": true,
+  "why_v1_was_wrong": "v1 searched ~/Downloads, ~/Desktop and ~/Music and concluded 'no separator exports anywhere on this machine'. The corpus lives in /Users/spectrasynq/Workspace_Management/Software/P4-nano, which was not a granted root. v1's search was correct about its roots and wrong about the machine. Recorded so the miss is not repeated: absence of evidence inside a search boundary is not evidence of absence outside it.",
+
+  "corpus_found": {
+    "root": "/Users/spectrasynq/Workspace_Management/Software/P4-nano/I2S_Audio_Demo-Waveshare_ESP32-P4-NANO/music",
+    "index": "docs/bench/audio-references/p4-local-music-corpus.json",
+    "index_id": "p4-local-music-corpus-v1",
+    "index_generated_at": "2026-06-15T04:05:45Z",
+    "folders_on_disk": 25,
+    "indexed_references": 23,
+    "skipped_by_index": [
+      {"folder": "TNTRecords-Skyfire-Eb minor-151bpm-440hz 2", "reason": "label does not match expected pattern (duplicate copy)"}
+    ],
+    "present_but_not_indexed": [
+      {"folder": "DavidGuetta&MORTEN-Odyssey-F# minor-126bpm-440hz", "note": "has a derived fixture directory under .cache/audio_refs but no entry in the current index. The overrides file calls a later track 'the Odyssey replacement anchor', so Odyssey appears to have been retired from the reference set."}
+    ],
+    "indexed_stems": 151,
+    "indexed_stems_present_on_disk": 151,
+    "indexed_bytes": 3510000000,
+    "integrity_check": {
+      "method": "sha256 recomputed and compared against the index pin",
+      "sampled": 2,
+      "sampled_of": 151,
+      "result": "2/2 exact match",
+      "note": "a 2-of-151 sample is a spot check, not a full verification of the corpus."
+    },
+    "container_breakdown": {
+      "wav_pcm_s16le_44100": 89,
+      "m4a_aac_44100_192kbps": 62
+    },
+    "lossy_transcode_finding": {
+      "evidence": "every .wav carries TAG:encoder=Lavf59.27.100 and every .m4a carries TAG:encoder=Lavf62.12.100",
+      "reading": "both containers were written locally by ffmpeg, not by the separator's own exporter. The .m4a files are a LATER lossy 192 kbps AAC re-encode (newer libavformat) and no lossless original survives for those 12 tracks. The index sha256 pins were regenerated after the transcode, so they verify but they pin the lossy artefact.",
+      "consequence_for_harmonic_work": "62 of 151 stems (12 of 25 tracks) are 192 kbps AAC. AAC at that rate is coarse above roughly 15 kHz and applies joint-stereo and quantisation to the mid band. Chroma below 5 kHz is probably tolerable, but this is an assumption, not a measurement, and any experiment using those 12 tracks must either exclude them or measure the transcode's effect."
+    },
+    "stem_roles": {
+      "bass": 23, "drums": 23, "metronome": 23, "other": 23,
+      "keys": 22, "vocals": 22, "wind": 8, "strings": 6, "guitars": 1
+    },
+    "per_track_metadata": "folder label encodes artist, title, key, BPM and reference tuning (438-443 Hz). 23 tracks, 95-174 BPM, one major-key track in 23.",
+    "genre_skew": "overwhelmingly EDM / big-room / hardstyle / techno. One 95 BPM soft-rock outlier (Eric Clapton). The index itself records the gap 'low_half_time_under_80bpm'."
+  },
+
+  "separator_provenance": {
+    "claim": "the stems are Moises output",
+    "confidence": "high, but inferred - not certified",
+    "direct_evidence": [
+      "docs/bench/audio-references/p4-local-music-corpus-overrides.json contains ~20 human-authored caveats of the form 'Moises section map shows ...', naming Moises as the source of the section and BPM analysis for these exact tracks",
+      "research/2026-06-15-mir-beat-tracking-source-excavation.md:231 - 'Do not treat a BPM filename, Moises BPM label, or stem folder name as a beat grid reference'",
+      "research/2026-06-15-mir-beat-tracking-source-excavation.md:430 - 'Compare oracle disagreement against local manual/Moises references.'"
+    ],
+    "corroborating_but_indirect": [
+      "the role taxonomy (bass, drums, keys, other, strings, vocals, wind, guitars) matches Moises' role set rather than Demucs' 4-stem or 6-stem set",
+      "a per-track 'metronome' track exists. Moises generates a click from its own beat analysis; Demucs and LALAL do not emit one",
+      "the folder naming pattern <artist>-<title>-<key>-<bpm>-<tuning>hz matches a Moises export convention"
+    ],
+    "what_would_certify_it": "an original Moises download filename, a Moises export receipt, an account/job record, or a container tag naming the app. None survive - ffmpeg re-encoded every file and stripped that trail.",
+    "other_separator_families_found": "NONE. No Demucs, htdemucs, LALAL.AI, Spleeter or rekordbox stem output anywhere in the P4-nano tree or the three roots searched in v1."
+  },
+
+  "prior_use_of_these_stems": {
+    "programme": "ESP32-P4-NANO real-time beat and tempo tracking bench (SpectraSynq P4-nano repo), June 2026. Not a harmonic or tonal programme.",
+    "not_a_training_set": "no model was trained on these. They were used as a replay/evaluation corpus.",
+    "two_evaluation_profiles": {
+      "steady_phase": {
+        "annotation_label": "metronome",
+        "annotation_bpm_source": "free_tempo",
+        "role": "the Moises click track is the phase reference; the scored input is a mix of musical stems"
+      },
+      "stem_oracle": {
+        "annotation_label": "selected-stem",
+        "role": "a chosen stem (usually drums, sometimes drums+bass+other) supplies the annotation; used as a diagnostic ceiling, never as product truth"
+      }
+    },
+    "rendered_mix_is_synthetic": {
+      "producer": "tools/run_local_music_corpus_matrix.py -> render_stems_to_mono_wav",
+      "ffmpeg_graph": "amix=inputs=N:duration=longest:normalize=1, then -ac 1 -ar 48000 -sample_fmt s16",
+      "meaning": "every 'rendered-mix' fixture under .cache/audio_refs is a SUM OF SEPARATOR OUTPUTS over a per-profile role subset, downmixed to 48 kHz mono, with amix's normalize=1 applying 1/N gain. It is not the commercial mix and it does not restore the original stem gains."
+    },
+    "standing_cautions_the_repo_itself_records": [
+      "'Do not promote a stem to reference truth unless it has a timestamped beat grid.'",
+      "'Do not train the firmware path to a stem-only solution. The product hears the room/full mix, so stems are a microscope, not the operating input.'",
+      "tools/p4_scope_guard.py:228 asserts the shipping evidence must state 'No selected-stem dependency: yes'"
+    ],
+    "read_across_to_the_MIR_programme": "the P4 programme independently reached the same doctrine J3F reached from the other direction: separated stems are a diagnostic instrument, not an input the product will ever have."
+  },
+
+  "j3h_feasibility": {
+    "verdict": "J3H AS SPECIFIED CANNOT RUN",
+    "blockers": [
+      {
+        "id": "B1_ONE_SEPARATOR_FAMILY",
+        "statement": "J3H's primary matrix requires the same source track separated by at least two separator families. Only one family (Moises) is present.",
+        "severity": "blocking",
+        "removable": "yes, at cost - the same 23 tracks could be re-separated by Demucs locally, but see B2 and B3."
+      },
+      {
+        "id": "B2_NO_ORIGINAL_MIXTURE",
+        "statement": "All 23 indexed references carry mix_source_status = 'stems_only_no_full_mix_wav_detected'. No commercial mix is retained anywhere in the tree. The only available 'mixture' is an amix stem-sum with 1/N gain over a role subset - a surrogate that already contains the separator's artefacts and has lost the original balance.",
+        "severity": "blocking",
+        "consequence": "there is no untouched mixture to serve as the control arm, and a second separator cannot be run at all without the mixture to feed it. B2 also blocks the removal of B1.",
+        "removable": "only by re-acquiring the source recordings."
+      },
+      {
+        "id": "B3_NO_FRAME_LEVEL_HARMONIC_TRUTH",
+        "statement": "This is the decisive blocker and it is independent of the other two. J3D, J3E and J3F all measured harmonic recovery against a frame-level pitch-class target derived from Slakh MIDI. This corpus has no note-level annotation of any kind. The only harmonic label is one global key string per track in the folder name - itself a Moises estimate, single-mode, whole-track, of unknown accuracy.",
+        "severity": "blocking",
+        "consequence": "J3H's comparator (R-squared of recovered pitch-class state against truth, conditioned on separator) has no target to score against. Running it would produce a number with nothing behind it.",
+        "the_repo_agrees": "research/2026-06-15-mir-beat-tracking-source-excavation.md:231 already forbids treating a Moises label or a folder name as a reference for the analogous rhythmic case.",
+        "removable": "only by hand-annotating, or by accepting a much weaker question - see below."
+      },
+      {
+        "id": "B4_COPYRIGHT",
+        "statement": "23 commercial recordings. The P4 repo's own source_policy is 'metadata_only_no_audio_bytes_committed'. Standing constraint forbids committing or uploading copyrighted audio.",
+        "severity": "operational, not scientific",
+        "consequence": "any analysis must execute on the Captain's machine. Only derived scalars, receipts and aggregate statistics may cross into the lab repo. No stem, window or fixture may be staged to the container or committed."
+      }
+    ],
+    "what_v1_got_right_by_accident": "the verdict REAL_AUDIO_SEPARATOR_INCONCLUSIVE stands. Finding the assets did not unblock J3H; it replaced one blocker (no assets) with three sharper ones."
+  },
+
+  "what_these_assets_could_honestly_support": {
+    "note": "listed as options for the Captain, NOT authorised and NOT started.",
+    "options": [
+      {
+        "id": "OPT_A_NOTHING",
+        "statement": "Proceed to J3G on Slakh, where MIDI truth exists, and leave this corpus alone. J3F's recommendation already says the pitch-class folding fix is worth up to 0.57 R-squared while perfect separation is worth 0.043. Nothing found today changes that ordering.",
+        "cost": "zero",
+        "recommended": true
+      },
+      {
+        "id": "OPT_B_GLOBAL_KEY_AGREEMENT",
+        "statement": "After J3G, aggregate the frame-level pitch-class state over each track and test whether the implied key matches the Moises key label on 23 real 44.1 kHz tracks.",
+        "what_it_would_measure": "whether a folding fix validated on synthetic Slakh survives contact with real commercial masters at real sample rates.",
+        "what_it_could_NOT_measure": "frame-level accuracy, timing, or anything separator-conditioned.",
+        "construct_honesty_required": "the Moises key label is a fallible comparator of unknown accuracy, not truth. Agreement is weak positive evidence. Disagreement is ambiguous - it could be the estimator, the label, or a modulating track. This must be pre-registered explicitly or the result is uninterpretable.",
+        "power_warning": "n=23, one major-key track in 23, heavy EDM skew, and 12 of 23 tracks lossy. Low power and poor coverage.",
+        "recommended": "only as a cheap sanity check after J3G passes, never as a gate"
+      },
+      {
+        "id": "OPT_C_REAL_AUDIO_MIXING_COST",
+        "statement": "Re-run the J3F mixing-cost ladder on this corpus: tonal stems in isolation vs the amix stem-sum surrogate.",
+        "why_it_is_weak": "with no truth target, the only available measure is self-consistency or agreement between two estimators, not accuracy. It would also compare a separator output against a sum of separator outputs, so both arms carry the same artefacts. This does not test what J3H set out to test.",
+        "recommended": false
+      }
+    ]
+  },
+
+  "claude_mem_inspection": {
+    "status": "NOT DONE",
+    "reason": "~/.claude-mem is not a connected folder. Two folder-access requests were issued; both dialogs closed unanswered on the Captain's machine.",
+    "what_is_still_unknown": "whether claude-mem holds a record of the original separation job (which app, which settings, which date) that would move the Moises attribution from high-confidence inference to certified fact, and whether these stems were used anywhere beyond the P4 beat-tracking bench.",
+    "does_it_change_the_verdict": "no. B2, B3 and B4 are established from the corpus itself and no memory record can remove them. Certifying the separator would only address B1, which is already blocked by B2."
+  },
+
+  "audio_handling_attestation": {
+    "copied_to_container": "none",
+    "uploaded": "none",
+    "committed": "none",
+    "staged": "none",
+    "operations_performed": "directory listing, ffprobe header reads, sha256 of 2 files, JSON index parsing - all executed on the Captain's machine, all read-only"
+  }
+}

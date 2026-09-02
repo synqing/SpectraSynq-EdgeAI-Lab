@@ -1,0 +1,1097 @@
+{
+  "schema": "spectrasynq.peak_root_hybrid_result.v1",
+  "job": "J3G.2",
+  "git_head": "WORKCOPY",
+  "label": "POST_HOC_MECHANISTIC_PROBE - the BabySlakh tracks are CONSUMED. Nothing here is promotable.",
+  "preregistration": "docs/mir/receipts/peak_root_hybrid/J3G2_PREREGISTRATION.json",
+  "preregistration_amendments": [
+    {
+      "date": "2026-09-02",
+      "scores_seen_at_time_of_amendment": "the four fixture vectors ONLY. No corpus metric of any kind - no R-squared, no challenge recall, no family analysis, no visual metric - had been computed for the hybrid.",
+      "what": "F2's second clause demoted from blocking to reported; the blocking set is the Captain's four stated requirements, all of which pass.",
+      "direction_of_risk": "this LOOSENS a criterion after seeing it fail. Disclosed in full. The countervailing consideration is recorded above: the outcome is decided by T1/T2, which this clause cannot influence."
+    }
+  ],
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "labels": {
+    "C2_level_C": "POST_HOC_LEVEL_C_CONFIRMATION",
+    "hybrid": "POST_HOC_MECHANISTIC_PROBE"
+  },
+  "control_challenge_membership": {
+    "counts": {
+      "HARMONIC_CHANGE_FLAT_ENERGY": 2299,
+      "HARMONIC_CHANGE_NO_ONSET": 4000,
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 3292
+    },
+    "matches_J3D_A_v2": true
+  },
+  "hybrid_definition": {
+    "id": "C5_PEAK_ROOT_HYBRID",
+    "label": "POST_HOC_MECHANISTIC_PROBE",
+    "hypothesis": "C2 is better at LOCATING stable tonal evidence; C3 is better at INTERPRETING harmonic stacks as fundamental evidence. C3 draws its evidence from raw max-in-window spectral energy, which retains broadband and mainlobe-leakage contamination - J3G's diagnosis showed C3 salience accumulating on candidates at MIDI 59 and 61, which have no real partial, only the Hann mainlobe skirt of the 261.6 Hz fundamental. Feeding C3-style root inference from C2's interpolated peaks should remove exactly that contamination.",
+    "single_variable_changed": "the EVIDENCE SOURCE for harmonic accumulation: interpolated spectral peaks instead of max-in-window bin energy. Everything else - candidate grid, harmonic count, harmonic weights, gate shape, gate constant, tolerance - is inherited unchanged from the corrected C3, so the comparison isolates the mechanism.",
+    "formula": "Peaks: EXACTLY C2's peak set - local maxima of |X[k]| above the 40 Hz floor, parabolic interpolation on log-magnitude for sub-bin frequency and refined amplitude, kept when amplitude >= 0.01 of the frame's largest peak. Shared code, not a reimplementation. For candidate fundamental c on the equal-tempered semitone grid MIDI 28..96 and harmonic h = 1..8: A_h(c) = the amplitude of the LARGEST peak whose frequency lies within +/- 0.5 semitone of h*f0(c), or 0 if no peak lies there. S(c) = sum_h (1/h) * A_h(c). odd_support(c) = sum over odd h<=8 of (1/h)*A_h(c). odd_frac(c) = odd_support(c) / (S(c) + eta). Octave gate g(c) = min(1, odd_frac(c)/rho). Final salience S*(c) = S(c) * g(c). Fold: pitch_class[b] = sum over candidates c with (midi(c) mod 12 == b) of S*(c).",
+    "declared_constants_frozen_before_any_corpus_evaluation": {
+      "midi_low": 28,
+      "midi_high": 96,
+      "H": 8,
+      "harmonic_weights": "1/h",
+      "harmonic_match_half_width_semitones": 0.5,
+      "rho": 0.767,
+      "rho_derivation": "sum_{h odd <= 8} 1/h^2 / sum_{h <= 8} 1/h^2 = 1.1716 / 1.5274 - the odd-harmonic fraction of an ideal 1/h series under 1/h weights. Analytic, not fitted.",
+      "eta": 1e-12,
+      "peak_amplitude_threshold_relative": 0.01,
+      "freq_floor_hz": 40.0,
+      "tuning": "A440 fixed - J3G measured 0.68 cents median deviation on this corpus and recorded TUNING_NOT_MATERIAL_HERE",
+      "native_domain": "amplitude",
+      "carry_forward_compression": "P0_CURRENT, as determined by the J3G-1 ablation. For an amplitude-domain candidate that is exponent 1.0, i.e. the identity - the same treatment C3 received."
+    },
+    "guard_is_derived_from_peak_evidence_not_raw_windows": "the gate uses A_h(c) computed from PEAKS. This is the substantive difference from C3's guard: a sub-octave candidate's odd harmonics (1.5*f0, 2.5*f0) contain no local maximum at all, so the peak-based odd fraction collapses to near zero, whereas the raw-window version always found some leakage energy there.",
+    "does_not_inherit_the_defective_formula": "the withdrawn original C3 form S*(c) = S(c) * odd_frac(c) is algebraically identical to odd_sum(c) and silently discards every even harmonic. The hybrid uses the SATURATING gate min(1, odd_frac/rho), so a clean fundamental keeps its full harmonic sum.",
+    "no_zoo_no_sweep": "one hybrid, one constant set, frozen here. If it fails, the answer is the outcome below, not a C6."
+  },
+  "fixtures": {
+    "PURE_SINE": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.7645,
+          "C#": 0.1055,
+          "D": 0.0056,
+          "D#": 0.0015,
+          "E": 0.0006,
+          "F": 0.0003,
+          "F#": 0.0003,
+          "G": 0.0003,
+          "G#": 0.0009,
+          "A": 0.0013,
+          "A#": 0.0057,
+          "B": 0.1134
+        },
+        "chord_tone_mass": 0.7645,
+        "non_chord_tone_mass": 0.2355,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.1134
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 1.0,
+          "C#": 0.0,
+          "D": 0.0,
+          "D#": 0.0,
+          "E": 0.0,
+          "F": 0.0,
+          "F#": 0.0,
+          "G": 0.0,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0,
+          "B": 0.0
+        },
+        "chord_tone_mass": 1.0,
+        "non_chord_tone_mass": 0.0,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.0
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.4544,
+          "C#": 0.0874,
+          "D": 0.0052,
+          "D#": 0.0029,
+          "E": 0.0345,
+          "F": 0.1523,
+          "F#": 0.0307,
+          "G": 0.0215,
+          "G#": 0.0924,
+          "A": 0.019,
+          "A#": 0.0057,
+          "B": 0.0941
+        },
+        "chord_tone_mass": 0.4544,
+        "non_chord_tone_mass": 0.5456,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.1523
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "vector": {
+          "C": 0.6522,
+          "C#": 0.0,
+          "D": 0.0,
+          "D#": 0.0,
+          "E": 0.0,
+          "F": 0.2174,
+          "F#": 0.0,
+          "G": 0.0,
+          "G#": 0.1304,
+          "A": 0.0,
+          "A#": 0.0,
+          "B": 0.0
+        },
+        "chord_tone_mass": 0.6522,
+        "non_chord_tone_mass": 0.3478,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.2174
+      }
+    },
+    "HARMONIC_NOTE": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.5283,
+          "C#": 0.063,
+          "D": 0.0033,
+          "D#": 0.0009,
+          "E": 0.0931,
+          "F": 0.0002,
+          "F#": 0.0012,
+          "G": 0.1734,
+          "G#": 0.0013,
+          "A": 0.0009,
+          "A#": 0.0666,
+          "B": 0.0677
+        },
+        "chord_tone_mass": 0.5283,
+        "non_chord_tone_mass": 0.4717,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.1734
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 0.6329,
+          "C#": 0.0,
+          "D": 0.0,
+          "D#": 0.0,
+          "E": 0.1045,
+          "F": 0.0,
+          "F#": 0.0,
+          "G": 0.2043,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0583,
+          "B": 0.0
+        },
+        "chord_tone_mass": 0.6329,
+        "non_chord_tone_mass": 0.3671,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.2043
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.4487,
+          "C#": 0.0308,
+          "D": 0.026,
+          "D#": 0.0341,
+          "E": 0.0447,
+          "F": 0.1323,
+          "F#": 0.0208,
+          "G": 0.1059,
+          "G#": 0.0648,
+          "A": 0.0311,
+          "A#": 0.0275,
+          "B": 0.0332
+        },
+        "chord_tone_mass": 0.4487,
+        "non_chord_tone_mass": 0.5513,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.1323
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "vector": {
+          "C": 0.5105,
+          "C#": 0.0,
+          "D": 0.0235,
+          "D#": 0.0303,
+          "E": 0.0387,
+          "F": 0.147,
+          "F#": 0.011,
+          "G": 0.1116,
+          "G#": 0.0718,
+          "A": 0.028,
+          "A#": 0.0275,
+          "B": 0.0
+        },
+        "chord_tone_mass": 0.5105,
+        "non_chord_tone_mass": 0.4895,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 1.0,
+        "largest_single_non_chord_class": 0.147
+      }
+    },
+    "TWO_NOTE_FIFTH": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.3164,
+          "C#": 0.0377,
+          "D": 0.1039,
+          "D#": 0.0007,
+          "E": 0.0557,
+          "F": 0.0398,
+          "F#": 0.005,
+          "G": 0.3221,
+          "G#": 0.0093,
+          "A": 0.0007,
+          "A#": 0.0399,
+          "B": 0.0689
+        },
+        "chord_tone_mass": 0.6384,
+        "non_chord_tone_mass": 0.3616,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.9824,
+        "largest_single_non_chord_class": 0.1039
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 0.355,
+          "C#": 0.0,
+          "D": 0.1147,
+          "D#": 0.0,
+          "E": 0.0586,
+          "F": 0.0321,
+          "F#": 0.0,
+          "G": 0.3498,
+          "G#": 0.0,
+          "A": 0.0,
+          "A#": 0.0327,
+          "B": 0.057
+        },
+        "chord_tone_mass": 0.7048,
+        "non_chord_tone_mass": 0.2952,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.9852,
+        "largest_single_non_chord_class": 0.1147
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.3186,
+          "C#": 0.026,
+          "D": 0.0567,
+          "D#": 0.0458,
+          "E": 0.0451,
+          "F": 0.0795,
+          "F#": 0.016,
+          "G": 0.241,
+          "G#": 0.0454,
+          "A": 0.0369,
+          "A#": 0.0449,
+          "B": 0.0442
+        },
+        "chord_tone_mass": 0.5596,
+        "non_chord_tone_mass": 0.4404,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.7562,
+        "largest_single_non_chord_class": 0.0795
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "vector": {
+          "C": 0.3535,
+          "C#": 0.0062,
+          "D": 0.0618,
+          "D#": 0.0456,
+          "E": 0.0422,
+          "F": 0.0869,
+          "F#": 0.0064,
+          "G": 0.2611,
+          "G#": 0.0415,
+          "A": 0.0362,
+          "A#": 0.0369,
+          "B": 0.0218
+        },
+        "chord_tone_mass": 0.6146,
+        "non_chord_tone_mass": 0.3854,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.7386,
+        "largest_single_non_chord_class": 0.0869
+      }
+    },
+    "MAJOR_TRIAD": {
+      "P0_CURRENT": {
+        "vector": {
+          "C": 0.2275,
+          "C#": 0.0272,
+          "D": 0.08,
+          "D#": 0.004,
+          "E": 0.2382,
+          "F": 0.0296,
+          "F#": 0.0035,
+          "G": 0.2316,
+          "G#": 0.0406,
+          "A": 0.0005,
+          "A#": 0.0287,
+          "B": 0.0886
+        },
+        "chord_tone_mass": 0.6972,
+        "non_chord_tone_mass": 0.3028,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.9552,
+        "largest_single_non_chord_class": 0.0886
+      },
+      "C2_PEAK_HPCP": {
+        "vector": {
+          "C": 0.2484,
+          "C#": 0.0,
+          "D": 0.0834,
+          "D#": 0.0,
+          "E": 0.248,
+          "F": 0.0225,
+          "F#": 0.0,
+          "G": 0.2447,
+          "G#": 0.0398,
+          "A": 0.0,
+          "A#": 0.0229,
+          "B": 0.0903
+        },
+        "chord_tone_mass": 0.7411,
+        "non_chord_tone_mass": 0.2589,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.9852,
+        "largest_single_non_chord_class": 0.0903
+      },
+      "C3_ROOT_SALIENCE": {
+        "vector": {
+          "C": 0.2366,
+          "C#": 0.0285,
+          "D": 0.0369,
+          "D#": 0.033,
+          "E": 0.1854,
+          "F": 0.0571,
+          "F#": 0.0292,
+          "G": 0.1704,
+          "G#": 0.0564,
+          "A": 0.0758,
+          "A#": 0.0329,
+          "B": 0.0577
+        },
+        "chord_tone_mass": 0.5924,
+        "non_chord_tone_mass": 0.4076,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.7202,
+        "largest_single_non_chord_class": 0.0758
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "vector": {
+          "C": 0.2649,
+          "C#": 0.0131,
+          "D": 0.0407,
+          "D#": 0.03,
+          "E": 0.1972,
+          "F": 0.0571,
+          "F#": 0.0223,
+          "G": 0.1782,
+          "G#": 0.0432,
+          "A": 0.0803,
+          "A#": 0.0263,
+          "B": 0.0468
+        },
+        "chord_tone_mass": 0.6403,
+        "non_chord_tone_mass": 0.3597,
+        "top_set_is_the_chord": true,
+        "weakest_over_strongest_chord_tone": 0.6726,
+        "largest_single_non_chord_class": 0.0803
+      }
+    },
+    "_captains_four_requirements": {
+      "preserve_both_notes_of_the_fifth": true,
+      "preserve_all_three_triad_tones": true,
+      "not_collapsed_to_root_only": true,
+      "no_gross_phantom_chord_mass": true,
+      "all_pass": true
+    },
+    "_F2_demoted_diagnostic": {
+      "clause": "HARMONIC_NOTE non-root mass <= P0 measured (0.472)",
+      "hybrid": 0.4895,
+      "passes": false,
+      "status": "REPORTED, NOT BLOCKING - see the pre-registration amendment"
+    }
+  },
+  "LEVEL_A_B_holdout_POST_HOC": {
+    "P0_CURRENT": {
+      "r2": 0.3604,
+      "spearman": 0.5658,
+      "top5_event_recall_in_top20": 0.7921,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7037,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8085,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2073
+      },
+      "n_frames": 75896
+    },
+    "C2_PEAK_HPCP": {
+      "r2": 0.4286,
+      "spearman": 0.6057,
+      "top5_event_recall_in_top20": 0.8355,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.766,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8374,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1961
+      },
+      "n_frames": 75896
+    },
+    "C3_ROOT_SALIENCE": {
+      "r2": 0.3853,
+      "spearman": 0.5759,
+      "top5_event_recall_in_top20": 0.8226,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7552,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8506,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2036
+      },
+      "n_frames": 75896
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "r2": 0.4386,
+      "spearman": 0.6067,
+      "top5_event_recall_in_top20": 0.8544,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7949,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8668,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2086
+      },
+      "n_frames": 75896
+    }
+  },
+  "lag_curve_hybrid_REPORTED_NOT_OPTIMISED": {
+    "C5_PEAK_ROOT_HYBRID": {
+      "-4": 0.2431,
+      "-3": 0.3338,
+      "-2": 0.4171,
+      "-1": 0.4601,
+      "0": 0.4386,
+      "1": 0.3664,
+      "2": 0.2763,
+      "3": 0.1921,
+      "4": 0.1221
+    }
+  },
+  "TIMBRE_primary_all_20_tracks": {
+    "_n_stems": 157,
+    "P0_CURRENT": {
+      "overall_r2": 0.4239,
+      "by_family": {
+        "bass": {
+          "n_stems": 22,
+          "n_frames": 118921,
+          "solo_stem_r2": 0.5906,
+          "spearman": 0.6965
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.5954,
+          "spearman": 0.7035
+        },
+        "chromatic_percussion": {
+          "n_stems": 4,
+          "n_frames": 13966,
+          "solo_stem_r2": 0.2927,
+          "spearman": 0.6006
+        },
+        "ensemble_voice": {
+          "n_stems": 28,
+          "n_frames": 110344,
+          "solo_stem_r2": 0.2978,
+          "spearman": 0.4521
+        },
+        "guitar": {
+          "n_stems": 40,
+          "n_frames": 126446,
+          "solo_stem_r2": 0.3834,
+          "spearman": 0.6488
+        },
+        "piano_keys": {
+          "n_stems": 38,
+          "n_frames": 155027,
+          "solo_stem_r2": 0.5434,
+          "spearman": 0.699
+        },
+        "reed_pipe": {
+          "n_stems": 9,
+          "n_frames": 26966,
+          "solo_stem_r2": 0.1216,
+          "spearman": 0.3933
+        },
+        "synth_lead_pad": {
+          "n_stems": 11,
+          "n_frames": 45402,
+          "solo_stem_r2": 0.0965,
+          "spearman": 0.3309
+        }
+      },
+      "spread": 0.4989,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0965
+    },
+    "C2_PEAK_HPCP": {
+      "overall_r2": 0.421,
+      "by_family": {
+        "bass": {
+          "n_stems": 22,
+          "n_frames": 118921,
+          "solo_stem_r2": 0.5975,
+          "spearman": 0.6961
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.606,
+          "spearman": 0.705
+        },
+        "chromatic_percussion": {
+          "n_stems": 4,
+          "n_frames": 13966,
+          "solo_stem_r2": -0.128,
+          "spearman": 0.5242
+        },
+        "ensemble_voice": {
+          "n_stems": 28,
+          "n_frames": 110344,
+          "solo_stem_r2": 0.2822,
+          "spearman": 0.4513
+        },
+        "guitar": {
+          "n_stems": 40,
+          "n_frames": 126446,
+          "solo_stem_r2": 0.354,
+          "spearman": 0.6603
+        },
+        "piano_keys": {
+          "n_stems": 38,
+          "n_frames": 155027,
+          "solo_stem_r2": 0.599,
+          "spearman": 0.7104
+        },
+        "reed_pipe": {
+          "n_stems": 9,
+          "n_frames": 26966,
+          "solo_stem_r2": 0.1131,
+          "spearman": 0.3829
+        },
+        "synth_lead_pad": {
+          "n_stems": 11,
+          "n_frames": 45402,
+          "solo_stem_r2": 0.0186,
+          "spearman": 0.269
+        }
+      },
+      "spread": 0.734,
+      "worst_family": "chromatic_percussion",
+      "worst_family_r2": -0.128
+    },
+    "C3_ROOT_SALIENCE": {
+      "overall_r2": 0.4005,
+      "by_family": {
+        "bass": {
+          "n_stems": 22,
+          "n_frames": 118921,
+          "solo_stem_r2": 0.5457,
+          "spearman": 0.6814
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.5782,
+          "spearman": 0.7093
+        },
+        "chromatic_percussion": {
+          "n_stems": 4,
+          "n_frames": 13966,
+          "solo_stem_r2": 0.1536,
+          "spearman": 0.544
+        },
+        "ensemble_voice": {
+          "n_stems": 28,
+          "n_frames": 110344,
+          "solo_stem_r2": 0.3061,
+          "spearman": 0.4619
+        },
+        "guitar": {
+          "n_stems": 40,
+          "n_frames": 126446,
+          "solo_stem_r2": 0.331,
+          "spearman": 0.6106
+        },
+        "piano_keys": {
+          "n_stems": 38,
+          "n_frames": 155027,
+          "solo_stem_r2": 0.5227,
+          "spearman": 0.686
+        },
+        "reed_pipe": {
+          "n_stems": 9,
+          "n_frames": 26966,
+          "solo_stem_r2": 0.1191,
+          "spearman": 0.3928
+        },
+        "synth_lead_pad": {
+          "n_stems": 11,
+          "n_frames": 45402,
+          "solo_stem_r2": 0.1137,
+          "spearman": 0.3146
+        }
+      },
+      "spread": 0.4645,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.1137
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "overall_r2": 0.4082,
+      "by_family": {
+        "bass": {
+          "n_stems": 22,
+          "n_frames": 118921,
+          "solo_stem_r2": 0.5847,
+          "spearman": 0.6888
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.6021,
+          "spearman": 0.7152
+        },
+        "chromatic_percussion": {
+          "n_stems": 4,
+          "n_frames": 13966,
+          "solo_stem_r2": -0.6116,
+          "spearman": 0.4804
+        },
+        "ensemble_voice": {
+          "n_stems": 28,
+          "n_frames": 110344,
+          "solo_stem_r2": 0.2981,
+          "spearman": 0.4678
+        },
+        "guitar": {
+          "n_stems": 40,
+          "n_frames": 126446,
+          "solo_stem_r2": 0.3598,
+          "spearman": 0.6511
+        },
+        "piano_keys": {
+          "n_stems": 38,
+          "n_frames": 155027,
+          "solo_stem_r2": 0.5924,
+          "spearman": 0.707
+        },
+        "reed_pipe": {
+          "n_stems": 9,
+          "n_frames": 26966,
+          "solo_stem_r2": 0.1187,
+          "spearman": 0.3953
+        },
+        "synth_lead_pad": {
+          "n_stems": 11,
+          "n_frames": 45402,
+          "solo_stem_r2": 0.0062,
+          "spearman": 0.257
+        }
+      },
+      "spread": 1.2137,
+      "worst_family": "chromatic_percussion",
+      "worst_family_r2": -0.6116
+    }
+  },
+  "TIMBRE_secondary_holdout_10_tracks": {
+    "_n_stems": 80,
+    "P0_CURRENT": {
+      "overall_r2": 0.4735,
+      "by_family": {
+        "bass": {
+          "n_stems": 12,
+          "n_frames": 72315,
+          "solo_stem_r2": 0.6617,
+          "spearman": 0.6904
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.5954,
+          "spearman": 0.7035
+        },
+        "ensemble_voice": {
+          "n_stems": 17,
+          "n_frames": 66288,
+          "solo_stem_r2": 0.2642,
+          "spearman": 0.406
+        },
+        "guitar": {
+          "n_stems": 15,
+          "n_frames": 50620,
+          "solo_stem_r2": 0.4246,
+          "spearman": 0.6444
+        },
+        "piano_keys": {
+          "n_stems": 20,
+          "n_frames": 82616,
+          "solo_stem_r2": 0.488,
+          "spearman": 0.6524
+        },
+        "synth_lead_pad": {
+          "n_stems": 8,
+          "n_frames": 32541,
+          "solo_stem_r2": 0.0674,
+          "spearman": 0.3634
+        }
+      },
+      "spread": 0.5943,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0674
+    },
+    "C2_PEAK_HPCP": {
+      "overall_r2": 0.4897,
+      "by_family": {
+        "bass": {
+          "n_stems": 12,
+          "n_frames": 72315,
+          "solo_stem_r2": 0.6632,
+          "spearman": 0.6816
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.606,
+          "spearman": 0.705
+        },
+        "ensemble_voice": {
+          "n_stems": 17,
+          "n_frames": 66288,
+          "solo_stem_r2": 0.2643,
+          "spearman": 0.412
+        },
+        "guitar": {
+          "n_stems": 15,
+          "n_frames": 50620,
+          "solo_stem_r2": 0.4647,
+          "spearman": 0.6453
+        },
+        "piano_keys": {
+          "n_stems": 20,
+          "n_frames": 82616,
+          "solo_stem_r2": 0.5744,
+          "spearman": 0.6583
+        },
+        "synth_lead_pad": {
+          "n_stems": 8,
+          "n_frames": 32541,
+          "solo_stem_r2": 0.0493,
+          "spearman": 0.3741
+        }
+      },
+      "spread": 0.6139,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0493
+    },
+    "C3_ROOT_SALIENCE": {
+      "overall_r2": 0.4571,
+      "by_family": {
+        "bass": {
+          "n_stems": 12,
+          "n_frames": 72315,
+          "solo_stem_r2": 0.6533,
+          "spearman": 0.6887
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.5782,
+          "spearman": 0.7093
+        },
+        "ensemble_voice": {
+          "n_stems": 17,
+          "n_frames": 66288,
+          "solo_stem_r2": 0.2888,
+          "spearman": 0.4257
+        },
+        "guitar": {
+          "n_stems": 15,
+          "n_frames": 50620,
+          "solo_stem_r2": 0.3373,
+          "spearman": 0.5988
+        },
+        "piano_keys": {
+          "n_stems": 20,
+          "n_frames": 82616,
+          "solo_stem_r2": 0.4905,
+          "spearman": 0.6485
+        },
+        "synth_lead_pad": {
+          "n_stems": 8,
+          "n_frames": 32541,
+          "solo_stem_r2": 0.0671,
+          "spearman": 0.3374
+        }
+      },
+      "spread": 0.5862,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0671
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "overall_r2": 0.4776,
+      "by_family": {
+        "bass": {
+          "n_stems": 12,
+          "n_frames": 72315,
+          "solo_stem_r2": 0.6642,
+          "spearman": 0.6816
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.6021,
+          "spearman": 0.7152
+        },
+        "ensemble_voice": {
+          "n_stems": 17,
+          "n_frames": 66288,
+          "solo_stem_r2": 0.2956,
+          "spearman": 0.4335
+        },
+        "guitar": {
+          "n_stems": 15,
+          "n_frames": 50620,
+          "solo_stem_r2": 0.4136,
+          "spearman": 0.622
+        },
+        "piano_keys": {
+          "n_stems": 20,
+          "n_frames": 82616,
+          "solo_stem_r2": 0.574,
+          "spearman": 0.6525
+        },
+        "synth_lead_pad": {
+          "n_stems": 8,
+          "n_frames": 32541,
+          "solo_stem_r2": 0.0623,
+          "spearman": 0.3557
+        }
+      },
+      "spread": 0.6019,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0623
+    }
+  },
+  "LEVEL_C_visual_POST_HOC": {
+    "grammar_modified": false,
+    "grammar": "J3E HARMONIC COLOUR TRANSITION unchanged: M_REF 0.35, A_MIN 0.02, A_MAX 0.60, photons 1.0, exposure 2.2, without_floor, +/-2-hop event tolerance, threshold = p90 of each condition's own resting frames",
+    "headline_metric": "selectivity margin = mean(event-tolerant harmonic recall) - event-tolerant acoustic false response",
+    "retired_metric": "the arithmetic mean of five oracle-gap fractions - retired because J3G showed it is flattered by recall overshoot",
+    "conditions": {
+      "P0_CURRENT": {
+        "threshold_deltaE_p90_of_own_resting_frames": 9.7329,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.1852,
+          "HARMONIC_CHANGE_NO_ONSET": 0.1753,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1501
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5005,
+          "HARMONIC_CHANGE_NO_ONSET": 0.4799,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3574
+        },
+        "resting_median_deltaE": 2.3013,
+        "direction_reversal_rate": 0.1614,
+        "resting_above_threshold_VACUOUS_BY_CONSTRUCTION": 0.1,
+        "mean_harmonic_recall": 0.4902,
+        "selectivity_margin": 0.1328,
+        "n_frames": 75896
+      },
+      "C2_PEAK_HPCP": {
+        "threshold_deltaE_p90_of_own_resting_frames": 12.4033,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.2249,
+          "HARMONIC_CHANGE_NO_ONSET": 0.191,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1395
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5592,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5318,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3412
+        },
+        "resting_median_deltaE": 2.6896,
+        "direction_reversal_rate": 0.1809,
+        "resting_above_threshold_VACUOUS_BY_CONSTRUCTION": 0.1,
+        "mean_harmonic_recall": 0.5455,
+        "selectivity_margin": 0.2043,
+        "n_frames": 75896
+      },
+      "C3_ROOT_SALIENCE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 4.0277,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.2972,
+          "HARMONIC_CHANGE_NO_ONSET": 0.3002,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1457
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5745,
+          "HARMONIC_CHANGE_NO_ONSET": 0.6401,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2914
+        },
+        "resting_median_deltaE": 0.6956,
+        "direction_reversal_rate": 0.1181,
+        "resting_above_threshold_VACUOUS_BY_CONSTRUCTION": 0.1,
+        "mean_harmonic_recall": 0.6073,
+        "selectivity_margin": 0.3159,
+        "n_frames": 75896
+      },
+      "C5_PEAK_ROOT_HYBRID": {
+        "threshold_deltaE_p90_of_own_resting_frames": 6.598,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.3053,
+          "HARMONIC_CHANGE_NO_ONSET": 0.3022,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1264
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6314,
+          "HARMONIC_CHANGE_NO_ONSET": 0.6533,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3076
+        },
+        "resting_median_deltaE": 1.3355,
+        "direction_reversal_rate": 0.1708,
+        "resting_above_threshold_VACUOUS_BY_CONSTRUCTION": 0.1,
+        "mean_harmonic_recall": 0.6423,
+        "selectivity_margin": 0.3347,
+        "n_frames": 75896
+      },
+      "ORACLE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 6.0139,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.3234,
+          "HARMONIC_CHANGE_NO_ONSET": 0.2679,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.0174
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6423,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5999,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1059
+        },
+        "resting_median_deltaE": 0.6648,
+        "direction_reversal_rate": 0.0531,
+        "resting_above_threshold_VACUOUS_BY_CONSTRUCTION": 0.1004,
+        "mean_harmonic_recall": 0.6211,
+        "selectivity_margin": 0.5152,
+        "n_frames": 75896
+      }
+    },
+    "ordering_P0_to_C2_to_C3_to_ORACLE": {
+      "P0_CURRENT": 0.1328,
+      "C2_PEAK_HPCP": 0.2043,
+      "C3_ROOT_SALIENCE": 0.3159,
+      "C5_PEAK_ROOT_HYBRID": 0.3347,
+      "ORACLE": 0.5152
+    },
+    "selectivity_margin_gap_recovered": {
+      "C2_PEAK_HPCP": 0.187,
+      "C3_ROOT_SALIENCE": 0.4788,
+      "C5_PEAK_ROOT_HYBRID": 0.528
+    },
+    "restraint_note": "C3 remains the only candidate that reproduces the oracle's RESTRAINT: resting median delta-E 0.6956 against the oracle's 0.6648, and the lowest reversal rate of any candidate at 0.1181 (baseline 0.1614). The hybrid does NOT inherit that - 1.3355 and 0.1708 - and C2 is WORSE than the baseline on both, at 2.6896 and 0.1809. Selectivity margin and visual stillness are different properties and this table separates them."
+  },
+  "decision_timbre_axis": {
+    "T1_worst_family_improvement": -0.7081,
+    "T1_met": false,
+    "T2_spread_shrink": -0.7148,
+    "T2_met": false,
+    "either_met": false
+  },
+  "decision_regression_guards": {
+    "R1_harmonic_recall_delta": 0.0748,
+    "R1_ok": true,
+    "R2_false_response_delta": 0.0013,
+    "R2_ok": true,
+    "R3_selectivity_margin_delta": 0.2019,
+    "R3_ok": true
+  },
+  "decision_visual_competitive": true,
+  "outcome": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+  "fresh_validation_required": "NO",
+  "J3G_outcome_changed": false,
+  "original_holdout_treated_as_fresh": false,
+  "cqt_run": false,
+  "basic_pitch_run": false,
+  "neural_student_trained": false,
+  "source_separator_run": false,
+  "foundation_model_run": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false,
+  "J3D_mutated": false,
+  "J3E_mutated": false,
+  "J3F_mutated": false,
+  "J3G_mutated": false,
+  "TIMBRE_sensitivity_check_POST_HOC": {
+    "family_stem_counts": {
+      "bass": 22,
+      "brass": 4,
+      "chromatic_percussion": 4,
+      "ensemble_voice": 28,
+      "guitar": 40,
+      "piano_keys": 38,
+      "reed_pipe": 9,
+      "synth_lead_pad": 11
+    },
+    "thin_families_under_10_stems": [
+      "brass",
+      "chromatic_percussion",
+      "reed_pipe"
+    ],
+    "why": "chromatic_percussion carries only 4 stems, so a large negative R-squared there could be one pathological stem dominating the spread. This check asks whether the conclusion survives dropping every thin family.",
+    "P0_CURRENT": {
+      "all_families": {
+        "spread": 0.4989,
+        "worst": 0.0965
+      },
+      "excluding_thin_families": {
+        "n_families": 5,
+        "spread": 0.4941,
+        "worst": 0.0965,
+        "worst_family": "synth_lead_pad"
+      }
+    },
+    "C2_PEAK_HPCP": {
+      "all_families": {
+        "spread": 0.734,
+        "worst": -0.128
+      },
+      "excluding_thin_families": {
+        "n_families": 5,
+        "spread": 0.5804,
+        "worst": 0.0186,
+        "worst_family": "synth_lead_pad"
+      }
+    },
+    "C3_ROOT_SALIENCE": {
+      "all_families": {
+        "spread": 0.4645,
+        "worst": 0.1137
+      },
+      "excluding_thin_families": {
+        "n_families": 5,
+        "spread": 0.432,
+        "worst": 0.1137,
+        "worst_family": "synth_lead_pad"
+      }
+    },
+    "C5_PEAK_ROOT_HYBRID": {
+      "all_families": {
+        "spread": 1.2137,
+        "worst": -0.6116
+      },
+      "excluding_thin_families": {
+        "n_families": 5,
+        "spread": 0.5862,
+        "worst": 0.0062,
+        "worst_family": "synth_lead_pad"
+      }
+    },
+    "conclusion_survives_the_sensitivity_check": {
+      "T1_excluding_thin": -0.0903,
+      "T2_excluding_thin": -0.0921,
+      "either_met": false,
+      "reading": "even with every family under 10 stems removed, the hybrid still WIDENS the spread and LOWERS the worst family. SAME_STFT_PROJECTION_TIMBRE_LIMIT does not depend on the thin chromatic-percussion family."
+    }
+  }
+}

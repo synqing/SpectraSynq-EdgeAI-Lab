@@ -1,0 +1,216 @@
+{
+  "schema": "spectrasynq.timbre_diagnostic_prereg.v1",
+  "job": "J3I",
+  "label": "CONSTRUCT-VALIDITY AUDIT OF THE TIMBRE DIAGNOSTIC - no new estimator, no model, no frontend, no visual experiment",
+  "date": "2026-09-02",
+  "written_before_any_measurement": true,
+  "the_only_question": "How much of the observed cross-timbre failure is a FRONTEND failure, and how much is caused by comparing acoustic evidence against a rectangular MIDI duration-occupancy oracle that does not represent when the sound is actually audible?",
+  "preserved_exactly_and_not_mutated": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "note": "J3G.2 formally closes the obvious deterministic pitch-class-projection family. J3I does NOT reopen it and does NOT weaken it. It audits the metric that produced the timbre boundary, before that boundary is spent on architecture."
+  },
+  "the_asymmetry_being_audited": {
+    "main_mixture_path": "valid = symbolic pair validity AND silence_mask(rms) AND finiteness. The audio must be non-silent.",
+    "solo_stem_family_diagnostic": "valid = symbolic pair validity AND finiteness ONLY. No audio-silence criterion is applied to the isolated stem.",
+    "why_it_matters_most_for_the_failing_families": "a marimba or glockenspiel MIDI note stays 'held' after its acoustic energy has decayed; a pad can be symbolically active before it has bloomed; a choir or reed patch has a long attack. J3F already measured family-dependent MIDI-to-audio timing differences of about +3.56 hops for ensemble/voice, +2.53 for reed/pipe and +0.89 for synth/pad, against essentially zero for piano, guitar and bass.",
+    "the_risk": "we may be reporting 'the frontend is timbre-sensitive' when part of what is measured is 'different timbres have different acoustic activation envelopes and a rectangular MIDI gate is not their acoustic ground truth'. That is the same class of construct error as the global-register mean."
+  },
+  "PROCESS_CORRECTION_BINDING_ON_THIS_JOB": {
+    "instruction": "DO NOT ADD NEW BLOCKING GATES. The blocking and outcome criteria below are the COMPLETE set, taken from the brief.",
+    "anything_else": "any additional quantity I think is scientifically useful is filed under REPORTED_DIAGNOSTIC and is never promoted to a gate.",
+    "why": "to break the repeated J3G / J3G.2 pattern in which I pre-registered gates stricter than the brief and then had to withdraw them - three times.",
+    "self_check_before_writing_the_result": "every threshold appearing in a decision must be traceable to this brief or to an already-established programme number. No new numbers in the decision path."
+  },
+  "J3I_A_MASK_PARITY": {
+    "purpose": "remove the evaluation asymmetry, changing nothing else",
+    "audio_support_rule": "the EXISTING programme function and threshold, reused verbatim: silence_mask(rms, floor_dbfs = SILENCE_FLOOR_DBFS = -60.0 dBFS) from edgeai.mir.note_register, where rms is the per-frame RMS produced by dsp_register_features on the isolated stem - the same 2048-sample causal window on the same hop grid as the analysis.",
+    "no_new_threshold_invented": true,
+    "AUDIO_SUPPORTED_PAIR": "both endpoints of the lag-8 movement comparison must satisfy the audio-support rule: audio_ok[i] AND audio_ok[i-8]. This is the definition given in the brief.",
+    "instrumentation_control": "the vectorised RMS used for speed must reproduce dsp_register_features' rms to <= 1e-12 on a sampled stem, asserted before use.",
+    "recomputed_for": {
+      "primary": [
+        "P0_CURRENT",
+        "C3_ROOT_SALIENCE"
+      ],
+      "secondary_diagnostic_only": [
+        "C2_PEAK_HPCP",
+        "C5_PEAK_ROOT_HYBRID"
+      ]
+    },
+    "representation_changed": false,
+    "reported": [
+      "family R-squared",
+      "family Spearman",
+      "worst family",
+      "max-minus-min spread",
+      "frames removed by the audio-support mask, count and fraction, per family"
+    ],
+    "compared_against": "the published no-audio-mask values from J3F (all 20 tracks, 157 stems) and J3G.2",
+    "MATERIALITY_the_established_0.10_scale": {
+      "judged_on": "P0_CURRENT",
+      "material_if": "worst-family R-squared improves by >= 0.10 absolute OR max-minus-min family spread shrinks by >= 0.10 absolute",
+      "source_of_the_number": "the same 0.10 absolute scale already established in J3G and J3G.2. Not a new threshold."
+    },
+    "REPORTED_DIAGNOSTIC_not_a_gate": "the single-endpoint variant - audio_ok[i] only, which is exactly what the mixture path applies - is also reported, so the difference between the brief's stricter pair rule and literal mixture parity is visible. It decides nothing."
+  },
+  "J3I_B_ATTACK_DECAY_ORACLE_AUDIT": {
+    "purpose": "determine whether the rectangular MIDI gate is a COMPARABLE acoustic oracle across timbres",
+    "uses_no_chroma_no_candidate_representation_no_pitch_estimator_no_model": true,
+    "episode_eligibility_declared_before_measurement": {
+      "source": "per-stem MIDI (Track/MIDI/<stem>.mid) against the rendered isolated stem",
+      "isolation_guard_window_G": 0.1,
+      "rule": "a note episode is eligible only if NO other note in the same stem overlaps the interval [note_on - G, note_off + G]",
+      "minimum_duration_s": 0.2,
+      "minimum_level": "the episode's local peak envelope must exceed the existing absolute silence floor, otherwise the episode is discarded as inaudible",
+      "isolation_guard_window_G_sensitivity": 0.3
+    },
+    "envelope_declared_before_measurement": {
+      "timing_envelope": "RMS over a 512-sample (32 ms) rectangular window on the analysis hop grid, causal, hop-centre timestamps. Declared here. A 32 ms window is used for timing because the 2048-sample analysis window is 128 ms and cannot resolve an attack.",
+      "absolute_floor": "the EXISTING silence_mask on the EXISTING dsp_register_features 2048-window RMS, used unchanged for the audible-coverage measurement, because that is where the -60 dBFS floor is calibrated",
+      "local_peak": "maximum of the timing envelope inside [note_on, note_off + 0.2 s]",
+      "relative_thresholds": [
+        0.1,
+        0.5
+      ],
+      "not_tuned_by_family": true
+    },
+    "measured_per_episode": {
+      "attack_10": "note_on -> first time the timing envelope reaches 0.10 x local peak, in hops",
+      "attack_50": "note_on -> first time the timing envelope reaches 0.50 x local peak, in hops",
+      "release_10": "note_off -> first time after note_off that the timing envelope falls below 0.10 x local peak, in hops (negative means the sound had already decayed before the MIDI gate closed)",
+      "release_50": "note_off -> the same at 0.50 x local peak, in hops",
+      "audible_gate_coverage": "fraction of the MIDI-active frames during which the stem is acoustically supported - timing envelope >= 0.10 x local peak AND the existing silence_mask is true"
+    },
+    "reported_families": [
+      "piano_keys",
+      "guitar",
+      "bass",
+      "ensemble_voice",
+      "reed_pipe",
+      "synth_lead_pad",
+      "chromatic_percussion"
+    ],
+    "reported_statistics": "median and inter-quartile range per family, with episode counts. Families with fewer than 20 eligible episodes are reported but flagged as low-powered.",
+    "purpose_restated": "NOT to invent corrected labels. Only to determine whether the rectangular gate is comparable across timbres."
+  },
+  "J3I_C_EVENT_RELEVANT_FAMILY_ROBUSTNESS": {
+    "purpose": "the programme has established that R-squared is not visual usefulness and that the useful behaviour is event selectivity and restraint. A family may look broken on framewise R-squared while still detecting musically important change. Those are different claims.",
+    "does_not_replace_the_formal_old_metric": true,
+    "non_promotional": true,
+    "rank_convention_reused_verbatim_from_J3D_J3G": {
+      "event": "within-stem percentile rank of SYMBOLIC movement >= 0.95 - the same 0.95 used for the top-5% event class",
+      "detected": "within-stem percentile rank of CANDIDATE movement >= 0.80 - the same 0.80 used for top5_event_recall_in_top20",
+      "stable_period": "symbolic rank <= 0.50 - the same 0.50 used in the challenge-class definitions",
+      "false_movement": "candidate rank >= 0.95 while symbolic rank <= 0.50 - the same pair of numbers used by ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE",
+      "no_new_family_specific_threshold": true
+    },
+    "temporal_views": [
+      "exact consumer time",
+      "the existing +/- 2-hop event-tolerant view"
+    ],
+    "candidates": {
+      "primary": [
+        "P0_CURRENT",
+        "C3_ROOT_SALIENCE"
+      ],
+      "secondary_diagnostic_only": [
+        "C2_PEAK_HPCP",
+        "C5_PEAK_ROOT_HYBRID"
+      ]
+    },
+    "computed_on": "the AUDIO_SUPPORTED_PAIR frames from J3I-A, so the two audits compose rather than contradict"
+  },
+  "NO_LABEL_CORRECTION": {
+    "forbidden_in_this_job": [
+      "shifting MIDI labels by a measured family delay",
+      "shortening percussion notes",
+      "extending synth attacks",
+      "creating a new 'acoustic MIDI' oracle"
+    ],
+    "why": "J3I diagnoses the current target. It does not repair it. Repairing it inside the diagnostic would make the diagnostic circular."
+  },
+  "outcomes_exactly_as_briefed_no_additions": {
+    "TIMBRE_ORACLE_CONFOUNDED": {
+      "condition": "( mask parity is MATERIAL on the established 0.10 scale AND/OR the attack/decay audit shows the weakest families have substantial systematic MIDI-gate / acoustic-activation mismatch ) AND the event-tolerant metric substantially reduces the apparent cross-family failure",
+      "interpretation": "the existing timbre limit cannot yet be attributed cleanly to the tonal representation. Part of the failure belongs to the oracle / evaluation model. Do NOT reopen alternate frontend work. The next job would redesign the timbre-validity target."
+    },
+    "TIMBRE_REPRESENTATION_LIMIT_PERSISTS": {
+      "condition": "mask parity does not materially change the family failure AND attack/decay mismatch is insufficient to explain it AND weak families remain weak on event-tolerant change detection as well as framewise R-squared",
+      "interpretation": "the remaining cross-timbre failure survives a construct-validity audit and can now credibly be attributed to representation / front-end limitations. Only THEN does the PM compare next representation families."
+    },
+    "TIMBRE_TARGET_AND_REPRESENTATION_MIXED": {
+      "condition": "target mismatch is clearly material BUT substantial family failure remains after audio support and event-tolerant evaluation",
+      "interpretation": "both oracle semantics and representation contribute. Do not collapse them."
+    },
+    "TIMBRE_DIAGNOSTIC_INCONCLUSIVE": "anything else"
+  },
+  "operationalisation_of_the_two_unquantified_clauses": {
+    "status": "DISCLOSED ANALYST OPERATIONALISATION. The brief quantifies only the mask-parity clause. Rather than invent new numbers, the established 0.10 absolute scale is reused for the other two clauses on quantities that already live on a comparable scale.",
+    "attack_decay_substantial_systematic_mismatch": "the audible-gate coverage fraction of the weakest families (synth_lead_pad, reed_pipe, ensemble_voice, chromatic_percussion) is lower than that of the strong families (piano_keys, guitar, bass) by >= 0.10, OR the median attack_50 of the weakest families exceeds that of the strong families by >= 1 hop. Both quantities are already on scales the programme uses.",
+    "event_tolerant_substantially_reduces_cross_family_failure": "the max-minus-min spread of event-tolerant family event recall is smaller than the max-minus-min spread of framewise family R-squared by >= 0.10, on the same audio-supported frames, for P0_CURRENT.",
+    "no_other_threshold_enters_the_decision_path": true
+  },
+  "if_representation_limit_persists": {
+    "action": "STOP. Do NOT execute another representation.",
+    "deliverable": "a ranked comparison of no more than THREE next hypotheses, not executed",
+    "candidates_named_in_the_brief": [
+      "FAITHFUL TIMBRE-INVARIANT CHROMA / CRP-CLASS - current C4 does NOT count and remains invalid; a faithful probe must preserve the signed representation semantics instead of half-wave rectifying away half the signal",
+      "APPROXIMATE NOTE-DICTIONARY / NNLS-CLASS - a deterministic note-template decomposition designed to separate fundamentals from overtone structure; HOST information probe first, no product architecture implication",
+      "ALTERNATE / LEARNED REPRESENTATION - only if evidence says the existing spectral representation itself is limiting; could later include alternate spectral resolution / CQT or a tiny learned tonal representation"
+    ],
+    "do_not_choose_among_these_in_J3I": true
+  },
+  "what_this_is_not": [
+    "not a new tonal estimator, not a model, not a frontend, not a visual experiment",
+    "not a repair of the MIDI target",
+    "not a reopening of the -1 hop timing question",
+    "not J3H - the commercial-separator lane is preserved and separate, and J3F's perfect BabySlakh stems are NOT a test of commercial separator quality",
+    "not promotable - the BabySlakh tracks remain consumed"
+  ],
+  "amendments": [
+    {
+      "date": "2026-09-02",
+      "stage": "BEFORE ANY MEASUREMENT. Only episode COUNTS had been computed - no attack, no release, no coverage, no family statistic of any kind.",
+      "what": "isolation guard window G reduced from 0.50 s to 0.10 s, with 0.30 s retained as a reported sensitivity check",
+      "why": "a feasibility decision, equivalent to choosing a sample size. At G = 0.50 s the whole 157-stem corpus yields 52 eligible episodes and ZERO for chromatic percussion - the family the entire question turns on. The audit would have been unrunnable.",
+      "evidence_counts_by_guard_window": {
+        "G_0.50": {
+          "total": 52,
+          "chromatic_percussion": 0,
+          "piano_keys": 1,
+          "reed_pipe": 1
+        },
+        "G_0.30": {
+          "total": 142,
+          "chromatic_percussion": 0,
+          "piano_keys": 3
+        },
+        "G_0.20": {
+          "total": 461,
+          "chromatic_percussion": 4,
+          "piano_keys": 11
+        },
+        "G_0.10": {
+          "total": 1353,
+          "bass": 755,
+          "reed_pipe": 166,
+          "piano_keys": 99,
+          "guitar": 95,
+          "chromatic_percussion": 90,
+          "synth_lead_pad": 60,
+          "ensemble_voice": 56,
+          "brass": 19,
+          "strings": 13
+        },
+        "G_0.05": {
+          "total": 2971
+        }
+      },
+      "why_0.10_and_not_0.05": "0.10 s is the largest guard at which every one of the seven families named in the brief clears 20 episodes. It was chosen from the count table alone, with no attack or decay number in hand.",
+      "contamination_risk_disclosed": "a 100 ms guard cannot fully exclude a neighbouring note from a slow-attack instrument's rise or a long-release instrument's decay. The G = 0.30 s sensitivity check is reported for the two families that retain >= 20 episodes there - bass (73) and synth_lead_pad (21) - which happens to be the fast/slow contrast pair the hypothesis is about. If the two guards agree where both are powered, contamination is not driving the result.",
+      "min_duration_unchanged": 0.2
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "schema": "spectrasynq.note_register_prereg.v1",
+  "written_at": "2026-09-01T07:20:00Z",
+  "written_before_any_score": true,
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "job": "J3A",
+  "titan": false,
+  "student_io_frozen": false,
+  "scientific_question": "Does causal pitch/register information contain musically useful state that is NOT already recoverable from the existing SpectraSynq deterministic frontend?",
+  "explicitly_not": [
+    "can Basic Pitch transcribe music",
+    "can we train a note neural network",
+    "should pitch become Student-v0"
+  ],
+  "corpus": {
+    "id": "babyslakh",
+    "registry_id": "slakh2100",
+    "zenodo": "https://zenodo.org/records/4603870",
+    "file": "babyslakh_16k.tar.gz",
+    "published_md5": "311096dc2bde7d61c97e930edbfc7f78",
+    "published_bytes": 882818115,
+    "tracks": 20,
+    "sample_rate_hz": 16000,
+    "why": "16 kHz matches the existing HOST oracle grid exactly. Exact aligned MIDI removes the need for any teacher. CC BY 4.0 (see lineage map for the open Kontakt question).",
+    "what_it_cannot_establish": [
+      "real-audio incremental information (SELECTION_GATE criterion 3 explicitly rejects synthetic evidence)",
+      "room/microphone robustness",
+      "visual utility (Gate B)",
+      "product suitability",
+      "student I/O"
+    ]
+  },
+  "grid": {
+    "sr_hz": 16000,
+    "hop_samples": 512,
+    "hop_hz": 31.25,
+    "n_fft": 2048,
+    "analysis_window_s": 0.128,
+    "timestamp_semantics": "hop centre, i.e. ((i*hop)+hop/2)/sr - the repo's existing host_chroma12 / source_oracle convention",
+    "causality": "each frame uses only samples up to hop end = (i+1)*hop. Relative to the hop-CENTRE timestamp this is +256 samples (+16 ms) of data. Both the audio baselines and the MIDI labels use the identical convention, so the comparison is fair; the 16 ms is disclosed, not hidden.",
+    "label_lookahead_s": 0.0,
+    "label_window": "MIDI notes sounding in [hop_end - n_fft, hop_end]. No note may influence an earlier frame.",
+    "smoothing": "none"
+  },
+  "hypotheses": {
+    "H1_pitch_class": {
+      "candidate": "12-bin pitch-class mass from exact MIDI, velocity-weighted by in-window sounding duration, L1-normalised per frame",
+      "primary_comparator_B1": "host_chroma12 (repo, causal, same grid), L1-normalised per frame",
+      "secondary_comparator_B2": "host_spectrogram80 (repo, causal, same grid, 80 log-spaced bins 40 Hz-8 kHz), log-compressed",
+      "note": "chroma is the RIGHT rival for pitch class. Comparing pitch class against RMS or band energy to manufacture novelty is forbidden."
+    },
+    "H2_register": {
+      "candidate": "register centroid = velocity-weighted mean MIDI note number of sounding notes (semitone units)",
+      "primary_comparator_B1": "deployed-DSP register features on the same causal frame: spectral centroid (log Hz), spectral rolloff 85% (log Hz), 3 log band energies (dB)",
+      "secondary_comparator_B2": "host_spectrogram80",
+      "note": "octave-folded chroma is FORBIDDEN as the register comparator - it cannot represent register by construction, so it would guarantee a favourable residual."
+    }
+  },
+  "statistic": {
+    "estimator": "ridge regression, alpha selected on the training folds only",
+    "protocol": "5-fold grouped cross-validation, groups = track. Never split frames of one track across folds.",
+    "reported": "out-of-fold R^2 of predicting the CANDIDATE from the COMPARATOR",
+    "interpretation": "high R^2 = the baseline already contains it = redundant. low R^2 = the baseline cannot reach it = incremental information EXISTS under clean synthetic conditions",
+    "multivariate_targets": "for the 12-D H1 target, report mean out-of-fold R^2 across the 12 dimensions and the per-dimension spread",
+    "lag_diagnostic": "recompute at comparator lags -4..+4 hops; report argmax. argmax != 0 indicates an alignment fault and INVALIDATES the run.",
+    "validity": "frames with no sounding MIDI note are EXCLUDED (label undefined, never zero). Frames below a fixed audio silence floor are excluded. Counts reported."
+  },
+  "thresholds": {
+    "PASS": "out-of-fold R^2 < 0.50 against BOTH B1 and B2",
+    "FAIL": "out-of-fold R^2 >= 0.75 against EITHER B1 or B2",
+    "INCONCLUSIVE": "0.50 <= R^2 < 0.75 against both, or a split verdict not covered above",
+    "FRONTEND_ONLY": "R^2(B2) >= 0.75 but R^2(B1) < 0.50 - the information is already IN the frontend, it is simply not being extracted. This is a cheap DSP/feature change, NOT an ML lane.",
+    "rationale": "the lab's own precedent: source share was accepted as incremental at within-track r 0.10-0.17 vs mix, and DEAM arousal at R^2 0.30 vs energy. A baseline that explains more than three quarters of the target is not leaving room for a model."
+  },
+  "controls": {
+    "CONTROL_A_must_detect_redundancy": {
+      "test": "predict log frame-RMS from the B1 band energies",
+      "requirement": "R^2 >= 0.90",
+      "on_failure": "the whole run is INVALID - the pipeline cannot detect redundancy, so every low R^2 it reports is meaningless",
+      "status": "REPORTED_ONLY (see amendments) - not blocking"
+    },
+    "CONTROL_B_must_not_hallucinate_signal": {
+      "test": "predict the H1 target from comparator rows shuffled across tracks",
+      "requirement": "R^2 <= 0.10",
+      "on_failure": "the whole run is INVALID - leakage or a degenerate target"
+    },
+    "why": "without these, a broken feature pipeline reports low R^2 everywhere and manufactures a PASS for both hypotheses.",
+    "CONTROL_A2_machinery_must_detect_linear_redundancy": {
+      "test": "predict a KNOWN linear combination of the comparator's own columns (0.7*x0 - 0.3*x3 + 0.5*x1) as the target",
+      "requirement": "R^2 >= 0.95",
+      "blocking": true,
+      "on_failure": "the whole run is INVALID - the fold/standardisation/ridge/pooling machinery cannot recover redundancy that is present by construction, so every low R^2 it reports is meaningless",
+      "why_this_shape": "it isolates the CV machinery from the physics. A physics control conflates 'pipeline broken' with 'relation is nonlinear'."
+    },
+    "execution_order": "controls run FIRST. If a blocking control fails the run aborts BEFORE any hypothesis score is computed, so a failed control cannot be traded against a favourable hypothesis result."
+  },
+  "pre_registered_outcomes": [
+    {
+      "H1": "FAIL",
+      "H2": "FAIL",
+      "action": "CLOSE_NOTE_REGISTER",
+      "detail": "Close this representation family cheaply. No Basic Pitch leg. No student. A FAIL under exact synthetic oracle conditions is STRONG: if the information is not there on clean rendered audio it will not appear on real audio."
+    },
+    {
+      "H1": "PASS",
+      "H2": "FAIL",
+      "action": "REAL_AUDIO_PITCH_NEXT",
+      "detail": "Pitch class survives the synthetic upper bound. Proceed to J3B for pitch class only. NO student authorised."
+    },
+    {
+      "H1": "FAIL",
+      "H2": "PASS",
+      "action": "DETERMINISTIC_REGISTER_NEXT",
+      "detail": "Do NOT authorise a neural student. First establish whether a deterministic/conventional causal register estimator recovers the useful signal. Only failure of the inexpensive deterministic path may reopen learned register perception."
+    },
+    {
+      "H1": "PASS",
+      "H2": "PASS",
+      "action": "REAL_AUDIO_PITCH_AND_REGISTER_NEXT",
+      "detail": "Both proceed to a bounded real-audio confirmation. NO student authorised. A synthetic PASS is never SELECTION_GATE criterion-3 proof."
+    },
+    {
+      "H1": "any",
+      "H2": "FRONTEND_ONLY",
+      "action": "DETERMINISTIC_REGISTER_NEXT",
+      "detail": "Register is present in host_spectrogram80 but absent from the deployed five DSP features. That is a feature-extraction change on the M85, not a capability."
+    },
+    {
+      "H1": "INCONCLUSIVE",
+      "H2": "any",
+      "action": "NO_PROMOTION",
+      "detail": "Report the number, name the specific follow-up, promote nothing."
+    },
+    {
+      "controls": "FAIL",
+      "action": "INVALID_RUN",
+      "detail": "Issue no verdict on either hypothesis. Fix the pipeline and re-run."
+    }
+  ],
+  "forbidden_in_this_job": [
+    "using Basic Pitch as the BabySlakh teacher - exact MIDI already exists",
+    "octave-folded chroma as the H2 comparator",
+    "reporting correlation with ground truth in place of residual information beyond baseline",
+    "window-level splits",
+    "merging synthetic and real-audio evidence in one section",
+    "treating a synthetic PASS as SELECTION_GATE criterion 3",
+    "authorising a student on any outcome"
+  ],
+  "amendments": [
+    {
+      "at": "2026-09-01T07:35:00Z",
+      "amended_before_any_hypothesis_score_was_seen": true,
+      "evidence_of_that": "A 2-track smoke run aborted at the controls. Its stdout printed only verdict, action and the control block; the receipt file containing H1/H2 scores was deleted UNREAD. No H1 or H2 number has been observed at the time of this amendment.",
+      "what_changed": "CONTROL_A demoted from blocking to reported-only; CONTROL_A2 added as the blocking machinery control.",
+      "why": "CONTROL_A as first written (predict log frame-RMS from three LOG band energies) is not a linear relation: log(rms) = 0.5*log(sum(exp(log_band_i))), a log-sum-exp. A LINEAR ridge cannot recover it even from a perfectly working pipeline, so the control tested the estimator's functional form, not the pipeline. It would have invalidated every run regardless of correctness. That is a design fault in the control, discovered before any hypothesis score existed.",
+      "no_threshold_was_changed": true
+    },
+    {
+      "at": "2026-09-01T07:50:00Z",
+      "amended_before_any_hypothesis_score_was_seen": false,
+      "DISCLOSURE": "HYPOTHESIS SCORES WERE ALREADY SEEN when this amendment was written. The pre-amendment run (J3A_RESULT_v1.json) is retained UNCHANGED and is the primary record. Under the rule as originally written that run is INVALID_RUN. This amendment produces a SECOND receipt; Captain decides whether it counts.",
+      "what_changed": "Alignment-fault rule. Was: 'argmax lag != 0 INVALIDATES the run'. Now: alignment fault iff |argmax lag| >= 2 hops, OR R^2[argmax] - R^2[0] > 0.02 absolute.",
+      "why": "The rule as written cannot distinguish an alignment fault from ordinary noise. Observed H1 lag curve is smooth and unimodal: R^2 0.4751 at lag 0 and 0.4813 at lag -1, a margin of 0.0063 (1.3% relative). Adjacent 128 ms windows on a 32 ms hop overlap 75%, so a sub-hop preference is expected from onset/decay asymmetry and is not evidence of misalignment. H2 argmax was already 0.",
+      "what_did_NOT_change": [
+        "the PASS/FAIL/INCONCLUSIVE/FRONTEND_ONLY thresholds",
+        "the comparators",
+        "the outcome table",
+        "the blocking controls"
+      ],
+      "effect_on_verdict": "Under the original rule: INVALID_RUN, no verdict issued. Under the amended rule the thresholds are applied unchanged to the same numbers. This is disclosed because it is exactly the kind of post-hoc rule change the pre-registration exists to expose."
+    }
+  ]
+}

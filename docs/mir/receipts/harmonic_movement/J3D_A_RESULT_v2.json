@@ -1,0 +1,247 @@
+{
+  "alignment": {
+    "chroma_movement_lag": {
+      "argmax_lag": -1,
+      "by_lag": {
+        "-1": 0.3326,
+        "-2": 0.2971,
+        "-3": 0.2338,
+        "-4": 0.1672,
+        "0": 0.3097,
+        "1": 0.2392,
+        "2": 0.1647,
+        "3": 0.1054,
+        "4": 0.0628
+      },
+      "margin_over_lag0": 0.0229
+    },
+    "lag_fault": true,
+    "onset_frame_shift_measured_per_track": [
+      1
+    ],
+    "onset_shift_alignment_spearman_min": 0.6714,
+    "onset_vs_flux_spearman": 0.1152
+  },
+  "challenge_set": {
+    "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": {
+      "median_B_chroma": 0.2331,
+      "median_M_tv": 0.0586,
+      "n_frames": 3292,
+      "rate_of_valid_frames": 0.02265,
+      "tracks_present": 20
+    },
+    "HARMONIC_CHANGE_FLAT_ENERGY": {
+      "median_B_chroma": 0.3486,
+      "median_M_tv": 0.7774,
+      "n_frames": 2299,
+      "rate_of_valid_frames": 0.01582,
+      "tracks_present": 20
+    },
+    "HARMONIC_CHANGE_NO_ONSET": {
+      "median_B_chroma": 0.3731,
+      "median_M_tv": 0.7981,
+      "n_frames": 4000,
+      "rate_of_valid_frames": 0.02753,
+      "tracks_present": 20
+    },
+    "control_class_populated": true
+  },
+  "chroma_event_recall_top5_in_top20": 0.7266,
+  "construct": {
+    "causal_timebase": "sr 16000, hop 512, n_fft 2048, causal frame ends at (i+1)*hop, hop-centre timestamp, label lookahead 0",
+    "movement": "primary M_tv = 0.5*L1(pc_t, pc_t-8); alternative M_cos = 1 - cosine, same lag",
+    "movement_lag_hops": 8,
+    "movement_lag_s": 0.256,
+    "percussion_exclusion": "is_drum OR General MIDI program >= 112 (Percussive + Sound Effects)",
+    "pitch_class_state": "12-D, duration-overlap weighted, NO velocity weighting, L1-normalised; silence explicit and never zero-filled"
+  },
+  "controls": {
+    "all_blocking_pass": true,
+    "machinery_linear_recovery": {
+      "pass": true,
+      "r2": 1.0,
+      "requirement": ">= 0.95"
+    },
+    "shuffled_labels": {
+      "pass": true,
+      "r2": -0.021,
+      "requirement": "<= 0.10"
+    }
+  },
+  "corpus": {
+    "dropped_is_drum": 20,
+    "dropped_program_ge_112": 5,
+    "frames_valid": 145311,
+    "instruments_kept": 201,
+    "per_track": [
+      {
+        "total": 7548,
+        "track": "Track00001",
+        "valid": 7332
+      },
+      {
+        "total": 5949,
+        "track": "Track00002",
+        "valid": 5613
+      },
+      {
+        "total": 6835,
+        "track": "Track00003",
+        "valid": 6528
+      },
+      {
+        "total": 7268,
+        "track": "Track00004",
+        "valid": 6974
+      },
+      {
+        "total": 7723,
+        "track": "Track00005",
+        "valid": 7491
+      },
+      {
+        "total": 7698,
+        "track": "Track00006",
+        "valid": 7325
+      },
+      {
+        "total": 7714,
+        "track": "Track00007",
+        "valid": 7370
+      },
+      {
+        "total": 8113,
+        "track": "Track00008",
+        "valid": 7718
+      },
+      {
+        "total": 5019,
+        "track": "Track00009",
+        "valid": 4655
+      },
+      {
+        "total": 5684,
+        "track": "Track00010",
+        "valid": 5447
+      },
+      {
+        "total": 6185,
+        "track": "Track00011",
+        "valid": 5946
+      },
+      {
+        "total": 9617,
+        "track": "Track00012",
+        "valid": 9351
+      },
+      {
+        "total": 6943,
+        "track": "Track00013",
+        "valid": 6164
+      },
+      {
+        "total": 8568,
+        "track": "Track00014",
+        "valid": 8252
+      },
+      {
+        "total": 7716,
+        "track": "Track00015",
+        "valid": 7556
+      },
+      {
+        "total": 6334,
+        "track": "Track00016",
+        "valid": 5508
+      },
+      {
+        "total": 9804,
+        "track": "Track00017",
+        "valid": 9495
+      },
+      {
+        "total": 9273,
+        "track": "Track00018",
+        "valid": 9096
+      },
+      {
+        "total": 7241,
+        "track": "Track00019",
+        "valid": 6878
+      },
+      {
+        "total": 10867,
+        "track": "Track00020",
+        "valid": 10612
+      }
+    ],
+    "silent_pitch_frames": 6135,
+    "tracks": 20
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). Corpus md5 verified against the publisher's checksum.",
+  "forbidden_conclusions": [
+    "chord recognition",
+    "chord vocabulary",
+    "key detection",
+    "tonal centre",
+    "consonance",
+    "dissonance",
+    "tension",
+    "resolution",
+    "melody",
+    "pitch-class intelligence generally",
+    "any real-audio claim",
+    "any claim about harmonic movement's visual value (that is J3D-B)"
+  ],
+  "git_head": "a16fd3bb501ad92c75a5d8563ac424c7b3c0996b",
+  "information": {
+    "M_cos_from_B_chroma_alone": 0.2637,
+    "M_cos_from_acoustic_energy_set": 0.1293,
+    "M_cos_from_all_four": 0.284,
+    "M_tv_from_B_chroma_alone": 0.3097,
+    "M_tv_from_acoustic_energy_set": 0.1453,
+    "M_tv_from_all_four": 0.3301,
+    "spearman_ordinary_holdout": {
+      "M_tv_vs_B_chroma": 0.5505,
+      "M_tv_vs_B_flux": 0.3999,
+      "M_tv_vs_B_onset": 0.1165,
+      "M_tv_vs_B_rms": 0.2055,
+      "M_tv_vs_M_cos": 0.9904
+    }
+  },
+  "job": "J3D-A",
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "outcome": "HARMONIC_MOVEMENT_INCONCLUSIVE",
+  "preregistration": "docs/mir/receipts/harmonic_movement/J3D_A_PREREGISTRATION.json",
+  "preregistration_written_before_any_score": true,
+  "production_firmware_changed": false,
+  "run": "v2",
+  "schema": "spectrasynq.harmonic_movement_result.v1",
+  "split": "grouped 5-fold, groups = track",
+  "student_io_frozen": false,
+  "supersedes_note": "v1 (J3D_A_RESULT_v1.json) retained unmutated; v2 repairs the measured B_onset misalignment only. v1 scores were seen before this repair - see J3D_A_DEFECT_onset_alignment.json.",
+  "thresholds_applied": [
+    {
+      "condition": "out-of-fold R^2 (M_tv | acoustic-energy set) >= 0.70, OR both harmonic challenge classes occupy < 0.2% of valid frames",
+      "outcome": "HARMONIC_MOVEMENT_ACOUSTICALLY_REDUNDANT",
+      "rank": 1
+    },
+    {
+      "condition": "out-of-fold R^2 (M_tv | B_chroma alone) >= 0.70 AND chroma event recall >= 0.90",
+      "outcome": "HARMONIC_MOVEMENT_DERIVABLE_FROM_CHROMA",
+      "rank": 2
+    },
+    {
+      "condition": "both harmonic challenge classes occupy >= 1.0% of valid frames AND appear in >= 15 of 20 tracks AND out-of-fold R^2 (M_tv | all four baselines) < 0.50",
+      "outcome": "HARMONIC_MOVEMENT_INCREMENTAL",
+      "rank": 3
+    },
+    {
+      "condition": "anything else. No promotion.",
+      "outcome": "HARMONIC_MOVEMENT_INCONCLUSIVE",
+      "rank": 4
+    }
+  ],
+  "titan": false,
+  "what_this_says_about_visual_value": "NOTHING. Visual grammar is J3D-B."
+}

@@ -1,0 +1,51 @@
+<title>J3E — Harmonic Colour Transition</title>
+<style>
+:root{--bg:#f7f7f5;--fg:#16150f;--mut:#6b6a62;--line:#dcdad2;--acc:#7a5cff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#111110;--fg:#f2f1ec;--mut:#9a988e;--line:#2c2b27}}
+:root[data-theme=dark]{--bg:#111110;--fg:#f2f1ec;--mut:#9a988e;--line:#2c2b27}
+body{background:var(--bg);color:var(--fg);font:14px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;padding:28px}
+.w{max-width:1000px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}
+.sub{color:var(--mut);margin:0 0 22px}
+.lbl{font:11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;color:var(--mut);text-transform:uppercase}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;margin:0 0 18px}
+.cat{font-weight:650;margin:0 0 2px}
+img{width:100%;display:block;border-radius:4px;image-rendering:pixelated}
+.r{margin:8px 0 2px}table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--mut);font-weight:500}.n{font-variant-numeric:tabular-nums}
+.warn{border-left:3px solid var(--acc);padding-left:12px;color:var(--mut);margin:18px 0}
+</style>
+<div class=w>
+<h1>J3E — Harmonic Colour Transition</h1>
+<p class=sub><code>HOST_ORACLE_VISUAL_FEASIBILITY</code> · perfect-information oracle vs <code>host_chroma12</code> · same renderer, same frozen constants, only the musical information differs · photons held fixed so luminance carries nothing.</p>
+<table><tr><th>event-tolerant response rate</th><th>CONTROL</th><th>TREATMENT</th></tr>
+<tr><td>harmonic change, flat energy</td><td class=n>0.480</td><td class=n>0.573</td></tr>
+<tr><td>harmonic change, no onset</td><td class=n>0.475</td><td class=n>0.530</td></tr>
+<tr><td>acoustic only — should stay quiet</td><td class=n>0.362</td><td class=n>0.144</td></tr>
+<tr><td>resting colour churn (median ΔE)</td><td class=n>2.69</td><td class=n>0.94</td></tr></table>
+<div class=card><div class=cat>Harmonic Change Flat Energy</div>
+<div class=lbl>Track00017 · 159.68s + 6.02s · 44 frames of this class in window</div>
+<div class=r><span class=lbl>marked frames</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAICAIAAADMcAKfAAAAcUlEQVR4nO3SwQ2AIBBE0dEqsAPLojTLogPa8EA0hCUm63rzv5PBZEbMLCklSZJqye1h2w9d7kP76oVacjDhIdB+/3DyYfsQ1RdNf2OwomXae/XiddMoO4Ba8hppwj8xGrgxGrgxGrgxGrgxGrgxGridFbsvd0M8ApkAAAAASUVORK5CYII=' alt=''>
+<div class=r><span class=lbl>control — host chroma · mean ΔE 10.11</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAAB9klEQVR4nO3SzWvbBRwH4CfNS9u0q+BBGNtEwZfWyZhUBg68OdnRP9mLehH1ICuKtgpZ1MwsTU3z0jS/+Dd875/nb3ha29m5aVe366hnF2322bLiDhhyrVmY7dm03PZd3jNhzT7NVo/DliVjdhp7C50bb7724IwLGvY44i5PZvq/Nc52XDJjCN7hIbtMec2CG26Z8ICnHPAvo43f2yZMOF/5pO1Rx8d8AN/xLRdM2XDKMx59z48seYN/+JN7vMe7W69axow3lm0rBmg8bTlpvGpbMm1c7rhmwLjxxdbp1nHHkSk/MGLBhClP+HTira/Xho3BrhEDOo0vlz6/st11zaQx7xkdmrT8cet07WSl3zVvGW/Meq46pm0vNj5bOb5xt+9xD9/wMy/5m5c85znv/0TvQn9k2DF/W7N2sOQ/i7VWxx2Orswm5vvOP3K/cbyy3jPo+rXv7MgFl8x5tvL4Lx/+4uELbjnkiiFTTviK+xxgQkOXZkdEUdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJEWdJE2f+I7p5FjZYHjAAAAABJRU5ErkJggg==' alt=''>
+<div class=r><span class=lbl>treatment — oracle harmony · mean ΔE 9.67</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAABpUlEQVR4nO3Sv24NABjG4ee0p+FUpWkck9BB3AAWEovEZnEHll6AwSIWmwtwERKDGG00EhERIoYGVemhaart6f/WcU5rMho+Hb3PDXzfm/waBw8G9oY0adLiJG2WFnz+arXDgrF1WnbPGZzSHtM8YGB8w9l5p+e1vxtdMmga7rPCGujxExxhggtc5fpLjae85RtLbNP1j65wn8tWeE6HLXZYZYEjXOq59ZAXzLDI8iFuYYq7nDHHF7ZYp8MnutycceMJb5g99C7c4w5Nj3nGBzosgzZTi26/p7th5Ifhbb1hq8esjeoPOdp3YtPFdyZf6Y3ZnbAzodeyz+a42Ukrx+2N+NWgYZ/WwLU556d5/ZfXt/tGHzHNxz9vdDF0iHXxn0o0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmii7Dd0iGpWbVMWfwAAAABJRU5ErkJggg==' alt=''>
+</div>
+<div class=card><div class=cat>Harmonic Change No Onset</div>
+<div class=lbl>Track00003 · 199.71s + 6.02s · 41 frames of this class in window</div>
+<div class=r><span class=lbl>marked frames</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAICAIAAADMcAKfAAAAdklEQVR4nO2SwQnAMAhFbacwG2SsjpaxukHX6EGQUEmr9PreISTw/VH5m6pKmus8RKT1kS+JDq2P+Vxpfn4Rn0nbWZa5r8ofervk5/IS53NX712ZQ1yOO8eGTR/d9swAADOEBsoQGihDaKAMoYEyhAbKEBoocwPtYEd3wtbi7gAAAABJRU5ErkJggg==' alt=''>
+<div class=r><span class=lbl>control — host chroma · mean ΔE 6.55</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAABuklEQVR4nO3Sv0+TURTH4ad9+1Jb8AegUSeig9HZxbg4+887GaIDDhpJSTW00tpK4cVBjA7G5OzfZ7/3nHvz6V1dfWHNkpaBqx3d7o/GZqUZGLVsGNBz7Zw1KzYMuecvC6acc5MRF/S5QwNnrGjYx4rTN46nFp2txstvrHnIC7YXtAx/3dnR0aNH/3rOnCU73DLjgv3rBS85Mnnv68SDV0YHLocuGTD+c/pfNpwwYTqznNne8npFywP6bBjBW979fnnLgHtsgZs8gmN2Gel+DTzkA2jpuM9Ty7GOJXPOmPOdDZvfFz3nPo6YTK0XmgPjvhsM6XHCIds8Zo9u5fzMuDXujGgalztGA+OL68UX7HR85DMLGoY84+4Jc8czpxtP+trb9FkzY84uA1Z84gcDWvb+/5ER/5RooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFE2U8hwmcJ99+JQwAAAABJRU5ErkJggg==' alt=''>
+<div class=r><span class=lbl>treatment — oracle harmony · mean ΔE 11.64</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAABzklEQVR4nO3SMUuVURzH8Y9eb3ZTE7GQwCEIGtoKisZoaWkpmqI30NzW0PsJ2mroQkVgFlEQRbRYl7C0NOkiaXojsuFiKEXw338fznB44Dn8Oec78Gxra5+NSatTlvnEPCt0+cYqB5lkhH2ssUiHjyyzTpcTnOIo07RoMEiDIZrsZZIJGoze4z4fObPgbNv0rOYcn1lZ173pbs+5KVo0GbBL/9ghxjnMiL89mdVue/FSp+PRBeOHGKHJEI0dm/4apsXe7SHH2O8Dd3hKQ+e69hFPucR5mGOZTbb4xRb4QY/vLLHOGNfc5gFvWGQBdHfPObFj/BbDoMcwe/pfl3jIYz9e632wsWKdbpcJjnPZ6ctuvHNyxoFXzPOVNTBKkxbHuMgw93nO+x3v9cf0La0Z3prcdGXU1Z8GNxnaXiP0+NJ/n91/Dv7j9iP+K9FEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomy3yUrYlY+DGNUAAAAAElFTkSuQmCC' alt=''>
+</div>
+<div class=card><div class=cat>Acoustic Change Low Harmonic Change</div>
+<div class=lbl>Track00012 · 2.91s + 6.02s · 42 frames of this class in window</div>
+<div class=r><span class=lbl>marked frames</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAICAIAAADMcAKfAAAAdklEQVR4nO3SywnAIBCE4UmqMB2kLEtLWXZgGzkIIj537/93UlkchblCCJIk5RQlPe/XbXOK42FZT89b7czUamC8vJhGWKLrtiymvxvHjhGW6P3vVuf1nfZcS7R9bPPI+xgAdCgN3CgN3CgN3CgN3CgN3CgN3H63bll3SUNxFgAAAABJRU5ErkJggg==' alt=''>
+<div class=r><span class=lbl>control — host chroma · mean ΔE 5.66</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAABuElEQVR4nO3Su06UARCG4WeX5XxYUBCjDcTEUGiBBYn2dt6A1+CN2tiIMeEQggoxqMhBYAML+1sItZn+ey5gMpl5W++a5owlhrlgiEmeMMoRP7lihBHNtWZBe5Xmk/1lvydt8I1x7tHhkn26PNK0udLq02acMeZ4zSLYYZExPnDAJtt8ZZIVxhnQZpZpLrmgwxLN3ZLnHLn1b/ghnz/6fmZ2zVDHDZPMMcQUb3nAIXu8Z5c2M3Q09xloTTPglF+cgtG7m7zk6ZHepoMVe1279Jliggn26fOQLj2OGdC5PZpVXoEeByyxxxbb7PCFQ56zQJsRBiwwoM8Fj+lyyjVDHHPCDMOaZc2N9vq+9S29ed1nt5+aZ5oT3rDmklEw6Glv8IcJXtDyP+ecsajhB5dM0NytGlGTaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRNlfHZdlVWxyeAoAAAAASUVORK5CYII=' alt=''>
+<div class=r><span class=lbl>treatment — oracle harmony · mean ΔE 3.07</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAAA8ElEQVR4nO3SIU5DURgF4Xm3RZC0GCRBsGJWwAZIF4HpGnAYDAKDICFA+hDFIEfwSMh8+uTmv8lMzDPLeNlxe8f+nodHnp65vOB8w/aMm2u4gtOFzljYH/16Bl7hDQ4ADBjwDp9wgI/jAgacwIA1rGANE0w/HzouJ1h9j8cvHZ1/rGiiFU20oolWNNGKJlrRRCuaaEUTrWiiFU20oolWNNGKJlrRRCuaaEUTrWiiFU20oolWNNGKJlrRRCuaaEUTrWiiFU20oolWNNGKJlrRRCuaaEUTrWiiFU20oolWNNGKJlrRRCuaaEUTrWiiFU20L4dvIVFgt+nnAAAAAElFTkSuQmCC' alt=''>
+</div>
+<div class=card><div class=cat>Ordinary Holdout</div>
+<div class=lbl>Track00003 · 41.25s + 6.02s · 188 frames of this class in window</div>
+<div class=r><span class=lbl>marked frames</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAICAIAAADMcAKfAAAANElEQVR4nO3SQQ3AIADAQEA1snHANPRFltwp6KPznj2gWK8D+B/TkJmGzDRkpiEzDZlpyD4HvgJ3xkgJTgAAAABJRU5ErkJggg==' alt=''>
+<div class=r><span class=lbl>control — host chroma · mean ΔE 4.15</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAABpUlEQVR4nO3SyVJTURSG0XVvOgIEURBLC535/g/kyG5gUxQEQnLT3DiwsEAn7vm/ZuecXXtw6mv6xX57a7RmY3vk9tjNrfnK8dRs6PSZ0dAfOwbsH443/GDJlj0jjplZNNql6YKGCWN2LNlzztkdvX6kGWmG9KzAYccdO3QOdzo2C/3KYGm3tDvQXGgb03tHDN9oPXLPHQu+0+vP/XxhPTK79myuv7fZGE20HQvOeMuFv33iM3P2XPKe6T8zS8a2Azd2M1djK9b0vGPylZeM6ejAmu3DxJRDxrSMHq3s+Mac9cNNS8trzuiYs2FJR8+MMw5onu757ba3WzrptWMmT556PvKFK3pOeMUlE1rGNGDOB65pmTDgORecdgw8/feI/5FooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFE2S9EDGlRt3vxYQAAAABJRU5ErkJggg==' alt=''>
+<div class=r><span class=lbl>treatment — oracle harmony · mean ΔE 5.15</span></div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAsCAIAAABQTUW/AAABsklEQVR4nO3SuU5bURSG0WUbx8ZmcGJBgYSiNECkvP9bRMoTpIgyMATEYIzH61S3SLn7f+k0pzr7aH+dxY9dM7Tretuz3rh/Mtu4vDDxnzmvbOmALRu2rNiw5pm/3PPAo3nfy1jnyPuJ/pRTxgyYccM9v3ii4ZATrriwmrjmgdd7qyd7O4Oldyv2OLEa6vUcNM6fjWZs2zEa1qxZsWDRXt945oE1fQaMLT8YjDjlM2ft73b84ZE1W4aMmHIIa+7A8ZPRrU7f5tys5yff+MoXPnLEqH28oaFLw4Y35izZgi49lnTptyMseeGZOQ0TRnTb07DghRlDzrnikgOu+c4dawZMOfP7k9t9czrtXGNGHMzYsKNDt11mhx075txww1u75CUN+xwzZcQ782lXRFGiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZYkmyhJNlCWaKEs0UZZooizRRFmiibJEE2WJJsoSTZQlmihLNFGWaKIs0URZoomyRBNliSbKEk2UJZooSzRRlmiiLNFEWaKJskQTZf8A7492Pj16UxQAAAAASUVORK5CYII=' alt=''>
+</div>
+<div class=warn>Time runs left to right. Yellow ticks mark frames belonging to that challenge class, selected from J3D membership <b>before</b> rendering. This is decision support, not a perceptual gate: it is not Gate B, not Gate C, not D25/C1, and no product mode or firmware was touched.</div>
+</div>

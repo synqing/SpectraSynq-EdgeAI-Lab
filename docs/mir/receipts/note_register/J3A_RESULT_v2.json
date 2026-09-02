@@ -1,0 +1,286 @@
+{
+  "H1_pitch_class": {
+    "lag_diagnostic_vs_B1": {
+      "argmax_lag": -1,
+      "by_lag": {
+        "-1": 0.481342,
+        "-2": 0.471627,
+        "-3": 0.452209,
+        "-4": 0.428716,
+        "0": 0.475084,
+        "1": 0.454861,
+        "2": 0.42742,
+        "3": 0.399247,
+        "4": 0.374334
+      }
+    },
+    "target": "12-bin MIDI pitch-class mass, L1-normalised",
+    "verdict": "INCONCLUSIVE",
+    "vs_B1_host_chroma12": {
+      "alphas_chosen": [
+        1000.0
+      ],
+      "n_scored": 145928,
+      "r2_max": 0.5779581962316562,
+      "r2_mean": 0.47508388539813,
+      "r2_min": 0.28288315113111995,
+      "r2_per_dim": [
+        0.5324019077949181,
+        0.3759355918845827,
+        0.5363290934236153,
+        0.4597970457451812,
+        0.5617947819993334,
+        0.5779581962316562,
+        0.39665583764653223,
+        0.5172104785729652,
+        0.28288315113111995,
+        0.5173489233606398,
+        0.5131383110203621,
+        0.42955330596665375
+      ]
+    },
+    "vs_B2_host_spectrogram80": {
+      "alphas_chosen": [
+        1000.0
+      ],
+      "n_scored": 145928,
+      "r2_max": 0.5984721291781325,
+      "r2_mean": 0.5262515060819793,
+      "r2_min": 0.41087043442480486,
+      "r2_per_dim": [
+        0.5735810160775614,
+        0.45517646118215127,
+        0.5955062344699023,
+        0.4652365479043735,
+        0.5856288685398144,
+        0.5679611177901676,
+        0.5003267154272114,
+        0.5776667108009155,
+        0.41087043442480486,
+        0.5984721291781325,
+        0.5269403194946586,
+        0.457651517694059
+      ]
+    }
+  },
+  "H2_register": {
+    "B1_features": [
+      "log_centroid",
+      "log_rolloff85",
+      "log_band_low",
+      "log_band_mid",
+      "log_band_high",
+      "log_rms"
+    ],
+    "lag_diagnostic_vs_B1": {
+      "argmax_lag": 0,
+      "by_lag": {
+        "-1": 0.213413,
+        "-2": 0.189861,
+        "-3": 0.161938,
+        "-4": 0.138809,
+        "0": 0.216611,
+        "1": 0.19712,
+        "2": 0.165865,
+        "3": 0.136842,
+        "4": 0.117262
+      }
+    },
+    "target": "velocity-weighted mean MIDI note number (semitones)",
+    "verdict": "PASS",
+    "vs_B1_dsp_register": {
+      "alphas_chosen": [
+        0.001,
+        1000.0
+      ],
+      "n_scored": 145928,
+      "r2_max": 0.2166111243272586,
+      "r2_mean": 0.2166111243272586,
+      "r2_min": 0.2166111243272586,
+      "r2_per_dim": [
+        0.2166111243272586
+      ]
+    },
+    "vs_B2_host_spectrogram80": {
+      "alphas_chosen": [
+        0.001,
+        1000.0
+      ],
+      "n_scored": 145928,
+      "r2_max": 0.05844998643698507,
+      "r2_mean": 0.05844998643698507,
+      "r2_min": 0.05844998643698507,
+      "r2_per_dim": [
+        0.05844998643698507
+      ]
+    }
+  },
+  "action": "NO_PROMOTION",
+  "controls": {
+    "CONTROL_A2_machinery_linear_redundancy": {
+      "blocking": true,
+      "pass": true,
+      "r2": 0.9999999999999998,
+      "requirement": ">= 0.95"
+    },
+    "CONTROL_A_bands_to_logrms": {
+      "blocking": false,
+      "pass": false,
+      "r2": 0.7594712072326167,
+      "requirement": ">= 0.90",
+      "status": "REPORTED_ONLY - demoted in the prereg amendment; log-sum-exp is not linearly recoverable"
+    },
+    "CONTROL_B_shuffled_baseline": {
+      "blocking": true,
+      "pass": true,
+      "r2": -0.036784893292358865,
+      "requirement": "<= 0.10"
+    },
+    "all_blocking_pass": true,
+    "execution_order": "controls computed before hypotheses; abort on blocking failure"
+  },
+  "corpus": {
+    "id": "babyslakh",
+    "published_md5": "311096dc2bde7d61c97e930edbfc7f78",
+    "root": "/tmp/bs/babyslakh_16k",
+    "sample_rate_hz": 16000,
+    "tracks_used": 20
+  },
+  "date": "2026-09-01",
+  "execution_environment": "Anthropic cloud container (HOST-class, not the Mac, not silicon). The corpus tarball md5 was verified against the publisher's published checksum 311096dc2bde7d61c97e930edbfc7f78 before extraction.",
+  "frames": {
+    "excluded_reason": "no sounding MIDI note in window, or audio below -60 dBFS. Never zero-filled.",
+    "per_track": [
+      {
+        "frames_total": 7548,
+        "frames_valid": 7353,
+        "track": "Track00001"
+      },
+      {
+        "frames_total": 5949,
+        "frames_valid": 5621,
+        "track": "Track00002"
+      },
+      {
+        "frames_total": 6835,
+        "frames_valid": 6548,
+        "track": "Track00003"
+      },
+      {
+        "frames_total": 7268,
+        "frames_valid": 6982,
+        "track": "Track00004"
+      },
+      {
+        "frames_total": 7723,
+        "frames_valid": 7499,
+        "track": "Track00005"
+      },
+      {
+        "frames_total": 7698,
+        "frames_valid": 7341,
+        "track": "Track00006"
+      },
+      {
+        "frames_total": 7714,
+        "frames_valid": 7430,
+        "track": "Track00007"
+      },
+      {
+        "frames_total": 8113,
+        "frames_valid": 7726,
+        "track": "Track00008"
+      },
+      {
+        "frames_total": 5019,
+        "frames_valid": 4725,
+        "track": "Track00009"
+      },
+      {
+        "frames_total": 5684,
+        "frames_valid": 5456,
+        "track": "Track00010"
+      },
+      {
+        "frames_total": 6185,
+        "frames_valid": 5960,
+        "track": "Track00011"
+      },
+      {
+        "frames_total": 9617,
+        "frames_valid": 9369,
+        "track": "Track00012"
+      },
+      {
+        "frames_total": 6943,
+        "frames_valid": 6330,
+        "track": "Track00013"
+      },
+      {
+        "frames_total": 8568,
+        "frames_valid": 8272,
+        "track": "Track00014"
+      },
+      {
+        "frames_total": 7716,
+        "frames_valid": 7564,
+        "track": "Track00015"
+      },
+      {
+        "frames_total": 6334,
+        "frames_valid": 5642,
+        "track": "Track00016"
+      },
+      {
+        "frames_total": 9804,
+        "frames_valid": 9501,
+        "track": "Track00017"
+      },
+      {
+        "frames_total": 9273,
+        "frames_valid": 9104,
+        "track": "Track00018"
+      },
+      {
+        "frames_total": 7241,
+        "frames_valid": 6885,
+        "track": "Track00019"
+      },
+      {
+        "frames_total": 10867,
+        "frames_valid": 10620,
+        "track": "Track00020"
+      }
+    ],
+    "total_valid": 145928
+  },
+  "git_head": "a16fd3bb501ad92c75a5d8563ac424c7b3c0996b",
+  "grid": {
+    "causality": "each frame uses only samples up to hop end = (i+1)*hop. Relative to the hop-CENTRE timestamp this is +256 samples (+16 ms) of data. Both the audio baselines and the MIDI labels use the identical convention, so the comparison is fair; the 16 ms is disclosed, not hidden.",
+    "hop": 512,
+    "hop_hz": 31.25,
+    "label_lookahead_s": 0.0,
+    "n_fft": 2048,
+    "sr_hz": 16000,
+    "timestamp_semantics": "hop centre, i.e. ((i*hop)+hop/2)/sr - the repo's existing host_chroma12 / source_oracle convention"
+  },
+  "interpretation_ceiling": "SYNTHETIC_UPPER_BOUND. This does NOT establish real-audio incremental information; SELECTION_GATE criterion 3 explicitly rejects synthetic evidence. It does not establish room/mic robustness, visual utility (Gate B), product suitability, or student I/O.",
+  "job": "J3A",
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "lag_rule": "prereg amendment 2: fault iff |argmax| >= 2 hops or margin over lag 0 > 0.02",
+  "preregistration": "docs/mir/receipts/note_register/PREREGISTRATION.json",
+  "preregistration_written_before_any_score": true,
+  "production_firmware_changed": false,
+  "schema": "spectrasynq.note_register_result.v1",
+  "split": "grouped 5-fold cross-validation, groups = track; no track split across folds",
+  "student_io_frozen": false,
+  "thresholds_applied": {
+    "FAIL": "out-of-fold R^2 >= 0.75 against EITHER B1 or B2",
+    "FRONTEND_ONLY": "R^2(B2) >= 0.75 but R^2(B1) < 0.50 - the information is already IN the frontend, it is simply not being extracted. This is a cheap DSP/feature change, NOT an ML lane.",
+    "INCONCLUSIVE": "0.50 <= R^2 < 0.75 against both, or a split verdict not covered above",
+    "PASS": "out-of-fold R^2 < 0.50 against BOTH B1 and B2",
+    "rationale": "the lab's own precedent: source share was accepted as incremental at within-track r 0.10-0.17 vs mix, and DEAM arousal at R^2 0.30 vs energy. A baseline that explains more than three quarters of the target is not leaving room for a model."
+  },
+  "titan": false,
+  "verdict": "H1=INCONCLUSIVE H2=PASS"
+}

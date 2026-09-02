@@ -1,0 +1,141 @@
+{
+  "schema": "spectrasynq.representation_hypothesis_ranking.v1",
+  "job": "J3L-RANKING",
+  "date": "2026-09-02",
+  "label": "RANKING ONLY - nothing is executed, nothing is authorised, no code was written for any candidate",
+  "status": "NOT EXECUTED. NOT SELECTED. This is a comparison document.",
+
+  "the_residual_this_ranking_is_conditioned_on": {
+    "not_generic_better_chroma": "the ranking is conditioned on the specific residual J3F through J3K isolated, and each candidate is judged against the two mechanisms separately.",
+    "measured_residual_solo_stems_P0_on_audio_supported_frames": {
+      "synth_lead_pad": {"event_tolerant_recall": 0.5139, "false_movement": 0.0312, "framewise_r2": 0.103, "attack_50_hops": 8},
+      "chromatic_percussion": {"event_tolerant_recall": 0.6541, "false_movement": 0.0177, "framewise_r2": 0.292, "attack_50_hops": 1},
+      "reed_pipe": {"event_tolerant_recall": 0.6429, "false_movement": 0.0305, "framewise_r2": 0.153, "attack_50_hops": 3},
+      "reference_piano_keys": {"event_tolerant_recall": 0.8960, "false_movement": 0.0067, "framewise_r2": 0.547}
+    },
+    "two_distinct_mechanisms_that_must_not_be_conflated": {
+      "MECHANISM_A_spectral_envelope_evolution": "slow or spectrally evolving attacks (synth pad 8 hops to 50%, reed and voice 3 hops) make an audio pitch-class estimator MOVE while the harmonic content is constant. J3K established this is not fixable by correcting the oracle's activation timing - 3.18% of top events unmatched, recall +0.0029. It is timbre contamination of the harmonic descriptor.",
+      "MECHANISM_B_inharmonicity": "bells and mallets have partials that do not sit on the equal-tempered grid. J3I found NO attack or gate mismatch for chromatic percussion (attack_50 1 hop, release_10 0, coverage 1.0), and J3G.2 found peak-based methods collapse it (-0.128 for C2, -0.612 for C5). No pitch-class representation can be right about an inharmonic source."
+    },
+    "what_the_programme_has_eliminated": [
+      "source separation as the fix for harmonic movement (J3F)",
+      "postprocessing compression, reference scaling and clipping (J3G-1: P0 and P2 identical, P1 worse)",
+      "soft chroma filterbanks (J3G C1 - worse than hard rounding on every metric and the only candidate to fail the anti-gaming triad clause)",
+      "peak selection and root inference, alone and combined (J3G.2 - best information, worst timbre)",
+      "attack-timing correction of the oracle, solo and mixture (J3J, J3K)"
+    ]
+  },
+
+  "the_non_negotiable_criterion": {
+    "statement": "the next representation is not competing to win MIR accuracy. It competes to help SpectraSynq know when harmony deserves a visual response and when to leave the lights alone.",
+    "the_evidence_that_makes_it_non_negotiable": "C2_PEAK_HPCP carried MORE harmonic information than C3 (holdout R-squared 0.4286 against 0.3853) and produced WORSE visual behaviour than the CURRENT frontend: resting delta-E 2.6896 against the baseline's 2.3013, and a direction-reversal rate of 0.1809 against 0.1614. More information, worse restraint.",
+    "the_property_to_preserve": "C3's restraint - resting delta-E 0.6956 against the oracle's 0.6648, 98% of the oracle's colour stillness recovered, reversal rate 0.1181 against the baseline's 0.1614.",
+    "consequence_for_all_three_candidates": "any probe must carry a restraint measurement from the first run, not as a later confirmation. A candidate that improves recall and degrades resting delta-E is a failure, not a trade."
+  },
+
+  "RANK_1_FAITHFUL_TIMBRE_INVARIANT_CRP_CLASS": {
+    "concurs_with_the_PM_ranking": true,
+    "what_it_is": "log-frequency pitch representation, log compression, DCT across pitch, DISCARD the lower cepstral coefficients that carry the spectral envelope, inverse DCT, fold to 12 pitch classes. Published as a timbre-invariance method for harmony features.",
+    "why_first": "the dominant residual is explicitly timbre dependence, and the programme's only previous attempt was INVALID rather than negative. C4's rectified-mass fraction was exactly 0.5000 on every track - an algebraic consequence of removing the mean and then half-wave rectifying - so CRP has never actually been tested here.",
+    "synth_pad_mechanism_A": "STRONG FIT. A pad's spectral envelope evolves through its attack - filter sweeps, layered oscillators entering - while its pitch content is constant. Suppressing the envelope is precisely aimed at the movement that evolution creates. This is the one candidate whose mechanism matches the false-movement half of the synth residual.",
+    "chromatic_percussion_mechanism_B": "WEAK FIT. CRP assumes energy is organised by pitch. An inharmonic bell's partials are off the semitone grid, so the pitch pooling is already wrong before the DCT runs. CRP does not address inharmonicity and should not be expected to.",
+    "same_stft_or_new_frontend": "SAME STFT. No new transform. It inherits the sub-MIDI-49 resolution limit but introduces no new one.",
+    "causal_feasibility": "FULLY CAUSAL. Per-frame, no lookahead, no state. The two DCT matrices collapse into one fixed projection.",
+    "compute_and_memory": {
+      "per_frame": "about 1.0k MAC for sparse pitch pooling plus a fixed 69x69 projection at 4.8k MAC, plus 69 logarithms - roughly 5.8k MAC per frame",
+      "per_second_at_31.25_fps": "about 181 kMAC/s",
+      "memory": "69x69 projection ~19 kB float32 or ~4.8 kB int8, plus a ~2 kB bin-to-pitch index table",
+      "relative_anchor": "the existing 2048-point real FFT is on the order of 10^4 to 10^5 MAC per frame, so CRP is a small fraction of a frontend already being paid for",
+      "M85_budget_disclosure": "I do not have the M85 compute or memory budget in this context. Figures are absolute so they can be compared against it."
+    },
+    "reduces_false_movement_or_only_note_accuracy": "AIMED AT FALSE MOVEMENT. Envelope suppression targets spurious movement, not note identification. That is the correct axis for this residual.",
+    "can_it_preserve_restraint": {
+      "verdict": "UNKNOWN, and this is the single biggest design risk",
+      "why": "CRP output is SIGNED. The J3E colour grammar weights hues by a SQUARED non-negative drive, and negative weights have no meaning there. C4 destroyed the method by rectifying half the mass away.",
+      "three_ways_to_settle_it_BEFORE_any_probe_runs": [
+        "carry signed chroma end to end and redefine the colour mapping - REJECTED, because J3E's grammar is frozen and must not be altered to help a candidate",
+        "a documented non-negative variant, shifting by the row minimum before normalising - preserves relative structure but reintroduces a floor, and J3E already showed the with_floor variant goes degenerate (C major and F major both rendering 255,255,255 with delta-E 0.0)",
+        "USE CRP FOR MOVEMENT ONLY. tv_movement needs a distance between successive states, which is well defined on signed vectors normalised by their own L1 norm. CRP would supply WHEN to transition; an existing non-negative representation supplies WHAT colour. This decouples the signed problem from the frozen visual grammar entirely and targets exactly the false-movement residual. RECOMMENDED framing for the probe."
+      ]
+    },
+    "what_would_falsify_it_cheaply": "solo-stem false movement on synth_lead_pad and reed_pipe against P0, before any visual test. If envelope suppression does not reduce the 0.031 excess while leaving piano and bass unharmed, the mechanism claim is wrong and the candidate is done.",
+    "honest_prior": "moderate. The mechanism argument is the strongest of the three, but CRP was designed for chord-recognition features evaluated on accuracy, not for restraint, and no published result speaks to what it does to a colour-transition rate."
+  },
+
+  "RANK_2_NNLS_HARMONIC_NOTE_DICTIONARY": {
+    "concurs_with_the_PM_ranking": true,
+    "what_it_is": "spectral whitening plus non-negative least-squares approximate transcription against a dictionary of harmonic note templates, so pitch-class mass reflects estimated FUNDAMENTAL activations rather than observed spectral energy folded modulo 12.",
+    "why_second": "it attacks the other documented mechanism directly - J3F Q0b measured that ONE note deposits 85% root, 9.3% fifth and 3.2% major third through the current folding. NNLS is the standard deterministic answer to exactly that.",
+    "synth_pad_mechanism_A": "PARTIAL FIT, and possibly the wrong half. Pads are harmonically rich, so overtone misattribution is real for them. But the pad's MOVEMENT problem is envelope evolution, not overtone misattribution. NNLS may fix note accuracy while leaving the false movement in place.",
+    "chromatic_percussion_mechanism_B": "GENUINELY UNCERTAIN, and the uncertainty is itself informative. Idealised harmonic templates fit an inharmonic bell badly. Two opposite outcomes are plausible: energy that fits no template gets LOW activation, reducing spurious pitch-class mass - the good case; or it is forced onto whichever fundamental fits least badly, producing confident wrong notes - the bad case. A probe should measure which, because the answer bears directly on whether any harmonic representation can serve this family.",
+    "same_stft_or_new_frontend": "SAME STFT. Whitening and the dictionary both operate on the existing spectrum.",
+    "causal_feasibility": "CAUSAL PER FRAME, but NNLS is ITERATIVE. A bounded iteration count must be fixed in advance and its effect on the solution measured. This is a real productisation risk that CRP does not carry.",
+    "compute_and_memory": {
+      "pooled_variant_recommended": "an 84-note dictionary over 69 log-frequency pitch bins is 5,796 weights; projected-gradient NNLS at 10 fixed iterations costs about 116k MAC per frame, roughly 3.6 MMAC/s",
+      "raw_bin_variant": "an 84 x 1025 dictionary at 10 iterations costs about 1.7 MMAC per frame, roughly 54 MMAC/s - an order of magnitude above the existing FFT and the reason to prefer the pooled form",
+      "memory": "pooled dictionary ~23 kB float32 or ~5.8 kB int8, plus working vectors",
+      "relative_anchor": "the pooled variant is roughly the same order as the existing FFT; the raw-bin variant is roughly fifteen times it",
+      "M85_budget_disclosure": "budget not available in this context; figures are absolute."
+    },
+    "reduces_false_movement_or_only_note_accuracy": "PRIMARILY NOTE ACCURACY. It reduces phantom pitch-class mass, which MAY reduce false movement, but that is a hypothesis, not a mechanism. It must be measured, not assumed.",
+    "can_it_preserve_restraint": {
+      "verdict": "COMPATIBLE BY CONSTRUCTION, BUT AT SPECIFIC RISK",
+      "compatible": "NNLS output is non-negative, so it drops into the frozen J3E grammar with no redefinition. Strictly better than CRP on this axis.",
+      "the_risk": "NNLS produces a SPARSER state than the current folding. C2_PEAK_HPCP was the programme's previous sparse, more-informative representation and it made resting delta-E WORSE than the baseline (2.6896 against 2.3013) and reversals worse (0.1809 against 0.1614). A sparse state flips harder between frames. NNLS could repeat that failure exactly.",
+      "mandatory_pre_registration": "any NNLS probe must gate on resting delta-E and reversal rate from the first run, not measure them afterwards."
+    },
+    "what_would_falsify_it_cheaply": "the phantom-triad fixture already in the repo. A faithful NNLS must reduce non-root mass on HARMONIC_NOTE well below P0's measured 0.472 while keeping the MAJOR_TRIAD chord-tone mass - and then resting delta-E must not regress.",
+    "honest_prior": "moderate on note accuracy, low on the residual that actually matters. It is ranked second because its mechanism is real and documented, not because it is likely to fix restraint."
+  },
+
+  "RANK_3_LEARNED_OR_ALTERNATE_REPRESENTATION_DELIBERATELY_BROAD": {
+    "concurs_with_the_PM_ranking": true,
+    "scope": "a tiny learned tonal head, and/or alternate spectral resolution including CQT. Deliberately kept as one broad slot rather than a specific method.",
+    "why_CQT_is_NOT_ranked_here_on_its_own": {
+      "the_PM_argument": "J3G.2 demonstrated that the failure is assumptions about timbre and harmonicity, not frequency resolution.",
+      "direct_corroborating_evidence_from_our_own_data": "J3F Q0a showed fewer than one FFT bin per semitone below MIDI 49, and the corpus's lowest sounding voice averages MIDI 37.2 - the entire bass register is inside the analytically unresolvable zone. Yet BASS is one of the two STRONGEST families at 0.591 solo-stem R-squared, above piano at 0.543. Poor low-frequency resolution demonstrably does not prevent good harmonic-movement tracking in this corpus. Prescribing a more expensive transform before the representation hypothesis says why would be spending compute on a defect we have evidence is not the binding one."
+    },
+    "synth_pad_mechanism_A": "a learned head COULD learn timbre invariance directly, which is the only thing in this slot that plausibly addresses mechanism A better than CRP. Alternate resolution does not obviously address it at all.",
+    "chromatic_percussion_mechanism_B": "a learned head could in principle learn that inharmonic frames carry no reliable pitch class - but that is closer to learning a CONFIDENCE signal than a better chroma, which points at the cross-cutting idea below rather than at this slot.",
+    "same_stft_or_new_frontend": "MIXED. A learned head can sit on the existing STFT. Alternate resolution or CQT is a NEW FRONTEND with a second transform, which every job since J3G has been forbidden to add.",
+    "causal_feasibility": "a small causal head is feasible. CQT is the harder case: constant-Q filterbanks have long low-frequency impulse responses, so a causal implementation at 16 kHz with useful bass resolution carries latency the product may not accept. That must be settled before it is costed, not after.",
+    "compute_and_memory": {
+      "tiny_learned_head": "a 2-layer MLP from 69 pitch bins to 12 outputs with a 64-unit hidden layer is about 9.2k MAC per frame, roughly 290 kMAC/s, and about 20 kB of int8 weights - the same order as CRP",
+      "cqt": "a causal CQT at useful resolution is a second frontend and costs on the order of the existing FFT again, plus the kernel storage",
+      "M85_budget_disclosure": "budget not available in this context."
+    },
+    "reduces_false_movement_or_only_note_accuracy": "DEPENDS ENTIRELY ON THE LOSS. Trained on recall it will repeat C2 - more information, worse restraint. Restraint must be in the objective, not checked afterwards.",
+    "can_it_preserve_restraint": {
+      "verdict": "ONLY IF DESIGNED FOR IT",
+      "note": "this is the slot where restraint is most at risk and most controllable, because it is the only candidate where the objective is ours to write."
+    },
+    "one_thing_J3K_changed_in_this_slot_s_favour": "any learned approach needs a target. Before J3I-J3K the rectangular MIDI oracle's semantics were open to challenge. Axis A now shows that an acoustically activated alternative moves only 3.18% of top-5% events outside a +/-2 hop window, with 89.0% exact frame overlap. The existing oracle is now VALIDATED against a physically motivated alternative, which materially de-risks training against it. That is the target audit's most durable product.",
+    "honest_prior": "low as a next step, appropriate as a third slot. It should be reached only after 1 and 2 have failed, and its scope should be re-specified at that point from what they failed at."
+  },
+
+  "CROSS_CUTTING_CONFIDENCE_HARMONICITY_GATING": {
+    "status": "NOT a representation, so it does not displace a numbered slot. Discussed here because the PM asked for it explicitly, and because on expected value I would run it FIRST or alongside rank 1.",
+    "the_idea": "a per-frame tonal-confidence scalar from the SAME STFT gates the harmonic verb. When confidence is low the colour holds still: alpha = A_MIN + (A_MAX - A_MIN) * clip(M / M_REF) * confidence.",
+    "why_it_is_cheap": "C3 and C5 already compute candidate fundamental salience. Harmonicity is a ratio of numbers the existing projection already has - the share of frame energy explained by the best-fitting harmonic comb. Marginal cost is a few dozen operations per frame, not a new representation.",
+    "why_it_targets_the_right_thing": "the residual's dominant PRODUCT-relevant symptom is false movement - synth 0.0312 and reed 0.0305 against piano 0.0067 and bass 0.0029, four to ten times higher. Gating attacks that directly. Both other candidates attack it only indirectly.",
+    "why_it_is_the_only_honest_answer_for_inharmonic_percussion": "bells and mallets are inharmonic by physics. No pitch-class representation can be right about them. A system that is ALLOWED to say 'low tonal confidence' and leave the lights alone is not failing at harmony - it is being correct about the absence of harmony. That is an architecture possibility, not a defeat.",
+    "the_honest_risk": "gating suppresses genuine harmonic change in the same families. Synth pad is already at 0.5139 event-tolerant recall; a confidence gate could push it lower. The probe must measure recall and false movement TOGETHER - the selectivity margin, not either alone.",
+    "why_it_still_does_not_displace_rank_1": "it does not improve harmonic information at all. If the residual MISSES matter for the product - and J3E's value came from suppressing wrong responses, which suggests they matter less than the false positives - gating is sufficient; if they matter, it is not. That is an empirical question a cheap probe answers.",
+    "recommendation": "run it as a bounded probe before or in parallel with rank 1. It is roughly two orders of magnitude cheaper than either representation candidate, it composes with all three, and it is the only option on this page that addresses mechanism B honestly."
+  },
+
+  "what_this_document_does_not_do": [
+    "does not select a candidate",
+    "does not authorise execution of any of them",
+    "does not pre-register any probe - each would need its own pre-registration with a restraint gate declared before the first score",
+    "does not assume one method solves both mechanisms - the evidence says it will not"
+  ],
+
+  "status": {
+    "executed": false, "selected": false,
+    "cqt_run": false, "crp_repair": false, "nnls_run": false, "neural_model": false,
+    "J3F_mutated": false, "J3G_mutated": false, "J3G2_mutated": false,
+    "J3I_mutated": false, "J3J_mutated": false, "J3K_mutated": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false
+  }
+}

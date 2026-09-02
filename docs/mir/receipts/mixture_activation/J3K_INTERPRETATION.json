@@ -1,0 +1,94 @@
+{
+  "schema": "spectrasynq.mixture_activation_interpretation.v1",
+  "job": "J3K",
+  "date": "2026-09-02",
+  "outcome": "MIXTURE_TARGET_CORRECTION_IMMATERIAL",
+
+  "the_one_sentence": "The structural limitation that made J3J an unfair test is demonstrably gone - at mixture level the acoustic-activation correction changes the normalised pitch-class state on 84.6% of frames instead of 7-16%, with 3.77 distinct tonal families sounding per frame - and the target still does not matter: event-tolerant recall moves +0.0029 and false movement -0.0004, against a 0.10 bar, identically for all four representations.",
+
+  "THIS_TIME_THE_TEST_WAS_FAIR": {
+    "the_J3J_objection": "on a solo stem every note shares one family kernel, so the activation is a common per-frame scalar that L1 normalisation cancels. J3J measured a median state distance of exactly 0.00000 and only 7-16% of frames differing.",
+    "the_mixture_condition_was_met": {
+      "mean_distinct_tonal_families_active_per_frame": 3.766,
+      "fraction_of_frames_with_2_or_more_families": 0.9749,
+      "fraction_of_frames_with_3_or_more_families": 0.8755,
+      "mean_tonal_instruments_per_track": 10.05
+    },
+    "the_cancellation_is_gone": {
+      "fraction_of_frames_whose_normalised_state_differs": 0.8462,
+      "per_track_range": [0.6216, 0.9726],
+      "median_state_L1_distance": 0.01917,
+      "mean": 0.02705, "p90": 0.06075,
+      "J3J_solo_reference": {"median": 0.0, "fraction_range": [0.0706, 0.1647]}
+    },
+    "conclusion": "the target genuinely changed this time. Whatever J3K reports is a statement about the target hypothesis, not about a metric that could not move."
+  },
+
+  "and_it_still_changes_nothing": {
+    "P0_CURRENT": {"event_tolerant_recall": [0.9072, 0.9101], "change": 0.0029,
+                   "false_movement": [0.0105, 0.0101], "change_": -0.0004},
+    "C3_ROOT_SALIENCE": {"event_tolerant_recall": [0.9222, 0.9256], "change": 0.0034,
+                         "false_movement": [0.0079, 0.0073], "change_": -0.0006},
+    "C2_PEAK_HPCP": {"event_tolerant_recall": [0.9194, 0.9237], "change": 0.0043,
+                     "false_movement": [0.0088, 0.0081], "change_": -0.0007},
+    "C5_PEAK_ROOT_HYBRID": {"event_tolerant_recall": [0.9251, 0.9291], "change": 0.0040,
+                            "false_movement": [0.0088, 0.0082], "change_": -0.0006},
+    "reading": "four independent representations, one answer. Every recall change is under 0.005 and every false-movement change is under 0.001, against the established 0.10 materiality scale."
+  },
+
+  "the_one_consistent_positive_signal_and_why_it_does_not_change_the_answer": {
+    "framewise_r2_change": {"P0_CURRENT": 0.0166, "C3_ROOT_SALIENCE": 0.0216, "C2_PEAK_HPCP": 0.0251, "C5_PEAK_ROOT_HYBRID": 0.0263},
+    "consumer_time_recall_change": {"P0_CURRENT": 0.0141, "C3_ROOT_SALIENCE": 0.0160, "C2_PEAK_HPCP": 0.0166, "C5_PEAK_ROOT_HYBRID": 0.0141},
+    "reading": "every representation predicts the acoustically activated target slightly BETTER than the rectangular one, same sign, monotone in how good the representation is. That is real evidence that the attack model captures something true about the audio rather than adding noise - it is the strongest positive evidence for the target hypothesis the programme has produced. It is also an order of magnitude below the bar, and it does not touch the event-tolerant behaviour the product cares about.",
+    "honest_framing": "the attack model is right and unimportant."
+  },
+
+  "controls": {
+    "old_arm_reproduces_the_published_oracle": "max absolute difference 0.0 - summing per-instrument rectangular states is exactly the single all-notes state that J3D/J3E/J3F used, so the comparison is against the real historical target, not a lookalike",
+    "identity_kernel_reproduces_pitch_class_state": 0.0,
+    "target_module_imports_no_representation": "AST import audit passes",
+    "identical_frame_set_for_both_arms": true,
+    "n_tracks": 20, "n_frames": 145311
+  },
+
+  "what_this_closes": {
+    "the_target_timing_branch": "by the Captain's own decision rule - 'if J3K says the mixture target is also immaterial, I am comfortable closing this target-timing branch and moving decisively back to representation' - this branch is closed.",
+    "the_fair_statement_now_available": "the attack-timing component of the harmonic oracle has been given the one condition under which it can act, and it changes harmonic observability by less than 0.005 on event recall and less than 0.001 on false movement for four independent representations. The attack-timing hypothesis has had a fair test and failed."
+  },
+
+  "what_this_does_NOT_establish": {
+    "the_family_level_question_remains_where_J3I_left_it": "J3K measures at MIXTURE level, where event-tolerant recalls are all 0.91-0.93 and per-family weakness does not show at all. The family-level target question is intrinsically a solo-stem question, and that is exactly where the L1 cancellation bites. J3K does not directly rehabilitate the family-level measurement; it establishes that the correction carries almost no harmonic-movement information where it CAN act.",
+    "J3J_s_stated_interpretation_is_still_not_retroactively_correct": "J3J's label carried the reading 'representation owns almost all of the remaining failure'. That reading was unearned FROM J3J ALONE. It is now supported by J3J plus J3K taken together, on different evidence: not because the solo test found nothing, but because the fair mixture test also found nothing.",
+    "J3I_stands_as_written": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED. Ensemble/voice was genuinely rehabilitated by event tolerance; reed is mixed; synth_lead_pad and chromatic_percussion remain representation-owned. Nothing in J3K changes that decomposition."
+  },
+
+  "brief_provenance": {
+    "no_J3K_brief_was_received_in_this_thread": "J3G.2, J3I and J3J were issued in full. J3K was not.",
+    "executed_from": "the Captain's one-line pipeline specification plus his stated decision rule, with the inherited J3J discipline",
+    "outcome_labels_are_derived_not_quoted": "if the issued brief uses different labels or thresholds, every underlying quantity is in the result receipt and it can be relabelled without re-running anything",
+    "flagged_rather_than_guessed": true
+  },
+
+  "next_step_belongs_to_the_PM": {
+    "not_pre_empted_here": "the ranked maximum-three representation comparison was conditioned on J3J returning PARTIAL, which it did not. It is not produced here and nothing is ranked, recommended or executed.",
+    "what_is_now_available_to_rank_against": "a residual problem that is cleanly separated - synth_lead_pad at 0.52 event-tolerant recall and chromatic_percussion at 0.66 on solo stems, with 4-10x the strong families' false movement, and a target hypothesis that has now been eliminated by a fair test.",
+    "still_not_pre_authorised_by_this_failure": ["CQT", "alternate spectral resolution", "a faithful signed CRP-class probe", "NNLS / harmonic note-dictionary decomposition", "a tiny learned tonal estimator", "a real-audio teacher", "source separation"]
+  },
+
+  "preserved_unchanged": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT", "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT", "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "C4_CRP": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION, not repaired, not cited against CRP",
+    "minus_one_hop_anomaly": "unresolved, not reopened",
+    "J3H": "independently valid and separate - a real-audio commercial-separator question, not merged"
+  },
+
+  "status": {
+    "J3J_mutated": false, "J3I_mutated": false, "J3G_mutated": false, "J3G2_mutated": false, "J3F_mutated": false,
+    "new_tonal_representation": false, "cqt_run": false, "crp_repair": false, "nnls_run": false,
+    "basic_pitch_run": false, "neural_model": false,
+    "midi_pitch_or_identity_altered": false, "release_model_created": false, "velocity_weighting": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false
+  }
+}

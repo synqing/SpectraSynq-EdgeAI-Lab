@@ -1,0 +1,221 @@
+{
+  "schema": "spectrasynq.mixture_activation_axis_a_addendum.v1",
+  "job": "J3K-ADDENDUM",
+  "date": "2026-09-02",
+  "label": "ADDENDUM ONLY - the J3K receipt is not modified. No new threshold, no representation scoring, no re-render.",
+  "what_this_completes": "Axis A of the intended J3K brief: OLD<->NEW top-5% harmonic-event correspondence, which the derived pre-registration did not record.",
+  "definitions": {
+    "event": "within-track percentile rank of target movement >= 0.95 - the same convention used throughout",
+    "match_window_hops": 2,
+    "frames": "the identical J3K frame set - cached J3E validity intersected with finiteness of both movement series"
+  },
+  "totals": {
+    "old_top5_events": 7274,
+    "new_top5_events": 7274,
+    "exact_frame_overlap": 6475,
+    "exact_overlap_fraction_of_old": 0.8902,
+    "old_matched_within_2_hops": 7043,
+    "old_UNMATCHED_fraction": 0.0318,
+    "new_matched_within_2_hops": 7082,
+    "new_UNMATCHED_fraction": 0.0264,
+    "median_displacement_hops": 0.0,
+    "mean_abs_displacement_hops": 0.087,
+    "displacement_histogram_hops": {
+      "-2": 9,
+      "-1": 59,
+      "0": 6475,
+      "1": 462,
+      "2": 38
+    }
+  },
+  "per_track": [
+    {
+      "track": "Track00001",
+      "n_old_events": 367,
+      "n_new_events": 367,
+      "exact_overlap": 341,
+      "old_unmatched_fraction": 0.0245,
+      "new_unmatched_fraction": 0.0027
+    },
+    {
+      "track": "Track00002",
+      "n_old_events": 281,
+      "n_new_events": 281,
+      "exact_overlap": 240,
+      "old_unmatched_fraction": 0.0463,
+      "new_unmatched_fraction": 0.0285
+    },
+    {
+      "track": "Track00003",
+      "n_old_events": 327,
+      "n_new_events": 327,
+      "exact_overlap": 290,
+      "old_unmatched_fraction": 0.0306,
+      "new_unmatched_fraction": 0.0214
+    },
+    {
+      "track": "Track00004",
+      "n_old_events": 349,
+      "n_new_events": 349,
+      "exact_overlap": 308,
+      "old_unmatched_fraction": 0.0229,
+      "new_unmatched_fraction": 0.0
+    },
+    {
+      "track": "Track00005",
+      "n_old_events": 375,
+      "n_new_events": 375,
+      "exact_overlap": 333,
+      "old_unmatched_fraction": 0.0133,
+      "new_unmatched_fraction": 0.0427
+    },
+    {
+      "track": "Track00006",
+      "n_old_events": 367,
+      "n_new_events": 367,
+      "exact_overlap": 325,
+      "old_unmatched_fraction": 0.0272,
+      "new_unmatched_fraction": 0.03
+    },
+    {
+      "track": "Track00007",
+      "n_old_events": 369,
+      "n_new_events": 369,
+      "exact_overlap": 343,
+      "old_unmatched_fraction": 0.0163,
+      "new_unmatched_fraction": 0.0081
+    },
+    {
+      "track": "Track00008",
+      "n_old_events": 386,
+      "n_new_events": 386,
+      "exact_overlap": 359,
+      "old_unmatched_fraction": 0.0104,
+      "new_unmatched_fraction": 0.0078
+    },
+    {
+      "track": "Track00009",
+      "n_old_events": 233,
+      "n_new_events": 233,
+      "exact_overlap": 198,
+      "old_unmatched_fraction": 0.0429,
+      "new_unmatched_fraction": 0.0472
+    },
+    {
+      "track": "Track00010",
+      "n_old_events": 273,
+      "n_new_events": 273,
+      "exact_overlap": 251,
+      "old_unmatched_fraction": 0.0,
+      "new_unmatched_fraction": 0.0
+    },
+    {
+      "track": "Track00011",
+      "n_old_events": 298,
+      "n_new_events": 298,
+      "exact_overlap": 266,
+      "old_unmatched_fraction": 0.0302,
+      "new_unmatched_fraction": 0.0235
+    },
+    {
+      "track": "Track00012",
+      "n_old_events": 468,
+      "n_new_events": 468,
+      "exact_overlap": 410,
+      "old_unmatched_fraction": 0.0385,
+      "new_unmatched_fraction": 0.0107
+    },
+    {
+      "track": "Track00013",
+      "n_old_events": 309,
+      "n_new_events": 309,
+      "exact_overlap": 239,
+      "old_unmatched_fraction": 0.1392,
+      "new_unmatched_fraction": 0.1424
+    },
+    {
+      "track": "Track00014",
+      "n_old_events": 413,
+      "n_new_events": 413,
+      "exact_overlap": 372,
+      "old_unmatched_fraction": 0.0291,
+      "new_unmatched_fraction": 0.0121
+    },
+    {
+      "track": "Track00015",
+      "n_old_events": 378,
+      "n_new_events": 378,
+      "exact_overlap": 335,
+      "old_unmatched_fraction": 0.0026,
+      "new_unmatched_fraction": 0.0291
+    },
+    {
+      "track": "Track00016",
+      "n_old_events": 276,
+      "n_new_events": 276,
+      "exact_overlap": 253,
+      "old_unmatched_fraction": 0.0435,
+      "new_unmatched_fraction": 0.0145
+    },
+    {
+      "track": "Track00017",
+      "n_old_events": 475,
+      "n_new_events": 475,
+      "exact_overlap": 396,
+      "old_unmatched_fraction": 0.0653,
+      "new_unmatched_fraction": 0.0421
+    },
+    {
+      "track": "Track00018",
+      "n_old_events": 455,
+      "n_new_events": 455,
+      "exact_overlap": 415,
+      "old_unmatched_fraction": 0.0571,
+      "new_unmatched_fraction": 0.044
+    },
+    {
+      "track": "Track00019",
+      "n_old_events": 344,
+      "n_new_events": 344,
+      "exact_overlap": 308,
+      "old_unmatched_fraction": 0.0058,
+      "new_unmatched_fraction": 0.0116
+    },
+    {
+      "track": "Track00020",
+      "n_old_events": 531,
+      "n_new_events": 531,
+      "exact_overlap": 493,
+      "old_unmatched_fraction": 0.0038,
+      "new_unmatched_fraction": 0.0226
+    }
+  ],
+  "REPORTED_DIAGNOSTIC_challenge_class_membership_overlap": {
+    "HARMONIC_CHANGE_FLAT_ENERGY": {
+      "old": 2299,
+      "new": 2287,
+      "intersection": 2006,
+      "jaccard": 0.7775
+    },
+    "HARMONIC_CHANGE_NO_ONSET": {
+      "old": 4000,
+      "new": 3962,
+      "intersection": 3652,
+      "jaccard": 0.8473
+    },
+    "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": {
+      "old": 3292,
+      "new": 3130,
+      "intersection": 2869,
+      "jaccard": 0.8075
+    }
+  },
+  "threshold_from_the_brief": {
+    "rule": "unmatched OLD events >= 10% means the corrected oracle changes which musical moments count as the strongest harmonic events",
+    "value": 0.1,
+    "no_new_threshold_invented": true
+  },
+  "axis_A_material": false,
+  "classification": "MIXTURE_TARGET_STATE_IMMATERIAL / ATTRIBUTION_IMMATERIAL",
+  "J3K_receipt_modified": false
+}

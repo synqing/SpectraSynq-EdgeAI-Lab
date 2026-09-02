@@ -1,0 +1,61 @@
+{
+  "schema": "spectrasynq.harmonic_visual_recon.v1",
+  "job": "J3D-B",
+  "date": "2026-09-01",
+  "STATUS": "NOT RUN",
+  "why_not_run": "The J3D authority gates J3D-B on J3D-A returning HARMONIC_MOVEMENT_DERIVABLE_FROM_CHROMA or HARMONIC_MOVEMENT_INCREMENTAL. It returned HARMONIC_MOVEMENT_INCONCLUSIVE. No render was produced and no visual claim is made.",
+  "what_this_file_is": "A read of the already-pinned effect-semantics authority, which the J3D authority requires to be consumed BEFORE any rendering. Reading the pin is not running J3D-B. This is decision input for Captain.",
+
+  "pin": {
+    "compatibility": "docs/mir/effect_semantics/compatibility.json",
+    "grammar_coverage": "docs/mir/effect_semantics/grammar_coverage.json",
+    "source_firmware_sha": "36466cd56c90b9cafa571bc5029b5d38bc0543bb",
+    "atlas_artifact_sha256": "e447e4b636d5ab2a33b79cfe0cdc60c6e7a4c089e25c9870617fa7a244f56971",
+    "label": "HOST-ONLY",
+    "on_silicon_pixel_validated": null,
+    "lgp_perceptual_validated": null,
+    "rows": 21,
+    "enabled_modes": 23
+  },
+
+  "the_only_pinned_harmonic_binding": {
+    "descriptor": "chroma / harmony",
+    "mode": "BLOOM",
+    "mode_id": 3,
+    "lever": "palette / chromagram colour",
+    "fit": "CANDIDATE",
+    "evidence": "STATIC_SOURCE",
+    "why_verbatim_from_the_pin": "Native chroma read. Product palette path (K1_Ultraviolet_Bright, chromatic_mode=false) made hue_centroid a weak HOST observable. Do not treat palette-locked hue as a chroma test."
+  },
+
+  "the_grammar_status": {
+    "grammar_id": "harmonic_colour",
+    "status": "partial",
+    "evidence_level": "STATIC_SOURCE",
+    "note_verbatim": "Native chroma mapping exists. Host hue is not a chroma test under product palette.",
+    "for_contrast": "six of the eight pinned grammars are `represented` at HOST_PIXEL_VALIDATED; macro_transition is a declared GAP; harmonic_colour is the only `partial` one."
+  },
+
+  "the_obstacle_this_creates_for_a_future_J3D_B": {
+    "statement": "The single pinned candidate carrier for harmonic information cannot presently be validated as a hue test, because the shipping palette path locks hue and makes hue_centroid a weak HOST observable. That obstacle is recorded in the pin itself and predates this job.",
+    "consequence": "a future J3D-B would most likely return HARMONIC_VISUAL_GRAMMAR_GAP unless the palette path changes - and changing it is a production firmware change, which the J3D authority forbids in this job.",
+    "second_surface_named_in_the_pin_but_not_a_pinned_row": "mode 29 tempo_river_walk is described under the transport_phase grammar as 'same transport + bar-stepped palette (harmonic, not macro)'. It is a prose mention inside another grammar's `also` list, NOT a descriptor x mode x lever row. It must not be treated as an available binding without a pin update.",
+    "explicitly_not_done_here": [
+      "no lever was invented",
+      "no binding was named as available",
+      "no render was produced",
+      "harmonic movement was NOT bound to an acoustically driven lever for convenience",
+      "production firmware was not touched"
+    ]
+  },
+
+  "what_this_means_for_the_programme": {
+    "layer": "This is an L6/L7 finding, not an L2/L3 one. Even if harmonic movement is established as incremental musical state, the current K1 visual grammar has no validated carrier for it.",
+    "value": "That is a genuine and useful result: it says the constraint on harmonic intelligence is presently the visual grammar, not the perception.",
+    "does_not_close": "harmonic movement as a construct, harmonic intelligence as a family, or the possibility that a future mode provides the carrier."
+  },
+
+  "student_io_frozen": false,
+  "titan": false,
+  "production_firmware_changed": false
+}

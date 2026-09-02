@@ -1,0 +1,114 @@
+{
+  "schema": "spectrasynq.harmonic_movement_prereg.v1",
+  "job": "J3D-A",
+  "written_at": "2026-09-01T09:05:00Z",
+  "written_before_any_score": true,
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "titan": false,
+  "student_io_frozen": false,
+
+  "construct_validity": {
+    "exact_construct_under_test": "HARMONIC MOVEMENT - causal change in the active pitch-class distribution through time. The smallest objective tonal-change construct.",
+    "representation_used_as_proxy": "a bounded causal distance between the current and a lagged 12-D pitch-class distribution derived from exact aligned MIDI",
+    "why_that_proxy_has_construct_validity": "Harmonic movement is by definition a change of the sounding pitch-class collection. A normalised distance between successive pitch-class distributions is the most direct objective measure of that, requires no chord vocabulary, no key estimate and no tension model, and is computable exactly from symbolic truth. It deliberately does NOT presuppose which chord, which key, or how much tension.",
+    "what_a_PASS_permits": "statements about whether harmonic MOVEMENT exists independently of acoustic energy cues, and whether the existing chroma frontend already reproduces it",
+    "what_a_FAIL_permits": "statements about THIS movement formulation only",
+    "broader_conclusions_that_remain_FORBIDDEN": [
+      "chord recognition", "chord vocabulary", "key detection", "tonal centre",
+      "consonance", "dissonance", "tension", "resolution", "melody",
+      "pitch-class intelligence generally", "any real-audio claim",
+      "any claim about harmonic movement's visual value (that is J3D-B)"
+    ]
+  },
+
+  "pitch_class_state": {
+    "dimension": 12,
+    "weighting": "duration-overlap ONLY. NO velocity weighting.",
+    "velocity_justification_declared_before_scores": "Harmonic identity is defined by WHICH pitch classes sound, not how loudly. Velocity weighting would make the measure track dynamics - precisely the confound the HARMONIC_CHANGE_FLAT_ENERGY challenge class exists to remove. Using it would let a crescendo register as harmonic movement.",
+    "normalisation": "L1 per frame",
+    "silence": "a frame with zero pitched weight is explicitly SILENT. It is never zero-filled and never contributes a movement value. Both endpoints of a movement pair must be non-silent.",
+    "percussion_exclusion": {
+      "rule": "exclude a MIDI instrument if pretty_midi is_drum is true OR its General MIDI program number >= 112",
+      "why_112": "GM 112-119 is the Percussive family (Tinkle Bell, Agogo, Steel Drums, Woodblock, Taiko, Melodic Tom, Synth Drum) and 120-127 is Sound Effects. Neither carries reliable tonal pitch-class content.",
+      "measured_before_scoring": "226 MIDI instruments across the 20 BabySlakh tracks; 20 are is_drum (one kit per track); 5 have program >= 112. Exact counts re-reported in the receipt.",
+      "note": "excluded from the LABEL only. Percussion remains in the AUDIO, as it does in the product."
+    }
+  },
+
+  "timebase": {
+    "sr_hz": 16000, "hop": 512, "n_fft": 2048, "hop_hz": 31.25,
+    "timestamp_semantics": "hop centre; causal frame ends at (i+1)*hop - identical to J3A and J3C",
+    "label_lookahead_s": 0.0,
+    "movement_lag_hops": 8,
+    "movement_lag_s": 0.256,
+    "lag_justification_declared_before_scores": "Chord changes occur at roughly one to four per bar; at 120 BPM a beat is 0.5 s. Comparing adjacent 32 ms hops would be dominated by note-level articulation rather than harmonic change, and the analysis window is already 128 ms. 256 ms is about a half-beat at 120 BPM - the shortest interval at which a chord change is the dominant cause of pitch-class redistribution."
+  },
+
+  "movement_metrics": {
+    "primary": {"id": "M_tv", "definition": "0.5 * L1(pc_t, pc_{t-8}) on L1-normalised distributions; total-variation distance in [0,1]"},
+    "alternative": {"id": "M_cos", "definition": "1 - cosine(pc_t, pc_{t-8})",
+      "justification_declared_before_scores": "TV distance is sensitive to mass REDISTRIBUTION among pitch classes that are already sounding; cosine distance is more sensitive to WHICH classes are present at all. Two different sensitivities to the same construct. Exactly one alternative is tested. No metric zoo."}
+  },
+
+  "baselines": {
+    "B_chroma": "0.5 * L1 between L1-normalised host_chroma12 at t and t-8 - the direct existing-frontend analogue of the construct",
+    "B_flux": "rectified spectral flux over host_spectrogram80 between t and t-8, summed over bins",
+    "B_onset": "librosa onset_strength on the raw mix at sr 16000 / hop 512, differenced over the same 8-hop lag - the repo's conventional onset path (src/edgeai/mir/conventional.py uses librosa)",
+    "B_rms": "|log RMS(t) - log RMS(t-8)|",
+    "acoustic_energy_set": ["B_flux", "B_onset", "B_rms"],
+    "note": "B_chroma is a TONAL cue, not an energy cue, and is deliberately kept out of the acoustic-energy set. That separation is what makes DERIVABLE_FROM_CHROMA a positive outcome and ACOUSTICALLY_REDUNDANT a negative one."
+  },
+
+  "challenge_set": {
+    "built_from": "the ORACLE and the baselines only. Never by looking at rendered output.",
+    "ranking": "within-track percentile ranks, so track-level scaling cannot create or destroy a class",
+    "classes": {
+      "HARMONIC_CHANGE_FLAT_ENERGY": "rank(M_tv) >= 0.95 AND rank(B_rms) <= 0.50",
+      "HARMONIC_CHANGE_NO_ONSET": "rank(M_tv) >= 0.95 AND rank(B_onset) <= 0.50",
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": "rank(B_onset) >= 0.95 AND rank(M_tv) <= 0.50 - the negative/control class"
+    },
+    "ordinary_holdout": "all valid frames, not ranked by disagreement - reports general behaviour",
+    "interpretation_rule": "challenge set establishes EXISTENCE and DISCRIMINABILITY only. Generality comes from the ordinary holdout. Neither alone is a visual claim."
+  },
+
+  "analysis": {
+    "estimator": "ridge, alpha chosen on training folds only",
+    "protocol": "grouped 5-fold cross-validation, groups = track",
+    "reported": [
+      "out-of-fold R^2 of M_tv from B_chroma alone",
+      "out-of-fold R^2 of M_tv from the acoustic-energy set",
+      "out-of-fold R^2 of M_tv from all four baselines",
+      "the same three for M_cos",
+      "chroma event recall: fraction of top-5% M_tv frames that are in the top-20% of B_chroma",
+      "challenge-class counts, per-frame rates and per-track presence",
+      "Spearman correlations on the ordinary holdout"
+    ]
+  },
+
+  "thresholds_in_precedence_order": [
+    {"rank": 1, "outcome": "HARMONIC_MOVEMENT_ACOUSTICALLY_REDUNDANT",
+     "condition": "out-of-fold R^2 (M_tv | acoustic-energy set) >= 0.70, OR both harmonic challenge classes occupy < 0.2% of valid frames"},
+    {"rank": 2, "outcome": "HARMONIC_MOVEMENT_DERIVABLE_FROM_CHROMA",
+     "condition": "out-of-fold R^2 (M_tv | B_chroma alone) >= 0.70 AND chroma event recall >= 0.90"},
+    {"rank": 3, "outcome": "HARMONIC_MOVEMENT_INCREMENTAL",
+     "condition": "both harmonic challenge classes occupy >= 1.0% of valid frames AND appear in >= 15 of 20 tracks AND out-of-fold R^2 (M_tv | all four baselines) < 0.50"},
+    {"rank": 4, "outcome": "HARMONIC_MOVEMENT_INCONCLUSIVE", "condition": "anything else. No promotion."}
+  ],
+
+  "controls": {
+    "machinery_linear_recovery": {"requirement": ">= 0.95", "blocking": true},
+    "shuffled_labels": {"requirement": "<= 0.10", "blocking": true},
+    "control_class_must_be_populated": {
+      "requirement": "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE must be non-empty",
+      "why": "if strong onsets NEVER occur without harmonic movement, the two are inseparable in one direction and the challenge design is one-sided. An empty control class is a design warning, reported, not silently ignored."
+    },
+    "lag_rule": "inherited from the J3A amendment 2: alignment fault iff |argmax lag| >= 2 hops OR the argmax beats lag 0 by more than 0.02 absolute R^2"
+  },
+
+  "forbidden_in_this_job": [
+    "Basic Pitch", "real audio", "foundation models", "EfficientAT",
+    "chord labels", "key estimation", "tension modelling",
+    "inventing a K1 visual lever", "modifying production firmware",
+    "any visual claim (that is J3D-B)", "a metric zoo"
+  ]
+}

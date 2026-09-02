@@ -1,0 +1,373 @@
+{
+  "schema": "spectrasynq.stft_harmonic_recovery_result.v1",
+  "job": "J3G",
+  "label": "HOST-ONLY DETERMINISTIC TONAL PROJECTION - NOT A PRODUCT EFFECT, NOT FIRMWARE",
+  "git_head": "WORKCOPY",
+  "preregistration": "docs/mir/receipts/stft_harmonic_recovery/J3G_PREREGISTRATION.json",
+  "development_receipt": "docs/mir/receipts/stft_harmonic_recovery/J3G_DEV_RESULT.json",
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "primary_candidate": "C3_ROOT_SALIENCE",
+  "secondary_reported_cannot_change_outcome": "C2_PEAK_HPCP",
+  "baseline": "P0_CURRENT",
+  "final_holdout_tracks": [
+    "Track00002",
+    "Track00004",
+    "Track00006",
+    "Track00008",
+    "Track00010",
+    "Track00012",
+    "Track00014",
+    "Track00016",
+    "Track00018",
+    "Track00020"
+  ],
+  "holdout_opened_once": true,
+  "challenge_membership_on_holdout": {
+    "HARMONIC_CHANGE_FLAT_ENERGY": 1107,
+    "HARMONIC_CHANGE_NO_ONSET": 2042,
+    "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 1606
+  },
+  "LEVEL_A_B_holdout": {
+    "P0_CURRENT": {
+      "r2": 0.3604,
+      "spearman": 0.5658,
+      "top5_event_recall_in_top20": 0.7921,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7037,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8085,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2073
+      },
+      "n_frames": 75896
+    },
+    "C3_ROOT_SALIENCE": {
+      "r2": 0.3853,
+      "spearman": 0.5759,
+      "top5_event_recall_in_top20": 0.8226,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.7552,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8506,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2036
+      },
+      "n_frames": 75896
+    },
+    "C2_PEAK_HPCP": {
+      "r2": 0.4286,
+      "spearman": 0.6057,
+      "top5_event_recall_in_top20": 0.8355,
+      "challenge_recall": {
+        "HARMONIC_CHANGE_FLAT_ENERGY": 0.766,
+        "HARMONIC_CHANGE_NO_ONSET": 0.8374,
+        "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1961
+      },
+      "n_frames": 75896
+    }
+  },
+  "LEVEL_A_symbolic_r2_gain_over_baseline": 0.0249,
+  "lag_curves_holdout_REPORTED_NOT_OPTIMISED": {
+    "P0_CURRENT": {
+      "-4": 0.1888,
+      "-3": 0.263,
+      "-2": 0.3338,
+      "-1": 0.3757,
+      "0": 0.3604,
+      "1": 0.2963,
+      "2": 0.2186,
+      "3": 0.1483,
+      "4": 0.0929
+    },
+    "C3_ROOT_SALIENCE": {
+      "-4": 0.204,
+      "-3": 0.2876,
+      "-2": 0.3654,
+      "-1": 0.4075,
+      "0": 0.3853,
+      "1": 0.3095,
+      "2": 0.2226,
+      "3": 0.1461,
+      "4": 0.0875
+    }
+  },
+  "LEVEL_B_solo_stem_family_holdout": {
+    "P0_CURRENT": {
+      "overall_r2": 0.4735,
+      "overall_spearman": 0.6049,
+      "by_family": {
+        "bass": {
+          "n_stems": 12,
+          "n_frames": 72315,
+          "solo_stem_r2": 0.6617,
+          "spearman": 0.6904
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.5954,
+          "spearman": 0.7035
+        },
+        "ensemble_voice": {
+          "n_stems": 17,
+          "n_frames": 66288,
+          "solo_stem_r2": 0.2642,
+          "spearman": 0.406
+        },
+        "guitar": {
+          "n_stems": 15,
+          "n_frames": 50620,
+          "solo_stem_r2": 0.4246,
+          "spearman": 0.6444
+        },
+        "piano_keys": {
+          "n_stems": 20,
+          "n_frames": 82616,
+          "solo_stem_r2": 0.488,
+          "spearman": 0.6524
+        },
+        "synth_lead_pad": {
+          "n_stems": 8,
+          "n_frames": 32541,
+          "solo_stem_r2": 0.0674,
+          "spearman": 0.3634
+        }
+      },
+      "spread": 0.5943,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0674
+    },
+    "C3_ROOT_SALIENCE": {
+      "overall_r2": 0.4571,
+      "overall_spearman": 0.5967,
+      "by_family": {
+        "bass": {
+          "n_stems": 12,
+          "n_frames": 72315,
+          "solo_stem_r2": 0.6533,
+          "spearman": 0.6887
+        },
+        "brass": {
+          "n_stems": 4,
+          "n_frames": 16704,
+          "solo_stem_r2": 0.5782,
+          "spearman": 0.7093
+        },
+        "ensemble_voice": {
+          "n_stems": 17,
+          "n_frames": 66288,
+          "solo_stem_r2": 0.2888,
+          "spearman": 0.4257
+        },
+        "guitar": {
+          "n_stems": 15,
+          "n_frames": 50620,
+          "solo_stem_r2": 0.3373,
+          "spearman": 0.5988
+        },
+        "piano_keys": {
+          "n_stems": 20,
+          "n_frames": 82616,
+          "solo_stem_r2": 0.4905,
+          "spearman": 0.6485
+        },
+        "synth_lead_pad": {
+          "n_stems": 8,
+          "n_frames": 32541,
+          "solo_stem_r2": 0.0671,
+          "spearman": 0.3374
+        }
+      },
+      "spread": 0.5862,
+      "worst_family": "synth_lead_pad",
+      "worst_family_r2": 0.0671
+    },
+    "_n_stems": 80
+  },
+  "LEVEL_C_visual_recovery": {
+    "grammar": "J3E HARMONIC COLOUR TRANSITION, unchanged: M_REF 0.35, A_MIN 0.02, A_MAX 0.60, photons 1.0, exposure 2.2, without_floor variant, +/-2-hop event-tolerant view",
+    "grammar_modified": false,
+    "conditions": {
+      "BASELINE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 9.7329,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.1852,
+          "HARMONIC_CHANGE_NO_ONSET": 0.1753,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1501
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5005,
+          "HARMONIC_CHANGE_NO_ONSET": 0.4799,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.3574
+        },
+        "resting": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 0.1,
+          "median_deltaE": 2.3013,
+          "direction_reversal_rate": 0.1614
+        },
+        "n_frames": 75896
+      },
+      "CANDIDATE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 4.0277,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.2972,
+          "HARMONIC_CHANGE_NO_ONSET": 0.3002,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1457
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.5745,
+          "HARMONIC_CHANGE_NO_ONSET": 0.6401,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.2914
+        },
+        "resting": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 0.1,
+          "median_deltaE": 0.6956,
+          "direction_reversal_rate": 0.1181
+        },
+        "n_frames": 75896
+      },
+      "ORACLE": {
+        "threshold_deltaE_p90_of_own_resting_frames": 6.0139,
+        "consumer_time": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.3234,
+          "HARMONIC_CHANGE_NO_ONSET": 0.2679,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.0174
+        },
+        "event_tolerant": {
+          "HARMONIC_CHANGE_FLAT_ENERGY": 0.6423,
+          "HARMONIC_CHANGE_NO_ONSET": 0.5999,
+          "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE": 0.1059
+        },
+        "resting": {
+          "above_threshold_rate_VACUOUS_BY_CONSTRUCTION": 0.1004,
+          "median_deltaE": 0.6648,
+          "direction_reversal_rate": 0.0531
+        },
+        "n_frames": 75896
+      }
+    },
+    "per_metric_recovery": {
+      "HARMONIC_CHANGE_FLAT_ENERGY_recall": {
+        "baseline": 0.5005,
+        "candidate": 0.5745,
+        "oracle": 0.6423,
+        "higher_is_better": true,
+        "oracle_gap_fraction_recovered": 0.5219
+      },
+      "HARMONIC_CHANGE_NO_ONSET_recall": {
+        "baseline": 0.4799,
+        "candidate": 0.6401,
+        "oracle": 0.5999,
+        "higher_is_better": true,
+        "oracle_gap_fraction_recovered": 1.335
+      },
+      "ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE_false_response": {
+        "baseline": 0.3574,
+        "candidate": 0.2914,
+        "oracle": 0.1059,
+        "higher_is_better": false,
+        "oracle_gap_fraction_recovered": 0.2624
+      },
+      "resting_median_deltaE": {
+        "baseline": 2.3013,
+        "candidate": 0.6956,
+        "oracle": 0.6648,
+        "higher_is_better": false,
+        "oracle_gap_fraction_recovered": 0.9812
+      },
+      "direction_reversal_rate": {
+        "baseline": 0.1614,
+        "candidate": 0.1181,
+        "oracle": 0.0531,
+        "higher_is_better": false,
+        "oracle_gap_fraction_recovered": 0.3998
+      }
+    },
+    "mean_oracle_gap_fraction_recovered": 0.7001,
+    "mean_is_reported_only_because_the_outcome_thresholds_reference_it": true,
+    "POST_HOC_selectivity_margin_diagnostic": {
+      "status": "POST-HOC. NOT pre-registered. NOT part of the outcome determination. Added because the pre-registered mean gap fraction is flattered by an overshoot and would otherwise overstate the result.",
+      "why": "the HARMONIC_CHANGE_NO_ONSET gap fraction is 1.335 - the candidate RESPONDS MORE than the perfect-information oracle on that class. That is not better selectivity. Each condition's threshold is the p90 of its OWN resting frames, so a condition that is simply more reactive relative to its own resting distribution scores higher recall AND higher false response together. The candidate's false response is 0.2914 against the oracle's 0.1059 - nearly three times as reactive to non-harmonic energy. Recall alone therefore cannot be read as selectivity.",
+      "definition": "selectivity margin = mean(event-tolerant recall on the two harmonic classes) - event-tolerant false response on ACOUSTIC_CHANGE_LOW_HARMONIC_CHANGE",
+      "by_condition": {
+        "BASELINE": {
+          "mean_harmonic_recall": 0.4902,
+          "acoustic_false_response": 0.3574,
+          "selectivity_margin": 0.1328
+        },
+        "CANDIDATE": {
+          "mean_harmonic_recall": 0.6073,
+          "acoustic_false_response": 0.2914,
+          "selectivity_margin": 0.3159
+        },
+        "ORACLE": {
+          "mean_harmonic_recall": 0.6211,
+          "acoustic_false_response": 0.1059,
+          "selectivity_margin": 0.5152
+        }
+      },
+      "margin_gap_fraction_recovered": 0.4788,
+      "reading": "on the margin the candidate recovers 48% of the oracle's selectivity, against the 0.7001 headline mean. Both figures are reported; the margin is the more conservative one and should be quoted alongside."
+    },
+    "overshoot_flags": [
+      {
+        "metric": "HARMONIC_CHANGE_NO_ONSET_recall",
+        "gap_fraction": 1.335,
+        "meaning": "candidate exceeds the perfect-information oracle on this class",
+        "handling": "reported verbatim and NOT clipped, as pre-registered. It is the reason the post-hoc selectivity-margin diagnostic above exists."
+      }
+    ]
+  },
+  "outcome_conditions": {
+    "mean_gap_fraction_ge_0.50": true,
+    "each_harmonic_recall_gap_ge_0.25": true,
+    "worst_family_improves_ge_0.10": false,
+    "family_spread_shrinks_ge_0.10": false,
+    "holdout_symbolic_r2_gain_ge_0.05": false,
+    "no_chatter_pathology": true
+  },
+  "outcome": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+  "thresholds_applied": {
+    "EXISTING_STFT_HARMONIC_RECOVERY_INCONCLUSIVE": "any blocking control fails, or the final-holdout run cannot be interpreted",
+    "EXISTING_STFT_HARMONIC_RECOVERY_STRONG": {
+      "all_of": [
+        "mean oracle_gap_fraction_recovered across the five visual metrics >= 0.50",
+        "oracle_gap_fraction_recovered >= 0.25 on EACH of the two harmonic recall metrics individually",
+        "worst-family solo R-squared improves by >= 0.10 absolute AND family max-minus-min spread shrinks by >= 0.10",
+        "final-holdout symbolic movement R-squared improves by >= 0.05 absolute over P0",
+        "no timing or chatter pathology: candidate direction-reversal rate <= 1.5x baseline AND candidate acoustic false response <= baseline"
+      ],
+      "interpretation": "harmonic intelligence appears recoverable with the frontend SpectraSynq already pays for. No Basic Pitch, no neural student. Next step is product-feasibility / M85 implementation of the minimal winning transform."
+    },
+    "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL": {
+      "any_of": [
+        "final-holdout symbolic movement R-squared improves by >= 0.05 absolute over P0",
+        "mean oracle_gap_fraction_recovered >= 0.20"
+      ],
+      "and_not": "the STRONG conditions",
+      "interpretation": "same-STFT conventional MIR helps but does not close harmonic perception. PM decides whether another deterministic refinement is warranted or whether learned / alternate-frontend research earns its cost."
+    },
+    "EXISTING_STFT_HARMONIC_RECOVERY_FAIL": {
+      "all_of": [
+        "no candidate improves final-holdout symbolic movement R-squared by >= 0.02 absolute over P0",
+        "mean oracle_gap_fraction_recovered < 0.05"
+      ],
+      "interpretation": "the existing STFT has been reasonably exhausted for this construct. ONLY THEN reconsider CQT/alternate frontend, real-audio teacher, Basic Pitch-class teacher paths, a tiny learned estimator, or source-conditioned approaches where independently justified."
+    }
+  },
+  "student_io_frozen": false,
+  "titan": false,
+  "production_firmware_changed": false,
+  "basic_pitch_run": false,
+  "foundation_model_run": false,
+  "cqt_run": false,
+  "source_separator_run": false,
+  "neural_student_trained": false,
+  "J3D_mutated": false,
+  "J3E_mutated": false,
+  "J3F_mutated": false,
+  "SECONDARY_C2_PEAK_HPCP_information_only": {
+    "status": "pre-declared secondary. Level A/B on the holdout only, no visual test. CANNOT change this job's outcome and was not eligible to become the winner.",
+    "holdout_r2": 0.4286,
+    "holdout_r2_gain_over_baseline": 0.0682,
+    "beats_the_primary_on": "symbolic R-squared (0.4286 vs 0.3853), Spearman, top-5% event recall, HARMONIC_CHANGE_FLAT_ENERGY recall and acoustic false response. The primary beats it only on HARMONIC_CHANGE_NO_ONSET recall.",
+    "would_the_outcome_have_differed": "ALMOST CERTAINLY NOT, but this is an INFERENCE, not a measurement. C2 would have satisfied the >= 0.05 symbolic R-squared condition the primary missed (+0.0682 against +0.0249). STRONG also requires both timbre-family conditions, and on DEVELOPMENT C2 failed both: worst-family improvement over P0 was +0.006 against the +0.10 required, and its family spread was 0.8973 against P0's 0.8599 - WIDER, not narrower by 0.10. C2's HOLDOUT family numbers and its visual test were never run, so the claim rests on the development measurement plus the fact that no candidate came close to either family threshold on either split.",
+    "disclosure": "the analyst's amended tie-break would have made C2 the primary. That tie-break was withdrawn from use because it was written after the fixture ordering was known. See the pre-registration's selection-resolution amendment."
+  }
+}

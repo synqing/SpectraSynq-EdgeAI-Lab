@@ -1,0 +1,52 @@
+{
+  "schema": "spectrasynq.register_target_diagnostic.v1",
+  "job": "J3C",
+  "label": "SYNTHETIC_UPPER_BOUND",
+  "date": "2026-09-01",
+  "kind": "DESCRIPTIVE PROPERTIES OF THE LABELS. No alternative target was scored for recoverability. No new construct was tested.",
+  "why_this_exists": "Before reporting 'the frontend cannot recover register', the construct-validity doctrine requires asking whether the TARGET was an adequate proxy for register. It was not obviously so, and these are the label statistics that decide it.",
+
+  "n_frames": 145928,
+  "tracks": 20,
+  "quantities": {
+    "target_global_velocity_weighted_mean_midi": {"mean": 59.69, "sd": 5.24},
+    "highest_sounding_pitch": {"mean": 76.03, "sd": 8.40},
+    "lowest_sounding_pitch": {"mean": 37.18, "sd": 8.11}
+  },
+
+  "correlations": {
+    "global_mean_vs_highest_voice": 0.598,
+    "global_mean_vs_lowest_voice": 0.465,
+    "highest_voice_vs_lowest_voice": 0.066,
+    "global_mean_vs_n_active_notes": 0.042
+  },
+
+  "hypothesis_FALSIFIED": {
+    "claim": "the global weighted mean is mostly an arrangement-bookkeeping artefact - it moves when instruments enter and leave, not when the music changes register",
+    "test": "R^2 of predicting the target from polyphony count alone",
+    "result": 0.002,
+    "verdict": "FALSIFIED. Polyphony count explains essentially none of the target. The target is not a note-count artefact."
+  },
+
+  "hypothesis_SUPPORTED": {
+    "claim": "a single global register scalar is a poor proxy for 'register state', because the texture's top and bottom move independently",
+    "evidence": [
+      "corr(highest voice, lowest voice) = 0.066 - the melodic top and the bass are very nearly UNCORRELATED across 145,928 frames",
+      "the global weighted mean correlates only 0.598 with the top voice and 0.465 with the bottom, so it tracks NEITHER well",
+      "the top voice has sd 8.40 semitones against the target's 5.24 - averaging compresses the actual register motion by roughly 40%",
+      "per-track corr(global mean, top voice) spans 0.408 to 0.772, i.e. how badly the mean stands in for the melody is itself arrangement-dependent"
+    ],
+    "verdict": "SUPPORTED. Register is not one scalar. Collapsing an independently-moving top voice and bass voice into one weighted mean destroys both."
+  },
+
+  "consequence_for_reading_J3C": {
+    "what_J3C_established": "the existing frontend does not recover the GLOBAL VELOCITY-WEIGHTED MEAN MIDI NUMBER. Best of 12 deterministic estimators: R^2 0.168. Best of 2 bounded nonlinear probes: R^2 0.199. Against a pre-registered SUFFICIENT bar of R^2 >= 0.70 and MAE <= 3.0 semitones.",
+    "what_J3C_did_NOT_establish": "that the frontend cannot expose register. The quantity it failed to recover is one that averages two nearly-independent musical voices together, so a spectral estimator has no single thing to find.",
+    "the_forbidden_inference": "'register is absent from this frontend' is NOT supported by this evidence, because the target lacked construct validity for the broader notion of register.",
+    "the_supported_inference": "the GLOBAL MEAN formulation of register should not be carried forward. Voice- or source-conditioned register is the formulation that the label statistics say actually exists."
+  },
+
+  "still_says_nothing_about": ["register's visual value", "whether register needs machine learning", "real audio", "any other tonal or melodic construct"],
+  "student_io_frozen": false,
+  "titan": false
+}

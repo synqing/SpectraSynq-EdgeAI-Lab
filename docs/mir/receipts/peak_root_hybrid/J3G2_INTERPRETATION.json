@@ -1,0 +1,118 @@
+{
+  "schema": "spectrasynq.peak_root_hybrid_interpretation.v1",
+  "job": "J3G.2",
+  "date": "2026-09-02",
+  "outcome": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+  "fresh_validation_required": "NO",
+  "label": "POST_HOC_MECHANISTIC_PROBE - the 20 BabySlakh tracks are CONSUMED. Nothing here is promotable.",
+
+  "the_one_sentence": "Peak selection and root inference combine exactly as hypothesised on the information and visual axes - the hybrid is the best harmonic extractor and the best visual selectivity the programme has produced from this STFT - and they combine DESTRUCTIVELY on the timbre axis, which is the axis the outcome was bound to.",
+
+  "J3G2_A_answer_C2_level_C_confirmation": {
+    "label": "POST_HOC_LEVEL_C_CONFIRMATION",
+    "question": "does C2's superior symbolic information convert into visual value?",
+    "answer": "NO, and that is the most decision-relevant thing in this job.",
+    "evidence": {
+      "C2_holdout_symbolic_r2": 0.4286,
+      "C3_holdout_symbolic_r2": 0.3853,
+      "C2_selectivity_margin": 0.2043,
+      "C3_selectivity_margin": 0.3159,
+      "C2_margin_gap_recovered": 0.187,
+      "C3_margin_gap_recovered": 0.4788,
+      "C2_resting_median_deltaE": 2.6896,
+      "baseline_resting_median_deltaE": 2.3013,
+      "C3_resting_median_deltaE": 0.6956,
+      "oracle_resting_median_deltaE": 0.6648,
+      "C2_reversal_rate": 0.1809,
+      "baseline_reversal_rate": 0.1614,
+      "C3_reversal_rate": 0.1181
+    },
+    "reading": "C2 carries MORE harmonic information than C3 and converts LESS of it into visual selectivity - 19% of the oracle margin gap against C3's 48%. On the two restraint metrics C2 is WORSE THAN THE CURRENT FRONTEND: it churns colour harder at rest (2.69 against 2.30) and reverses direction more often (0.181 against 0.161). Its information is real; its visual behaviour is not.",
+    "consequence_for_J3G": "the J3G selection - which bound the outcome to C3 on a pre-contamination tie-break, while I disclosed that C2 looked stronger on information - turns out to have been the right binding for the axis the programme actually cares about. This is confirmation after the fact, not validation: the tracks were already consumed. It does NOT change J3G's outcome and C3 remains the J3G winner on the pre-registered grounds, not on these numbers."
+  },
+
+  "J3G2_B_the_hybrid": {
+    "label": "POST_HOC_MECHANISTIC_PROBE",
+    "hypothesis_confirmed_on_the_information_axis": {
+      "holdout_symbolic_r2": {"baseline": 0.3604, "C2": 0.4286, "C3": 0.3853, "hybrid": 0.4386},
+      "flat_energy_challenge_recall": {"baseline": 0.7037, "C2": 0.7660, "C3": 0.7552, "hybrid": 0.7949},
+      "no_onset_challenge_recall": {"baseline": 0.8085, "C2": 0.8374, "C3": 0.8506, "hybrid": 0.8668},
+      "reading": "the hybrid is the best harmonic extractor measured anywhere in this programme, on every information metric, and the mechanism is exactly the one predicted: the mainlobe-leakage candidates that C3 was accumulating (C# and B on the single-note fixture) fall to exactly 0.000 when the evidence comes from interpolated peaks instead of max-in-window bin energy."
+    },
+    "hypothesis_confirmed_on_the_visual_axis": {
+      "selectivity_margin": {"baseline": 0.1328, "C2": 0.2043, "C3": 0.3159, "hybrid": 0.3347, "oracle": 0.5152},
+      "margin_gap_recovered": {"C2": 0.187, "C3": 0.4788, "hybrid": 0.528},
+      "reading": "the hybrid recovers 53% of the oracle's selectivity margin, the best figure the programme has produced from the existing STFT.",
+      "but_it_does_not_inherit_C3s_restraint": "resting median delta-E 1.3355 against C3's 0.6956 and the oracle's 0.6648, and a reversal rate of 0.1708 - slightly WORSE than the current frontend's 0.1614. C3 remains the only candidate that reproduces the oracle's stillness. Selectivity margin and visual stillness are different properties and the hybrid buys one without the other."
+    },
+    "hypothesis_FALSIFIED_on_the_timbre_axis": {
+      "measurement_set": "all 20 tracks, 157 pitched stems - the same set and code path as the published J3F baseline",
+      "worst_family_r2": {"baseline": 0.0965, "C2": -0.128, "C3": 0.1137, "hybrid": -0.6116},
+      "family_spread": {"baseline": 0.4989, "C2": 0.7340, "C3": 0.4645, "hybrid": 1.2137},
+      "T1_worst_family_improvement": -0.7081,
+      "T2_spread_shrink": -0.7148,
+      "required": "+0.10 on either",
+      "reading": "not a marginal miss. The hybrid makes the timbre disparity roughly two and a half times WORSE than the current frontend."
+    }
+  },
+
+  "the_mechanism_that_explains_it": {
+    "what_breaks": "chromatic_percussion collapses from +0.293 to -0.612, and synth_lead_pad from +0.097 to +0.006. Both peak-based candidates damage chromatic percussion; the hybrid damages it catastrophically.",
+    "why": "chromatic percussion - glockenspiel, vibraphone, marimba, tubular bells - is INHARMONIC and fast-decaying. Peak picking on inharmonic transients yields an unstable peak set frame to frame, and the root-inference layer then compounds the error, because inharmonic partials fit NO candidate's harmonic template, so the octave gate output jumps. Root inference is precisely the wrong model for an inharmonic source, and peaks strip away the broadband floor that was accidentally carrying some correlation for those families.",
+    "the_general_statement": "under bounded deterministic projection over this STFT, the information/visual axis and the timbre axis are effectively ORTHOGONAL, and in the peak-based family they are ANTI-correlated: every gain in harmonic selectivity was paid for in timbre robustness. C3 is the only candidate that moved timbre in the right direction at all - worst family +0.017, spread +0.034 - and that is an order of magnitude short of the +0.10 threshold."
+  },
+
+  "sensitivity_check": {
+    "concern": "chromatic_percussion carries only 4 of 157 stems, so a large negative R-squared there could be one pathological stem dominating the spread",
+    "test": "recompute the spread and worst family with every family under 10 stems removed (drops brass and chromatic_percussion)",
+    "result": {"T1_excluding_thin": -0.0903, "T2_excluding_thin": -0.0921, "either_met": false},
+    "reading": "the conclusion does NOT depend on the thin family. Excluding brass and chromatic percussion, the hybrid still widens the spread by 0.092 and lowers the worst family by 0.090. Both are still the wrong sign and still an order of magnitude from the threshold."
+  },
+
+  "what_this_outcome_means_and_does_not_mean": {
+    "means": "bounded deterministic pitch-class projection over this 16 kHz / 2048-point STFT has not solved the dominant timbre sensitivity, and the obvious deterministic projection family is now closed. Four projections plus one mechanistically motivated hybrid, spanning soft filterbank, peak-only voting, harmonic root inference and their combination, all left the worst family within noise of the baseline or made it substantially worse.",
+    "does_NOT_mean": [
+      "that the STFT itself is fundamentally insufficient - that was not tested",
+      "that harmonic intelligence is unreachable from this frontend - J3G established the opposite on the visual axis, and J3G.2 strengthened it",
+      "that CRP fails - C4 remains INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION and was not repaired here",
+      "that source separation has value here - J3F closed that for this construct, and nothing in J3G.2 reopens it"
+    ],
+    "explicitly_NOT_pre_authorised_by_this_failure": ["CQT", "alternate spectral resolution", "a tiny learned tonal estimator", "a real-audio teacher", "a properly implemented signed CRP-style probe", "a different same-STFT timbre-normalisation strategy"],
+    "why_not": "the failure of one family of hypotheses authorises nothing. Each of those options is compared on its own merits by the PM. The one piece of evidence J3G.2 contributes to that comparison is the mechanism above: the failure is concentrated in INHARMONIC and slow-attack synthetic timbres, which is a fact about what the representation assumes, not about spectral resolution."
+  },
+
+  "fresh_validation_trigger": {
+    "fired": false,
+    "why": "the trigger requires BOTH material timbre improvement AND competitive visual selectivity. The visual condition was met - the hybrid has the best selectivity margin in the programme. The timbre condition failed in the wrong direction by 0.71.",
+    "a_decision_that_belongs_to_the_PM_not_to_me": "a PM could reasonably want the hybrid's VISUAL result validated on fresh unseen songs even though the timbre trigger did not fire, because 53% of the oracle margin from the existing STFT is the strongest same-STFT visual number the programme has. That is a scope decision, not a finding, and this receipt does not make it. What it does state is that promotion from the 20 BabySlakh tracks is impossible in either case - they are consumed."
+  },
+
+  "process_note": {
+    "third_instance_of_the_same_analyst_error": "for the third time in J3G/J3G.2 I pre-registered a blocking gate stricter than the brief and had to withdraw or demote it. Here it was F2's second clause - HARMONIC_NOTE non-root mass must beat the current frontend - which the hybrid misses by 0.017. The Captain's four stated fixture requirements all PASS. The corrective is behavioural: pre-register exactly the criteria in the brief and put anything I additionally want to know in the REPORTED column.",
+    "why_it_could_not_bias_this_outcome": "the outcome is decided by T1/T2 on the timbre axis, which that clause does not touch. Demoting it made the timbre question answerable; it could not make the answer better - and the answer came back negative.",
+    "the_demoted_diagnostic_is_still_informative": "the hybrid deposits MORE non-root mass on a single note than the current frontend (0.489 against 0.472) despite eliminating the leakage candidates, because the residual is SUBHARMONIC: MIDI 41 (f0/3) holds 0.147 and MIDI 32 (f0/5) holds 0.072. A real peak at f0 is an odd harmonic of f0/3 and of f0/5, so an odd-harmonic gate cannot suppress them. This is the classic sub-multiple ambiguity of harmonic summation, inherent to the declared formula, reported rather than repaired."
+  },
+
+  "preserved_unchanged": {
+    "J3G_outcome": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G_winner": "C3_ROOT_SALIENCE",
+    "two_independent_J3G_conclusions": [
+      "1. Same-STFT deterministic tonal projection CAN recover a material fraction of the J3E harmonic visual advantage.",
+      "2. NONE of the tested projections materially resolves TIMBRE_FRONTEND_DOMINANT."
+    ],
+    "J3G_2_strengthens_both_without_merging_them": "conclusion 1 is now stronger - the hybrid reaches 53% of the oracle selectivity margin. Conclusion 2 is now much stronger and better explained - the failure is concentrated in inharmonic and slow-attack synthetic timbres and is made WORSE by the mechanism that improves conclusion 1.",
+    "minus_one_hop_anomaly": "still unresolved, still not optimised, still localised upstream of the pitch-class projection",
+    "C4_CRP": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION, not repaired, not cited as evidence against CRP",
+    "J3H": "independently valid and unaffected"
+  },
+
+  "status": {
+    "original_J3G_outcome_changed": false,
+    "original_holdout_treated_as_fresh": false,
+    "cqt_run": false, "basic_pitch_run": false, "neural_student_trained": false,
+    "source_separator_run": false, "foundation_model_run": false,
+    "product_firmware_changed": false, "titan": false, "student_io_frozen": false,
+    "J3D_mutated": false, "J3E_mutated": false, "J3F_mutated": false, "J3G_mutated": false,
+    "J3E_visual_grammar_altered": false, "lag_optimised": false
+  }
+}

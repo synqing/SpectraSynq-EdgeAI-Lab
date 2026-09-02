@@ -1,0 +1,97 @@
+{
+  "schema": "spectrasynq.crp_movement_probe_interpretation.v1",
+  "job": "J3M", "date": "2026-09-02",
+  "outcome": "CRP_MOVEMENT_FAIL",
+  "fresh_validation_required": "NO",
+  "label": "POST_HOC_CRP_MECHANISTIC_PROBE - HOST information probe on consumed data. Nothing promotable.",
+
+  "the_one_sentence": "A faithful CRP(55) with a verified 88-band multirate elliptic pitch filterbank does not suppress spectral-envelope-driven harmonic movement - on a constant-pitch note with a sweeping brightness it produces MORE movement than either existing representation - and the one family where it does cut false movement, reed_pipe by 31.8%, pays for it with a 0.043 recall drop, twice the guard.",
+
+  "implementation_fidelity_established": {
+    "verdict": "YES - the probe is a fair test of published CRP, not a repeat of the invalid C4",
+    "filterbank": "88 elliptic bands, MIDI 21-108, zero-phase filtfilt, multirate, published pitch-group boundaries preserved",
+    "measured_passband": "flat to within 0.02 dB across +/- 25 cents - reproducing the published robustness claim",
+    "measured_adjacent_semitone_rejection": "-49.5 dB median, -49.3 dB worst - meeting the 50 dB design target and the published claim of properly separating adjacent notes",
+    "crp_chain": "log10(1 + 1000*v), Mueller's exact 120x120 orthonormal DCT-II, rows 1-54 zeroed (CRP(55)), inverse, mod-12 fold, l2 norm at 1e-6 threshold, no smoothing",
+    "signed_preserved": "minimum value -0.754 across stems, negative mass fraction 0.500, no rectification, no absolute value, no row-min shift, no floor",
+    "canonical_configuration_only": "CRP(55). No cutoff sweep. No parameter optimisation against the corpus."
+  },
+
+  "THE_SMOKING_GUN_the_mechanism_fixture": {
+    "stimulus": "one sustained MIDI-60 note, constant pitch, harmonic amplitudes sweeping from a 1/h distribution to a much brighter one over 2.5 s. Any movement reported is PURE spectral-envelope contamination.",
+    "median_movement": {"C3_ROOT_SALIENCE": 0.01428, "P0_CURRENT": 0.01801, "CRP": 0.02287},
+    "reading": "CRP produces 60% MORE envelope-driven movement than C3 and 27% more than the current frontend. This is a deterministic fixture, not a corpus statistic, and it falsifies the central hypothesis directly: in this configuration CRP does not suppress envelope-driven movement, it amplifies it.",
+    "my_interpretation_flagged_as_such": "the DCT liftering discards LOW cepstral coefficients, which carry the coarse spectral envelope. A brightness sweep changes the relative amplitudes of INDIVIDUAL partials - fine quefrency structure, which the liftering retains and, by removing the coarse component, relatively amplifies. CRP is invariant to the smooth envelope, not to partial-level evolution. That is a hypothesis about why, not a measurement."
+  },
+
+  "primary_families_the_briefs_conditions": {
+    "synth_lead_pad": {
+      "false_movement": {"C3": 0.0288, "CRP": 0.0328, "change": "+13.9%", "reduced": false},
+      "event_tolerant_recall": {"C3": 0.5474, "CRP": 0.5196, "drop": 0.0278, "guard_0.02": "FAILED"},
+      "verdict": "fails BOTH clauses on the single most important family. CRP does the opposite of what was hypothesised."
+    },
+    "reed_pipe": {
+      "false_movement": {"C3": 0.0289, "CRP": 0.0197, "change": "-31.8%", "reduced": true},
+      "event_tolerant_recall": {"C3": 0.6505, "CRP": 0.6071, "drop": 0.0434, "guard_0.02": "FAILED"},
+      "verdict": "the mechanism DOES work here - a real, substantial cut in false movement - but the gain is bought with more than double the permitted recall loss. This is precisely the 'apparent gain by violating the guards' case the brief names."
+    },
+    "outcome_clause_triggered": "both: CRP does not reduce false movement in one targeted timbre, AND obtains its gain in the other by violating the recall guard."
+  },
+
+  "mixture_visual_all_three_guards_fail": {
+    "CONTROL_C3_state_C3_movement": {"selectivity_margin": 0.2812, "resting_median_deltaE": 1.0141, "reversal_rate": 0.1289},
+    "TREATMENT_C3_state_CRP_movement": {"selectivity_margin": 0.2574, "resting_median_deltaE": 1.5069, "reversal_rate": 0.1794},
+    "ORACLE": {"selectivity_margin": 0.4073, "resting_median_deltaE": 0.9388, "reversal_rate": 0.0693},
+    "reading": "CRP movement makes the visual system LESS selective and LESS restrained. Resting colour churn rises 49% and direction reversals rise 39%. This is exactly the failure mode the non-negotiable criterion exists to catch, and it is caught."
+  },
+
+  "the_threat_to_this_conclusion_was_tested_and_closed": {
+    "the_threat": "the pre-registration declared a 128 ms window instead of the published 200 ms and predicted it would bias CRP towards more responsiveness - the exact direction of the observed failure.",
+    "the_test": "CRP recomputed at the published 200 ms window on the same hop grid, both primary families and all mixtures. One test of one declared deviation, not a sweep.",
+    "the_result": "the published window makes CRP WORSE - synth recall 0.5196 to 0.4813, reed recall 0.6071 to 0.5289, reed's false-movement gain collapsing from -31.8% to -4.2% - and does not restore any restraint guard (resting delta-E 1.42, reversals 0.174, margin still below control).",
+    "conclusion": "the deviation was FLATTERING CRP. The failure is CRP's, not the window's."
+  },
+
+  "THE_UNEXPECTED_FINDING_AND_A_CORRECTION_TO_MY_OWN_RANKING": {
+    "what_happened": "on BASS, CRP is dramatically better than anything the programme has measured: framewise R-squared 0.5539 to 0.8255, event-tolerant recall 0.8935 to 0.9208, false movement 0.0034 to 0.0014. Piano also improves on R-squared (0.5264 to 0.5683) and false movement (0.0071 to 0.0054).",
+    "why_this_is_probably_not_timbre_invariance": "the envelope fixture shows the liftering does not suppress envelope-driven movement. What CRP also brings is a pitch filterbank with REAL frequency resolution at low pitches - obtained by multirate decimation - where the 2048-point STFT has fewer than one bin per semitone below MIDI 49. The bass register is exactly the zone J3F Q0a flagged as analytically unresolvable.",
+    "the_correction_I_owe": "in the J3L ranking I argued against prioritising frequency resolution on the grounds that bass was already one of the strongest families at 0.591 despite living in the unresolvable zone. That argument was too strong. Bass was ADEQUATE, not saturated: proper pitch resolution moves it to 0.826. Roughly 0.27 R-squared was being left on the table by the STFT's low-frequency resolution. That does not make CQT the answer - it is not evidence about the synth or percussion residual, which is where the product problem lives - but it materially weakens the anti-resolution argument and the PM should have it.",
+    "attribution_is_INTERPRETATION_not_measurement": "separating the filterbank's resolution from the DCT liftering requires one extra arm - pitch-filterbank energy folded straight to chroma with NO liftering. That is a new representation variant and was not run, because the brief authorised a CRP probe, not a zoo. It is the single diagnostic that would settle the attribution and it is named here, not executed."
+  },
+
+  "chromatic_percussion_reported_separately": {
+    "C3": {"framewise_r2": 0.1598, "event_tolerant_recall": 0.6284, "false_movement": 0.0158},
+    "CRP": {"framewise_r2": -0.2879, "event_tolerant_recall": 0.6631, "false_movement": 0.0194},
+    "handling_per_the_brief": "NOT evidence against the CRP hypothesis - J3M's mechanism is spectral-envelope invariance for sustained harmonic timbres, and this family violates a different assumption.",
+    "correct_reading": "inharmonic spectra violate the assumptions of simple harmonic-template pitch estimators and can make their tonal estimate unreliable. This is NOT 'absence of harmony' - a vibraphone or bell can carry perceptually meaningful pitch and harmony. It is where confidence gating may later become useful.",
+    "note": "recall actually IMPROVES here while framewise R-squared collapses - another instance of the programme's standing lesson that R-squared and event behaviour are different claims."
+  },
+
+  "what_this_closes_and_what_it_does_not": {
+    "closes": "spectral-envelope suppression through CRP(55) does not solve the mechanism-A residual under this construct. The highest-ranked representation hypothesis has had a faithful test and failed.",
+    "does_NOT_close": [
+      "CRP as a low-register resolution device - the bass result is the strongest single-family improvement the programme has produced and was not the hypothesis under test",
+      "timbre invariance as an idea - only this particular liftering, at the canonical cutoff, against this particular contamination",
+      "NNLS, which attacks a different mechanism and is NOT automatically authorised by this failure"
+    ],
+    "mandated_next_action_per_the_brief": "STOP. Return to the PM. Do NOT automatically run NNLS. The PM decides between confidence/reliability gating for the inharmonicity problem, NNLS-class harmonic decomposition, or another representation hypothesis."
+  },
+
+  "preserved_unchanged": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT", "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT", "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL", "J3K": "MIXTURE_TARGET_STATE_IMMATERIAL / ATTRIBUTION_IMMATERIAL",
+    "C4": "INVALID_CRP_IMPLEMENTATION_FOR_CONCLUSION - not substituted, not repaired, and J3M does not rehabilitate or replace it; J3M is an independent faithful test",
+    "target": "the rectangular MIDI oracle, unmodified",
+    "visual_grammar": "J3E, unaltered in every constant"
+  },
+
+  "status": {
+    "J3D_mutated": false, "J3E_mutated": false, "J3F_mutated": false, "J3G_mutated": false,
+    "J3I_mutated": false, "J3J_mutated": false, "J3K_mutated": false,
+    "visual_grammar_altered": false, "target_modified": false,
+    "nnls_run": false, "cqt_run": false, "basic_pitch_run": false, "neural_estimator": false,
+    "foundation_model": false, "source_separator_run": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false
+  }
+}
