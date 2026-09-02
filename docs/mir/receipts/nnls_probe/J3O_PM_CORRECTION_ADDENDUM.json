@@ -1,0 +1,37 @@
+{
+  "schema": "spectrasynq.pm_correction_addendum.v1",
+  "job": "J3O",
+  "label": "PM CORRECTION TO ONE CAUSAL SENTENCE. The J3O receipts are NOT edited. This addendum narrows an over-strong mechanistic claim; it changes no measurement and no outcome.",
+  "date": "2026-09-02",
+  "raised_by": "PM",
+  "why_an_addendum_rather_than_an_edit": "the programme rule is that receipts are immutable once written, and the J3P brief repeats 'Do not mutate J3O'. The correction is therefore recorded here and the original sentence is preserved verbatim so the record shows exactly what was claimed and what it was narrowed to.",
+
+  "location": "docs/mir/receipts/nnls_probe/J3O_INTERPRETATION.json -> WHAT_THE_MECHANISM_ACTUALLY_DID -> why_they_come_apart",
+
+  "original_text_preserved_verbatim": "the NNLS front end whitens the log-frequency spectrum with a running local mean and standard deviation before fitting. Whitening is what makes note attribution robust to timbre, and it is also what makes the representation RESPOND to changes in spectral shape, because the whitened spectrum is by construction a description of local spectral contrast. A brightness sweep changes local spectral contrast at every partial. C3's root-salience gate suppresses that instead, which is why C3 is duller and better.",
+
+  "what_is_wrong_with_it": "it names WHITENING as the cause. J3O did not run a whitening ablation, so whitening was never isolated from the other stages of the shared front end (fine log-frequency mapping at 3 bins per semitone, tuning interpolation, and the triangular semitone mapping). The sentence asserts a mechanism the design cannot distinguish.",
+
+  "corrected_claim": "the shared resolved + tuned + whitened NNLS front end is substantially more sensitive to constant-pitch spectral-envelope evolution than C3 - on the brightness-sweep fixture it moves about 2.3 times as much (0.02968 and 0.03013 against C3's 0.01301) - and the NNLS transcription stage adds essentially nothing useful to restraint on either primary family. WHICH STAGE OF THAT FRONT END CAUSES THE EXTRA SENSITIVITY IS NOT ESTABLISHED.",
+
+  "measured_facts_that_remain_unchanged": {
+    "brightness_sweep_median_movement": {"C3_ROOT_SALIENCE": 0.01301, "NNLS_FRONTEND_ONLY": 0.02968, "NNLS_NOTES": 0.03013},
+    "ratio_frontend_only_to_C3": 2.28,
+    "ratio_nnls_notes_to_C3": 2.32,
+    "transcription_step_effect_on_false_movement": {
+      "synth_lead_pad": {"NNLS_FRONTEND_ONLY": 0.0340, "NNLS_NOTES": 0.0345},
+      "reed_pipe": {"NNLS_FRONTEND_ONLY": 0.0228, "NNLS_NOTES": 0.0247}
+    }
+  },
+
+  "the_ablation_that_would_settle_it": {
+    "what": "re-run the identical two arms with the plugin's whitening parameter varied, holding everything else fixed",
+    "status": "NOT AUTHORISED and NOT RECOMMENDED NOW. The PM's judgement is that the measured claim is sufficient for the decision already taken, and the lane has moved on to reliability.",
+    "if_ever_wanted": "it is one extra parameter value on the same pinned binary and the same caches - cheap, but it answers a question nobody currently needs answered."
+  },
+
+  "scope": "this addendum narrows ONE mechanistic sentence. It does not change NNLS_RESTRAINT_FAIL, any metric, any control, any threshold, or any other statement in the J3O receipts.",
+  "outcome_unchanged": "NNLS_RESTRAINT_FAIL",
+  "J3O_mutated": false,
+  "rerun_performed": false
+}

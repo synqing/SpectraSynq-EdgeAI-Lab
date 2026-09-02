@@ -1,0 +1,34 @@
+{
+  "schema": "spectrasynq.commit_binding.v1",
+  "job": "J3O",
+  "label": "COMMIT BINDING ONLY. Bookkeeping. NO SCIENTIFIC CHANGES. No rerun. Nothing in this file alters any J3O measurement, threshold, control or outcome.",
+  "date": "2026-09-02",
+  "why_this_file_exists": "the J3O receipts were written before the commit existed, so every one of them carries git_head UNKNOWN. This binds them to the commit that contains them.",
+  "repository": "SpectraSynq-EdgeAI-Lab",
+  "branch": "j3o-nnls-restraint-probe",
+  "commit_sha": "c2d3ed67faf40ce1f8fab56b390f97f46b5bbff8",
+  "commit_sha_short": "c2d3ed6",
+  "parent_commit_sha": "f84b170c96a667d17c2276a37cb0f253794e2a72",
+  "tree_sha": "40ce2b0831d199d251b1caaef1a150ec856b9a33",
+  "author": "SpectraSynq",
+  "commit_date": "2026-09-02T16:32:51+00:00",
+  "receipt_sha256_as_committed": {
+    "docs/mir/receipts/nnls_probe/J3O_PREREGISTRATION.json": "1d0fa08ffa0c0030a8be0a3a608806b34fe9d1c6c0a069aaae9f31d30071a25b",
+    "docs/mir/receipts/nnls_probe/J3O_RESULT.json": "1e2706dd7c950c4febb8e9224f8ae327b92f6879dff3cdbf711bb27e5ea196a0",
+    "docs/mir/receipts/nnls_probe/J3O_VISUAL.json": "3565258c878f472218bfd45bef432a1895e12818419767892746fd22dc18280f",
+    "docs/mir/receipts/nnls_probe/J3O_NULL_DIAGNOSTIC.json": "21544a6a8cafb5adbfbdedefb51be44730a83f5f5378e93ce2458fcbdc276b19",
+    "docs/mir/receipts/nnls_probe/J3O_INTERPRETATION.json": "51220f08d27b1642c3c8756857882254fa8b161cd9cd883dd02f57408d9b050e"
+  },
+  "git_head_field_in_those_receipts": "UNKNOWN - correct at the time of writing and DELIBERATELY LEFT AS WRITTEN. This file supplies the binding rather than editing five immutable receipts after the fact.",
+  "code_committed_in_the_same_commit": [
+    "scripts/j3o_nnls_cache.py",
+    "scripts/j3o_nnls_probe.py",
+    "scripts/j3o_null.py",
+    "scripts/j3o_visual.py",
+    "tests/test_tonal_projection.py"
+  ],
+  "reproduction_note": "re-running scripts/j3o_nnls_probe.py against the same caches reproduces J3O_RESULT.json exactly apart from the git_head field. Verified before commit.",
+  "no_rerun_performed_for_this_file": true,
+  "outcome_unchanged": "NNLS_RESTRAINT_FAIL",
+  "J3O_mutated": false
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "spectrasynq.cross_view_reliability_prereg.v1",
+  "job": "J3P",
+  "label": "CROSS-VIEW RELIABILITY GATE. HOST information probe. No new representation, no new transform, no product frontend implied.",
+  "date": "2026-09-02",
+  "written_before_any_gated_metric": true,
+
+  "the_only_question": "Can disagreement between two independently useful tonal views identify moments where C3 harmonic movement should NOT be trusted?",
+
+  "what_changed_in_the_programme": "the lane is no longer 'can representation X estimate harmony better?'. Four candidates have now answered that with 'yes in some sense, and the lights get worse'. J3P asks instead whether we can know WHEN our conservative representation is trustworthy.",
+
+  "roles_which_must_not_be_confused": {
+    "C3_ROOT_SALIENCE": "the STATE and the MOVEMENT estimator under test. Unchanged.",
+    "FB_LOG_CHROMA": "a RELIABILITY WITNESS ONLY. It never supplies state and never supplies movement.",
+    "explicitly_not_fusion": "this is not an average, a blend, or a fusion of two chroma vectors. The C3 state is NEVER replaced by FB_LOG."
+  },
+
+  "inputs": {
+    "reuse_only": true,
+    "C3_ROOT_SALIENCE": "from the existing J3G stem cache, built by the declared carry-forward with winner P0_CURRENT, L1 normalised",
+    "FB_LOG_CHROMA": "from the existing J3N cached pitch-energy surfaces via the shared log_pitch() and fb_log_chroma_from_log(), unchanged",
+    "no_new_transform": true,
+    "nnls_used": false,
+    "crp_used": false,
+    "causality_disclosure": "the J3N multirate filterbank uses zero-phase filtering and is therefore NON-CAUSAL. That is acceptable here because the question is whether the RELIABILITY INFORMATION EXISTS. A positive result does NOT authorise this filterbank as a product dependency."
+  },
+
+  "THE_ONE_CONFIDENCE_SIGNAL": {
+    "no_signal_zoo": true,
+    "endpoint_state_agreement": "A(t) = 1 - 0.5 * L1( C3_state(t), FB_state(t) )",
+    "transition_confidence": "C(t) = min( A(t), A(t-8) )",
+    "gated_movement": "M_GATED(t) = C3_movement(t) * C(t)",
+    "range_argument": "both states are non-negative and L1-normalised, so 0.5*L1 lies in [0,1] and therefore A and C lie in [0,1]. No clipping is applied and none is needed.",
+    "lag": "8 hops, the existing movement lag, so the confidence endpoints are exactly the two states the movement metric compares",
+    "forbidden": ["threshold", "fitted coefficient", "track-specific normalisation", "family-specific rule", "parameter sweep", "any smoothing not already in the cached representations"],
+    "the_only_candidate": "C3_STATE + C3_MOVEMENT x CROSS_VIEW_CONFIDENCE"
+  },
+
+  "why_endpoint_agreement": "the gate asks whether two substantially different tonal representations agree about BOTH musical states being compared. If both see approximately the same tonal state before and after the transition, C3 movement is left largely untouched. If the resolved front end sees a very different state at either endpoint, confidence falls and the movement is attenuated.",
+
+  "ARMS": ["C3_ROOT_SALIENCE", "C3_GATED"],
+  "no_other_arm": true,
+  "P0_and_FB_LOG_reported_only_where_they_already_exist_as_programme_reference": false,
+
+  "FIXTURES": {
+    "reused_unchanged": ["pure sine", "harmonic note", "perfect fifth", "major triad", "the exact constant-pitch brightness sweep"],
+    "reported_per_fixture": ["median cross-view confidence", "median C3 movement", "median gated movement", "attenuation ratio"],
+    "the_question_that_matters": "does cross-view disagreement suppress C3 movement caused by timbre evolution WITHOUT simply killing the signal everywhere? The brightness sweep must attenuate MORE than the two-note and triad fixtures, otherwise the gate is a blanket attenuator.",
+    "diagnostic_only": true,
+    "no_new_fixture_threshold": true
+  },
+
+  "PRIMARY_SOLO_STEM_TEST": {
+    "framework": "the same J3I audio-supported family framework, unchanged - audio_ok mask, lag-paired validity, minimum 400 valid frames per stem",
+    "primary_families": ["synth_lead_pad", "reed_pipe"],
+    "strong_controls": ["piano_keys", "bass"],
+    "separate_diagnostic": ["chromatic_percussion"],
+    "compare_only": "C3 versus C3_GATED",
+    "reported_metrics": [
+      "event recall at consumer time",
+      "event recall +/- 2 hops",
+      "false movement in stable periods",
+      "spearman",
+      "framewise R-squared DIAGNOSTIC",
+      "median raw movement",
+      "median confidence"
+    ],
+    "rank_conventions_reused_verbatim": "event 0.95, detected 0.80, stable 0.50, tolerance +/- 2 hops, lag 8 hops"
+  },
+
+  "CHANCE_FLOOR_NOW_STANDING_PROGRAMME_PRACTICE": {
+    "instruction_from_the_PM": "recall-above-own-null is to be reported automatically from here onward, and is NEVER a gate",
+    "method": "per stem, circularly shift the candidate movement series by a random offset in [200, 2000] hops, destroying temporal correspondence with the oracle while preserving the series' own distribution and autocorrelation; recompute the identical metric. 20 permutations, seed 20260902. Identical to the J3O diagnostic.",
+    "reported": "event_tolerant_recall - own_null_mean, for BOTH arms",
+    "REPORTED_NOT_GATED": true,
+    "why_historical_results_stand": "past decisions were comparative and visual, and the floor applies equally to every arm. The floor changes how ABSOLUTE recall figures should be read, not any comparison already made."
+  },
+
+  "RECALL_GUARD": {
+    "rule": "C3_GATED may not lose more than 0.02 EVENT-TOLERANT recall versus C3 on either primary family",
+    "threshold": 0.02,
+    "applies_to": ["synth_lead_pad", "reed_pipe"],
+    "no_additional_family_threshold": true,
+    "consumer_time_recall": "reported, not gated"
+  },
+
+  "PRIMARY_MECHANISTIC_REQUIREMENT": {
+    "rule": "the gate must reduce false movement in stable periods on BOTH synth_lead_pad AND reed_pipe, while satisfying the recall guard on both",
+    "if_not_met": "STOP BEFORE VISUAL RENDERING and return CROSS_VIEW_RELIABILITY_FAIL",
+    "strictly_less_than": "'reduce' means strictly lower than C3's false movement in that family. An exact tie does not count as a reduction."
+  },
+
+  "CHROMATIC_PERCUSSION": {
+    "reported_separately": true,
+    "no_win_required": true,
+    "what_would_be_informative": "if median confidence is substantially LOWER on chromatic percussion than on piano_keys and bass, that is evidence that cross-view disagreement detects unreliable tonal estimation under inharmonic spectra",
+    "how_it_must_NOT_be_read": "low confidence on chromatic percussion does NOT mean there is no harmony present. It means the two views disagree about what it is."
+  },
+
+  "CONDITIONAL_VISUAL_TEST": {
+    "trigger": "run ONLY if BOTH primary families clear the primary mechanistic requirement",
+    "grammar": "the J3E HARMONIC COLOUR TRANSITION grammar, UNCHANGED. No retuning.",
+    "CONTROL": "C3 state + C3 movement",
+    "TREATMENT": "C3 state + gated C3 movement",
+    "ORACLE": "unchanged",
+    "corpus": "the 20 BabySlakh mixes",
+    "reported": [
+      "flat-energy harmonic recall",
+      "no-onset harmonic recall",
+      "acoustic-only false response",
+      "resting median delta-E",
+      "direction reversal rate",
+      "selectivity margin"
+    ],
+    "THREE_RESTRAINT_GUARDS_ALL_MUST_PASS": {
+      "G1_selectivity_margin": "TREATMENT selectivity margin >= CONTROL selectivity margin",
+      "G2_resting_delta_E": "TREATMENT resting median delta-E <= CONTROL resting median delta-E",
+      "G3_direction_reversal_rate": "TREATMENT direction reversal rate <= CONTROL direction reversal rate"
+    },
+    "mixture_level_FB_LOG_note": "mixture-level FB_LOG states do not currently exist in cache and must be computed from the same unchanged J3N pitch_energy() and fb_log_chroma_from_log() on the 20 mix files. Same code path as the stems, no new transform. This is built ONLY if the trigger fires."
+  },
+
+  "OUTCOMES": {
+    "CROSS_VIEW_RELIABILITY_SIGNAL": {
+      "requires_all_of": [
+        "false movement falls on BOTH primary families",
+        "both primary families satisfy the 0.02 recall guard",
+        "the visual treatment passes all three restraint guards"
+      ],
+      "meaning": "a reliability layer contains useful information that no single representation tested so far provides",
+      "what_it_authorises": "FRESH VALIDATION ONLY. All BabySlakh tracks are consumed.",
+      "what_it_does_NOT_authorise": "the J3N filterbank as the product implementation"
+    },
+    "CROSS_VIEW_RELIABILITY_FAIL": {
+      "triggered_by": "the gate fails either primary family, or violates the recall guard, or fails the visual restraint test",
+      "meaning": "simple cross-representation agreement is not sufficient to solve the residual"
+    },
+    "CROSS_VIEW_RELIABILITY_INCONCLUSIVE": {
+      "triggered_by": "control failure or cache incompatibility ONLY"
+    }
+  },
+
+  "CONTROLS_THAT_MUST_PASS": {
+    "confidence_in_range": "0 <= C(t) <= 1 on every scored frame",
+    "gate_is_pure_attenuation": "M_GATED(t) <= C3_movement(t) on every scored frame, since C in [0,1]",
+    "identity_check": "with FB_state set equal to C3_state, C == 1 and M_GATED reproduces C3 movement exactly (max absolute difference 0.0)",
+    "C3_state_never_replaced": "asserted programmatically - the state passed to the visual grammar in BOTH control and treatment is the C3 state",
+    "shared_upstream": "FB_LOG recomputed from the cached J3N pitch surfaces matches the J3N arm within 1e-6",
+    "frame_parity": "both arms scored on an identical frame set per stem"
+  },
+
+  "STOP_CONDITIONS": {
+    "if_SIGNAL": "STOP. Do NOT begin answering 'can the reliability signal be approximated cheaply and causally from the existing product frontend?' inside J3P.",
+    "if_FAIL": "STOP and return to the PM. Do NOT automatically execute the learned movement/reliability head."
+  },
+
+  "PRESERVED_UNCHANGED_AND_NOT_MUTATED": {
+    "J3D": "immutable challenge membership - FLAT_ENERGY 2299, NO_ONSET 4000, ACOUSTIC 3292",
+    "J3E": "the visual grammar, unchanged",
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "J3K": "MIXTURE_TARGET_CORRECTION_IMMATERIAL",
+    "J3M": "CRP_MOVEMENT_FAIL",
+    "J3N": "PITCH_FRONTEND_RESOLUTION_SIGNAL",
+    "J3O": "NNLS_RESTRAINT_FAIL",
+    "target": "the rectangular MIDI duration-occupancy oracle, unmodified"
+  },
+
+  "DO_NOT_EXECUTE": [
+    "any new blocking gate",
+    "any new representation",
+    "any threshold tuning",
+    "NNLS", "CRP", "CQT", "Basic Pitch",
+    "source separation", "any neural model",
+    "production firmware changes", "Titan", "student I/O freeze",
+    "any mutation of any historical receipt"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "schema": "spectrasynq.cross_view_reliability_interpretation.v1",
+  "job": "J3P",
+  "outcome": "CROSS_VIEW_RELIABILITY_FAIL",
+  "date": "2026-09-02",
+  "one_sentence": "Cross-view agreement does carry a small amount of correctly-aligned reliability information - on synth_lead_pad confidence is HIGHER at genuine harmonic events than at stable frames - but the useful component is roughly a third of the nuisance variation, so a fixed multiplicative gate cannot extract it, and the gate behaves as a near-uniform 0.5x attenuator instead.",
+
+  "THE_DIRECT_ANSWER": {
+    "question": "Can disagreement between two independently useful tonal views identify moments where C3 harmonic movement should not be trusted?",
+    "answer": "The information exists but is far too weak to be used this way. CROSS_VIEW_RELIABILITY_FAIL.",
+    "which_clause_failed": "the PRIMARY MECHANISTIC REQUIREMENT, on synth_lead_pad, on BOTH of its clauses at once",
+    "synth_lead_pad": {
+      "recall_drop_vs_C3": 0.0295,
+      "recall_guard_threshold": 0.02,
+      "recall_guard_satisfied": false,
+      "false_movement_C3": 0.0288,
+      "false_movement_C3_GATED": 0.0301,
+      "reduces_false_movement": false
+    },
+    "reed_pipe": {
+      "recall_drop_vs_C3": -0.0323,
+      "recall_guard_satisfied": true,
+      "false_movement_C3": 0.0289,
+      "false_movement_C3_GATED": 0.0267,
+      "reduces_false_movement": true,
+      "note": "reed_pipe clears cleanly - recall RISES and false movement falls. It is not enough: the requirement is BOTH primaries."
+    },
+    "visual_test_not_run": "correct per the brief - stop before visual rendering when the mechanistic requirement is not met"
+  },
+
+  "WHY_IT_FAILED_AND_THIS_IS_THE_USEFUL_PART": {
+    "the_gate_is_almost_a_constant": {
+      "median_attenuation_ratio_by_family": {
+        "synth_lead_pad": 0.4606, "reed_pipe": 0.5191, "piano_keys": 0.5258,
+        "bass": 0.4554, "chromatic_percussion": 0.4902
+      },
+      "reading": "the gate scales movement down by about half in EVERY family, including the ones with no restraint problem. That is the blanket-attenuator failure mode the pre-registration named in advance."
+    },
+    "why_a_near_constant_does_nothing": "every metric in this programme is computed from WITHIN-STEM RANKS. Multiplying a whole stem's movement series by a constant leaves its ranks exactly unchanged, so a per-stem constant multiplier is provably a no-op. Only the VARIATION of C(t) within a stem can move any number. That variation is therefore the entire mechanism, and it is small.",
+    "the_signal_to_nuisance_ratio_measured": {
+      "useful_component_median_confidence_at_oracle_EVENT_frames_minus_STABLE_frames": {
+        "synth_lead_pad": 0.0233, "bass": 0.0165, "reed_pipe": 0.0017,
+        "chromatic_percussion": -0.0042, "piano_keys": -0.0074
+      },
+      "nuisance_component_within_stem_interquartile_spread_of_C": {
+        "synth_lead_pad": 0.0656, "reed_pipe": 0.0514, "piano_keys": 0.0804,
+        "bass": 0.0848, "chromatic_percussion": 0.0817
+      },
+      "reading": "on the best family the correctly-aligned separation is 0.0233 against an interquartile nuisance spread of 0.0656 - about one third. On three of five families it is under a tenth, and on two it points the WRONG way. A multiplicative gate applies all of the nuisance and only a fraction of the signal.",
+      "status": "ANALYST-ADDED, REPORTED, NOT GATED. Designed and run after the family metrics were seen. It changed no outcome. It is here because it is the only part of this job that tells the PM what to do next."
+    },
+    "the_surprise": "the gate points the RIGHT WAY on synth_lead_pad - its confidence is higher at genuine events than at stable frames, by the largest margin of any family - and synth is still the family it breaks. The failure is not misalignment. It is amplitude. This is a signal-strength problem, not a sign problem."
+  },
+
+  "THE_FIXTURES_AGREE_DIRECTIONALLY_AND_NOT_IN_MAGNITUDE": {
+    "the_pre_registered_question": "does cross-view disagreement suppress C3 movement caused by timbre evolution WITHOUT simply killing the signal everywhere? The brightness sweep must attenuate MORE than the two-note and triad fixtures, otherwise the gate is a blanket attenuator.",
+    "measured_attenuation_ratio": {
+      "F5_constant_pitch_brightness_sweep_100_percent_contamination": 0.6761,
+      "F3_perfect_fifth_100_percent_genuine": 0.7219,
+      "F4_major_triad_100_percent_genuine": 0.7231
+    },
+    "verdict": "the sweep IS attenuated more than the genuine-harmony fixtures, so the mechanism is real and correctly signed. The margin is about 6 percent between a stimulus that is entirely contamination and stimuli that are entirely genuine. That is the same signal-strength verdict the corpus gives, reached independently.",
+    "diagnostic_only": true
+  },
+
+  "WHERE_THE_GATE_ACTUALLY_HELPED": {
+    "selectivity_margin_C3_to_C3_GATED": {
+      "bass": [0.8901, 0.9146],
+      "chromatic_percussion": [0.6126, 0.6991],
+      "piano_keys": [0.8886, 0.8963],
+      "reed_pipe": [0.6216, 0.6561],
+      "synth_lead_pad": [0.5186, 0.4878]
+    },
+    "reading": "the gate improved four families out of five and damaged exactly the one family the whole branch exists for. That pattern is worth stating plainly rather than burying under the FAIL: it means cross-view agreement is not noise, it is simply not strong enough where it is needed.",
+    "chromatic_percussion_note": "false movement fell from 0.0158 to 0.0094 and the margin rose 0.0865, the largest gain of any family - but framewise R-squared fell from 0.1598 to 0.0651 and Spearman from 0.5400 to 0.4683, so the gain came with a real loss of frame-level correspondence. No win was required here and none is claimed."
+  },
+
+  "THE_INHARMONIC_HYPOTHESIS_IS_NOT_SUPPORTED": {
+    "what_would_have_supported_it": "median confidence substantially lower on chromatic percussion than on piano_keys and bass",
+    "measured_median_confidence": {"chromatic_percussion": 0.4902, "piano_keys": 0.5258, "bass": 0.4554},
+    "verdict": "chromatic percussion sits BETWEEN the two strong controls and above bass. Cross-view disagreement does NOT preferentially flag inharmonic spectra.",
+    "how_this_must_not_be_read": "this says nothing about whether harmony is present in chromatic percussion. It says the two views do not disagree about it any more than they disagree about bass."
+  },
+
+  "WHAT_THIS_DOES_AND_DOES_NOT_LICENCE": {
+    "does_not_say": [
+      "that reliability layers are a dead idea - the opposite, the alignment is correctly signed on both primary families and on bass",
+      "that FB_LOG is a bad witness - it was never given a chance to contribute more than a scalar multiplier",
+      "that C3 needs replacing - C3 remains the restraint view and this job did not challenge it"
+    ],
+    "does_say": [
+      "a FIXED, PARAMETER-FREE, MULTIPLICATIVE gate is the wrong instrument for a signal worth roughly 2 to 3 percent of its own dynamic range",
+      "endpoint state agreement between these two particular views is dominated by systematic representational difference, not by moment-to-moment reliability. The two views disagree about roughly half the tonal mass ALL THE TIME (median C around 0.46 to 0.53), and the reliability information rides on top of that as a small perturbation"
+    ],
+    "the_obvious_next_instrument": "the PM's own stated next hypothesis - a tiny causal learned movement/reliability head trained explicitly for restraint - is exactly the class of instrument that can extract a weak but correctly-signed signal that a fixed multiplier cannot. J3P did not test it and this receipt does not authorise it."
+  },
+
+  "PROGRAMME_POSITION_AFTER_J3P": {
+    "unchanged": "C3_ROOT_SALIENCE remains the best real candidate on the criterion that matters, at visual selectivity margin 0.2812 against an oracle ceiling of 0.4073",
+    "unchanged_2": "fine pitch resolution remains a replicated low-register information win, in two independent front ends",
+    "new": "cross-view agreement between those two views carries reliability information whose sign is right and whose magnitude is roughly a third of its own nuisance variation on the best family, and worse elsewhere",
+    "the_three_function_split_the_PM_described_survives_this_result": "C3 as the restraint view and fine pitch resolution as the low-register information view are both untouched. Only the simplest possible POLICY instrument was tested and rejected."
+  },
+
+  "PROCESS_DISCLOSURES": [
+    "The pre-registration was written before any gated metric, and the one confidence signal was fixed in it: A = 1 - 0.5*L1, C = min(A(t), A(t-8)), M_GATED = C3_movement * C. No threshold, no fitted coefficient, no sweep, no family rule. None was added.",
+    "All five controls passed, including the identity check (with FB_state set equal to C3_state the gate reproduces C3 movement to exactly 0.0) and pure attenuation (M_GATED <= C3_movement on every scored frame).",
+    "Recall-above-own-null was reported automatically for both arms, as the PM instructed, and was not used as a gate.",
+    "The 'where the confidence sits' diagnostic and the within-stem spread figures were added by the analyst AFTER the family metrics were seen. Both are REPORTED, NOT GATED. Neither changed the outcome, which was already fixed by the pre-registered mechanistic requirement.",
+    "No visual test was run, correctly, because the mechanistic requirement was not met.",
+    "No new blocking gate. No new representation. No threshold tuning. No historical receipt mutated."
+  ],
+
+  "STATUS_FLAGS": {
+    "J3D_mutated": false, "J3E_mutated": false, "J3F_mutated": false, "J3G_mutated": false,
+    "J3I_mutated": false, "J3J_mutated": false, "J3K_mutated": false, "J3M_mutated": false,
+    "J3N_mutated": false, "J3O_mutated": false,
+    "target_modified": false,
+    "new_representation": false, "new_blocking_gate_added": false, "threshold_tuned": false,
+    "nnls_run": false, "crp_run": false, "cqt_run": false, "basic_pitch_run": false,
+    "source_separator_run": false, "neural_model": false,
+    "visual_grammar_run": false, "visual_grammar_modified": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false,
+    "learned_reliability_head_executed": false,
+    "fresh_validation_required": "NO - the outcome is a FAIL and nothing is promoted"
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "schema": "spectrasynq.cross_view_reliability_result.v1",
+  "job": "J3P",
+  "git_head": "UNKNOWN",
+  "label": "CROSS-VIEW RELIABILITY GATE. HOST information probe on consumed data. Nothing promotable.",
+  "preregistration": "docs/mir/receipts/cross_view_reliability/J3P_PREREGISTRATION.json",
+  "the_one_confidence_signal": {
+    "no_signal_zoo": true,
+    "endpoint_state_agreement": "A(t) = 1 - 0.5 * L1( C3_state(t), FB_state(t) )",
+    "transition_confidence": "C(t) = min( A(t), A(t-8) )",
+    "gated_movement": "M_GATED(t) = C3_movement(t) * C(t)",
+    "range_argument": "both states are non-negative and L1-normalised, so 0.5*L1 lies in [0,1] and therefore A and C lie in [0,1]. No clipping is applied and none is needed.",
+    "lag": "8 hops, the existing movement lag, so the confidence endpoints are exactly the two states the movement metric compares",
+    "forbidden": [
+      "threshold",
+      "fitted coefficient",
+      "track-specific normalisation",
+      "family-specific rule",
+      "parameter sweep",
+      "any smoothing not already in the cached representations"
+    ],
+    "the_only_candidate": "C3_STATE + C3_MOVEMENT x CROSS_VIEW_CONFIDENCE"
+  },
+  "roles": {
+    "C3_ROOT_SALIENCE": "the STATE and the MOVEMENT estimator under test. Unchanged.",
+    "FB_LOG_CHROMA": "a RELIABILITY WITNESS ONLY. It never supplies state and never supplies movement.",
+    "explicitly_not_fusion": "this is not an average, a blend, or a fusion of two chroma vectors. The C3 state is NEVER replaced by FB_LOG."
+  },
+  "causality_disclosure": "the J3N multirate filterbank uses zero-phase filtering and is therefore NON-CAUSAL. That is acceptable here because the question is whether the RELIABILITY INFORMATION EXISTS. A positive result does NOT authorise this filterbank as a product dependency.",
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "controls": {
+    "n_stems_scored": 84,
+    "confidence_in_range_0_1": true,
+    "confidence_observed_range": [
+      0.003,
+      0.8809
+    ],
+    "gate_is_pure_attenuation": true,
+    "identity_check_max_abs_diff": 0.0,
+    "identity_check_pass": true,
+    "C3_state_never_replaced": true,
+    "fb_log_shared_upstream_max_abs_diff": 0.0,
+    "fb_log_shared_upstream_within_1e_6": true,
+    "frame_parity_both_arms": true,
+    "nnls_used": false,
+    "crp_used": false,
+    "new_transform": false,
+    "all_blocking_pass": true
+  },
+  "fixtures": {
+    "F1_pure_sine_midi60": {
+      "median_cross_view_confidence": 0.4544,
+      "median_C3_movement": 1e-05,
+      "median_gated_movement": 0.0,
+      "attenuation_ratio": 0.4544
+    },
+    "F2_harmonic_note_midi60": {
+      "median_cross_view_confidence": 0.6268,
+      "median_C3_movement": 0.0,
+      "median_gated_movement": 0.0,
+      "attenuation_ratio": 0.6268
+    },
+    "F3_perfect_fifth_60_67": {
+      "median_cross_view_confidence": 0.7188,
+      "median_C3_movement": 0.02261,
+      "median_gated_movement": 0.01632,
+      "attenuation_ratio": 0.7219
+    },
+    "F4_major_triad_60_64_67": {
+      "median_cross_view_confidence": 0.7229,
+      "median_C3_movement": 0.01703,
+      "median_gated_movement": 0.01232,
+      "attenuation_ratio": 0.7231
+    },
+    "F5_constant_pitch_brightness_sweep": {
+      "median_cross_view_confidence": 0.6761,
+      "median_C3_movement": 0.01301,
+      "median_gated_movement": 0.0088,
+      "attenuation_ratio": 0.6761
+    },
+    "_the_question": "does cross-view disagreement suppress C3 movement caused by timbre evolution WITHOUT simply killing the signal everywhere? The brightness sweep must attenuate MORE than the two-note and triad fixtures, otherwise the gate is a blanket attenuator.",
+    "_diagnostic_only": true
+  },
+  "family_metrics": {
+    "C3_ROOT_SALIENCE": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5539,
+        "spearman": 0.6853,
+        "event_recall_consumer_time": 0.7591,
+        "event_recall_event_tolerant": 0.8935,
+        "false_movement_in_stable_periods": 0.0034,
+        "selectivity_margin": 0.8901,
+        "median_raw_movement": 0.0938,
+        "median_confidence": 0.4554,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.342,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5515
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.1598,
+        "spearman": 0.54,
+        "event_recall_consumer_time": 0.4607,
+        "event_recall_event_tolerant": 0.6284,
+        "false_movement_in_stable_periods": 0.0158,
+        "selectivity_margin": 0.6126,
+        "median_raw_movement": 0.17259,
+        "median_confidence": 0.4902,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3168,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3116
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5264,
+        "spearman": 0.6877,
+        "event_recall_consumer_time": 0.7966,
+        "event_recall_event_tolerant": 0.8957,
+        "false_movement_in_stable_periods": 0.0071,
+        "selectivity_margin": 0.8886,
+        "median_raw_movement": 0.1016,
+        "median_confidence": 0.5258,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3119,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5838
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1466,
+        "spearman": 0.4554,
+        "event_recall_consumer_time": 0.2704,
+        "event_recall_event_tolerant": 0.6505,
+        "false_movement_in_stable_periods": 0.0289,
+        "selectivity_margin": 0.6216,
+        "median_raw_movement": 0.168,
+        "median_confidence": 0.5191,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3283,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3222
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1212,
+        "spearman": 0.3173,
+        "event_recall_consumer_time": 0.3869,
+        "event_recall_event_tolerant": 0.5474,
+        "false_movement_in_stable_periods": 0.0288,
+        "selectivity_margin": 0.5186,
+        "median_raw_movement": 0.10116,
+        "median_confidence": 0.4606,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3576,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.1898
+      }
+    },
+    "C3_GATED": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5752,
+        "spearman": 0.6953,
+        "event_recall_consumer_time": 0.7633,
+        "event_recall_event_tolerant": 0.9178,
+        "false_movement_in_stable_periods": 0.0031,
+        "selectivity_margin": 0.9146,
+        "median_raw_movement": 0.04451,
+        "median_confidence": 0.4554,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3333,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5845
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.0651,
+        "spearman": 0.4683,
+        "event_recall_consumer_time": 0.5,
+        "event_recall_event_tolerant": 0.7085,
+        "false_movement_in_stable_periods": 0.0094,
+        "selectivity_margin": 0.6991,
+        "median_raw_movement": 0.08386,
+        "median_confidence": 0.4902,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.326,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3825
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5227,
+        "spearman": 0.6861,
+        "event_recall_consumer_time": 0.7881,
+        "event_recall_event_tolerant": 0.9026,
+        "false_movement_in_stable_periods": 0.0063,
+        "selectivity_margin": 0.8963,
+        "median_raw_movement": 0.05,
+        "median_confidence": 0.5258,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3178,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5848
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1492,
+        "spearman": 0.4634,
+        "event_recall_consumer_time": 0.3265,
+        "event_recall_event_tolerant": 0.6828,
+        "false_movement_in_stable_periods": 0.0267,
+        "selectivity_margin": 0.6561,
+        "median_raw_movement": 0.08113,
+        "median_confidence": 0.5191,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3291,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3537
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.096,
+        "spearman": 0.3119,
+        "event_recall_consumer_time": 0.3736,
+        "event_recall_event_tolerant": 0.5179,
+        "false_movement_in_stable_periods": 0.0301,
+        "selectivity_margin": 0.4878,
+        "median_raw_movement": 0.05227,
+        "median_confidence": 0.4606,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3545,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.1633
+      }
+    }
+  },
+  "primary_family_decision": {
+    "synth_lead_pad": {
+      "recall_drop_vs_C3": 0.0295,
+      "recall_guard_satisfied": false,
+      "false_movement_reduction_vs_C3": -0.0013,
+      "reduces_false_movement": false,
+      "clears": false
+    },
+    "reed_pipe": {
+      "recall_drop_vs_C3": -0.0323,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": 0.0022,
+      "reduces_false_movement": true,
+      "clears": true
+    }
+  },
+  "both_primary_families_clear": false,
+  "recall_guard": {
+    "rule": "C3_GATED may not lose more than 0.02 EVENT-TOLERANT recall versus C3 on either primary family",
+    "threshold": 0.02
+  },
+  "chance_floor": {
+    "method": "per stem, circularly shift the candidate movement series by a random offset in [200, 2000] hops, destroying temporal correspondence with the oracle while preserving the series' own distribution and autocorrelation; recompute the identical metric. 20 permutations, seed 20260902. Identical to the J3O diagnostic.",
+    "n_permutations": 20,
+    "seed": 20260902,
+    "REPORTED_NOT_GATED": true
+  },
+  "chromatic_percussion_diagnostic": {
+    "median_confidence": 0.4902,
+    "median_confidence_piano_keys": 0.5258,
+    "median_confidence_bass": 0.4554,
+    "substantially_lower_than_both_strong_controls": false,
+    "how_it_must_not_be_read": "low confidence on chromatic percussion does NOT mean there is no harmony present. It means the two views disagree about what it is.",
+    "no_win_required": true
+  },
+  "WHERE_THE_CONFIDENCE_SITS_ANALYST_ADDED_REPORTED_NOT_GATED": {
+    "status": "added by the analyst AFTER the family metrics were seen. REPORTED, NOT GATED - it changed no outcome. It exists because a reliability gate is only useful if confidence is LOWER where movement is contaminated than where events are genuine.",
+    "by_family": {
+      "bass": {
+        "median_confidence_at_oracle_EVENT_frames": 0.4667,
+        "median_confidence_at_oracle_STABLE_frames": 0.4502,
+        "event_minus_stable": 0.0165,
+        "gate_favours_genuine_events": true,
+        "median_attenuation_ratio": 0.4554
+      },
+      "chromatic_percussion": {
+        "median_confidence_at_oracle_EVENT_frames": 0.4913,
+        "median_confidence_at_oracle_STABLE_frames": 0.4954,
+        "event_minus_stable": -0.0042,
+        "gate_favours_genuine_events": false,
+        "median_attenuation_ratio": 0.4902
+      },
+      "piano_keys": {
+        "median_confidence_at_oracle_EVENT_frames": 0.521,
+        "median_confidence_at_oracle_STABLE_frames": 0.5284,
+        "event_minus_stable": -0.0074,
+        "gate_favours_genuine_events": false,
+        "median_attenuation_ratio": 0.5258
+      },
+      "reed_pipe": {
+        "median_confidence_at_oracle_EVENT_frames": 0.5151,
+        "median_confidence_at_oracle_STABLE_frames": 0.5134,
+        "event_minus_stable": 0.0017,
+        "gate_favours_genuine_events": true,
+        "median_attenuation_ratio": 0.5191
+      },
+      "synth_lead_pad": {
+        "median_confidence_at_oracle_EVENT_frames": 0.5007,
+        "median_confidence_at_oracle_STABLE_frames": 0.4774,
+        "event_minus_stable": 0.0233,
+        "gate_favours_genuine_events": true,
+        "median_attenuation_ratio": 0.4606
+      }
+    }
+  },
+  "conditional_visual_test": {
+    "trigger_met": false,
+    "run": false,
+    "note": "run separately by scripts/j3p_visual.py only if the trigger is met"
+  },
+  "outcome": "CROSS_VIEW_RELIABILITY_FAIL",
+  "J3O_mutated": false,
+  "J3N_mutated": false,
+  "J3M_mutated": false,
+  "target_modified": false,
+  "new_representation": false,
+  "new_blocking_gate_added": false,
+  "threshold_tuned": false,
+  "nnls_run": false,
+  "crp_run": false,
+  "cqt_run": false,
+  "basic_pitch_run": false,
+  "source_separator_run": false,
+  "neural_model": false,
+  "visual_grammar_modified": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

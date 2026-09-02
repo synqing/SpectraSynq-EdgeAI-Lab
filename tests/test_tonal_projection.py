@@ -375,3 +375,42 @@ def test_j3o_two_arms_differ_only_in_use_nnls():
     a, b = params(0.0), params(1.0)
     assert set(a) == set(b)
     assert [k for k in a if a[k] != b[k]] == ["useNNLS"]
+
+
+# ---------------------------------------------------------------- J3P
+def test_j3p_identity_witness_reproduces_c3_movement_exactly():
+    from edgeai.mir.cross_view import endpoint_agreement, gated_movement, transition_confidence
+
+    rng = np.random.default_rng(0)
+    s = np.abs(rng.normal(size=(64, 12)))
+    s /= s.sum(axis=1, keepdims=True)
+    conf = transition_confidence(endpoint_agreement(s, s))
+    assert np.isnan(conf[:8]).all()            # no earlier endpoint, never filled
+    assert np.allclose(conf[8:], 1.0)
+    mv = rng.random(64)
+    assert float(np.nanmax(np.abs(gated_movement(mv, conf) - mv))) == 0.0
+
+
+def test_j3p_confidence_is_bounded_and_gate_is_pure_attenuation():
+    from edgeai.mir.cross_view import endpoint_agreement, gated_movement, transition_confidence
+
+    rng = np.random.default_rng(1)
+    a = np.abs(rng.normal(size=(200, 12)))
+    a /= a.sum(axis=1, keepdims=True)
+    b = np.abs(rng.normal(size=(200, 12)))
+    b /= b.sum(axis=1, keepdims=True)
+    agree = endpoint_agreement(a, b)
+    assert agree.min() >= 0.0 and agree.max() <= 1.0
+    conf = transition_confidence(agree)
+    mv = rng.random(200)
+    g = gated_movement(mv, conf)
+    ok = np.isfinite(conf)
+    assert np.all(g[ok] <= mv[ok] + 1e-12)     # C in [0,1] => pure attenuation
+
+
+def test_j3p_disjoint_states_give_zero_agreement():
+    from edgeai.mir.cross_view import endpoint_agreement
+
+    a = np.zeros((1, 12)); a[0, 0] = 1.0
+    b = np.zeros((1, 12)); b[0, 6] = 1.0
+    assert float(endpoint_agreement(a, b)[0]) == 0.0
