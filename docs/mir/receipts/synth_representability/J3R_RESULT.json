@@ -1,0 +1,299 @@
+{
+  "schema": "spectrasynq.synth_representability_result.v1",
+  "job": "J3R",
+  "git_head": "UNKNOWN",
+  "label": "INFORMATION AUDIT on one family. Not a product proposal. All BabySlakh tracks are CONSUMED. Nothing promotable. No visual test.",
+  "preregistration": "docs/mir/receipts/synth_representability/J3R_PREREGISTRATION.json",
+  "the_only_question": "Does the identical 53-dimensional causal feature set contain usable information for synth_lead_pad when cross-family shortcut learning is removed?",
+  "single_variable": {
+    "reused_exactly_unchanged": [
+      "the J3Q 53 features",
+      "the J3Q labels",
+      "the J3Q 53->32->1 topology",
+      "the J3Q optimiser",
+      "learning rate 1e-3",
+      "weight decay 1e-4",
+      "batch size 4096",
+      "30 epochs",
+      "seed 20260902",
+      "standardisation",
+      "C3 movement multiplication",
+      "the evaluation metrics"
+    ],
+    "the_one_change": {
+      "J3Q": "training rows = all five measured families",
+      "J3R": "training rows = synth_lead_pad ONLY"
+    },
+    "what_this_isolates": "CROSS-FAMILY TRAINING POPULATION",
+    "no_other_change": true
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "controls": {
+    "folds_reused_from_J3Q": true,
+    "fold_track_list_derived_from_all_five_families": true,
+    "n_contributing_folds": 5,
+    "no_synth_stem_trains_on_its_own_track": true,
+    "per_fold_train_test_track_overlap": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "insufficient_folds": [],
+    "standardisation_fitted_on_training_rows_only_per_arm": true,
+    "oracle_labels_absent_from_feature_matrix": true,
+    "n_scored_synth_stems": 11,
+    "every_scored_frame_has_both_OOF_predictions": true,
+    "q_pooled_finite_in_unit_interval": true,
+    "q_synth_only_finite_in_unit_interval": true,
+    "q_synth_only_observed_range": [
+      0.0,
+      0.9948
+    ],
+    "C3_state_never_modified": true,
+    "reproduced_pooled_synth_metrics_match_committed_J3Q": true,
+    "reproduced_vs_committed": {
+      "event_recall_event_tolerant": {
+        "reproduced": 0.5536,
+        "committed": 0.5536
+      },
+      "false_movement_in_stable_periods": {
+        "reproduced": 0.0303,
+        "committed": 0.0303
+      }
+    },
+    "model_unchanged": "53 -> 32 ReLU -> 1 sigmoid, 1761 parameters",
+    "recipe_unchanged": {
+      "loss": "balanced binary cross entropy",
+      "class_weighting": "equal TOTAL positive and negative weight inside each training fold",
+      "optimiser": "Adam",
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "weight_decay_form": "L2 added to the gradient (as torch.optim.Adam(weight_decay=...)), applied to weights only, NOT to biases",
+      "batch_size": 4096,
+      "epochs": 30,
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "eps": 1e-08,
+      "seed": 20260902,
+      "init": "He/Kaiming normal for the ReLU layer, Xavier/Glorot normal for the output layer, biases zero"
+    },
+    "all_blocking_pass": true
+  },
+  "fold_log": [
+    {
+      "fold": 0,
+      "contributes": true,
+      "train_synth_tracks": 5,
+      "train_synth_stems": 7,
+      "positive_rows": 1362,
+      "negative_rows": 1629,
+      "held_out_synth_tracks": 3,
+      "held_out_synth_stems": 4,
+      "SYNTH_ONLY_steps_per_epoch": 1,
+      "SYNTH_ONLY_total_steps": 30,
+      "SYNTH_ONLY_first_epoch_mean_loss": 0.779683,
+      "SYNTH_ONLY_final_epoch_mean_loss": 0.592438,
+      "SYNTH_ONLY_loss_reduction": 0.187245,
+      "POOLED_steps_per_epoch": 5,
+      "POOLED_total_steps": 150,
+      "POOLED_train_rows": 19883
+    },
+    {
+      "fold": 1,
+      "contributes": true,
+      "train_synth_tracks": 6,
+      "train_synth_stems": 9,
+      "positive_rows": 1642,
+      "negative_rows": 2151,
+      "held_out_synth_tracks": 2,
+      "held_out_synth_stems": 2,
+      "SYNTH_ONLY_steps_per_epoch": 1,
+      "SYNTH_ONLY_total_steps": 30,
+      "SYNTH_ONLY_first_epoch_mean_loss": 1.129959,
+      "SYNTH_ONLY_final_epoch_mean_loss": 0.750336,
+      "SYNTH_ONLY_loss_reduction": 0.379623,
+      "POOLED_steps_per_epoch": 7,
+      "POOLED_total_steps": 210,
+      "POOLED_train_rows": 25624
+    },
+    {
+      "fold": 2,
+      "contributes": true,
+      "train_synth_tracks": 7,
+      "train_synth_stems": 9,
+      "positive_rows": 1861,
+      "negative_rows": 2581,
+      "held_out_synth_tracks": 1,
+      "held_out_synth_stems": 2,
+      "SYNTH_ONLY_steps_per_epoch": 2,
+      "SYNTH_ONLY_total_steps": 60,
+      "SYNTH_ONLY_first_epoch_mean_loss": 0.993093,
+      "SYNTH_ONLY_final_epoch_mean_loss": 0.584121,
+      "SYNTH_ONLY_loss_reduction": 0.408972,
+      "POOLED_steps_per_epoch": 7,
+      "POOLED_total_steps": 210,
+      "POOLED_train_rows": 25926
+    },
+    {
+      "fold": 3,
+      "contributes": true,
+      "train_synth_tracks": 7,
+      "train_synth_stems": 9,
+      "positive_rows": 2009,
+      "negative_rows": 3087,
+      "held_out_synth_tracks": 1,
+      "held_out_synth_stems": 2,
+      "SYNTH_ONLY_steps_per_epoch": 2,
+      "SYNTH_ONLY_total_steps": 60,
+      "SYNTH_ONLY_first_epoch_mean_loss": 0.860731,
+      "SYNTH_ONLY_final_epoch_mean_loss": 0.607001,
+      "SYNTH_ONLY_loss_reduction": 0.25373,
+      "POOLED_steps_per_epoch": 7,
+      "POOLED_total_steps": 210,
+      "POOLED_train_rows": 24704
+    },
+    {
+      "fold": 4,
+      "contributes": true,
+      "train_synth_tracks": 7,
+      "train_synth_stems": 10,
+      "positive_rows": 2194,
+      "negative_rows": 2992,
+      "held_out_synth_tracks": 1,
+      "held_out_synth_stems": 1,
+      "SYNTH_ONLY_steps_per_epoch": 2,
+      "SYNTH_ONLY_total_steps": 60,
+      "SYNTH_ONLY_first_epoch_mean_loss": 0.849697,
+      "SYNTH_ONLY_final_epoch_mean_loss": 0.60449,
+      "SYNTH_ONLY_loss_reduction": 0.245207,
+      "POOLED_steps_per_epoch": 7,
+      "POOLED_total_steps": 210,
+      "POOLED_train_rows": 25419
+    }
+  ],
+  "training_size_consequence_DISCLOSED_IN_PREREG": {
+    "the_fact": "batch size 4096 and 30 epochs are held fixed as instructed, so the number of Adam steps falls with the training set. Pooled J3Q trained on roughly 25,000 rows per fold (about 7 batches per epoch, ~210 steps). Synth-only folds hold roughly 3,000 to 5,200 rows (1 to 2 batches per epoch, 30 to 60 steps).",
+    "why_it_is_not_corrected": "the brief is explicit that batch size and epoch count are unchanged. Holding the recipe fixed and holding the optimisation-step count fixed are in direct conflict; the brief chose the recipe. Changing either would break the single-variable design.",
+    "how_it_will_be_handled": "steps per epoch, total steps, and the first-epoch and final-epoch mean training loss are REPORTED PER FOLD. If the synth-only arm fails while its training loss has barely moved, that is evidence of UNDER-TRAINING rather than absent information, and the SYNTH_FEATURE_LIMIT_SUPPORTED reading must be qualified accordingly.",
+    "declared_before_any_score": true,
+    "measured_synth_only_loss_reduction_per_fold": [
+      0.187245,
+      0.379623,
+      0.408972,
+      0.25373,
+      0.245207
+    ],
+    "median_synth_only_loss_reduction": 0.25373,
+    "the_model_did_train": true
+  },
+  "metrics_synth_lead_pad_only": {
+    "C3_ROOT_SALIENCE": {
+      "n_stems": 11,
+      "n_events": 2267,
+      "framewise_r2_DIAGNOSTIC": 0.1212,
+      "spearman": 0.3173,
+      "event_recall_consumer_time": 0.3869,
+      "event_recall_event_tolerant": 0.5474,
+      "false_movement_in_stable_periods": 0.0288,
+      "selectivity_margin": 0.5186,
+      "median_movement": 0.10116,
+      "null_recall_mean_REPORTED_NOT_GATED": 0.3462,
+      "recall_above_own_null_REPORTED_NOT_GATED": 0.2012
+    },
+    "J3Q_POOLED_q_OOF": {
+      "n_stems": 11,
+      "n_events": 2267,
+      "framewise_r2_DIAGNOSTIC": 0.1386,
+      "spearman": 0.3177,
+      "event_recall_consumer_time": 0.4076,
+      "event_recall_event_tolerant": 0.5536,
+      "false_movement_in_stable_periods": 0.0303,
+      "selectivity_margin": 0.5233,
+      "median_movement": 0.0321,
+      "null_recall_mean_REPORTED_NOT_GATED": 0.2245,
+      "recall_above_own_null_REPORTED_NOT_GATED": 0.3291,
+      "median_q": 0.353,
+      "q_at_oracle_EVENT_frames": 0.4733,
+      "q_at_STABLE_and_C3_HIGH_frames": 0.4383,
+      "q_separation": 0.035,
+      "separates_in_the_right_direction": true
+    },
+    "J3R_SYNTH_ONLY_q_OOF": {
+      "n_stems": 11,
+      "n_events": 2267,
+      "framewise_r2_DIAGNOSTIC": 0.0227,
+      "spearman": 0.2004,
+      "event_recall_consumer_time": 0.3375,
+      "event_recall_event_tolerant": 0.5227,
+      "false_movement_in_stable_periods": 0.0292,
+      "selectivity_margin": 0.4935,
+      "median_movement": 0.04415,
+      "null_recall_mean_REPORTED_NOT_GATED": 0.245,
+      "recall_above_own_null_REPORTED_NOT_GATED": 0.2777,
+      "median_q": 0.4317,
+      "q_at_oracle_EVENT_frames": 0.4081,
+      "q_at_STABLE_and_C3_HIGH_frames": 0.433,
+      "q_separation": -0.0249,
+      "separates_in_the_right_direction": false
+    }
+  },
+  "the_decisive_contrast_C3_to_pooled_to_synth_only": {
+    "false_movement_in_stable_periods": {
+      "C3_ROOT_SALIENCE": 0.0288,
+      "J3Q_POOLED_q_OOF": 0.0303,
+      "J3R_SYNTH_ONLY_q_OOF": 0.0292
+    },
+    "event_recall_event_tolerant": {
+      "C3_ROOT_SALIENCE": 0.5474,
+      "J3Q_POOLED_q_OOF": 0.5536,
+      "J3R_SYNTH_ONLY_q_OOF": 0.5227
+    },
+    "q_separation": {
+      "C3_ROOT_SALIENCE": null,
+      "J3Q_POOLED_q_OOF": 0.035,
+      "J3R_SYNTH_ONLY_q_OOF": -0.0249
+    }
+  },
+  "decision": {
+    "recall_drop_vs_C3": 0.0247,
+    "recall_guard_satisfied": false,
+    "false_movement_reduction_vs_C3": -0.0004,
+    "reduces_false_movement": false,
+    "clears": false
+  },
+  "recall_guard": {
+    "rule": "synth-only gated movement may not lose more than 0.02 event-tolerant recall versus raw C3",
+    "threshold": 0.02
+  },
+  "chance_floor": {
+    "n_permutations": 20,
+    "seed": 20260902,
+    "REPORTED_NOT_GATED": true
+  },
+  "block_importance_run": false,
+  "block_importance_rule": "do NOT repeat the feature-importance zoo unless SYNTH_FEATURE_SIGNAL_PRESENT",
+  "outcome": "SYNTH_FEATURE_LIMIT_SUPPORTED",
+  "J3Q_mutated": false,
+  "J3P_mutated": false,
+  "J3O_mutated": false,
+  "target_modified": false,
+  "new_model": false,
+  "model_size_swept": false,
+  "family_input_used": false,
+  "feature_added": false,
+  "longer_context": false,
+  "threshold_tuned": false,
+  "fb_log_used": false,
+  "crp_run": false,
+  "nnls_run": false,
+  "cqt_run": false,
+  "basic_pitch_run": false,
+  "source_separator_run": false,
+  "visual_test_run": false,
+  "visual_grammar_modified": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

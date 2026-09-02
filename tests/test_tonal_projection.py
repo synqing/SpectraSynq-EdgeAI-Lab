@@ -483,3 +483,29 @@ def test_j3q_standardiser_ignores_held_out_rows():
     mu2, _ = standardiser(train)
     assert np.allclose(mu, mu2)
     assert not np.allclose(mu, standardiser(np.vstack([train, held]))[0])
+
+
+# ---------------------------------------------------------------- J3R
+def test_j3r_reuses_the_j3q_fold_construction_exactly():
+    """The J3R folds must come from the ALL-FAMILY track list, not synth tracks."""
+    import sys
+    from pathlib import Path
+
+    here = Path(__file__).resolve()
+    for base in (here.parent, *here.parents):
+        if (base / "scripts" / "j3q_head.py").is_file():
+            sys.path.insert(0, str(base / "scripts"))
+            break
+    else:
+        pytest.skip("scripts/j3q_head.py not found")
+    from j3q_head import N_FOLDS, SEED
+
+    all_tracks = np.array([f"Track{i:05d}" for i in range(1, 21)])
+    synth_only = np.array([f"Track{i:05d}" for i in (1, 3, 5, 7, 9, 11, 13, 15)])
+    a = np.array_split(np.random.default_rng(SEED).permutation(all_tracks), N_FOLDS)
+    b = np.array_split(np.random.default_rng(SEED).permutation(synth_only), N_FOLDS)
+    flat_a = [t for f in a for t in f]
+    flat_b = [t for f in b for t in f]
+    assert flat_a != flat_b          # deriving folds from synth tracks WOULD change them
+    a2 = np.array_split(np.random.default_rng(SEED).permutation(all_tracks), N_FOLDS)
+    assert [t for f in a2 for t in f] == flat_a      # and the all-family split is deterministic

@@ -1,0 +1,43 @@
+{
+  "schema": "spectrasynq.commit_binding.v1",
+  "job": "J3Q",
+  "label": "COMMIT BINDING ONLY. Bookkeeping. NO SCIENTIFIC CHANGES. No rerun. Nothing in this file alters any J3Q measurement, threshold, control or outcome.",
+  "date": "2026-09-02",
+  "why_this_file_exists": "the J3Q receipts were written before the commit existed, so each carries git_head UNKNOWN. This binds them to the commit that contains them.",
+  "repository": "SpectraSynq-EdgeAI-Lab",
+  "branch": "j3o-nnls-restraint-probe",
+  "commit_sha": "85a34544b8c0776cc006a6e8113511e1468b2b02",
+  "commit_sha_short": "85a3454",
+  "parent_commit_sha": "c08793a6cccfb2b10932a0beb8308ad4bb8e3299",
+  "tree_sha": "c982e21a2a24b565986b9c70683c1d4364e96bfc",
+  "author": "SpectraSynq",
+  "commit_date": "2026-09-02T21:32:59+00:00",
+  "receipt_sha256_as_committed": {
+    "docs/mir/receipts/learned_restraint/J3Q_PREREGISTRATION.json": "20c49804310dc6ffa007e3646717a6f1619fa82aaf9e333483336ee361a99739",
+    "docs/mir/receipts/learned_restraint/J3Q_RESULT.json": "dda2a3e416a213d68ff0a93756300d6b8547fd14ce2ec2dd74cfab49c241330c",
+    "docs/mir/receipts/learned_restraint/J3Q_BLOCK_IMPORTANCE.json": "fbd38841d823ce5a1b4fbb54f4a82044ce655f7104cd98f92b8a8676600bc344",
+    "docs/mir/receipts/learned_restraint/J3Q_INTERPRETATION.json": "e6534dfc135b604026f24c86e4001532816d811afb0a92bb23d855d8e62ed403"
+  },
+  "code_sha256_as_committed": {
+    "src/edgeai/mir/restraint_head.py": "f6194f59d7bff17ea0361eb8532ec6f21c560810cc6fa8621d89ef51a0520050",
+    "scripts/j3q_features.py": "c8a3b0b7c5993d56df85b5385bdb1da19f15ea4b2008f5f8f638b283b0973484",
+    "scripts/j3q_head.py": "2bdcaecfa78c54e64d99345487fd96865c97853bd10d8e2960165fa7bc47bb85",
+    "scripts/j3q_visual.py": "6e744b00a6d2ece7b32a39fabd8e53963f2cd70aca1a625fa676413375e09ea7",
+    "scripts/j3q_block_importance.py": "ec8d883b7acca5e6baff370c289d2726ee57370117ae312536225825ad99761a",
+    "tests/test_tonal_projection.py": "f08594b7826bd4b593810d8e6b72d284dc12477fa6fb4331540a0084afca6b7e"
+  },
+  "git_head_field_in_those_receipts": "UNKNOWN - correct at the time of writing and DELIBERATELY LEFT AS WRITTEN. This file supplies the binding rather than editing immutable receipts after the fact.",
+  "also_committed_in_this_commit": "docs/mir/receipts/cross_view_reliability/J3P_COMMIT_BINDING.json",
+  "reproducibility": {
+    "self_contained": true,
+    "why": "the capture commit c08793a6cccfb2b10932a0beb8308ad4bb8e3299 placed every module the J3Q scripts import into the tree before this commit. Unlike a2049cd, 85a3454 can be used to reproduce the job it claims.",
+    "external_inputs_not_in_git_by_design": {
+      "BabySlakh 16 kHz corpus": "copyrighted audio, never committed; md5 verified against the publisher's checksum",
+      "cached NPZ feature surfaces": "regenerable from the committed scripts; excluded by .gitignore"
+    },
+    "no_framework_dependency": "the policy head is hand-written NumPy, so the committed code runs without installing a deep learning framework"
+  },
+  "no_rerun_performed_for_this_file": true,
+  "outcome_unchanged": "LEARNED_RESTRAINT_FAIL",
+  "J3Q_mutated": false
+}

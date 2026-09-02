@@ -1,0 +1,110 @@
+{
+  "schema": "spectrasynq.synth_representability_interpretation.v1",
+  "job": "J3R",
+  "outcome": "SYNTH_FEATURE_LIMIT_SUPPORTED",
+  "date": "2026-09-02",
+  "one_sentence": "Removing cross-family training did not help synth - it made it worse on every axis, including inverting the q separation from +0.0350 to -0.0249 - so J3Q's failure was NOT caused by cross-family shortcut learning, and the negative-transfer hypothesis is refuted.",
+
+  "THE_DIRECT_ANSWER": {
+    "question": "Does the identical 53-dimensional causal feature set contain usable information for synth_lead_pad when cross-family shortcut learning is removed?",
+    "answer": "Not by this route. The synth-only learner fails BOTH clauses.",
+    "decision": {
+      "recall_drop_vs_C3": 0.0247, "recall_guard_threshold": 0.02, "recall_guard_satisfied": false,
+      "false_movement_C3": 0.0288, "false_movement_synth_only": 0.0292,
+      "reduces_false_movement": false
+    },
+    "block_importance_not_run": "correct per the brief - no further forensic model work on a FAIL",
+    "visual_test_not_run": "correct - J3R is a single-family information audit and cannot supply a mixture policy"
+  },
+
+  "THE_DECISIVE_CONTRAST": {
+    "false_movement_in_stable_periods": {
+      "C3_ROOT_SALIENCE": 0.0288, "J3Q_POOLED_q_OOF": 0.0303, "J3R_SYNTH_ONLY_q_OOF": 0.0292
+    },
+    "event_recall_event_tolerant": {
+      "C3_ROOT_SALIENCE": 0.5474, "J3Q_POOLED_q_OOF": 0.5536, "J3R_SYNTH_ONLY_q_OOF": 0.5227
+    },
+    "q_separation_event_minus_false_movement_frames": {
+      "J3Q_POOLED_q_OOF": 0.0350, "J3R_SYNTH_ONLY_q_OOF": -0.0249
+    },
+    "framewise_r2_DIAGNOSTIC": {
+      "C3_ROOT_SALIENCE": 0.1212, "J3Q_POOLED_q_OOF": 0.1386, "J3R_SYNTH_ONLY_q_OOF": 0.0227
+    },
+    "spearman": {
+      "C3_ROOT_SALIENCE": 0.3173, "J3Q_POOLED_q_OOF": 0.3177, "J3R_SYNTH_ONLY_q_OOF": 0.2004
+    },
+    "reading": "the synth-only learner is worse than the pooled learner on every measure, and its q separation INVERTS. Training exclusively on the problematic domain did not reveal hidden information; it removed the only useful thing the pooled model had."
+  },
+
+  "THE_HYPOTHESIS_THAT_IS_NOW_REFUTED": {
+    "the_hypothesis": "J3Q learned an onset-heavy policy because the pooled loss let onset-bearing families (piano, bass) swamp synth; remove them and the synth information becomes learnable",
+    "the_prediction_it_made": "a synth-only learner should do BETTER on synth than the pooled learner",
+    "what_was_measured": "it does WORSE on synth than the pooled learner, on recall, false movement, R-squared, Spearman and q separation simultaneously",
+    "conclusion": "cross-family negative transfer is not the explanation for the J3Q synth failure. The pooled onset policy, learned mostly from piano and bass, was MORE useful on synth than a policy learned only from synth.",
+    "and_that_is_informative_in_itself": "it means whatever generalisable structure the head found is shared across families - an onset relationship - and synth simply has little of it, rather than having its own structure that the pooled objective was hiding."
+  },
+
+  "THE_UNDER_TRAINING_CAVEAT_I_DECLARED_IN_ADVANCE_IS_ANSWERED": {
+    "why_it_was_declared": "holding batch size 4096 and 30 epochs fixed, as instructed, means the synth-only folds take 30 to 60 Adam steps against the pooled arm's 150 to 210. If the synth arm had barely moved, the FAIL would have been under-training, not absent information.",
+    "measured_synth_only_training_loss_per_fold": [
+      {"fold": 0, "first": 0.7797, "final": 0.5924, "reduction": 0.1872, "steps": 30},
+      {"fold": 1, "first": 1.1300, "final": 0.7503, "reduction": 0.3796, "steps": 30},
+      {"fold": 2, "first": 0.9931, "final": 0.5841, "reduction": 0.4090, "steps": 60},
+      {"fold": 3, "first": 0.8607, "final": 0.6070, "reduction": 0.2537, "steps": 60},
+      {"fold": 4, "first": 0.8497, "final": 0.6045, "reduction": 0.2452, "steps": 60}
+    ],
+    "median_loss_reduction": 0.2537,
+    "verdict": "THE MODEL TRAINED. Training loss fell 24 to 41 percent in every fold. This is not under-training. It is a model that fitted its training data and failed to generalise to held-out synth tracks - held-out R-squared 0.0227 and an inverted q separation.",
+    "so_the_qualification_the_prereg_attached_to_this_outcome_does_NOT_apply": true
+  },
+
+  "WHAT_I_CAN_AND_CANNOT_CONCLUDE_STATED_PRECISELY": {
+    "context": "the analyst previously overreached with 'representability limit of the feature set'. The PM was right to reject it. This section states the boundary rather than crossing it again.",
+    "SUPPORTED": [
+      "the negative-transfer / shortcut-learning explanation for J3Q's synth failure is refuted by direct test",
+      "the frozen 53-feature causal representation plus the frozen tiny nonlinear policy cannot produce the required synth/pad restraint, whether trained pooled or synth-only",
+      "this is not an under-training artefact - the loss fell substantially in every fold",
+      "per the pre-registration, this is the evidence required for SYNTH_FEATURE_LIMIT_SUPPORTED"
+    ],
+    "STILL_NOT_ESTABLISHED": [
+      "that the 53 features contain NO synth information in an absolute sense. Two explanations remain consistent with the data: the features carry no generalisable synth signal, OR eight synth tracks and seven-to-ten training stems are too few for that signal to be estimable by any method. J3R cannot separate those, and no experiment on this consumed corpus can.",
+      "that a different architecture on these features would fail. The brief forbids trying one, and the analyst is not asserting the counterfactual."
+    ],
+    "the_honest_summary": "the learned-reliability lane on this feature set is closed by evidence, not by exhaustion - but the closure rests on a sample of 8 synth tracks, and that limit belongs in the record."
+  },
+
+  "PROGRAMME_POSITION_AFTER_J3R": {
+    "the_lane_that_closes": "learned reliability on the frozen 53-feature causal set. Do NOT try a larger network on the same inputs. Any future revisit must introduce genuinely new evidence - longer causal temporal shape, richer spectral-envelope structure, or another independently justified causal descriptor - and none was executed here.",
+    "what_stands": {
+      "C3_ROOT_SALIENCE": "the accepted restraint descriptor. Visual selectivity margin 0.2812 against an oracle ceiling of 0.4073 - 69 percent of the oracle's selectivity.",
+      "fine_pitch_resolution": "an independent low-register information descriptor, replicated across two unrelated front ends (FB_LOG bass R-squared 0.7537, NNLS front end 0.6456, against C3's 0.5539)",
+      "the_architecture_the_evidence_points_to": "higher layers consume these descriptors according to purpose rather than forcing one winner - the PM's split-descriptor position"
+    },
+    "the_full_pattern": "seven instruments have now been tried against the synth/pad restraint residual - peak picking (J3G), a peak-root hybrid (J3G.2), cepstral liftering (J3M), a resolved pitch filterbank (J3N), harmonic-dictionary NNLS (J3O), a fixed cross-view gate (J3P), and a learned causal policy pooled (J3Q) and synth-only (J3R). Every one either improved some measure of harmonic information without improving restraint, or improved restraint everywhere except synth."
+  },
+
+  "PROCESS_DISCLOSURES": [
+    "Exactly one variable changed versus J3Q: training rows. Features, labels, topology, optimiser, learning rate, weight decay, batch size, epochs, seed, standardisation, movement multiplication and metrics are all the committed J3Q code, imported directly rather than re-implemented.",
+    "The folds are the J3Q folds. The track list is derived from all five families' rows, as J3Q did - deriving it from synth tracks alone would have changed the permutation and therefore the folds. Verified: zero train/test track overlap in all five folds.",
+    "The pooled arm was reproduced inside the same run so both arms score identical frames. Control: the reproduced pooled synth metrics match the committed J3Q_RESULT.json exactly - event-tolerant recall 0.5536 and false movement 0.0303 both to the last digit.",
+    "All five folds contribute. Every fold has held-out synth stems, at least five training synth tracks, and both supervision classes present (1362 to 2194 positives, 1629 to 3087 negatives). No fold was excluded and no sufficiency threshold was invented; the per-fold counts are in the receipt.",
+    "The optimisation-step consequence of holding the recipe fixed was declared in the pre-registration BEFORE any score, together with how it would be handled. It was then measured and found not to apply.",
+    "No block-importance diagnostic was run, per the brief's rule for a FAIL. No visual test. No new model, no size sweep, no family input, no feature addition, no tuning, no receipt mutated."
+  ],
+
+  "STATUS_FLAGS": {
+    "J3D_mutated": false, "J3E_mutated": false, "J3F_mutated": false, "J3G_mutated": false,
+    "J3I_mutated": false, "J3J_mutated": false, "J3K_mutated": false, "J3M_mutated": false,
+    "J3N_mutated": false, "J3O_mutated": false, "J3P_mutated": false, "J3Q_mutated": false,
+    "target_modified": false,
+    "new_model": false, "model_size_swept": false, "family_input_used": false,
+    "feature_added": false, "longer_context": false, "threshold_tuned": false,
+    "fb_log_used": false, "crp_run": false, "nnls_run": false, "cqt_run": false,
+    "basic_pitch_run": false, "foundation_model_run": false, "source_separator_run": false,
+    "visual_test_run": false, "visual_grammar_modified": false,
+    "block_importance_run": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false,
+    "fresh_validation_required": "NO - the outcome is a FAIL and nothing is promoted",
+    "model_selected": false
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "schema": "spectrasynq.synth_representability_prereg.v1",
+  "job": "J3R",
+  "label": "INFORMATION AUDIT on one family. Not a product proposal. All BabySlakh tracks are CONSUMED. Nothing promotable. No visual test.",
+  "date": "2026-09-02",
+  "written_before_any_synth_only_model_was_trained": true,
+
+  "the_only_question": "Does the identical 53-dimensional causal feature set contain usable information for synth_lead_pad when cross-family shortcut learning is removed?",
+
+  "WHAT_IS_NOT_YET_ACCEPTED": {
+    "the_over_strong_claim": "THE 53 CAUSAL FEATURES DO NOT CONTAIN THE SYNTH/PAD DISTINCTION",
+    "who_raised_it": "the analyst, in the J3Q handover. The PM rejected it as one inference too far, and the analyst accepts that.",
+    "why_it_was_unsupported": [
+      "J3Q balanced POSITIVE versus NEGATIVE classes but did NOT equalise instrument-family contribution. The pooled learner saw far more harmonic events from piano and bass than from synth, and onset evidence is extremely useful on those dominant families, so an onset-heavy policy is what the pooled loss rewards.",
+      "permutation importance establishes what THIS TRAINED MODEL USED. It cannot establish what the features CONTAIN under a different conditional mapping.",
+      "the strongest warning came from the J3Q synth result itself: permuting the C3-state blocks IMPROVED synth separation (0.0350 -> 0.0805). That proves the pooled model learned a HARMFUL USE of those features on pads. It does not prove those features carry no pad information."
+    ],
+    "why_the_distinction_is_load_bearing": {
+      "if_synth_only_training_works": "J3Q exposed NEGATIVE TRANSFER / SHORTCUT LEARNING, and the next architectural problem is domain routing or multi-domain policy learning",
+      "if_it_still_fails": "the feature-limit reading becomes a strong conclusion and the learned-reliability lane closes on this feature set"
+    }
+  },
+
+  "SINGLE_VARIABLE": {
+    "reused_exactly_unchanged": [
+      "the J3Q 53 features", "the J3Q labels", "the J3Q 53->32->1 topology",
+      "the J3Q optimiser", "learning rate 1e-3", "weight decay 1e-4",
+      "batch size 4096", "30 epochs", "seed 20260902", "standardisation",
+      "C3 movement multiplication", "the evaluation metrics"
+    ],
+    "the_one_change": {
+      "J3Q": "training rows = all five measured families",
+      "J3R": "training rows = synth_lead_pad ONLY"
+    },
+    "what_this_isolates": "CROSS-FAMILY TRAINING POPULATION",
+    "no_other_change": true
+  },
+
+  "DISCLOSED_CONSEQUENCE_OF_HOLDING_THE_RECIPE_FIXED": {
+    "the_fact": "batch size 4096 and 30 epochs are held fixed as instructed, so the number of Adam steps falls with the training set. Pooled J3Q trained on roughly 25,000 rows per fold (about 7 batches per epoch, ~210 steps). Synth-only folds hold roughly 3,000 to 5,200 rows (1 to 2 batches per epoch, 30 to 60 steps).",
+    "why_it_is_not_corrected": "the brief is explicit that batch size and epoch count are unchanged. Holding the recipe fixed and holding the optimisation-step count fixed are in direct conflict; the brief chose the recipe. Changing either would break the single-variable design.",
+    "how_it_will_be_handled": "steps per epoch, total steps, and the first-epoch and final-epoch mean training loss are REPORTED PER FOLD. If the synth-only arm fails while its training loss has barely moved, that is evidence of UNDER-TRAINING rather than absent information, and the SYNTH_FEATURE_LIMIT_SUPPORTED reading must be qualified accordingly.",
+    "declared_before_any_score": true
+  },
+
+  "FOLDS_REUSED_FROM_J3Q_EXACTLY": {
+    "rule": "the same deterministic five track folds as J3Q - np.array_split(default_rng(20260902).permutation(sorted unique tracks over ALL FIVE measured families), 5)",
+    "critical_detail": "the track list is derived from ALL FIVE families' rows, exactly as J3Q did, NOT from synth stems alone. Deriving it from synth tracks would change the permutation and therefore the folds.",
+    "per_fold": [
+      "hold out the same tracks",
+      "train only on synth_lead_pad stems belonging to TRAINING tracks",
+      "predict only on synth_lead_pad stems belonging to HELD-OUT tracks"
+    ],
+    "no_synth_stem_may_train_on_its_own_track": true,
+    "no_friendlier_synth_specific_split": true,
+    "no_fold_selection": true,
+    "a_fold_with_no_held_out_synth_frames_contributes_nothing": true,
+    "reported_per_contributing_fold": [
+      "train synth tracks", "train synth stems", "positive rows", "negative rows",
+      "held-out synth tracks", "held-out synth stems",
+      "steps per epoch", "total optimisation steps",
+      "first-epoch mean loss", "final-epoch mean loss"
+    ]
+  },
+
+  "MODEL": {
+    "exactly_the_existing_J3Q_model": "53 -> 32 ReLU -> 1 sigmoid, 1761 parameters",
+    "no_enlargement": true, "no_recurrence": true, "no_longer_context": true,
+    "no_new_input": true, "no_family_ID": true, "no_domain_tag": true,
+    "no_architecture_change": true
+  },
+
+  "SUPERVISION": {
+    "unchanged_from_J3Q": true,
+    "POSITIVE": "oracle movement within-track rank >= 0.95",
+    "NEGATIVE": "oracle movement rank <= 0.50 AND C3 movement rank >= 0.80",
+    "AMBIGUOUS": "excluded from the loss, never silently labelled negative",
+    "loss": "the same balanced binary cross entropy",
+    "note": "because only synth_lead_pad rows enter training, equal positive/negative weighting now operates WITHIN the actual problematic domain",
+    "no_family_weights_invented": "there is only one family in this audit"
+  },
+
+  "COMPARATORS_ON_THE_EXACT_SAME_SYNTH_SCORED_FRAMES": [
+    "C3_ROOT_SALIENCE",
+    "J3Q_POOLED_q_OOF",
+    "J3R_SYNTH_ONLY_q_OOF"
+  ],
+  "J3Q_not_retrained_as_a_new_experiment": "the pooled arm is reproduced with the exact committed recipe and the same folds and seed inside the same run, so both arms are scored on identical frames. A control asserts the reproduced pooled synth metrics match the committed J3Q_RESULT.json.",
+  "the_decisive_contrast": "C3 -> pooled learner -> synth-only learner",
+
+  "PRIMARY_METRICS_synth_lead_pad_only": [
+    "event recall consumer time", "event recall +/- 2 hops",
+    "false movement in stable periods", "spearman",
+    "framewise R-squared DIAGNOSTIC", "median movement", "median q",
+    "q at oracle EVENT frames", "q at STABLE and C3-high frames", "q separation"
+  ],
+  "CHANCE_FLOOR_STANDING_PRACTICE": {
+    "report": ["raw event-tolerant recall", "own circular-shift null", "recall-above-own-null"],
+    "n_permutations": 20, "seed": 20260902,
+    "REPORTED_NOT_GATED": true
+  },
+
+  "RECALL_GUARD": {
+    "unchanged": true,
+    "rule": "synth-only gated movement may not lose more than 0.02 event-tolerant recall versus raw C3",
+    "threshold": 0.02
+  },
+
+  "DECISION": {
+    "SYNTH_FEATURE_SIGNAL_PRESENT": {
+      "requires_both": [
+        "the synth-only OOF policy reduces synth_lead_pad false movement below C3",
+        "it satisfies the existing 0.02 recall guard"
+      ],
+      "interpretation": "the J3Q failure was NOT evidence that the 53 features lack synth/pad information. At least some useful information is present once cross-family negative transfer is removed.",
+      "does_NOT_authorise": "a synth-specific product model",
+      "what_it_means_next": "the next architectural problem is context/domain routing or multi-domain policy learning. STOP. Do not solve that automatically."
+    },
+    "SYNTH_FEATURE_LIMIT_SUPPORTED": {
+      "requires": "all machinery controls pass AND the synth-only OOF policy fails to reduce false movement OR violates the recall guard",
+      "interpretation": "even with onset-bearing families removed from training, the frozen 53-feature causal representation cannot produce the required synth/pad restraint with the already-tested tiny nonlinear policy",
+      "consequence": "CLOSE the learned-reliability lane on this feature set. Do NOT try a larger network on the same inputs. Any future revisit must introduce genuinely new evidence - longer causal temporal shape, richer spectral-envelope structure, or another independently justified causal descriptor - and NONE of those is executed in J3R.",
+      "qualification_that_must_travel_with_it": "if the fold training losses show the synth-only arm barely moved, the conclusion is weakened to 'not learnable by this recipe at this training size' and must be reported that way"
+    },
+    "SYNTH_REPRESENTABILITY_INCONCLUSIVE": {
+      "triggered_by_only": [
+        "insufficient synth tracks or only one supervision class in a contributing fold",
+        "fold machinery failure",
+        "missing OOF predictions",
+        "control failure"
+      ],
+      "operationalisation": "a contributing fold is INSUFFICIENT if it has zero training synth stems or only one supervision class present. No new numeric sufficiency threshold is invented; the per-fold counts are reported so the PM can judge."
+    }
+  },
+
+  "BLOCK_IMPORTANCE": {
+    "rule": "do NOT repeat the feature-importance zoo unless SYNTH_FEATURE_SIGNAL_PRESENT",
+    "if_signal": "exactly one reported synth-only block-permutation diagnostic, to identify what changed versus J3Q",
+    "if_fail": "no further forensic model work"
+  },
+
+  "NO_VISUAL_TEST": {
+    "reason": "J3R is an information audit on ONE family and cannot supply a general mixture policy. A positive result merely says the feature information exists.",
+    "J3E_not_run": true
+  },
+
+  "CONTROLS_THAT_MUST_PASS": [
+    "folds are byte-identical to the J3Q folds (asserted against the same seeded permutation of the same all-family track list)",
+    "no synth stem appears in the training set of the fold that holds out its track",
+    "standardisation fitted on training rows only, separately per arm",
+    "oracle labels absent from the feature matrix",
+    "every scored synth frame has an OOF prediction from both arms",
+    "both q outputs finite and in [0,1]",
+    "C3 state never modified",
+    "the reproduced pooled synth metrics match the committed J3Q_RESULT.json"
+  ],
+
+  "PRESERVED_UNCHANGED_AND_NOT_MUTATED": {
+    "J3Q": "LEARNED_RESTRAINT_FAIL - J3R does not revisit or soften that outcome",
+    "J3P": "CROSS_VIEW_RELIABILITY_FAIL",
+    "J3O": "NNLS_RESTRAINT_FAIL",
+    "J3N": "PITCH_FRONTEND_RESOLUTION_SIGNAL",
+    "J3M": "CRP_MOVEMENT_FAIL",
+    "J3K": "target-timing lane CLOSED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "target": "the rectangular MIDI duration-occupancy oracle, unmodified"
+  },
+
+  "DO_NOT_EXECUTE": [
+    "any new model", "any model-size sweep", "family input", "feature addition",
+    "longer context", "any tuning", "FB_LOG", "CRP", "NNLS", "CQT", "Basic Pitch",
+    "source separation", "firmware", "Titan", "student I/O freeze",
+    "any mutation of any historical receipt"
+  ],
+  "then_stop": "return to the PM after exactly one outcome."
+}
