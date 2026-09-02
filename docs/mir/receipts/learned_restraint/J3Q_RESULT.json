@@ -1,0 +1,496 @@
+{
+  "schema": "spectrasynq.learned_restraint_result.v1",
+  "job": "J3Q",
+  "git_head": "UNKNOWN",
+  "label": "POST_HOC_LEARNED_RESTRAINT_INFORMATION_PROBE. All BabySlakh tracks are CONSUMED. Nothing here can be promoted. This does not select a model.",
+  "preregistration": "docs/mir/receipts/learned_restraint/J3Q_PREREGISTRATION.json",
+  "architecture": {
+    "C3_remains": [
+      "harmonic STATE",
+      "base harmonic MOVEMENT"
+    ],
+    "learned_output": "q(t) in [0,1]",
+    "combination": "M_J3Q(t) = C3_movement(t) * q(t)",
+    "C3_state_never_replaced": true,
+    "q_is_not_thresholded": true
+  },
+  "causal_inputs": {
+    "principle": "the product-feasibility hypothesis begins now. Only quantities already derivable causally from the existing 16 kHz / n_fft 2048 / hop 512 STFT path.",
+    "frozen_feature_vector": [
+      {
+        "block": "C3 state at t",
+        "dims": 12
+      },
+      {
+        "block": "C3 state at t-8",
+        "dims": 12
+      },
+      {
+        "block": "P0 current chroma state at t",
+        "dims": 12
+      },
+      {
+        "block": "P0 current chroma state at t-8",
+        "dims": 12
+      },
+      {
+        "block": "C3 movement",
+        "dims": 1
+      },
+      {
+        "block": "P0 movement",
+        "dims": 1
+      },
+      {
+        "block": "spectral flux",
+        "dims": 1
+      },
+      {
+        "block": "onset descriptor",
+        "dims": 1
+      },
+      {
+        "block": "delta log RMS",
+        "dims": 1
+      }
+    ],
+    "total_dims": 53,
+    "forbidden_inputs": [
+      "family ID",
+      "MIDI program",
+      "track ID",
+      "any future frame",
+      "FB_LOG",
+      "CRP",
+      "NNLS",
+      "any teacher model",
+      "any zero-phase or otherwise non-causal feature"
+    ],
+    "standardisation": "mean and standard deviation fitted on TRAINING TRACKS ONLY within each fold"
+  },
+  "supervision": {
+    "this_is_a_restraint_policy_target_not_a_chroma_regression_target": true,
+    "source": "the existing rectangular MIDI harmonic-movement oracle, unmodified",
+    "POSITIVE_KEEP": "oracle movement within-track rank >= 0.95 - genuine strongest harmonic-change events",
+    "NEGATIVE_SUPPRESS": "oracle movement rank <= 0.50 AND C3 movement rank >= 0.80 - frames where C3 is actively moving while the symbolic harmonic state is stable",
+    "AMBIGUOUS": "everything else - EXCLUDED from the classifier loss, never silently labelled negative",
+    "what_this_makes_the_supervision_ask": "when C3 wants to move, is this a genuine harmonic event or an unwanted response?"
+  },
+  "onset_descriptor_deviation_DISCLOSED": {
+    "what": "J3Q uses the onset descriptor with NO fitted alignment shift (shift 0)",
+    "why": "the programme's existing B_onset picks a per-track backward shift in 0..6 by maximising Spearman against flux over the WHOLE track. That is a whole-track calibration, and J3Q is a causal-feasibility probe. Shift 0 is strictly more conservative.",
+    "control_reported_in_the_feature_cache_log": "the shift the existing method would have chosen"
+  },
+  "execution_environment": "Anthropic cloud container (HOST-class). BabySlakh 16 kHz, md5 verified against the publisher's checksum.",
+  "data_status": {
+    "corpus": "all current BabySlakh tracks are CONSUMED",
+    "label": "POST_HOC_LEARNED_RESTRAINT_INFORMATION_PROBE",
+    "only_meaningful_predictions": "OUT OF FOLD. Every reported metric uses predictions from a model that did not train on that track.",
+    "in_sample": "may be inspected for debugging only and must NEVER enter a receipt result",
+    "nothing_promotable": true
+  },
+  "controls": {
+    "n_stems_scored": 84,
+    "n_tracks": 20,
+    "n_folds": 5,
+    "track_group_overlap_per_fold": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "track_group_separation_zero_overlap": true,
+    "standardisation_fitted_on_training_rows_only": true,
+    "oracle_labels_absent_from_feature_matrix": true,
+    "feature_blocks": [
+      {
+        "block": "c3_state_t",
+        "dims": 12
+      },
+      {
+        "block": "c3_state_t_minus_lag",
+        "dims": 12
+      },
+      {
+        "block": "p0_state_t",
+        "dims": 12
+      },
+      {
+        "block": "p0_state_t_minus_lag",
+        "dims": 12
+      },
+      {
+        "block": "c3_movement",
+        "dims": 1
+      },
+      {
+        "block": "p0_movement",
+        "dims": 1
+      },
+      {
+        "block": "spectral_flux",
+        "dims": 1
+      },
+      {
+        "block": "onset_descriptor",
+        "dims": 1
+      },
+      {
+        "block": "delta_log_rms",
+        "dims": 1
+      }
+    ],
+    "n_features": 53,
+    "no_future_frame_static_audit": {
+      "imported_modules": [
+        "__future__",
+        "argparse",
+        "edgeai.mir.harmonic_movement",
+        "edgeai.mir.host_chroma",
+        "edgeai.mir.note_register",
+        "edgeai.mir.restraint_head",
+        "j3g_common",
+        "librosa",
+        "numpy",
+        "pathlib",
+        "scipy.stats",
+        "soundfile",
+        "sys",
+        "warnings",
+        "yaml"
+      ],
+      "forbidden_imports_found": [],
+      "no_forbidden_representation_imported": true
+    },
+    "every_scored_frame_has_an_oof_prediction": true,
+    "q_finite": true,
+    "q_in_unit_interval": true,
+    "q_observed_range": [
+      0.0012,
+      0.9943
+    ],
+    "C3_state_never_modified": true,
+    "model": {
+      "topology": "53 -> 32 ReLU -> 1 sigmoid",
+      "n_parameters": 1761,
+      "recipe": {
+        "loss": "balanced binary cross entropy",
+        "class_weighting": "equal TOTAL positive and negative weight inside each training fold",
+        "optimiser": "Adam",
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "weight_decay_form": "L2 added to the gradient (as torch.optim.Adam(weight_decay=...)), applied to weights only, NOT to biases",
+        "batch_size": 4096,
+        "epochs": 30,
+        "beta1": 0.9,
+        "beta2": 0.999,
+        "eps": 1e-08,
+        "seed": 20260902,
+        "init": "He/Kaiming normal for the ReLU layer, Xavier/Glorot normal for the output layer, biases zero"
+      }
+    },
+    "in_sample_predictions_used_anywhere": false,
+    "onset_descriptor_shift": 0,
+    "all_blocking_pass": true
+  },
+  "fold_log": [
+    {
+      "fold": 0,
+      "n_held_out_tracks": 4,
+      "n_train_stems": 63,
+      "n_test_stems": 21,
+      "epochs": 30,
+      "final_epoch_mean_loss": 0.484093,
+      "first_epoch_mean_loss": 0.796079,
+      "n_train_rows": 19883,
+      "n_positive": 12110,
+      "n_negative": 7773
+    },
+    {
+      "fold": 1,
+      "n_held_out_tracks": 4,
+      "n_train_stems": 73,
+      "n_test_stems": 11,
+      "epochs": 30,
+      "final_epoch_mean_loss": 0.546564,
+      "first_epoch_mean_loss": 1.036769,
+      "n_train_rows": 25624,
+      "n_positive": 14935,
+      "n_negative": 10689
+    },
+    {
+      "fold": 2,
+      "n_held_out_tracks": 4,
+      "n_train_stems": 68,
+      "n_test_stems": 16,
+      "epochs": 30,
+      "final_epoch_mean_loss": 0.51836,
+      "first_epoch_mean_loss": 0.965801,
+      "n_train_rows": 25926,
+      "n_positive": 14711,
+      "n_negative": 11215
+    },
+    {
+      "fold": 3,
+      "n_held_out_tracks": 4,
+      "n_train_stems": 63,
+      "n_test_stems": 21,
+      "epochs": 30,
+      "final_epoch_mean_loss": 0.548039,
+      "first_epoch_mean_loss": 0.760518,
+      "n_train_rows": 24704,
+      "n_positive": 14005,
+      "n_negative": 10699
+    },
+    {
+      "fold": 4,
+      "n_held_out_tracks": 4,
+      "n_train_stems": 69,
+      "n_test_stems": 15,
+      "epochs": 30,
+      "final_epoch_mean_loss": 0.521637,
+      "first_epoch_mean_loss": 0.748004,
+      "n_train_rows": 25419,
+      "n_positive": 14959,
+      "n_negative": 10460
+    }
+  ],
+  "family_metrics": {
+    "C3_ROOT_SALIENCE": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5539,
+        "spearman": 0.6853,
+        "event_recall_consumer_time": 0.7591,
+        "event_recall_event_tolerant": 0.8935,
+        "false_movement_in_stable_periods": 0.0034,
+        "selectivity_margin": 0.8901,
+        "median_raw_movement": 0.0938,
+        "median_q": 0.3164,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.342,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5515
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.1598,
+        "spearman": 0.54,
+        "event_recall_consumer_time": 0.4607,
+        "event_recall_event_tolerant": 0.6284,
+        "false_movement_in_stable_periods": 0.0158,
+        "selectivity_margin": 0.6126,
+        "median_raw_movement": 0.17259,
+        "median_q": 0.4456,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3168,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3116
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5264,
+        "spearman": 0.6877,
+        "event_recall_consumer_time": 0.7966,
+        "event_recall_event_tolerant": 0.8957,
+        "false_movement_in_stable_periods": 0.0071,
+        "selectivity_margin": 0.8886,
+        "median_raw_movement": 0.1016,
+        "median_q": 0.4023,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3119,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5838
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.1466,
+        "spearman": 0.4554,
+        "event_recall_consumer_time": 0.2704,
+        "event_recall_event_tolerant": 0.6505,
+        "false_movement_in_stable_periods": 0.0289,
+        "selectivity_margin": 0.6216,
+        "median_raw_movement": 0.168,
+        "median_q": 0.4733,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3283,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3222
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1212,
+        "spearman": 0.3173,
+        "event_recall_consumer_time": 0.3869,
+        "event_recall_event_tolerant": 0.5474,
+        "false_movement_in_stable_periods": 0.0288,
+        "selectivity_margin": 0.5186,
+        "median_raw_movement": 0.10116,
+        "median_q": 0.353,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.3576,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.1898
+      }
+    },
+    "C3_TIMES_Q_OOF": {
+      "bass": {
+        "n_stems": 22,
+        "n_events": 5886,
+        "framewise_r2_DIAGNOSTIC": 0.5981,
+        "spearman": 0.6977,
+        "event_recall_consumer_time": 0.7983,
+        "event_recall_event_tolerant": 0.9062,
+        "false_movement_in_stable_periods": 0.0027,
+        "selectivity_margin": 0.9035,
+        "median_raw_movement": 0.02136,
+        "median_q": 0.3164,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.278,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.6282
+      },
+      "chromatic_percussion": {
+        "n_stems": 4,
+        "n_events": 662,
+        "framewise_r2_DIAGNOSTIC": 0.1948,
+        "spearman": 0.549,
+        "event_recall_consumer_time": 0.5332,
+        "event_recall_event_tolerant": 0.7175,
+        "false_movement_in_stable_periods": 0.0133,
+        "selectivity_margin": 0.7042,
+        "median_raw_movement": 0.0711,
+        "median_q": 0.4456,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.2106,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.5069
+      },
+      "piano_keys": {
+        "n_stems": 38,
+        "n_events": 7689,
+        "framewise_r2_DIAGNOSTIC": 0.5187,
+        "spearman": 0.6694,
+        "event_recall_consumer_time": 0.8,
+        "event_recall_event_tolerant": 0.9049,
+        "false_movement_in_stable_periods": 0.0053,
+        "selectivity_margin": 0.8996,
+        "median_raw_movement": 0.03447,
+        "median_q": 0.4023,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.2289,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.676
+      },
+      "reed_pipe": {
+        "n_stems": 9,
+        "n_events": 1176,
+        "framewise_r2_DIAGNOSTIC": 0.0791,
+        "spearman": 0.4188,
+        "event_recall_consumer_time": 0.3155,
+        "event_recall_event_tolerant": 0.6454,
+        "false_movement_in_stable_periods": 0.0261,
+        "selectivity_margin": 0.6193,
+        "median_raw_movement": 0.06898,
+        "median_q": 0.4733,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.1893,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.4561
+      },
+      "synth_lead_pad": {
+        "n_stems": 11,
+        "n_events": 2267,
+        "framewise_r2_DIAGNOSTIC": 0.1386,
+        "spearman": 0.3177,
+        "event_recall_consumer_time": 0.4076,
+        "event_recall_event_tolerant": 0.5536,
+        "false_movement_in_stable_periods": 0.0303,
+        "selectivity_margin": 0.5233,
+        "median_raw_movement": 0.0321,
+        "median_q": 0.353,
+        "null_recall_mean_REPORTED_NOT_GATED": 0.2183,
+        "recall_above_own_null_REPORTED_NOT_GATED": 0.3353
+      }
+    }
+  },
+  "q_distributions": {
+    "bass": {
+      "median_q_at_oracle_EVENT_frames": 0.7289,
+      "median_q_at_STABLE_and_C3_HIGH_false_movement_frames": 0.3383,
+      "separation_event_minus_false": 0.3906,
+      "learner_separates_in_the_right_direction": true,
+      "J3P_cross_view_separation_for_comparison": 0.0165
+    },
+    "chromatic_percussion": {
+      "median_q_at_oracle_EVENT_frames": 0.5637,
+      "median_q_at_STABLE_and_C3_HIGH_false_movement_frames": 0.4667,
+      "separation_event_minus_false": 0.097,
+      "learner_separates_in_the_right_direction": true,
+      "J3P_cross_view_separation_for_comparison": -0.0042
+    },
+    "piano_keys": {
+      "median_q_at_oracle_EVENT_frames": 0.6545,
+      "median_q_at_STABLE_and_C3_HIGH_false_movement_frames": 0.3677,
+      "separation_event_minus_false": 0.2868,
+      "learner_separates_in_the_right_direction": true,
+      "J3P_cross_view_separation_for_comparison": -0.0074
+    },
+    "reed_pipe": {
+      "median_q_at_oracle_EVENT_frames": 0.5146,
+      "median_q_at_STABLE_and_C3_HIGH_false_movement_frames": 0.5672,
+      "separation_event_minus_false": -0.0526,
+      "learner_separates_in_the_right_direction": false,
+      "J3P_cross_view_separation_for_comparison": 0.0017
+    },
+    "synth_lead_pad": {
+      "median_q_at_oracle_EVENT_frames": 0.4733,
+      "median_q_at_STABLE_and_C3_HIGH_false_movement_frames": 0.4383,
+      "separation_event_minus_false": 0.035,
+      "learner_separates_in_the_right_direction": true,
+      "J3P_cross_view_separation_for_comparison": 0.0233
+    }
+  },
+  "primary_family_decision": {
+    "synth_lead_pad": {
+      "recall_drop_vs_C3": -0.0062,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": -0.0015,
+      "reduces_false_movement": false,
+      "clears": false
+    },
+    "reed_pipe": {
+      "recall_drop_vs_C3": 0.0051,
+      "recall_guard_satisfied": true,
+      "false_movement_reduction_vs_C3": 0.0028,
+      "reduces_false_movement": true,
+      "clears": true
+    }
+  },
+  "both_primary_families_clear": false,
+  "recall_guard": {
+    "rule": "event-tolerant recall may not fall more than 0.02 versus C3 on either primary family",
+    "threshold": 0.02
+  },
+  "chance_floor": {
+    "n_permutations": 20,
+    "seed": 20260902,
+    "REPORTED_NOT_GATED": true
+  },
+  "conditional_mixture_test": {
+    "trigger_met": false,
+    "run": false,
+    "note": "run separately by scripts/j3q_visual.py only if the trigger is met"
+  },
+  "outcome": "LEARNED_RESTRAINT_FAIL",
+  "J3P_mutated": false,
+  "J3O_mutated": false,
+  "J3N_mutated": false,
+  "J3M_mutated": false,
+  "target_modified": false,
+  "learned_chroma": false,
+  "learned_renderer": false,
+  "fb_log_used_as_input": false,
+  "crp_run": false,
+  "nnls_run": false,
+  "cqt_run": false,
+  "basic_pitch_run": false,
+  "foundation_model_run": false,
+  "source_separator_run": false,
+  "new_frontend": false,
+  "threshold_tuned": false,
+  "recipe_tuned_against_scores": false,
+  "visual_grammar_modified": false,
+  "visual_test_run": false,
+  "production_firmware_changed": false,
+  "titan": false,
+  "student_io_frozen": false
+}

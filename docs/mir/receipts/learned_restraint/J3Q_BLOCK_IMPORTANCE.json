@@ -1,0 +1,240 @@
+{
+  "schema": "spectrasynq.learned_restraint_block_importance.v1",
+  "job": "J3Q",
+  "label": "ANALYST-ADDED REPORTED DIAGNOSTIC. NOT GATED - no J3Q outcome depends on this. Designed and run AFTER the family metrics were seen.",
+  "method": "block-level permutation importance on OUT-OF-FOLD predictions. For each frozen feature block, shuffle that block across rows of the held-out data, recompute q, and measure how much the family's q separation collapses. Same folds, same seed, same frozen recipe as the J3Q result.",
+  "metric": "q separation = median q at oracle EVENT frames minus median q at STABLE-and-C3-high false-movement frames. Higher is better; that is the quantity the head exists to produce.",
+  "why": "J3Q fails on synth_lead_pad while the learner separates strongly on bass and piano. The question that decides the next lane is whether the synth information is ABSENT from the causal feature set or merely UNUSED by this head.",
+  "by_family": {
+    "bass": {
+      "intact_q_separation": 0.3906,
+      "by_block": {
+        "c3_state_t": {
+          "q_separation_with_block_permuted": 0.3557,
+          "separation_lost": 0.0349
+        },
+        "c3_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.3112,
+          "separation_lost": 0.0793
+        },
+        "p0_state_t": {
+          "q_separation_with_block_permuted": 0.3413,
+          "separation_lost": 0.0493
+        },
+        "p0_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.3668,
+          "separation_lost": 0.0238
+        },
+        "c3_movement": {
+          "q_separation_with_block_permuted": 0.3577,
+          "separation_lost": 0.0328
+        },
+        "p0_movement": {
+          "q_separation_with_block_permuted": 0.3067,
+          "separation_lost": 0.0838
+        },
+        "spectral_flux": {
+          "q_separation_with_block_permuted": 0.3174,
+          "separation_lost": 0.0731
+        },
+        "onset_descriptor": {
+          "q_separation_with_block_permuted": 0.2286,
+          "separation_lost": 0.162
+        },
+        "delta_log_rms": {
+          "q_separation_with_block_permuted": 0.3742,
+          "separation_lost": 0.0164
+        }
+      },
+      "most_load_bearing_blocks": [
+        "onset_descriptor",
+        "p0_movement",
+        "c3_state_t_minus_lag"
+      ]
+    },
+    "chromatic_percussion": {
+      "intact_q_separation": 0.097,
+      "by_block": {
+        "c3_state_t": {
+          "q_separation_with_block_permuted": -0.0041,
+          "separation_lost": 0.1012
+        },
+        "c3_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.0736,
+          "separation_lost": 0.0234
+        },
+        "p0_state_t": {
+          "q_separation_with_block_permuted": 0.091,
+          "separation_lost": 0.0061
+        },
+        "p0_state_t_minus_lag": {
+          "q_separation_with_block_permuted": -0.0259,
+          "separation_lost": 0.123
+        },
+        "c3_movement": {
+          "q_separation_with_block_permuted": 0.106,
+          "separation_lost": -0.009
+        },
+        "p0_movement": {
+          "q_separation_with_block_permuted": 0.0841,
+          "separation_lost": 0.013
+        },
+        "spectral_flux": {
+          "q_separation_with_block_permuted": 0.0435,
+          "separation_lost": 0.0536
+        },
+        "onset_descriptor": {
+          "q_separation_with_block_permuted": 0.0855,
+          "separation_lost": 0.0115
+        },
+        "delta_log_rms": {
+          "q_separation_with_block_permuted": 0.0908,
+          "separation_lost": 0.0062
+        }
+      },
+      "most_load_bearing_blocks": [
+        "p0_state_t_minus_lag",
+        "c3_state_t",
+        "spectral_flux"
+      ]
+    },
+    "piano_keys": {
+      "intact_q_separation": 0.2868,
+      "by_block": {
+        "c3_state_t": {
+          "q_separation_with_block_permuted": 0.2342,
+          "separation_lost": 0.0526
+        },
+        "c3_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.2239,
+          "separation_lost": 0.0629
+        },
+        "p0_state_t": {
+          "q_separation_with_block_permuted": 0.2565,
+          "separation_lost": 0.0303
+        },
+        "p0_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.2531,
+          "separation_lost": 0.0337
+        },
+        "c3_movement": {
+          "q_separation_with_block_permuted": 0.2742,
+          "separation_lost": 0.0126
+        },
+        "p0_movement": {
+          "q_separation_with_block_permuted": 0.2046,
+          "separation_lost": 0.0822
+        },
+        "spectral_flux": {
+          "q_separation_with_block_permuted": 0.1821,
+          "separation_lost": 0.1047
+        },
+        "onset_descriptor": {
+          "q_separation_with_block_permuted": 0.1809,
+          "separation_lost": 0.1059
+        },
+        "delta_log_rms": {
+          "q_separation_with_block_permuted": 0.2662,
+          "separation_lost": 0.0206
+        }
+      },
+      "most_load_bearing_blocks": [
+        "onset_descriptor",
+        "spectral_flux",
+        "p0_movement"
+      ]
+    },
+    "reed_pipe": {
+      "intact_q_separation": -0.0526,
+      "by_block": {
+        "c3_state_t": {
+          "q_separation_with_block_permuted": -0.0965,
+          "separation_lost": 0.0439
+        },
+        "c3_state_t_minus_lag": {
+          "q_separation_with_block_permuted": -0.077,
+          "separation_lost": 0.0244
+        },
+        "p0_state_t": {
+          "q_separation_with_block_permuted": -0.0262,
+          "separation_lost": -0.0264
+        },
+        "p0_state_t_minus_lag": {
+          "q_separation_with_block_permuted": -0.092,
+          "separation_lost": 0.0393
+        },
+        "c3_movement": {
+          "q_separation_with_block_permuted": -0.065,
+          "separation_lost": 0.0123
+        },
+        "p0_movement": {
+          "q_separation_with_block_permuted": -0.1066,
+          "separation_lost": 0.0539
+        },
+        "spectral_flux": {
+          "q_separation_with_block_permuted": -0.0425,
+          "separation_lost": -0.0101
+        },
+        "onset_descriptor": {
+          "q_separation_with_block_permuted": -0.0821,
+          "separation_lost": 0.0295
+        },
+        "delta_log_rms": {
+          "q_separation_with_block_permuted": -0.1179,
+          "separation_lost": 0.0653
+        }
+      },
+      "most_load_bearing_blocks": [
+        "delta_log_rms",
+        "p0_movement",
+        "c3_state_t"
+      ]
+    },
+    "synth_lead_pad": {
+      "intact_q_separation": 0.035,
+      "by_block": {
+        "c3_state_t": {
+          "q_separation_with_block_permuted": 0.0805,
+          "separation_lost": -0.0455
+        },
+        "c3_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.0676,
+          "separation_lost": -0.0326
+        },
+        "p0_state_t": {
+          "q_separation_with_block_permuted": 0.0346,
+          "separation_lost": 0.0004
+        },
+        "p0_state_t_minus_lag": {
+          "q_separation_with_block_permuted": 0.0305,
+          "separation_lost": 0.0045
+        },
+        "c3_movement": {
+          "q_separation_with_block_permuted": 0.0374,
+          "separation_lost": -0.0023
+        },
+        "p0_movement": {
+          "q_separation_with_block_permuted": 0.0227,
+          "separation_lost": 0.0123
+        },
+        "spectral_flux": {
+          "q_separation_with_block_permuted": 0.0421,
+          "separation_lost": -0.0071
+        },
+        "onset_descriptor": {
+          "q_separation_with_block_permuted": 0.0162,
+          "separation_lost": 0.0188
+        },
+        "delta_log_rms": {
+          "q_separation_with_block_permuted": 0.0225,
+          "separation_lost": 0.0126
+        }
+      },
+      "most_load_bearing_blocks": [
+        "onset_descriptor",
+        "delta_log_rms",
+        "p0_movement"
+      ]
+    }
+  }
+}

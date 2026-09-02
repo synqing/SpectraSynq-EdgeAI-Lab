@@ -1,0 +1,137 @@
+{
+  "schema": "spectrasynq.learned_restraint_interpretation.v1",
+  "job": "J3Q",
+  "outcome": "LEARNED_RESTRAINT_FAIL",
+  "date": "2026-09-02",
+  "one_sentence": "The tiny causal head learned a great deal - q separation on bass is 0.3906 against the cross-view witness's 0.0165, twenty-four times stronger, and the sign flipped from wrong to right on piano and chromatic percussion - but what it learned is an ONSET policy, and synth pads have no onsets, so the family the branch exists for is the one family where it extracted almost nothing.",
+
+  "THE_DIRECT_ANSWER": {
+    "question": "Can a tiny CAUSAL learned policy extract the weak reliability information that fixed deterministic gates could not, while leaving C3 as the harmonic-state representation?",
+    "answer": "It extracts far more than the fixed gate did, and still fails the primary mechanistic requirement.",
+    "which_clause_failed": "synth_lead_pad does not reduce false movement",
+    "synth_lead_pad": {
+      "false_movement_C3": 0.0288, "false_movement_C3_TIMES_Q_OOF": 0.0303,
+      "reduces_false_movement": false,
+      "recall_drop_vs_C3": -0.0062, "recall_guard_satisfied": true,
+      "note": "recall actually IMPROVED. The failure is purely on restraint."
+    },
+    "reed_pipe": {
+      "false_movement_C3": 0.0289, "false_movement_C3_TIMES_Q_OOF": 0.0261,
+      "reduces_false_movement": true,
+      "recall_drop_vs_C3": 0.0051, "recall_guard_satisfied": true,
+      "clears": true,
+      "BUT_SEE_BELOW": "reed_pipe clears the arithmetic while its q separation points the WRONG WAY. Do not read this as a success."
+    },
+    "visual_test_not_run": "correct per the brief - stop before visual rendering when the mechanistic requirement is not met",
+    "all_controls_passed": true
+  },
+
+  "WHAT_THE_LEARNER_ACTUALLY_LEARNED": {
+    "q_separation_median_q_at_oracle_EVENT_frames_minus_at_STABLE_and_C3_HIGH_frames": {
+      "bass": {"J3Q_learned": 0.3906, "J3P_cross_view": 0.0165, "ratio": "23.7x"},
+      "piano_keys": {"J3Q_learned": 0.2868, "J3P_cross_view": -0.0074, "note": "sign flipped from wrong to right"},
+      "chromatic_percussion": {"J3Q_learned": 0.0970, "J3P_cross_view": -0.0042, "note": "sign flipped from wrong to right"},
+      "synth_lead_pad": {"J3Q_learned": 0.0350, "J3P_cross_view": 0.0233, "ratio": "1.5x", "note": "barely moved"},
+      "reed_pipe": {"J3Q_learned": -0.0526, "J3P_cross_view": 0.0017, "note": "WRONG DIRECTION"}
+    },
+    "reading": "the causal feature set contains vastly more learnable reliability information than the cross-view witness did. The learning worked. It just did not learn the thing we needed."
+  },
+
+  "THE_MECHANISM_BLOCK_PERMUTATION_IMPORTANCE": {
+    "status": "ANALYST-ADDED, REPORTED, NOT GATED. Designed and run after the family metrics were seen. It changed no outcome. Same folds, same seed, same frozen recipe.",
+    "method": "shuffle one frozen feature block across rows of the HELD-OUT data, recompute q out of fold, measure how much the family's q separation collapses",
+    "the_finding": "IT IS AN ONSET POLICY",
+    "most_load_bearing_block_by_family": {
+      "bass": {"block": "onset_descriptor", "separation_lost": 0.1620, "of_intact": 0.3906},
+      "piano_keys": {"block": "onset_descriptor", "separation_lost": 0.1059, "of_intact": 0.2868},
+      "synth_lead_pad": {"block": "onset_descriptor", "separation_lost": 0.0188, "of_intact": 0.0350},
+      "reed_pipe": {"block": "delta_log_rms", "separation_lost": 0.0653, "of_intact": -0.0526},
+      "chromatic_percussion": {"block": "p0_state_t_minus_lag", "separation_lost": 0.1230, "of_intact": 0.0970}
+    },
+    "on_percussive_and_plucked_material": "'is this a genuine harmonic event?' is well predicted by 'was there an onset?'. That is a real and useful relationship, and it is why bass and piano improve so much. It is an onset detector wearing a reliability badge.",
+    "on_synth_pads_the_C3_STATE_BLOCKS_ARE_ACTIVELY_HARMFUL": {
+      "c3_state_t": {"separation_lost": -0.0455, "meaning": "PERMUTING the C3 state at t RAISES synth separation from 0.0350 to 0.0805"},
+      "c3_state_t_minus_lag": {"separation_lost": -0.0326, "meaning": "same effect, 0.0350 to 0.0676"},
+      "reading": "on pads the head has learned to use the C3 state in a way that is anti-predictive. Destroying that information makes it better. That is not a tuning problem; it is the head fitting a relationship that exists on onset-bearing families and does not transfer to sustained ones."
+    },
+    "reed_pipe_passes_the_arithmetic_for_the_wrong_reason": {
+      "intact_q_separation": -0.0526,
+      "what_that_means": "on reeds the head assigns HIGHER q to false-movement frames than to genuine events - a confidently inverted ordering",
+      "and_permuting_almost_anything_makes_it_worse": "delta_log_rms -0.0526 to -0.1179, p0_movement to -0.1066, c3_state_t to -0.0965",
+      "conclusion": "the reed_pipe reduction in false movement is NOT the learner identifying genuine events. It is an artefact of aggressive attenuation landing, on balance, on the right frames. It must not be reported as a success and it does not rescue the outcome."
+    }
+  },
+
+  "WHY_SYNTH_IS_DIFFERENT_AND_THIS_IS_THE_PROGRAMME_ANSWER": {
+    "the_measured_facts": [
+      "synth_lead_pad q separation 0.0350 - the second worst of five families, and the only one where a strong learner barely improved on a fixed multiplier",
+      "the load-bearing blocks on synth are the ENERGY descriptors (onset 0.0188, delta log RMS 0.0126, P0 movement 0.0123), and they are individually tiny",
+      "the harmonic-state blocks are worse than useless on synth"
+    ],
+    "the_defensible_conclusion": "the distinguishing evidence for a synth pad - slow spectral-envelope evolution at constant pitch versus slow genuine harmonic movement - is not expressed in ANY of these 53 causal features. Both look like a gradually changing chroma vector with no onset and no energy step. This is a REPRESENTABILITY limit of the causal feature set, not a capacity limit of a 1761-parameter head.",
+    "what_would_be_needed_instead": "evidence that distinguishes envelope evolution from harmonic change requires either finer frequency structure (which J3N and J3O showed is a resolution win but a restraint loss) or longer temporal context than a two-endpoint comparison. Neither is available in the frozen causal set, by construction.",
+    "the_honest_caveat": "this is a statement about THIS feature set and THIS supervision. It does not prove no causal feature set could work. It does say the obvious causal descriptors a lighting DSP already computes do not contain the answer."
+  },
+
+  "WHAT_THE_GATE_DID_ACHIEVE": {
+    "recall_above_own_null_C3_to_C3_TIMES_Q_OOF": {
+      "synth_lead_pad": [0.1898, 0.3353], "reed_pipe": [0.3222, 0.4561],
+      "piano_keys": [0.5838, 0.6760], "bass": [0.5515, 0.6282],
+      "chromatic_percussion": [0.3116, 0.5069]
+    },
+    "reading": "chance-adjusted recall improved substantially in EVERY family, the primaries included. The gated movement is genuinely better time-aligned with the oracle than raw C3 movement. That improvement rides on onset information.",
+    "selectivity_margin_C3_to_gated": {
+      "bass": [0.8901, 0.9035], "piano_keys": [0.8886, 0.8996],
+      "chromatic_percussion": [0.6126, 0.7042], "reed_pipe": [0.6216, 0.6193],
+      "synth_lead_pad": [0.5186, 0.5233]
+    },
+    "and_it_is_not_a_blanket_attenuator_this_time": "unlike J3P, q varies strongly with condition - the observed range is 0.0012 to 0.9943 and within-family event-versus-false separation reaches 0.39. The head is genuinely conditional. It is conditional on the wrong thing for pads."
+  },
+
+  "COMPARISON_TO_J3P_WHAT_CHANGED_AND_WHAT_DID_NOT": {
+    "changed": "the instrument. A learned conditional policy extracted 24x the separation a fixed multiplier could, and corrected the sign on two families.",
+    "did_not_change": "the family that fails, and the reason. J3P failed on synth_lead_pad; J3Q fails on synth_lead_pad. Two very different instruments, same wall.",
+    "what_that_pattern_supports": "the residual is not a policy-instrument problem. It is an evidence problem."
+  },
+
+  "WHAT_THIS_DOES_NOT_ESTABLISH": [
+    "it does not establish that ML has no place here - the head demonstrably learned a strong, correctly-signed, out-of-fold policy on three of five families",
+    "it does not establish that onset-driven gating is worthless - it is the single most load-bearing signal found in this programme for distinguishing genuine events, and it is already causally available",
+    "it does not establish that a larger or different network would fail - only that this frozen architecture on this frozen causal feature set does, and the block importance points at the FEATURES, not the capacity",
+    "it does not license tuning. The corpus is consumed and the recipe was frozen before any score."
+  ],
+
+  "PROGRAMME_POSITION_AFTER_J3Q": {
+    "C3": "unchanged as the restraint view. Visual selectivity margin 0.2812 against an oracle ceiling of 0.4073.",
+    "fine_pitch_resolution": "unchanged as a replicated low-register information win, in two independent front ends",
+    "the_reliability_lane": "both instruments tried - fixed cross-view multiplier (J3P) and tiny learned causal head (J3Q) - fail on synth_lead_pad, and J3Q's block importance says why: the causal feature set does not contain the distinguishing evidence for sustained pads",
+    "the_PM_stated_fallback_is_now_the_best_supported_position": "accept C3 as the restraint descriptor and treat residual timbre failures through a higher-level split-descriptor / policy architecture rather than continuing to chase a universally better harmonic representation OR a better gate on these features",
+    "the_five_times_pattern": "C2 over C3 (J3G), CRP (J3M), FB_LOG on weak families (J3N), NNLS (J3O), cross-view gating (J3P), and now a learned causal head (J3Q). Every instrument that improved some measure of harmonic information failed to improve synth/pad restraint."
+  },
+
+  "PROCESS_DISCLOSURES": [
+    "The pre-registration was written before any model was trained. The 53-feature vector, the 53->32->1 topology, the supervision rule and the entire training recipe were frozen in it and none was changed.",
+    "The head is hand-written NumPy rather than a framework, so the committed code reproduces with no extra dependency. Its analytic gradients are verified against finite differences in the test suite to a relative tolerance of 1e-5, and identical seeds produce bit-identical predictions.",
+    "DISCLOSED DEVIATION: the onset descriptor uses NO fitted alignment shift. The programme's existing B_onset picks a per-track backward shift in 0..6 by maximising Spearman against flux over the WHOLE track, which is a whole-track calibration and inappropriate in a causal-feasibility probe. Measured control: the existing method would have chosen shift 1 in 41 of 42 measured cases and shift 4 once, so the deviation is one hop (32 ms) in about 98 percent of cases, in the conservative direction.",
+    "All seven pre-registered machinery controls passed: zero track-group overlap across all five folds, standardisation on training rows only, no oracle label in the feature matrix, static import audit clean of FB_LOG/CRP/NNLS, every scored frame carries an OOF prediction, q finite and within [0.0012, 0.9943], C3 state never modified.",
+    "Every reported number is out of fold. No in-sample prediction entered any receipt.",
+    "The block-permutation-importance diagnostic was added by the analyst AFTER the family metrics were seen. REPORTED, NOT GATED. It changed no outcome, and it cuts AGAINST the more favourable reading by showing that reed_pipe's arithmetic pass is an artefact.",
+    "No new blocking gate. No threshold tuning. No sweep of any kind. No historical receipt mutated."
+  ],
+
+  "STATUS_FLAGS": {
+    "J3D_mutated": false, "J3E_mutated": false, "J3F_mutated": false, "J3G_mutated": false,
+    "J3I_mutated": false, "J3J_mutated": false, "J3K_mutated": false, "J3M_mutated": false,
+    "J3N_mutated": false, "J3O_mutated": false, "J3P_mutated": false,
+    "target_modified": false,
+    "learned_chroma": false, "learned_renderer": false, "learned_colour_state": false,
+    "fb_log_used_as_input": false, "crp_run": false, "nnls_run": false, "cqt_run": false,
+    "basic_pitch_run": false, "foundation_model_run": false, "source_separator_run": false,
+    "new_frontend": false, "new_blocking_gate_added": false, "threshold_tuned": false,
+    "recipe_tuned_against_scores": false,
+    "visual_grammar_run": false, "visual_grammar_modified": false,
+    "production_firmware_changed": false, "titan": false, "student_io_frozen": false,
+    "fresh_validation_required": "NO - the outcome is a FAIL and nothing is promoted",
+    "model_selected": false
+  }
+}

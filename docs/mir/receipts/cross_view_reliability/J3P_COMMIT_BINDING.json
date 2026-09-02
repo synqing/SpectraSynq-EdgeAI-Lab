@@ -1,0 +1,39 @@
+{
+  "schema": "spectrasynq.commit_binding.v1",
+  "job": "J3P",
+  "label": "COMMIT BINDING ONLY. Bookkeeping. NO SCIENTIFIC CHANGES. No rerun. Nothing in this file alters any J3P measurement, threshold, control or outcome.",
+  "date": "2026-09-02",
+  "why_this_file_exists": "the J3P receipts were written before the commit existed, so each carries git_head UNKNOWN. This binds them to the commit that contains them.",
+  "repository": "SpectraSynq-EdgeAI-Lab",
+  "branch": "j3o-nnls-restraint-probe",
+  "commit_sha": "a2049cdce80bd4eaf5ad0f533fb6e500f77b6cf6",
+  "commit_sha_short": "a2049cd",
+  "parent_commit_sha": "c2d3ed67faf40ce1f8fab56b390f97f46b5bbff8",
+  "tree_sha": "27d491ecaae26e03b7f900062ca2b797a40e3f81",
+  "author": "SpectraSynq",
+  "commit_date": "2026-09-02T18:59:36+00:00",
+  "receipt_sha256_as_committed": {
+    "docs/mir/receipts/cross_view_reliability/J3P_PREREGISTRATION.json": "08109f9c63732022d31384c8cae87c790b1caeb509c61bc69beaf6efbf569118",
+    "docs/mir/receipts/cross_view_reliability/J3P_RESULT.json": "5e80af75d11e18f5852247191f2fde102bb01ac8d7e7e2a4084326f848f8cb76",
+    "docs/mir/receipts/cross_view_reliability/J3P_INTERPRETATION.json": "83f7855ee3f95a6026b99bfa4c37731285f104dcdae9889b2eaa93779b3f38fd"
+  },
+  "git_head_field_in_those_receipts": "UNKNOWN - correct at the time of writing and DELIBERATELY LEFT AS WRITTEN. This file supplies the binding rather than editing immutable receipts after the fact.",
+  "code_committed_in_the_same_commit": [
+    "src/edgeai/mir/cross_view.py",
+    "scripts/j3p_gate.py",
+    "tests/test_tonal_projection.py"
+  ],
+  "REPRODUCIBILITY_CAVEAT_AND_ITS_RESOLUTION": {
+    "the_defect": "at commit a2049cd the J3P surface imported modules that Git did not contain - tonal_projection.py, crp.py, harmonic_movement.py, note_register.py and scripts/j3g_common.py all existed only in the working tree. The commit claimed an outcome it could not be used to reproduce.",
+    "resolved_by": "c08793a6cccfb2b10932a0beb8308ad4bb8e3299 - 'Capture the MIR research programme (J3A-J3P) in Git', 84 files, bookkeeping only, no scientific content edited",
+    "status_now": "every module imported by scripts/j3p_gate.py is present in the committed tree at c08793a and later",
+    "the_commit_to_reproduce_J3P_from": "c08793a6cccfb2b10932a0beb8308ad4bb8e3299 or any later commit on this branch, NOT a2049cd alone"
+  },
+  "external_inputs_not_in_git_by_design": {
+    "BabySlakh 16 kHz corpus": "copyrighted audio, never committed; md5 verified against the publisher's checksum",
+    "cached NPZ feature surfaces": "regenerable from the committed scripts; excluded by .gitignore"
+  },
+  "no_rerun_performed_for_this_file": true,
+  "outcome_unchanged": "CROSS_VIEW_RELIABILITY_FAIL",
+  "J3P_mutated": false
+}

@@ -414,3 +414,72 @@ def test_j3p_disjoint_states_give_zero_agreement():
     a = np.zeros((1, 12)); a[0, 0] = 1.0
     b = np.zeros((1, 12)); b[0, 6] = 1.0
     assert float(endpoint_agreement(a, b)[0]) == 0.0
+
+
+# ---------------------------------------------------------------- J3Q
+def test_j3q_head_has_the_frozen_topology_and_parameter_count():
+    from edgeai.mir.restraint_head import N_FEATURES, N_HIDDEN, TinyHead
+
+    assert N_FEATURES == 53 and N_HIDDEN == 32
+    h = TinyHead()
+    assert h.n_parameters == 53 * 32 + 32 + 32 * 1 + 1 == 1761
+
+
+def test_j3q_analytic_gradients_match_finite_differences():
+    """The head is hand-written NumPy, so its gradients are proven, not trusted."""
+    from edgeai.mir.restraint_head import N_FEATURES, TinyHead
+
+    h = TinyHead(seed=7)
+    rng = np.random.default_rng(7)
+    x = rng.normal(size=(64, N_FEATURES))
+    y = (rng.random(64) > 0.5).astype(float)
+    w = rng.random(64) + 0.1
+    _, g = h._loss_and_grads(x, y, w)
+    for key in ("W1", "b1", "W2", "b2"):
+        p = h.params[key]
+        for _ in range(3):
+            idx = tuple(int(rng.integers(0, s)) for s in p.shape)
+            e = 1e-6
+            p[idx] += e
+            lp, _ = h._loss_and_grads(x, y, w)
+            p[idx] -= 2 * e
+            lm, _ = h._loss_and_grads(x, y, w)
+            p[idx] += e
+            num, ana = (lp - lm) / (2 * e), g[key][idx]
+            assert abs(num - ana) <= 1e-5 * max(abs(num), abs(ana), 1e-9)
+
+
+def test_j3q_output_is_a_probability_and_training_is_deterministic():
+    from edgeai.mir.restraint_head import N_FEATURES, TinyHead
+
+    rng = np.random.default_rng(3)
+    x = rng.normal(size=(300, N_FEATURES))
+    y = (x[:, 0] + 0.3 * rng.normal(size=300) > 0).astype(float)
+    a, b = TinyHead(seed=11), TinyHead(seed=11)
+    a.fit(x, y, seed=11)
+    b.fit(x, y, seed=11)
+    qa, qb = a.forward(x), b.forward(x)
+    assert np.isfinite(qa).all() and qa.min() >= 0.0 and qa.max() <= 1.0
+    assert np.array_equal(qa, qb)                  # same seed, same recipe, same result
+
+
+def test_j3q_feature_block_order_is_frozen_and_sums_to_53():
+    from edgeai.mir.restraint_head import FEATURE_BLOCKS, N_FEATURES
+
+    assert [b for b, _ in FEATURE_BLOCKS] == [
+        "c3_state_t", "c3_state_t_minus_lag", "p0_state_t", "p0_state_t_minus_lag",
+        "c3_movement", "p0_movement", "spectral_flux", "onset_descriptor", "delta_log_rms"]
+    assert sum(d for _, d in FEATURE_BLOCKS) == N_FEATURES == 53
+
+
+def test_j3q_standardiser_ignores_held_out_rows():
+    from edgeai.mir.restraint_head import standardiser
+
+    rng = np.random.default_rng(5)
+    train = rng.normal(size=(200, 4))
+    mu, sd = standardiser(train)
+    assert np.allclose(mu, train.mean(axis=0)) and np.allclose(sd, train.std(axis=0))
+    held = train + 1000.0                          # held-out rows must not shift anything
+    mu2, _ = standardiser(train)
+    assert np.allclose(mu, mu2)
+    assert not np.allclose(mu, standardiser(np.vstack([train, held]))[0])

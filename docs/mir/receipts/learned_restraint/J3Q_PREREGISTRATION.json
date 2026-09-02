@@ -1,0 +1,218 @@
+{
+  "schema": "spectrasynq.learned_restraint_prereg.v1",
+  "job": "J3Q",
+  "label": "POST_HOC_LEARNED_RESTRAINT_INFORMATION_PROBE. All BabySlakh tracks are CONSUMED. Nothing here can be promoted. This does not select a model.",
+  "date": "2026-09-02",
+  "written_before_any_model_was_trained": true,
+
+  "the_only_question": "Can a tiny CAUSAL learned policy extract the weak reliability information that fixed deterministic gates could not, while leaving C3 as the harmonic-state representation?",
+
+  "what_this_is_not": [
+    "NOT a learned chroma model",
+    "NOT transcription",
+    "NOT a new frontend",
+    "NOT a learned colour state or a learned renderer",
+    "it predicts only whether C3 movement deserves influence"
+  ],
+
+  "why_a_learned_model_is_warranted_here": {
+    "the_evidence_that_licenses_it": "J3P measured the pattern you would want to see BEFORE allowing learning. On synth_lead_pad, cross-view confidence at genuine harmonic events exceeds confidence at stable frames by +0.0233 - the largest correctly-signed separation of any family - against a within-stem interquartile spread of 0.0656. Signal is present; a one-dimensional fixed multiplier cannot separate it from nuisance.",
+    "and_the_witness_is_not_meaningless": "J3P improved four families of five and broke only synth",
+    "what_the_head_is_asked_to_do": "learn the conditional relationship between existing CAUSAL measurements and a policy distinction already known to exist - genuine harmonic change versus C3 moving while harmony is effectively stable. It is not asked to invent harmony."
+  },
+
+  "ARCHITECTURE": {
+    "C3_remains": ["harmonic STATE", "base harmonic MOVEMENT"],
+    "learned_output": "q(t) in [0,1]",
+    "combination": "M_J3Q(t) = C3_movement(t) * q(t)",
+    "C3_state_never_replaced": true,
+    "q_is_not_thresholded": true
+  },
+
+  "CAUSAL_INPUTS_ONLY": {
+    "principle": "the product-feasibility hypothesis begins now. Only quantities already derivable causally from the existing 16 kHz / n_fft 2048 / hop 512 STFT path.",
+    "frozen_feature_vector": [
+      {"block": "C3 state at t", "dims": 12},
+      {"block": "C3 state at t-8", "dims": 12},
+      {"block": "P0 current chroma state at t", "dims": 12},
+      {"block": "P0 current chroma state at t-8", "dims": 12},
+      {"block": "C3 movement", "dims": 1},
+      {"block": "P0 movement", "dims": 1},
+      {"block": "spectral flux", "dims": 1},
+      {"block": "onset descriptor", "dims": 1},
+      {"block": "delta log RMS", "dims": 1}
+    ],
+    "total_dims": 53,
+    "forbidden_inputs": [
+      "family ID", "MIDI program", "track ID", "any future frame",
+      "FB_LOG", "CRP", "NNLS", "any teacher model",
+      "any zero-phase or otherwise non-causal feature"
+    ],
+    "standardisation": "mean and standard deviation fitted on TRAINING TRACKS ONLY within each fold"
+  },
+
+  "MODEL": {
+    "exactly_one_architecture": true,
+    "topology": "53 -> 32 ReLU -> 1 sigmoid",
+    "trainable_parameters": "53*32 + 32 + 32*1 + 1 = 1761",
+    "no_recurrence": true, "no_attention": true, "no_convolution": true, "no_sequence_model": true,
+    "output": "the continuous gate q(t)"
+  },
+
+  "SUPERVISION": {
+    "this_is_a_restraint_policy_target_not_a_chroma_regression_target": true,
+    "source": "the existing rectangular MIDI harmonic-movement oracle, unmodified",
+    "POSITIVE_KEEP": "oracle movement within-track rank >= 0.95 - genuine strongest harmonic-change events",
+    "NEGATIVE_SUPPRESS": "oracle movement rank <= 0.50 AND C3 movement rank >= 0.80 - frames where C3 is actively moving while the symbolic harmonic state is stable",
+    "AMBIGUOUS": "everything else - EXCLUDED from the classifier loss, never silently labelled negative",
+    "what_this_makes_the_supervision_ask": "when C3 wants to move, is this a genuine harmonic event or an unwanted response?"
+  },
+
+  "TRAINING": {
+    "cross_validation": "grouped 5-fold by TRACK. No stem from a held-out track may appear in that fold's training set.",
+    "seed": "one fixed seed, 20260902",
+    "recipe_frozen_before_any_score": {
+      "loss": "balanced binary cross entropy",
+      "class_weighting": "equal TOTAL positive and negative class weight inside each training fold",
+      "optimiser": "Adam",
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "batch_size": 4096,
+      "epochs": 30
+    },
+    "no_early_stopping_search": true, "no_lr_sweep": true, "no_hidden_size_sweep": true,
+    "no_seed_sweep": true, "no_threshold_selection": true,
+    "defect_policy": "if this exact recipe exposes an IMPLEMENTATION DEFECT, fix the defect and disclose it. Do NOT optimise the recipe against J3Q scores."
+  },
+
+  "DATA_STATUS": {
+    "corpus": "all current BabySlakh tracks are CONSUMED",
+    "label": "POST_HOC_LEARNED_RESTRAINT_INFORMATION_PROBE",
+    "only_meaningful_predictions": "OUT OF FOLD. Every reported metric uses predictions from a model that did not train on that track.",
+    "in_sample": "may be inspected for debugging only and must NEVER enter a receipt result",
+    "nothing_promotable": true
+  },
+
+  "MACHINERY_CONTROLS_NOT_PERFORMANCE_GATES": [
+    "track-group separation has zero overlap",
+    "standardisation sees training folds only",
+    "oracle labels are never present in the feature matrix",
+    "no future audio frame enters any feature",
+    "every reported scored frame has an OOF prediction",
+    "model output is finite and lies in [0,1]",
+    "C3 state is never modified"
+  ],
+  "if_any_control_fails": "LEARNED_RESTRAINT_INCONCLUSIVE",
+
+  "CHANCE_FLOOR_STANDING_PRACTICE": {
+    "for": ["C3", "J3Q"],
+    "report": ["raw event-tolerant recall", "circular-shift own-null mean", "recall-above-own-null"],
+    "n_permutations": 20,
+    "method": "unchanged from J3O and J3P - per stem, circular shift by a random offset in [200, 2000] hops, 20 permutations, seed 20260902",
+    "REPORTED_NOT_GATED": true
+  },
+
+  "PRIMARY_SOLO_STEM_TEST": {
+    "primary_families": ["synth_lead_pad", "reed_pipe"],
+    "strong_controls": ["piano_keys", "bass"],
+    "separate": ["chromatic_percussion"],
+    "compare": "C3 versus C3 x q_OOF",
+    "reported_metrics": [
+      "event recall consumer time", "event recall +/- 2 hops",
+      "false movement in stable periods", "recall-above-own-null",
+      "spearman", "framewise R-squared DIAGNOSTIC",
+      "median raw movement", "median q"
+    ],
+    "q_distributions_reported_at": [
+      "oracle EVENT frames",
+      "oracle STABLE frames where C3 movement is high (the false-movement frames)"
+    ],
+    "what_that_directly_tests": "whether the learner extracted the signal J3P showed was present but weak"
+  },
+
+  "RECALL_GUARD": {
+    "carried_forward_unchanged": true,
+    "rule": "event-tolerant recall may not fall more than 0.02 versus C3 on either primary family",
+    "threshold": 0.02
+  },
+
+  "PRIMARY_MECHANISTIC_REQUIREMENT": {
+    "rule": "for BOTH synth_lead_pad and reed_pipe the OOF learned gate must (1) reduce false movement versus C3 and (2) satisfy the 0.02 recall guard",
+    "if_either_family_fails": "STOP. Return LEARNED_RESTRAINT_FAIL. Do NOT run the visual test.",
+    "reduce_means": "strictly lower than C3's false movement in that family. An exact tie is not a reduction."
+  },
+
+  "CONDITIONAL_MIXTURE_TEST": {
+    "trigger": "only if both primary families clear",
+    "strictly_out_of_fold": "for every held-out track, apply THAT FOLD's model to the MIXTURE from the same held-out track",
+    "no_second_model": "do NOT train a mixture-specific model",
+    "CONTROL": "C3 state + C3 movement",
+    "TREATMENT": "C3 state + C3 movement x q_OOF",
+    "ORACLE": "unchanged",
+    "grammar": "J3E, unchanged, no retuning",
+    "reported": ["flat-energy recall", "no-onset recall", "acoustic-only false response",
+                 "resting median delta-E", "reversal rate", "selectivity margin"],
+    "THREE_RESTRAINT_GUARDS_ALL_MUST_PASS": {
+      "G1": "selectivity margin >= C3",
+      "G2": "resting median delta-E <= C3",
+      "G3": "reversal rate <= C3"
+    },
+    "mixture_features_note": "the mixture feature vector is built by the SAME frozen 53-feature causal extractor from the mixture STFT. No new transform."
+  },
+
+  "OUTCOMES": {
+    "LEARNED_RESTRAINT_SIGNAL": {
+      "requires_all_of": [
+        "false movement decreases on BOTH primary families",
+        "both satisfy the recall guard",
+        "the conditional OOF mixture visual test runs",
+        "all three visual restraint guards pass"
+      ],
+      "meaning": "causal audio features contain learnable information that can improve WHEN C3 is allowed to drive harmonic visual motion",
+      "what_it_authorises": "EXACTLY ONE THING - FRESH_LEARNED_RESTRAINT_VALIDATION on unseen synthetic tracks with the exact frozen architecture and recipe",
+      "what_it_does_NOT_do": "IT DOES NOT SELECT THE MODEL. The corpus is consumed."
+    },
+    "LEARNED_RESTRAINT_FAIL": {
+      "triggered_by": "either primary does not reduce false movement, or either primary violates the recall guard, or the visual restraint test fails",
+      "meaning": "this causal feature set and tiny policy head do not solve the residual"
+    },
+    "LEARNED_RESTRAINT_INCONCLUSIVE": {"triggered_by": "control or training machinery failure ONLY"}
+  },
+
+  "IMPORTANT_INTERPRETATION_A_POSITIVE_RESULT_WOULD_NOT_ESTABLISH": [
+    "learned chroma",
+    "ML as the harmonic architecture",
+    "the need for a second frontend",
+    "any particular product model"
+  ],
+  "it_would_establish_only": "the policy/reliability problem contains learnable causal information beyond fixed hand-designed gates",
+
+  "STOP_CONDITIONS": {
+    "if_SIGNAL": "STOP. Do not tune. Do not enlarge the network. Do not train another model.",
+    "if_FAIL": "STOP and return to the PM."
+  },
+
+  "PRESERVED_UNCHANGED_AND_NOT_MUTATED": {
+    "J3F": "TIMBRE_FRONTEND_DOMINANT",
+    "J3G": "EXISTING_STFT_HARMONIC_RECOVERY_PARTIAL",
+    "J3G.2": "SAME_STFT_PROJECTION_TIMBRE_LIMIT",
+    "J3I": "TIMBRE_TARGET_AND_REPRESENTATION_MIXED",
+    "J3J": "TARGET_CORRECTION_IMMATERIAL",
+    "J3K": "target-timing lane CLOSED",
+    "J3M": "CRP_MOVEMENT_FAIL",
+    "J3N": "PITCH_FRONTEND_RESOLUTION_SIGNAL",
+    "J3O": "NNLS_RESTRAINT_FAIL",
+    "J3P": "CROSS_VIEW_RELIABILITY_FAIL",
+    "J3D": "immutable challenge membership - FLAT_ENERGY 2299, NO_ONSET 4000, ACOUSTIC 3292",
+    "J3E": "the visual grammar, unchanged",
+    "target": "the rectangular MIDI duration-occupancy oracle, unmodified"
+  },
+
+  "DO_NOT_EXECUTE": [
+    "FB_LOG as a model input", "any new pitch frontend",
+    "CQT", "CRP", "NNLS", "Basic Pitch",
+    "any foundation model", "any source separator",
+    "production firmware changes", "Titan", "student I/O freeze",
+    "any mutation of any historical receipt"
+  ]
+}
