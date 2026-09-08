@@ -17,6 +17,16 @@ updated: 2026-09-01
 # Firmware Atlas pin verified 2026-09-01 via SpectraSynq_K1_Firmware
 #   `git cat-file -t` / `rev-parse --short=8`: git_sha 36466cd5
 #   full 36466cd56c90b9cafa571bc5029b5d38bc0543bb (not this lab HEAD).
+# commercial_training_lineage vocabulary (mechanically checked by
+#   tests/test_mir_registry.py). Prose belongs in `spectrasynq`, not here:
+#   true        every layer (audio, annotations, weights) permits commercial training
+#   false       at least one layer forbids it. Never mix into a shipping student
+#   conditional a commercially usable subset/variant may exist; see spectrasynq
+#   UNKNOWN     not established from an authoritative source. Correct answer
+#   n/a         the asset produces no weights and ships no corpus
+# Pin keys added 2026-09-01: zenodo_md5 / zenodo_bytes are the publisher's own
+#   published checksum and size read from the Zenodo API. Not computed here,
+#   not invented. github_head_sha / github_release are read from the GitHub API.
 entries:
 
   - id: librosa
@@ -43,6 +53,7 @@ entries:
     attribution: required (copyright notice)
     redistribution: per ISC
     status: executed
+    commercial_training_lineage: n/a   # library; produces no weights and ships no corpus
     uv_lock_hash: "librosa==1.0.0 py3-none-any.whl sha256:5910a6c0e1b2e494b92758c1615a7acbd0515a2315e138927ba2982f2af88857"
     pin_date: "2026-09-01"
     pin_label: HOST-ONLY
@@ -72,6 +83,7 @@ entries:
     attribution: required
     redistribution: per licence
     status: researched
+    commercial_training_lineage: n/a   # library; evaluation only
     uv_lock_hash: "mir_eval==0.8.2 py3-none-any.whl sha256:114cda33d8e17408c170598e0b36ed0d71ff4a2fee8eaf9e165b58ecf1c87170"
     pin_date: "2026-09-01"
     pin_label: HOST-ONLY
@@ -102,6 +114,7 @@ entries:
     attribution: required
     redistribution: library yes; audio no unless dataset allows
     status: researched
+    commercial_training_lineage: n/a   # loaders only; per-dataset licence never inherited from the loader
     spectrasynq: "Keep for datasets it actually loads. There is NO mirdata DEAM loader — use datasets/deam canonical zips."
 
   - id: essentia
@@ -129,6 +142,7 @@ entries:
     attribution: required
     redistribution: AGPL
     status: researched
+    commercial_training_lineage: n/a   # library; AGPLv3 is a SHIPPING-CODE hazard, separate from training lineage
     spectrasynq: "Best conventional+ML host stack if we accept AGPL or buy a licence. Not silently embeddable."
 
   - id: essentia-models
@@ -156,6 +170,7 @@ entries:
     attribution: required
     redistribution: NC-SA/ND conflict
     status: researched
+    commercial_training_lineage: false   # CC BY-NC-SA weights over in-house Discogs20
     spectrasynq: "Primary host tagging/affect oracle family. Execute via Essentia TF when the env exists. Not Titan-direct (MAEST). EffNet+head is a teacher, not an NPU graph."
 
   - id: discogs-effnet
@@ -183,6 +198,7 @@ entries:
     attribution: required
     redistribution: NC-SA
     status: researched
+    commercial_training_lineage: false   # CC BY-NC-SA weights over in-house Discogs20
     spectrasynq: "Smaller than MAEST. Better teacher size. Style embeddings may be too genre-global for lighting unless we keep the time axis."
 
   - id: maest
@@ -210,6 +226,7 @@ entries:
     attribution: required
     redistribution: NC-SA
     status: researched
+    commercial_training_lineage: false   # CC BY-NC-SA-4.0 weights; code AGPL-3.0; MTG commercial licence on request
     spectrasynq: "Strong style oracle, weak realtime. Prefer 5s variant if we probe at all. Not a Titan model."
 
   - id: musicnn
@@ -237,6 +254,7 @@ entries:
     attribution: required
     redistribution: ISC for code
     status: blocked
+    commercial_training_lineage: UNKNOWN   # MSD audio never freely licensed; weight licence unstated
     spectrasynq: "Right output shape (taggram). Blocked here: TF1 + numpy<1.17. Prefer Essentia msd-musicnn.pb on a TF env. Graph family is student-plausible."
 
   - id: mtg-jamendo
@@ -264,6 +282,7 @@ entries:
     attribution: required
     redistribution: per-track
     status: researched
+    commercial_training_lineage: UNKNOWN   # per-track Jamendo CC mix; NC fraction not audited
     spectrasynq: "Best public ontology for energetic/dark/relaxing/dream. Labels are song-level — weak for drops. Use with sliding-window model outputs, not as frame GT."
 
   - id: deam
@@ -291,6 +310,7 @@ entries:
     attribution: required (cite PLOS ONE)
     redistribution: per DEAM terms
     status: executed
+    commercial_training_lineage: false   # DEAM manual states CC BY-NC
     spectrasynq: "First affect corpus that is actually temporal. Loaded via canonical zips, not mirdata. P1 compares human arousal to DSP before any ML head."
 
   - id: mert-v1-95m
@@ -318,6 +338,7 @@ entries:
     attribution: required
     redistribution: NC
     status: researched
+    commercial_training_lineage: false   # CC BY-NC-4.0 weights; 160k h internet-mined corpus undisclosed
     spectrasynq: "Best documented frame-rate music SSL teacher. Keep time axis. Do not mean-pool a track if we care about drops."
 
   - id: muq
@@ -345,6 +366,7 @@ entries:
     attribution: required
     redistribution: NC weights
     status: researched
+    commercial_training_lineage: false   # CC BY-NC-4.0 weights; released ckpt MSD-trained, not the paper corpus
     spectrasynq: "Zero-shot 'dreamlike/percussive' probes without a custom ontology. Host only."
 
   - id: musdb18
@@ -354,6 +376,11 @@ entries:
     group: SiSEC / Rafii et al.
     source: https://zenodo.org/records/1117372
     publication: SiSEC 2018
+    zenodo_md5: "musdb18.zip md5:af06762477334799bfc5abf237648207"
+    zenodo_bytes: 4684228845
+    zenodo_rights_id: other-nc   # Zenodo machine-readable rights field, record 1117372
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
     task: 4-stem separation
     inputs: mixture
     outputs: vocals, drums, bass, other
@@ -438,6 +465,11 @@ entries:
     group: Manilow / Pardo / et al. (Northwestern / MIT)
     source: https://github.com/ethman/slakh-generation
     publication: https://zenodo.org/records/4599666
+    zenodo_md5: "slakh2100_flac_redux.tar.gz md5:f4b71b6c45ac9b506f59788456b3f0c4"
+    zenodo_bytes: 104322767708
+    babyslakh_zenodo: "https://zenodo.org/records/4603870 babyslakh_16k.tar.gz md5:311096dc2bde7d61c97e930edbfc7f78 bytes:882818115 (20 tracks, 16 kHz)"
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
     task: synthesized multitrack + aligned MIDI, 34 instrument classes
     inputs: MIDI rendered through sampled instruments
     outputs: stems + MIDI
@@ -456,8 +488,8 @@ entries:
     attribution: required
     redistribution: CC BY
     status: researched
-    commercial_training_lineage: "candidate-synth-only — NOT a replacement for real vocals or PA/room"
-    spectrasynq: "Permissive synthetic supervision. Weak on real vocals, production, venue. Do not download until P3-B needs scale. 16 kHz derivative exists (Zenodo 7708270) — still not Titan-direct."
+    commercial_training_lineage: conditional   # CC BY 4.0 label, but rendered with proprietary Kontakt Komplete 12 samples; authors silent on that. Flakh2100 (FluidSynth/TimGM6mb.sf2) is the open-soundfont sibling.
+    spectrasynq: "OPEN RISK 2026-09-01: the rendered audio is CC BY 4.0 per the generation repo, but slakh-generation README says rendering used **Native Instruments Kontakt Komplete 12**, a proprietary sample library, and neither the README, the WASPAA paper (arXiv 1909.08494) nor slakh.com states whether that affects the CC BY grant on the rendered audio. Source MIDI is Lakh MIDI (CC BY 4.0 applied by Raffel to a scraped, third-party-authored collection). Flakh2100 renders the same MIDI with open-source FluidSynth + TimGM6mb.sf2 and is the cleaner sibling if this matters. Permissive synthetic supervision. Weak on real vocals, production, venue. Do not download until P3-B needs scale. 16 kHz derivative exists (Zenodo 7708270) — still not Titan-direct."
 
   - id: moisesdb
     kind: dataset
@@ -484,6 +516,7 @@ entries:
     attribution: required
     redistribution: NC-SA
     status: researched
+    commercial_training_lineage: false   # CC BY-NC-SA-4.0
     spectrasynq: "Better teacher ontology than 4-stem if we need guitar/piano activity. Still NC."
 
   - id: htdemucs
@@ -511,6 +544,7 @@ entries:
     attribution: required
     redistribution: weights unclear
     status: researched
+    commercial_training_lineage: UNKNOWN   # weights not MIT; MUSDB-HQ + 800 undisclosed songs
     content_sha256: "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd"
     pin_date: "2026-09-01"
     pin_label: HOST-ONLY
@@ -541,6 +575,7 @@ entries:
     attribution: required
     redistribution: UNKNOWN
     status: researched
+    commercial_training_lineage: false   # trained/evaluated on MoisesDB CC BY-NC-SA
     spectrasynq: "If we need 'snare vs kick' or 'organ' activity, this is the query-shaped teacher. Still not MCU waveform sep."
 
   - id: semantic-v0-experiment
@@ -568,6 +603,7 @@ entries:
     attribution: n/a
     redistribution: no
     status: executed
+    commercial_training_lineage: n/a   # synthetic data generated in this repo
     content_sha256: "c5d5e8e72c6ea0acd157568b98194664ac85dbc2aded4c4b3799c45805c0dc5f"
     pin_date: "2026-09-01"
     pin_label: HOST-ONLY
@@ -598,6 +634,7 @@ entries:
     attribution: requested (cite ISMIR 2026)
     redistribution: CC0
     status: executed
+    commercial_training_lineage: true   # CC0 1.0 impulse responses; augmentation only, not musical supervision
     spectrasynq: "Amendment 002 venue domain. Keep 8 held-out test venues. Delay-aware re-score on 3 test IRs: ~100 ms direct-path; native F1@50 ms 0.05 → 0.86 after align. Onset delayed, not killed. Short IRs; crowd still gated."
 
   - id: crowdioset
@@ -625,6 +662,7 @@ entries:
     attribution: required
     redistribution: UNKNOWN
     status: researched
+    commercial_training_lineage: UNKNOWN   # not ingested; per-file provenance unresolved
     spectrasynq: "PA/ROOM+CROWD lane. Do not ingest until each file licence is written down. Do not mix NC into a commercial-safe corpus."
 
   - id: msst
@@ -652,6 +690,7 @@ entries:
     attribution: required
     redistribution: UNKNOWN
     status: researched
+    commercial_training_lineage: UNKNOWN   # wrapper; lineage is per backend
     spectrasynq: "Optional glue so we do not depend on Demucs itself. Teacher signal is activity envelopes, not SDR."
 
   - id: share-student-feasibility
@@ -685,3 +724,130 @@ entries:
     pin_date: "2026-09-01"
     pin_label: HOST-ONLY
     spectrasynq: "HOST recoverability PASS. I/O unfrozen. Not architecture authority. content_sha256 is artifacts/share_student/share_student_best.pt. receipt.json sha256 00a08aefedbdc0278b05ed84f2029c7b7de422986eee1b3583e003961beb2ebf (same bytes as experiments/share_student/receipt.json). git_sha is this lab commit recorded in the receipt, verified via git cat-file. C1 does not freeze 16 kHz / 1 s / 64-mel."
+
+  # --- Added 2026-09-01 (J1B). Four genuinely new assets: not in LANDSCAPE. ---
+
+  - id: basic-pitch
+    kind: model
+    name: Spotify Basic Pitch
+    version: "release v0.4.0 (2024-08-16); repo HEAD fa5997af0a8210982619003269994a1be25eddf3 (2025-11-13)"
+    group: Spotify AB
+    source: https://github.com/spotify/basic-pitch
+    publication: "arXiv 2203.09893 (ICASSP 2022)"
+    github_release: v0.4.0
+    github_head_sha: fa5997af0a8210982619003269994a1be25eddf3
+    task: polyphonic note transcription — onset, note (frame) and pitch-contour heads
+    inputs: "PCM 22050 Hz; harmonic CQT front end; 2 s windows, FFT hop 256 (~11.6 ms)"
+    outputs: onset / note / pitch-contour posteriorgrams, decoded MIDI
+    temporal_resolution: ~11.6 ms frames
+    context: "2 s window — NON-CAUSAL. Labels derived from it carry lookahead"
+    architecture: small CNN over harmonic-stacked CQT
+    params: 16782
+    deployment: host_oracle
+    code_licence: Apache-2.0
+    weight_licence: Apache-2.0
+    dataset_licence: "training corpora MAESTRO + Slakh-redux + GuitarSet + iKala + MedleyDB; MedleyDB is CC BY-NC-SA, Slakh carries the Kontakt question — see slakh2100"
+    research_use: yes
+    commercial_use: "code/weights yes per Apache-2.0; pseudo-label lineage NOT thereby cleared"
+    teacher_use: "real-audio note teacher where exact MIDI does not exist. NOT the teacher for BabySlakh — exact MIDI already exists there"
+    derived_weight_status: "UNKNOWN — Apache-2.0 on the teacher does not clear a student trained on its outputs"
+    attribution: required
+    redistribution: per Apache-2.0
+    status: researched
+    commercial_training_lineage: conditional   # permissive weights over partly-NC training corpora
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "Benchmark and real-audio teacher, never a product architecture. BANNED CLAIM: the 'under 20 MB peak memory' figure in Spotify marketing — the ICASSP paper measures 490 MB peak on a 0:35 file and 951 MB on a 7:45 file. 16782 params is the network, not the runtime. Non-causal 2 s context must be reported as lookahead / effective label centre / causal age on every derived target (PaRIRset lesson)."
+
+  - id: openmic-2018
+    kind: dataset
+    name: OpenMIC-2018
+    version: v1.0.0
+    group: Humphrey / Durand / McFee (Spotify + MARL)
+    source: https://github.com/cosmir/openmic-2018
+    publication: https://zenodo.org/records/1432913
+    zenodo_md5: "openmic-2018-v1.0.0.tgz md5:e4ccf187e2bb5ab2e115416e8aafe7f4"
+    zenodo_bytes: 2623376754
+    github_head_sha: e0c25c616558f6acc3938a383ffcdb047e9be2af
+    task: multi-label polyphonic instrument recognition
+    inputs: 10 s excerpts from Free Music Archive
+    outputs: "20 instrument classes, PARTIAL labels (~2.2 of 20 classes judged per clip)"
+    temporal_resolution: clip-level
+    context: 10 s
+    architecture: n/a
+    params: n/a
+    deployment: host_oracle
+    code_licence: MIT (repo)
+    weight_licence: n/a
+    dataset_licence: "Zenodo record badge is CC BY 4.0 — that covers Spotify's compilation and labels, NOT the third-party audio. Per-track licence lives in openmic-2018-metadata.csv `license_title`"
+    research_use: yes
+    commercial_use: "per track. 17777/20000 (88.9%) carry a NonCommercial clause; 2223 (11.1%) do not; 2075 (10.4%) if CC BY-ND is also excluded"
+    teacher_use: "real-audio instrument presence. Unknown label != negative"
+    derived_weight_status: n/a
+    attribution: required
+    redistribution: per track
+    status: researched
+    commercial_training_lineage: conditional   # a metadata-selectable non-NC subset exists; see docs J2 memo
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "FOOTGUN: the Zenodo CC BY 4.0 badge must never be read as clearing the audio. Spotify cannot relicense an artist's CC BY-NC recording. Filter on the per-track `license_title` column, which is a byte-identical copy of FMA raw_tracks.csv for all 20000 rows (verified 2026-09-01, 0 mismatches). Not ingested."
+
+  - id: efficientat
+    kind: model-family
+    name: EfficientAT (MobileNetV3-style audio tagging)
+    version: "release v0.0.1 (2022-11-17); repo HEAD a425fdce92572e602a1d5634799bd9f1f2efa806 (2024-11-20)"
+    group: Schmid et al. (JKU Linz)
+    source: https://github.com/fschmid56/EfficientAT
+    task: AudioSet tagging; ships an OpenMIC fine-tuning entry point (ex_openmic.py)
+    inputs: "PCM 32000 Hz; 128 mel, n_fft 1024, window 800, hop 320 (10 ms)"
+    outputs: tag logits / embeddings
+    temporal_resolution: 10 ms frames, clip-level tags
+    context: clip
+    architecture: MobileNetV3 family
+    params: "mn04 0.983 M params / 0.11 G MACs (mAP 43.2); larger members up to dymn20"
+    deployment: potential_embedded_student
+    code_licence: MIT
+    weight_licence: "no separate statement on the release assets; repo-wide MIT applies by default — UNCONFIRMED as an explicit weight grant"
+    dataset_licence: "AudioSet. Google licenses the LABEL CSVs (CC BY 4.0) and the ontology (CC BY-SA 4.0) only — it distributes no audio and licenses none. Audio is fetched from YouTube by each user under YouTube terms"
+    research_use: yes
+    commercial_use: UNKNOWN
+    teacher_use: "candidate instrument-presence model, not yet run"
+    derived_weight_status: UNKNOWN
+    attribution: required
+    redistribution: per MIT for code
+    status: researched
+    commercial_training_lineage: UNKNOWN   # AudioSet audio provenance is per-YouTube-video and unlicensed by Google
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "Its 32 kHz / 128-mel front end is a SECOND audio front end. Under the front-end rule that cost must be justified before its accuracy is measured. BabySlakh (16 kHz) cannot validate it — 8 kHz Nyquist removes the brightness cues timbre recognition depends on. J4 held."
+
+  - id: musicfm
+    kind: model
+    name: MusicFM
+    version: "no tagged release; repo HEAD b83ebedb401bcef639b26b05c0c8bee1dc2dfe71 (2024-02-14)"
+    group: Won / Hung / Le (SAMI, ByteDance)
+    source: https://github.com/minzwon/musicfm
+    publication: "arXiv 2311.03318 (ICASSP 2024)"
+    github_head_sha: b83ebedb401bcef639b26b05c0c8bee1dc2dfe71
+    task: self-supervised music representation (BEST-RQ style)
+    inputs: PCM
+    outputs: layer-wise frame embeddings
+    temporal_resolution: frame
+    context: long
+    architecture: conformer
+    params: "330 M (most variants); 660 M for FM8"
+    deployment: unsuitable_mcu_npu
+    code_licence: "LICENSE file present (ByteDance Inc. 2023); GitHub licence detector returns NOASSERTION — the text does not match a standard SPDX template. Treat as UNVERIFIED-MIT until read by counsel"
+    weight_licence: "no checkpoint-specific statement; inherits whatever the LICENSE file grants"
+    dataset_licence: "released checkpoint trained on FMA (~8k h Creative-Commons audio); an MSD-trained checkpoint also ships with no equivalent caveat. The 160k h in-house corpus model was deliberately NOT released"
+    research_use: yes
+    commercial_use: UNKNOWN
+    teacher_use: "the only music-SSL candidate whose weight licence is not CC BY-NC. Not probed"
+    derived_weight_status: UNKNOWN
+    attribution: required
+    redistribution: per LICENSE
+    status: researched
+    commercial_training_lineage: UNKNOWN   # LICENSE text is NOASSERTION to GitHub's detector; the binding uncertainty is the grant itself, not the corpus. Authors did release the FMA model expressly to reduce licence exposure
+    pin_date: "2026-09-01"
+    pin_label: HOST-ONLY
+    spectrasynq: "Repo states it released the FMA model 'to avoid potential licensing complications'. That is a reason to rank it above MERT/MuQ/MAEST for any product-adjacent probe, not a clearance. Foundation probing stays CLOSED until a capability appears that has no labels — pitch and instrument both have labels."
