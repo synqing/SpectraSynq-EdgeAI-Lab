@@ -47,6 +47,43 @@ Cadence silicon **CLOSED**. No USB. No board. No Titan clock.
 | MLPerf Tiny `ad01_int8.tflite` | 768 B | 217,968 B | 0.26 M | 100% (32/32) | yes |
 | lab `smoke.onnx` (**AdaptiveAvgPool2d required**) | 262,414 B | 188,896 B | 35.56 M | 88.9% (64/72, 8 CPU fallback) | yes |
 
+## Ethos-U Vela identity — NOT ESTABLISHED (J1E, 2026-09-01)
+
+This receipt pins `ruhmi-framework-mcu` `6c5aad90...` (Release-2026-06-19) and MERA
+`2.6.0+pkg.4815`. It has never pinned the **Arm Ethos-U Vela** version underneath,
+and that gap is load-bearing: **Vela 5.0.0 (2026-02-26) added `BATCH_MATMUL` with
+Int8 inputs for Ethos-U55/U65**, along with `LOG`, `PADV2`, `REDUCE_MAX`,
+`REDUCE_MIN`, `REVERSE_V2`, `SUM` and `TILE`. Reasoning from an older
+`SUPPORTED_OPS.md` is therefore unsafe — and so is the opposite inference that a
+June 2026 RUHMI release "must" carry Vela >= 5.0.0. Neither is a pin.
+
+| Item | State |
+| --- | --- |
+| Vela version | **UNESTABLISHED** — no CI run has introspected it yet |
+| Probe | `scripts/vela_identity.py` (exit 1 if no identity can be established) |
+| CI step | `.github/workflows/ruhmi-compile.yml` -> "Establish Ethos-U Vela identity (fail closed)" |
+| Artefact | `vela-identity` / `artifacts/ruhmi/vela_identity.json` |
+| Test | `tests/test_vela_identity.py` |
+| Update trigger | first successful run of that step; record version + method + run id here |
+
+**Established today without a run**, read directly from `scripts/mcu_compile.py` in the
+pinned RUHMI tree (`curl` of the raw file at `6c5aad90...`) — these are the compile
+path's own Vela knobs, not inferences:
+
+- `vela_config['accel_config'] = 'ethos-u55-256'` — the 256-MAC U55 configuration.
+- `--memory-mode` default is **`Sram_Only`**, i.e. model *and* tensor arena in SRAM.
+  On RA8P1 that shares the ~1664 KB user SRAM with the audio ring buffers, the M85
+  DSP working set and the renderer. `Dedicated_Sram` is an Ethos-U65 mode and is not
+  available here.
+- `--optimise` default is `Performance`.
+- Vela is invoked *inside* MERA (`deployer.deploy(..., vela_config=...)`), not as a
+  CLI, which is why the probe searches distributions, imports, PATH and the `mera`
+  package tree rather than shelling out to `vela --version`.
+
+**A newer Vela version never promotes an operator into an architectural assumption.**
+Candidate graphs still compile or fail. Nothing in this section changes the D3 rule
+(no STFT inside the NPU graph) or the D11 rule (`AdaptiveAvgPool2d`, not `ReduceMean`).
+
 **AdaptiveAvgPool2d is required** on the U55 witness graph (D11). Export is ONNX `GlobalAveragePool` / `AveragePool`, not a node named AdaptiveAvgPool. Banned: `x.mean(dim=(2,3))` → ReduceMean (Vela splits Ethos-U ops). Banned: STFT inside the NPU graph (D3 — export CNN on log-mel).
 
 Prior fail (33318864219): same smoke graph with ReduceMean quantized (PSNR 27.8, 94.7% NPU ops) then Vela `More than one Ethos-U custom operator found in subgraph`. Compiler-reported on that fail (still PRE-SILICON, **not** a pass): SRAM 250 KiB, flash 186.92 KiB, 35.6 M MACs/batch, MEAN unsupported.

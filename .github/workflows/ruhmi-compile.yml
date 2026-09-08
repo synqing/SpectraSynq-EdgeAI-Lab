@@ -12,6 +12,7 @@ on:
       - "deployment/ra8p1/**"
       - "models/configs/**"
       - ".github/workflows/ruhmi-compile.yml"
+      - "scripts/vela_identity.py"
       - "pyproject.toml"
 
 env:
@@ -76,6 +77,22 @@ jobs:
           git -C "$HOME/ruhmi-framework-mcu" checkout --detach "${RUHMI_REF}"
           git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD
           test "$(git -C "$HOME/ruhmi-framework-mcu" rev-parse HEAD)" = "${RUHMI_REF}"
+      - name: Establish Ethos-U Vela identity (fail closed)
+        # J1E: the receipt pinned RUHMI + MERA but never the Vela underneath.
+        # Vela 5.0.0 (2026-02-26) changed the U55 operator set. "June 2026 is
+        # after February 2026" is an inference, not a pin. Introspect or fail.
+        run: |
+          set -eux
+          mkdir -p artifacts/ruhmi
+          python "${GITHUB_WORKSPACE}/scripts/vela_identity.py" \
+            --ruhmi-dir "$HOME/ruhmi-framework-mcu" \
+            --json-out artifacts/ruhmi/vela_identity.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vela-identity
+          path: artifacts/ruhmi/vela_identity.json
+          if-no-files-found: error
       - name: Compile Renesas known-good ad01_int8.tflite
         run: |
           set -eux
